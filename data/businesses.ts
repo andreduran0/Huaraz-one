@@ -2,23 +2,29 @@
 import { Business, AdLevel, BusinessCategory } from '../types';
 
 export const businesses: Business[] = [
-  // 1. TRIVIO RESTO BAR
+  // 1. CUMBRE (ANTES TRIVIO)
   {
     id: '6',
-    name: 'Trivio Resto Bar',
+    name: 'Cumbre',
     category: BusinessCategory.RESTAURANT,
-    description: 'Cocina de autor con insumos locales. Experiencia gourmet y cócteles creativos.',
-    address: 'Parque Ginebra, Huaraz',
-    lat: -9.5270,
-    lng: -77.5288,
-    phone: '043-431122',
-    whatsapp: '51987654444',
-    photos: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcZAyoURs3mhVRQVMoKs_0UaVRdaFFV8SmRA&s'],
-    schedule: { 'Lunes - Sábado': '6:00 PM - 12:00 AM' },
+    description: 'Restaurante ubicado en el Mirador de Rataquenua. Disfruta de una vista panorámica inigualable de Huaraz y la Cordillera Blanca junto a una exquisita gastronomía.',
+    address: 'Mirador de Rataquenua, Huaraz',
+    lat: -9.5395, // Coordenadas aproximadas del mirador
+    lng: -77.5220,
+    phone: '+51937511052',
+    whatsapp: '51937511052',
+    photos: [
+      'https://i.imgur.com/UYGAUFo.png',
+      'https://i.imgur.com/QL9W5eh.png',
+      'https://i.imgur.com/KfueoI2.png',
+      'https://i.imgur.com/me8ec0a.png'
+    ],
+    schedule: { 'Lunes - Domingo': '12:00 PM - 8:30 PM' },
     adLevel: AdLevel.PREMIUM,
     qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-explorer-6',
     status: 'approved',
     ownerUserId: 'user6',
+    googleMapsQuery: 'Mirador de Rataquenua, Huaraz',
   },
   // 2. EL FOGÓN HUARACINO
   {
@@ -40,7 +46,7 @@ export const businesses: Business[] = [
     status: 'approved',
     ownerUserId: 'user1',
   },
-  // 3. ANDINO CLUB HOTEL (MOVIDO AQUI)
+  // 3. ANDINO CLUB HOTEL
   {
     id: '11',
     name: 'Andino Club Hotel',
@@ -196,7 +202,6 @@ export const businesses: Business[] = [
     status: 'pending',
     ownerUserId: 'user10',
   },
-  // (ANDINO CLUB HOTEL REMOVIDO DE AQUI)
   {
     id: '12',
     name: 'Selina Huaraz',

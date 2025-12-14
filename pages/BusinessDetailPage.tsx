@@ -44,6 +44,10 @@ const BusinessDetailPage: React.FC = () => {
     alert("Próximamente: Podrás subir fotos directamente desde aquí.");
   };
 
+  const mapUrl = business.googleMapsQuery 
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.googleMapsQuery)}`
+    : `https://www.google.com/maps/search/?api=1&query=${business.lat},${business.lng}`;
+
   return (
     <div className="bg-background-light dark:bg-background-dark min-h-full relative">
         {/* Image Header */}
@@ -125,7 +129,7 @@ const BusinessDetailPage: React.FC = () => {
 
             {/* Map Link Button */}
             <a 
-                href={`https://www.google.com/maps/search/?api=1&query=${business.lat},${business.lng}`}
+                href={mapUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="block w-full py-4 bg-brand-blue text-white rounded-xl text-center font-bold text-lg shadow-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"

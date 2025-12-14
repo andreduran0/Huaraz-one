@@ -35,6 +35,7 @@ export interface Business {
   qrCodeUrl: string;
   status: 'pending' | 'approved' | 'rejected';
   ownerUserId: string;
+  googleMapsQuery?: string;
 }
 
 export interface Coupon {
