@@ -2,9 +2,11 @@
 import React, { ReactNode } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslations } from '../hooks/useTranslations';
+import { useAppContext } from '../context/AppContext';
 
 const Header: React.FC = () => {
     const t = useTranslations();
+    const { language, setLanguage } = useAppContext();
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -25,6 +27,9 @@ const Header: React.FC = () => {
     };
 
     const showBackButton = !['/', '/map', '/chat', '/coupons', '/calendar', '/onboarding'].includes(location.pathname);
+    const toggleLanguage = () => {
+        setLanguage(language === 'es' ? 'en' : 'es');
+    };
 
     return (
         <header className="bg-brand-dark-blue dark:bg-gray-900 text-white shadow-md sticky top-0 z-10">
@@ -34,7 +39,13 @@ const Header: React.FC = () => {
                         <i className="fas fa-arrow-left text-lg"></i>
                     </button>
                 )}
-                <h1 className="text-xl font-bold flex-1">{getTitle()}</h1>
+                <h1 className="text-xl font-bold flex-1 truncate">{getTitle()}</h1>
+                <button
+                    onClick={toggleLanguage}
+                    className="ml-2 px-3 py-1 bg-white/10 rounded-full text-xs font-bold hover:bg-white/20 transition-colors border border-white/20"
+                >
+                    {language === 'es' ? 'EN' : 'ES'}
+                </button>
             </div>
         </header>
     );
