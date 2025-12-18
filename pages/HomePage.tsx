@@ -38,7 +38,7 @@ const HomePage: React.FC = () => {
   const categories = [
     { id: 'ALL', label: 'Todos', icon: undefined },
     { id: BusinessCategory.RESTAURANT, label: t('category.restaurant'), icon: 'fa-utensils' },
-    { id: BusinessCategory.HOTEL, label: t('category.hotel'), icon: 'fa-bed' },
+    { id: 'HOTEL', label: t('category.hotel'), icon: 'fa-bed' },
     { id: BusinessCategory.TOURIST_SPOT, label: t('category.tourist_spot'), icon: 'fa-hiking' },
     { id: BusinessCategory.POLLERIA, label: t('category.polleria'), icon: 'fa-drumstick-bite' },
     { id: BusinessCategory.CEVICHERIA, label: t('category.cevicheria'), icon: 'fa-fish' },
@@ -65,6 +65,8 @@ const HomePage: React.FC = () => {
     : filteredBusinesses.slice(0, INITIAL_DISPLAY_COUNT);
 
   const heroImages = [
+    "https://i.imgur.com/cnfE46t.jpeg", // Imagen del pesebre navideño
+    "https://i.imgur.com/6OmpJf3.jpeg", // Nueva imagen añadida
     "https://content.r9cdn.net/rimg/dimg/17/1d/38963bbb-city-58607-173326d42bf.jpg?crop=true&width=1020&height=498",
     "https://bananomeridiano.com/wp-content/uploads/2022/03/huaraz-peru-1.jpg",
     "https://pamelatours.com/wp-content/uploads/2019/10/laguna69.jpg",
