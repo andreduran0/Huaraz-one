@@ -66,7 +66,7 @@ const HomePage: React.FC = () => {
 
   const heroImages = [
     "https://i.imgur.com/cnfE46t.jpeg", // Imagen del pesebre navideño
-    "https://i.imgur.com/6OmpJf3.jpeg", // Nueva imagen añadida
+    "https://i.imgur.com/6OmpJf3.jpeg", // Segunda imagen navideña
     "https://content.r9cdn.net/rimg/dimg/17/1d/38963bbb-city-58607-173326d42bf.jpg?crop=true&width=1020&height=498",
     "https://bananomeridiano.com/wp-content/uploads/2022/03/huaraz-peru-1.jpg",
     "https://pamelatours.com/wp-content/uploads/2019/10/laguna69.jpg",
@@ -167,30 +167,31 @@ const HomePage: React.FC = () => {
             </div>
         </div>
 
-        {/* Webinar Section */}
-        <div className="bg-gradient-to-r from-violet-600 to-indigo-600 rounded-xl p-5 text-white shadow-lg relative overflow-hidden group cursor-pointer hover:shadow-xl transition-all">
-            <div className="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-white/20 rounded-full blur-2xl group-hover:bg-white/30 transition-all"></div>
+        {/* Webinar Section - VERDE NEÓN Y NEGRO (Estilo Cyberpunk) */}
+        <div className="bg-black border-2 border-brand-green rounded-xl p-5 text-brand-green shadow-[0_0_20px_rgba(19,236,91,0.3)] relative overflow-hidden group cursor-pointer hover:shadow-[0_0_30px_rgba(19,236,91,0.5)] transition-all">
+            {/* Pattern background */}
+            <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#13ec5b 0.5px, transparent 0.5px)', backgroundSize: '10px 10px' }}></div>
             
             <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-start gap-4">
-                    <div className="bg-white/20 p-3 rounded-lg backdrop-blur-sm hidden sm:block">
-                        <i className="fas fa-chalkboard-teacher text-2xl"></i>
+                    <div className="bg-brand-green/10 p-3 rounded-lg backdrop-blur-sm hidden sm:block border border-brand-green/20">
+                        <i className="fas fa-chalkboard-teacher text-2xl text-brand-green"></i>
                     </div>
                     <div>
                         <div className="flex items-center gap-2 mb-1">
-                            <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse">EN VIVO</span>
-                            <span className="text-indigo-200 text-xs font-semibold">WEBINAR GRATUITO</span>
+                            <span className="bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded shadow-[0_0_10px_rgba(239,68,68,0.5)] animate-pulse">LIVE</span>
+                            <span className="text-white text-xs font-black uppercase tracking-[0.2em]">WEBINAR GRATUITO</span>
                         </div>
-                        <h3 className="text-lg font-bold">Digitaliza tu Negocio Turístico</h3>
-                        <p className="text-indigo-100 text-sm mt-1 max-w-md">Estrategias de marketing para la temporada alta 2026.</p>
-                        <div className="flex items-center gap-3 mt-2 text-xs text-indigo-200">
-                             <span className="flex items-center gap-1"><i className="far fa-calendar-alt"></i> 15 Nov</span>
-                             <span className="flex items-center gap-1"><i className="far fa-clock"></i> 7:00 PM</span>
+                        <h3 className="text-xl md:text-2xl font-black text-brand-green leading-tight drop-shadow-[0_0_8px_rgba(19,236,91,0.4)]">Digitaliza tu Negocio Turístico</h3>
+                        <p className="text-gray-400 text-sm mt-1 max-w-md font-medium italic">Estrategias de marketing para la temporada alta 2026.</p>
+                        <div className="flex items-center gap-4 mt-3 text-xs font-bold text-white/80">
+                             <span className="flex items-center gap-1.5"><i className="far fa-calendar-alt text-brand-green"></i> 15 NOV</span>
+                             <span className="flex items-center gap-1.5"><i className="far fa-clock text-brand-green"></i> 19:00 HRS</span>
                         </div>
                     </div>
                 </div>
                 
-                <button className="w-full sm:w-auto bg-white text-indigo-600 font-bold py-2.5 px-6 rounded-lg shadow-sm hover:bg-indigo-50 transition-colors whitespace-nowrap">
+                <button className="w-full sm:w-auto bg-brand-green text-black font-black py-3.5 px-8 rounded-lg shadow-[0_0_15px_rgba(19,236,91,0.5)] hover:bg-white transition-all transform active:scale-95 whitespace-nowrap uppercase tracking-tighter">
                     Reservar Cupo
                 </button>
             </div>
