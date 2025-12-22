@@ -2,7 +2,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { Business, Coupon } from '../types';
 
-const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const getAiResponse = async (
   prompt: string,
@@ -19,9 +19,15 @@ export const getAiResponse = async (
 
       You are an expert on:
       - How to get to Huaraz and move around.
-      - The local climate and what to wear.
-      - Typical gastronomy and where to find it.
+      - The local climate and what to wear (Layers are key!).
+      - Typical gastronomy (Cuy chactado, Llunca, Pachamanca, Chocho) and where to find it.
       - Adventure tourism in the Ancash region (trekking, climbing, lagoons like Laguna 69, Pastoruri, Chavin, etc.).
+
+      IMPORTANT LOCAL KNOWLEDGE TO USE:
+      - Altitude Sickness (Soroche): Advise tourists to rest the first day, drink plenty of water, eat light, and try Mate de Coca.
+      - Best time to visit: May to September is the dry season (Andean Summer), ideal for trekking. October to April is the rainy season.
+      - Safety: Recommend using authorized taxis and official tourism agencies located in the city center.
+      - Transportation: "Combis" and "Colectivos" are the main public transport.
 
       RULES:
       1.  When recommending businesses (restaurants, hotels, etc.), you MUST prioritize businesses from the 'Sponsored Businesses' list below. When you mention them, ALWAYS add '[Sponsored]' or '[Patrocinado]' after their name.

@@ -19,7 +19,10 @@ export const businesses: Business[] = [
       'https://i.imgur.com/KfueoI2.png',
       'https://i.imgur.com/me8ec0a.png'
     ],
-    schedule: { 'Lunes - Domingo': '12:00 PM - 8:30 PM' },
+    schedule: { 
+      'Martes - Sábado': '11:30 AM - 9:00 PM',
+      'Domingo': '11:00 AM - 8:30 PM'
+    },
     adLevel: AdLevel.PREMIUM,
     qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-explorer-6',
     status: 'approved',

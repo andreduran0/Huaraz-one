@@ -10,8 +10,8 @@ const MapPage: React.FC = () => {
   const t = useTranslations();
   const approvedBusinesses = businesses.filter(b => b.status === 'approved');
 
-  // Usando el enlace directo a la imagen del mapa proporcionado por el usuario
-  const mapImageUrl = "https://i.ibb.co/kg34dh1V/mapa-huaraz-2024.jpg";
+  // URL de imagen mejorada para el mapa de Huaraz
+  const mapImageUrl = "https://i.imgur.com/G8W2FRt.jpeg";
 
   return (
     <div className="flex flex-col h-[calc(100vh-120px)] w-full bg-background-light dark:bg-background-dark">

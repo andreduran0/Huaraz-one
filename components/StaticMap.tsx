@@ -10,13 +10,12 @@ interface InteractiveMapProps {
 }
 
 // Límites referenciales del mapa (GPS). 
-// Nota: Estos límites aproximados permiten que los marcadores aparezcan sobre la ciudad.
-// Si el nuevo mapa tiene una escala diferente, los marcadores podrían necesitar ajuste fino.
+// Ajustados para incluir negocios al sur (Mirador de Rataquenua) y el centro.
 const MAP_BOUNDS = {
-    top: -9.5220,    // Norte
-    bottom: -9.5350, // Sur
-    left: -77.5350,  // Oeste
-    right: -77.5230, // Este
+    top: -9.5200,    // Norte
+    bottom: -9.5450, // Sur (Incluye Mirador de Rataquenua)
+    left: -77.5400,  // Oeste
+    right: -77.5200, // Este
 };
 
 const categoryIcons: Record<BusinessCategory, string> = {
@@ -52,8 +51,7 @@ export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps)
     const handleImageError = () => {
         console.error("Error cargando la imagen:", imageUrl);
         setLoadError(true);
-        setImageLoaded(true); // Stop spinner
-        // Set fake dimensions so layout doesn't break entirely
+        setImageLoaded(true); 
         setImgDimensions({ width: 1000, height: 800 }); 
     };
 
@@ -66,12 +64,10 @@ export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps)
 
         if (containerWidth === 0 || containerHeight === 0) return;
 
-        // "Contain" logic: fit the whole image in view
         const scaleX = containerWidth / imageWidth;
         const scaleY = containerHeight / imageHeight;
-        const initialScale = Math.min(scaleX, scaleY); // Usar el menor para que quepa todo
+        const initialScale = Math.min(scaleX, scaleY); 
         
-        // Center logic
         const initialX = (containerWidth - imageWidth * initialScale) / 2;
         const initialY = (containerHeight - imageHeight * initialScale) / 2;
 
@@ -112,7 +108,7 @@ export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps)
 
     const handleMouseDown = (e: React.MouseEvent) => {
         if (loadError) return;
-        e.preventDefault(); // Prevent image dragging default
+        e.preventDefault(); 
         e.stopPropagation();
         isDragging.current = true;
         lastPos.current = { x: e.clientX, y: e.clientY };
@@ -169,7 +165,6 @@ export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps)
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onTouchStart={(e) => {
-                // Basic touch support for dragging
                 if(e.touches.length === 1) {
                     isDragging.current = true;
                     lastPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
@@ -196,19 +191,11 @@ export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps)
             
             {loadError && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center z-30 bg-white dark:bg-gray-900 p-8 text-center">
-                    <i className="fas fa-image text-6xl text-gray-300 mb-4"></i>
-                    <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">Falta la imagen del mapa</h3>
+                    <i className="fas fa-exclamation-triangle text-6xl text-red-400 mb-4"></i>
+                    <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">Error al cargar el mapa</h3>
                     <p className="text-gray-600 dark:text-gray-400 mt-2 mb-6 max-w-md">
-                        No se encontró el archivo <strong>{imageUrl}</strong>.
+                        La URL proporcionada no es válida o ha expirado. Por favor, asegúrate de usar un enlace de imagen permanente.
                     </p>
-                    <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4 text-left text-sm text-blue-800 dark:text-blue-200">
-                        <p className="font-bold mb-2">Cómo solucionarlo:</p>
-                        <ol className="list-decimal pl-5 space-y-1">
-                            <li>Guarda tu imagen como <strong>mapa_huaraz_2024.jpg</strong></li>
-                            <li>Muévela a la carpeta <strong>public/</strong> de tu proyecto.</li>
-                            <li>Recarga esta página.</li>
-                        </ol>
-                    </div>
                 </div>
             )}
             
@@ -223,7 +210,7 @@ export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps)
             >
                 <img
                     src={imageUrl}
-                    alt="Mapa de Huaraz 2024"
+                    alt="Mapa de Huaraz"
                     className="absolute top-0 left-0 w-full h-full pointer-events-none"
                     draggable={false}
                     onLoad={handleImageLoad}
