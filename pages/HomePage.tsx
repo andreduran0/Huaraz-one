@@ -88,31 +88,28 @@ const HomePage: React.FC = () => {
         {/* SEO Intro Section */}
 <section className="mt-6 bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm">
   <h1 className="text-2xl md:text-3xl font-extrabold text-brand-dark-blue dark:text-brand-green mb-3">
+  <section className="mt-6 bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm">
+  <h1 className="text-2xl md:text-3xl font-extrabold text-brand-dark-blue dark:text-brand-green mb-3">
     Huaraz Explorer – Plataforma de Recomendaciones Turísticas en Huaraz
   </h1>
 
-  <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
-    <strong>Huaraz Explorer</strong> es una plataforma digital de
-    <strong> recomendaciones turísticas en Huaraz</strong> que ayuda a viajeros
-    nacionales e internacionales a descubrir los mejores negocios turisticos  , experiencias
-    y servicios de la región.
+  <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+    <strong>Huaraz Explorer</strong> ayuda a viajeros nacionales e internacionales
+    a descubrir los mejores restaurantes, hoteles, experiencias y servicios
+    turísticos de Huaraz y la Cordillera Blanca, usando tecnología, datos locales
+    y asistencia inteligente.
   </p>
-  <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
-    Aquí puedes explorar <strong>mapas interactivos</strong>, encontrar los mejores 
-    <strong> restaurantes, hoteles , agencias de viajes y negocios de nuestra localidad</strong>,
-    consultar el <strong>calendario de festividades y eventos locales</strong> y
-    planificar tu visita a Huaraz y la <strong>Cordillera Blanca</strong> de forma
-    segura y organizada.
-  </p>
-  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-    La plataforma integra un <strong>agente turístico con inteligencia artificial
-    disponible 24/7</strong> que guía a los visitantes antes, durante y después
-    de su viaje, además de una <strong>newsletter informativa</strong>, beneficios
-    exclusivos, cupones de descuentos y ofertas de nuestros negocios patrocinados y un ecosistema digital innovador como el
-    <strong> Token Huaraz</strong>, impulsando el crecimiento del turismo local.
-  </p>
+
+  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm text-gray-700 dark:text-gray-300">
+    <div>📍 Mapa turístico interactivo</div>
+    <div>🤖 Agente turístico IA 24/7</div>
+    <div>⭐ Negocios locales recomendados</div>
+    <div>🎟️ Cupones y beneficios</div>
+    <div>📅 Festividades y eventos</div>
+    <div>📰 Newsletter & ecosistema digital</div>
+  </div>
 </section>
-     {/* Pump.Fun Token Section */}
+  {/* Pump.Fun Token Section */}
         <div className="relative bg-[#1b1d22] rounded-xl p-4 shadow-xl my-6 overflow-hidden border-2 border-[#8dc06d]/20 group">
             {/* Background Grid Pattern */}
             <div className="absolute inset-0 opacity-10" style={{ 
