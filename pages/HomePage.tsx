@@ -85,28 +85,26 @@ const HomePage: React.FC = () => {
                  </div>
             </HeroSlider>
         </div>
-        {/* SEO Intro Section */}
+      {/* SEO Intro Section */}
 <section className="mt-6 bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm">
-  <h1 className="text-2xl md:text-3xl font-extrabold text-brand-dark-blue dark:text-brand-green mb-3">
-  <section className="mt-6 bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm">
-  <h1 className="text-2xl md:text-3xl font-extrabold text-brand-dark-blue dark:text-brand-green mb-3">
-    Huaraz Explorer – Plataforma de Recomendaciones Turísticas en Huaraz
+  <h1 className="text-2xl md:text-3xl font-extrabold text-brand-dark-blue dark:text-brand-green mb-4">
+    Huaraz Explorer
+    <span className="block text-base md:text-lg font-semibold text-gray-600 dark:text-gray-400">
+      Plataforma de recomendaciones turísticas en Huaraz
+    </span>
   </h1>
-
-  <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+  <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-5 max-w-3xl">
     <strong>Huaraz Explorer</strong> ayuda a viajeros nacionales e internacionales
-    a descubrir los mejores restaurantes, hoteles, experiencias y servicios
-    turísticos de Huaraz y la Cordillera Blanca, usando tecnología, datos locales
-    y asistencia inteligente.
+    a descubrir los mejores negocios, experiencias y servicios turísticos de
+    Huaraz y la Cordillera Blanca, combinando información local y tecnología.
   </p>
-
   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm text-gray-700 dark:text-gray-300">
     <div>📍 Mapa turístico interactivo</div>
-    <div>🤖 Agente turístico IA 24/7</div>
     <div>⭐ Negocios locales recomendados</div>
-    <div>🎟️ Cupones y beneficios</div>
     <div>📅 Festividades y eventos</div>
-    <div>📰 Newsletter & ecosistema digital</div>
+    <div>🤖 Agente turístico IA 24/7</div>
+    <div>🎟️ Cupones y beneficios</div>
+    <div>📰 Newsletter & Token Huaraz</div>
   </div>
 </section>
   {/* Pump.Fun Token Section */}
