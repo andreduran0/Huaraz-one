@@ -99,7 +99,7 @@ const HomePage: React.FC = () => {
   </p>
   <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
     Aquí puedes explorar <strong>mapas interactivos</strong>, encontrar los mejores 
-    <strong> restaurantes, hoteles , agencias de viajes y negocios de nuestro localidad</strong>,
+    <strong> restaurantes, hoteles , agencias de viajes y negocios de nuestra localidad</strong>,
     consultar el <strong>calendario de festividades y eventos locales</strong> y
     planificar tu visita a Huaraz y la <strong>Cordillera Blanca</strong> de forma
     segura y organizada.
@@ -108,8 +108,8 @@ const HomePage: React.FC = () => {
     La plataforma integra un <strong>agente turístico con inteligencia artificial
     disponible 24/7</strong> que guía a los visitantes antes, durante y después
     de su viaje, además de una <strong>newsletter informativa</strong>, beneficios
-    exclusivos, cupones de descuentos y ofertasde nuestros negocios patrocinados y un ecosistema digital innovador como el
-    <strong>Token Huaraz</strong>, impulsando el crecimiento del turismo local.
+    exclusivos, cupones de descuentos y ofertas de nuestros negocios patrocinados y un ecosistema digital innovador como el
+    <strong> Token Huaraz</strong>, impulsando el crecimiento del turismo local.
   </p>
 </section>
      {/* Pump.Fun Token Section */}
