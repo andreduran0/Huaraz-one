@@ -65,9 +65,9 @@ const HomePage: React.FC = () => {
     : filteredBusinesses.slice(0, INITIAL_DISPLAY_COUNT);
 
   const heroImages = [
-    "https://i.imgur.com/cnfE46t.jpeg", // Imagen del pesebre navideño
-    "https://i.imgur.com/6OmpJf3.jpeg", // Segunda imagen navideña
-    "https://content.r9cdn.net/rimg/dimg/17/1d/38963bbb-city-58607-173326d42bf.jpg?crop=true&width=1020&height=498",
+    "https://i.ytimg.com/vi/hpLKsB4uUNY/hq720.jpg?sqp=-oaymwE7CK4FEIIDSFryq4qpAy0IARUAAAAAGAElAADIQj0AgKJD8AEB-AH-CYAC0AWKAgwIABABGC0gEyh_MA8=&rs=AOn4CLD5oVIWpkNFGgfYq-brbuD9LYjU8g", 
+    "https://i.imgur.com/cnfE46t.jpeg", 
+    "https://i.imgur.com/6OmpJf3.jpeg", 
     "https://bananomeridiano.com/wp-content/uploads/2022/03/huaraz-peru-1.jpg",
     "https://pamelatours.com/wp-content/uploads/2019/10/laguna69.jpg",
     "https://www.antamina.com/wp-content/uploads/2020/02/carnaval-huaraz-rompecalle-9.jpg"
@@ -85,29 +85,8 @@ const HomePage: React.FC = () => {
                  </div>
             </HeroSlider>
         </div>
-      {/* SEO Intro Section */}
-<section className="mt-6 bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm">
-  <h1 className="text-2xl md:text-3xl font-extrabold text-brand-dark-blue dark:text-brand-green mb-4">
-    Huaraz Explorer
-    <span className="block text-base md:text-lg font-semibold text-gray-600 dark:text-gray-400">
-      Plataforma de recomendaciones turísticas en Huaraz
-    </span>
-  </h1>
-  <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-5 max-w-3xl">
-    <strong>Huaraz Explorer</strong> ayuda a viajeros nacionales e internacionales
-    a descubrir los mejores negocios, experiencias y servicios turísticos de
-    Huaraz y la Cordillera Blanca, combinando información local y tecnología.
-  </p>
-  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm text-gray-700 dark:text-gray-300">
-    <div>📍 Mapa turístico interactivo</div>
-    <div>⭐ Negocios locales recomendados</div>
-    <div>📅 Festividades y eventos</div>
-    <div>🤖 Agente turístico IA 24/7</div>
-    <div>🎟️ Cupones y beneficios</div>
-    <div>📰 Newsletter & Token Huaraz</div>
-  </div>
-</section>
-  {/* Pump.Fun Token Section */}
+
+        {/* Pump.Fun Token Section */}
         <div className="relative bg-[#1b1d22] rounded-xl p-4 shadow-xl my-6 overflow-hidden border-2 border-[#8dc06d]/20 group">
             {/* Background Grid Pattern */}
             <div className="absolute inset-0 opacity-10" style={{ 
@@ -187,7 +166,8 @@ const HomePage: React.FC = () => {
                 </div>
             </div>
         </div>
-       {/* Newsletter CTA */}
+
+        {/* Newsletter CTA */}
         <div className="relative bg-brand-dark-blue rounded-2xl p-6 text-white overflow-hidden shadow-xl">
             <div className="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
             <div className="absolute bottom-0 left-0 -mb-8 -ml-8 w-32 h-32 bg-brand-green/20 rounded-full blur-2xl"></div>
