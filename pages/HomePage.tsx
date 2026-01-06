@@ -187,38 +187,7 @@ const HomePage: React.FC = () => {
                 </div>
             </div>
         </div>
-
-        {/* Webinar Section - VERDE NEÓN Y NEGRO (Estilo Cyberpunk) */}
-        <div className="bg-black border-2 border-brand-green rounded-xl p-5 text-brand-green shadow-[0_0_20px_rgba(19,236,91,0.3)] relative overflow-hidden group cursor-pointer hover:shadow-[0_0_30px_rgba(19,236,91,0.5)] transition-all">
-            {/* Pattern background */}
-            <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#13ec5b 0.5px, transparent 0.5px)', backgroundSize: '10px 10px' }}></div>
-            
-            <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="flex items-start gap-4">
-                    <div className="bg-brand-green/10 p-3 rounded-lg backdrop-blur-sm hidden sm:block border border-brand-green/20">
-                        <i className="fas fa-chalkboard-teacher text-2xl text-brand-green"></i>
-                    </div>
-                    <div>
-                        <div className="flex items-center gap-2 mb-1">
-                            <span className="bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded shadow-[0_0_10px_rgba(239,68,68,0.5)] animate-pulse">LIVE</span>
-                            <span className="text-white text-xs font-black uppercase tracking-[0.2em]">WEBINAR GRATUITO</span>
-                        </div>
-                        <h3 className="text-xl md:text-2xl font-black text-brand-green leading-tight drop-shadow-[0_0_8px_rgba(19,236,91,0.4)]">Digitaliza tu Negocio Turístico</h3>
-                        <p className="text-gray-400 text-sm mt-1 max-w-md font-medium italic">Estrategias de marketing para la temporada alta 2026.</p>
-                        <div className="flex items-center gap-4 mt-3 text-xs font-bold text-white/80">
-                             <span className="flex items-center gap-1.5"><i className="far fa-calendar-alt text-brand-green"></i> 15 NOV</span>
-                             <span className="flex items-center gap-1.5"><i className="far fa-clock text-brand-green"></i> 19:00 HRS</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <button className="w-full sm:w-auto bg-brand-green text-black font-black py-3.5 px-8 rounded-lg shadow-[0_0_15px_rgba(19,236,91,0.5)] hover:bg-white transition-all transform active:scale-95 whitespace-nowrap uppercase tracking-tighter">
-                    Reservar Cupo
-                </button>
-            </div>
-        </div>
-
-        {/* Newsletter CTA */}
+       {/* Newsletter CTA */}
         <div className="relative bg-brand-dark-blue rounded-2xl p-6 text-white overflow-hidden shadow-xl">
             <div className="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
             <div className="absolute bottom-0 left-0 -mb-8 -ml-8 w-32 h-32 bg-brand-green/20 rounded-full blur-2xl"></div>
