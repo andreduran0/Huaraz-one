@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Business, BusinessCategory } from '../types';
+import { Business, BusinessCategory, AdLevel } from '../types';
 import { Link } from 'react-router-dom';
 import { useTranslations } from '../hooks/useTranslations';
 
@@ -9,24 +9,28 @@ interface InteractiveMapProps {
     businesses: Business[];
 }
 
-// Límites referenciales del mapa (GPS). 
-// Ajustados para incluir negocios al sur (Mirador de Rataquenua) y el centro.
+/**
+ * Límites del mapa (GPS) centrados en el casco urbano de Huaraz.
+ */
 const MAP_BOUNDS = {
-    top: -9.5200,    // Norte
-    bottom: -9.5450, // Sur (Incluye Mirador de Rataquenua)
-    left: -77.5400,  // Oeste
-    right: -77.5200, // Este
+    top: -9.4800,    
+    bottom: -9.5800, 
+    left: -77.5600,  
+    right: -77.4800, 
 };
 
-const categoryIcons: Record<BusinessCategory, string> = {
-    [BusinessCategory.RESTAURANT]: 'fa-utensils',
-    [BusinessCategory.POLLERIA]: 'fa-drumstick-bite',
-    [BusinessCategory.CEVICHERIA]: 'fa-fish-fins',
-    [BusinessCategory.LAUNDRY]: 'fa-shirt',
-    [BusinessCategory.HOTEL]: 'fa-bed',
-    [BusinessCategory.DENTIST]: 'fa-tooth',
-    [BusinessCategory.BAKERY]: 'fa-bread-slice',
-    [BusinessCategory.TOURIST_SPOT]: 'fa-camera-retro',
+const getCategoryIcon = (category: BusinessCategory) => {
+    switch (category) {
+        case BusinessCategory.RESTAURANT: return 'fa-utensils';
+        case BusinessCategory.POLLERIA: return 'fa-drumstick-bite';
+        case BusinessCategory.CEVICHERIA: return 'fa-fish';
+        case BusinessCategory.HOTEL: return 'fa-bed';
+        case BusinessCategory.LAUNDRY: return 'fa-tshirt';
+        case BusinessCategory.DENTIST: return 'fa-tooth';
+        case BusinessCategory.BAKERY: return 'fa-bread-slice';
+        case BusinessCategory.TOURIST_SPOT: return 'fa-camera-retro';
+        default: return 'fa-map-marker-alt';
+    }
 };
 
 export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps) {
@@ -45,11 +49,9 @@ export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps)
         const { naturalWidth, naturalHeight } = e.currentTarget;
         setImgDimensions({ width: naturalWidth, height: naturalHeight });
         setImageLoaded(true);
-        setLoadError(false);
     };
 
     const handleImageError = () => {
-        console.error("Error cargando la imagen:", imageUrl);
         setLoadError(true);
         setImageLoaded(true); 
         setImgDimensions({ width: 1000, height: 800 }); 
@@ -57,7 +59,6 @@ export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps)
 
     const setInitialView = useCallback(() => {
         if (!mapRef.current || !imgDimensions) return;
-
         const container = mapRef.current;
         const { width: containerWidth, height: containerHeight } = container.getBoundingClientRect();
         const { width: imageWidth, height: imageHeight } = imgDimensions;
@@ -66,16 +67,12 @@ export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps)
 
         const scaleX = containerWidth / imageWidth;
         const scaleY = containerHeight / imageHeight;
-        const initialScale = Math.min(scaleX, scaleY); 
+        const initialScale = Math.max(scaleX, scaleY) * 1.2; 
         
         const initialX = (containerWidth - imageWidth * initialScale) / 2;
         const initialY = (containerHeight - imageHeight * initialScale) / 2;
 
-        setTransform({
-            scale: initialScale,
-            x: initialX,
-            y: initialY,
-        });
+        setTransform({ scale: initialScale, x: initialX, y: initialY });
     }, [imgDimensions]);
 
     useEffect(() => {
@@ -98,10 +95,8 @@ export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps)
             const rect = mapRef.current.getBoundingClientRect();
             const mouseX = e.clientX - rect.left;
             const mouseY = e.clientY - rect.top;
-            
             const newX = mouseX - (mouseX - transform.x) * (clampedScale / transform.scale);
             const newY = mouseY - (mouseY - transform.y) * (clampedScale / transform.scale);
-            
             setTransform({ scale: clampedScale, x: newX, y: newY });
         }
     };
@@ -109,35 +104,23 @@ export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps)
     const handleMouseDown = (e: React.MouseEvent) => {
         if (loadError) return;
         e.preventDefault(); 
-        e.stopPropagation();
         isDragging.current = true;
         lastPos.current = { x: e.clientX, y: e.clientY };
-        if (mapRef.current) mapRef.current.style.cursor = 'grabbing';
     };
 
     const handleMouseMove = (e: React.MouseEvent) => {
-        if (!isDragging.current || loadError) return;
+        if (!isDragging.current) return;
         const dx = e.clientX - lastPos.current.x;
         const dy = e.clientY - lastPos.current.y;
         setTransform(prev => ({ ...prev, x: prev.x + dx, y: prev.y + dy }));
         lastPos.current = { x: e.clientX, y: e.clientY };
     };
 
-    const handleMouseUp = () => {
-        isDragging.current = false;
-        if (mapRef.current) mapRef.current.style.cursor = 'grab';
-    };
+    const handleMouseUp = () => { isDragging.current = false; };
     
     useEffect(() => {
-      const currentMapRef = mapRef.current;
-      const handleMouseUpGlobal = () => {
-          isDragging.current = false;
-          if (currentMapRef) currentMapRef.style.cursor = 'grab';
-      };
-      window.addEventListener('mouseup', handleMouseUpGlobal);
-      return () => {
-          window.removeEventListener('mouseup', handleMouseUpGlobal);
-      };
+      window.addEventListener('mouseup', handleMouseUp);
+      return () => window.removeEventListener('mouseup', handleMouseUp);
     }, []);
 
     const latLngToPixels = (lat: number, lng: number) => {
@@ -152,50 +135,30 @@ export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps)
         setActiveBusiness(business);
     };
 
-    const activeMarkerCoords = (activeBusiness && imgDimensions) 
-        ? latLngToPixels(activeBusiness.lat, activeBusiness.lng) 
-        : null;
-
     return (
         <div
             ref={mapRef}
-            className={`w-full h-full overflow-hidden relative bg-gray-200 dark:bg-gray-800 select-none ${loadError ? '' : 'cursor-grab active:cursor-grabbing'}`}
+            className="w-full h-full overflow-hidden relative bg-[#f3f4f6] dark:bg-gray-900 select-none cursor-grab active:cursor-grabbing"
             onWheel={handleWheel}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onTouchStart={(e) => {
-                if(e.touches.length === 1) {
-                    isDragging.current = true;
-                    lastPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-                }
-            }}
-            onTouchMove={(e) => {
-                 if(isDragging.current && e.touches.length === 1) {
-                    const dx = e.touches[0].clientX - lastPos.current.x;
-                    const dy = e.touches[0].clientY - lastPos.current.y;
-                    setTransform(prev => ({ ...prev, x: prev.x + dx, y: prev.y + dy }));
-                    lastPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-                 }
-            }}
-            onTouchEnd={() => { isDragging.current = false; }}
         >
+            <style>
+                {`
+                @keyframes marker-pulse {
+                    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 130, 32, 0.7); }
+                    70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(245, 130, 32, 0); }
+                    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 130, 32, 0); }
+                }
+                .animate-marker-pulse {
+                    animation: marker-pulse 2s infinite;
+                }
+                `}
+            </style>
+
             {!imageLoaded && (
                 <div className="absolute inset-0 flex items-center justify-center z-20 bg-gray-100 dark:bg-gray-800">
-                    <div className="flex flex-col items-center">
-                        <i className="fas fa-spinner fa-spin text-4xl text-brand-orange mb-3"></i>
-                        <p className="text-gray-500">Cargando mapa...</p>
-                    </div>
-                </div>
-            )}
-            
-            {loadError && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center z-30 bg-white dark:bg-gray-900 p-8 text-center">
-                    <i className="fas fa-exclamation-triangle text-6xl text-red-400 mb-4"></i>
-                    <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">Error al cargar el mapa</h3>
-                    <p className="text-gray-600 dark:text-gray-400 mt-2 mb-6 max-w-md">
-                        La URL proporcionada no es válida o ha expirado. Por favor, asegúrate de usar un enlace de imagen permanente.
-                    </p>
+                    <i className="fas fa-spinner fa-spin text-4xl text-brand-orange"></i>
                 </div>
             )}
             
@@ -205,61 +168,127 @@ export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps)
                     transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale})`,
                     width: imgDimensions ? `${imgDimensions.width}px` : '100%',
                     height: imgDimensions ? `${imgDimensions.height}px` : '100%',
-                    opacity: loadError ? 0 : 1
                 }}
             >
                 <img
                     src={imageUrl}
-                    alt="Mapa de Huaraz"
-                    className="absolute top-0 left-0 w-full h-full pointer-events-none"
+                    alt="City Map"
+                    className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-90 transition-opacity duration-500"
                     draggable={false}
                     onLoad={handleImageLoad}
                     onError={handleImageError}
+                    style={{ opacity: imageLoaded ? 1 : 0 }}
                 />
                 
-                {/* Markers */}
-                {!loadError && imgDimensions && businesses.map(business => {
+                {/* Marcadores Mejorados */}
+                {!loadError && imgDimensions && businesses.map((business) => {
                     const { x, y } = latLngToPixels(business.lat, business.lng);
-                    const icon = categoryIcons[business.category] || 'fa-map-marker-alt';
+                    const isPremium = business.adLevel === AdLevel.PREMIUM;
+                    const isActive = activeBusiness?.id === business.id;
+                    const isTouristSpot = business.category === BusinessCategory.TOURIST_SPOT;
+                    
                     return (
-                        <button
+                        <div 
                             key={business.id}
-                            onClick={(e) => handleMarkerClick(e, business)}
-                            className="absolute transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center text-white shadow-lg border-2 border-white focus:outline-none focus:ring-2 focus:ring-teal-400 hover:bg-teal-700 hover:scale-125 transition-transform z-10"
+                            className={`absolute transform -translate-x-1/2 -translate-y-full transition-all duration-300 ${isActive ? 'z-50' : 'z-10'}`}
                             style={{ left: `${x}px`, top: `${y}px` }}
-                            aria-label={`Ubicación de ${business.name}`}
                         >
-                            <i className={`fas ${icon} text-sm`}></i>
-                        </button>
+                            <div className="relative group">
+                                {/* Puntero de marcador */}
+                                <div className={`absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 border-r border-b shadow-sm ${
+                                    isPremium ? 'bg-brand-orange border-white' : 
+                                    isTouristSpot ? 'bg-emerald-500 border-white' : 'bg-brand-dark-blue border-white'
+                                }`}></div>
+
+                                <button
+                                    onClick={(e) => handleMarkerClick(e, business)}
+                                    className={`
+                                        relative w-10 h-10 rounded-xl flex items-center justify-center shadow-xl border-2 transition-transform active:scale-90
+                                        ${isPremium ? 'bg-brand-orange border-brand-accent animate-marker-pulse' : 
+                                          isTouristSpot ? 'bg-emerald-500 border-white' : 'bg-brand-dark-blue border-white'}
+                                        ${isActive ? 'scale-125 -translate-y-1' : 'hover:scale-110'}
+                                    `}
+                                >
+                                    <i className={`fas ${getCategoryIcon(business.category)} text-sm text-white`}></i>
+                                    
+                                    {isPremium && (
+                                        <div className="absolute -top-1 -right-1 w-3 h-3 bg-brand-accent rounded-full border border-white flex items-center justify-center">
+                                            <i className="fas fa-star text-[6px] text-brand-dark-blue"></i>
+                                        </div>
+                                    )}
+                                </button>
+                            </div>
+                        </div>
                     );
                 })}
                 
-                {/* Active Popup */}
-                {!loadError && activeBusiness && activeMarkerCoords && (
+                {/* Popup Detalle Mejorado */}
+                {!loadError && activeBusiness && (
                     <div
-                        className="absolute bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-0 w-64 transform -translate-x-1/2 translate-y-4 z-40 overflow-hidden border border-gray-200 dark:border-gray-700"
-                        style={{ left: `${activeMarkerCoords.x}px`, top: `${activeMarkerCoords.y}px` }}
+                        className="absolute bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-0 w-56 transform -translate-x-1/2 -translate-y-[calc(100%+60px)] z-[100] border border-gray-100 dark:border-gray-700 animate-fadeIn overflow-hidden"
+                        style={{ 
+                            left: `${latLngToPixels(activeBusiness.lat, activeBusiness.lng).x}px`, 
+                            top: `${latLngToPixels(activeBusiness.lat, activeBusiness.lng).y}px` 
+                        }}
                         onMouseDown={(e) => e.stopPropagation()}
-                        onTouchStart={(e) => e.stopPropagation()}
                     >
-                         <div className="relative h-24 w-full">
-                            <img src={activeBusiness.photos[0]} alt={activeBusiness.name} className="w-full h-full object-cover"/>
-                            <button 
-                                onClick={() => setActiveBusiness(null)} 
-                                className="absolute top-2 right-2 bg-black/50 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-black/70 transition-colors"
-                            >
-                                <i className="fas fa-times text-xs"></i>
-                            </button>
+                         {/* Mini header con foto si existe */}
+                         <div className="w-full h-20 bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                            <img 
+                                src={activeBusiness.photos[0]} 
+                                className="w-full h-full object-cover" 
+                                alt={activeBusiness.name} 
+                            />
                          </div>
+
                          <div className="p-3">
-                            <h4 className="font-bold text-md truncate text-gray-900 dark:text-white">{activeBusiness.name}</h4>
-                            <p className="text-xs text-gray-500 dark:text-gray-400 mb-3 truncate"><i className="fas fa-map-marker-alt mr-1"></i>{activeBusiness.address}</p>
-                            <Link to={`/business/${activeBusiness.id}`} className="block w-full text-center bg-brand-orange text-white text-sm py-2 rounded-lg hover:bg-orange-600 transition-colors font-bold shadow-md">
-                               Ver Detalles
+                            <div className="flex justify-between items-start mb-2">
+                                <h4 className="font-bold text-sm text-gray-900 dark:text-white flex-1 leading-tight mr-2">
+                                    {activeBusiness.name}
+                                </h4>
+                                <button 
+                                    onClick={() => setActiveBusiness(null)} 
+                                    className="text-gray-400 hover:text-red-500 transition-colors"
+                                >
+                                    <i className="fas fa-times-circle"></i>
+                                </button>
+                            </div>
+                            
+                            <p className="text-[10px] text-gray-500 dark:text-gray-400 mb-3 truncate">
+                                <i className="fas fa-map-marker-alt mr-1"></i> {activeBusiness.address}
+                            </p>
+
+                            <Link 
+                                to={`/business/${activeBusiness.id}`} 
+                                className="block w-full text-center bg-brand-dark-blue hover:bg-brand-blue text-white text-[11px] py-2 rounded-lg transition-colors font-bold tracking-wide"
+                            >
+                                EXPLORAR SITIO
                             </Link>
                          </div>
                     </div>
                 )}
+            </div>
+
+            {/* Controles de Zoom fijos */}
+            <div className="absolute bottom-6 right-6 flex flex-col gap-2 z-50">
+                <button 
+                    onClick={() => setTransform(p => ({ ...p, scale: Math.min(p.scale * 1.5, 5) }))}
+                    className="w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center text-brand-dark-blue dark:text-white hover:bg-gray-100 transition-colors"
+                >
+                    <i className="fas fa-plus"></i>
+                </button>
+                <button 
+                    onClick={() => setTransform(p => ({ ...p, scale: Math.max(p.scale / 1.5, 0.2) }))}
+                    className="w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center text-brand-dark-blue dark:text-white hover:bg-gray-100 transition-colors"
+                >
+                    <i className="fas fa-minus"></i>
+                </button>
+                <button 
+                    onClick={setInitialView}
+                    className="w-12 h-12 bg-brand-orange rounded-full shadow-lg flex items-center justify-center text-white hover:bg-orange-600 transition-colors"
+                >
+                    <i className="fas fa-compress-arrows-alt"></i>
+                </button>
             </div>
         </div>
     );
