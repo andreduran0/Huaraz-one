@@ -7,11 +7,10 @@ import { useTranslations } from '../hooks/useTranslations';
 interface InteractiveMapProps {
     imageUrl: string;
     businesses: Business[];
+    isEditable?: boolean;
+    onBusinessMove?: (id: string, lat: number, lng: number) => void;
 }
 
-/**
- * Límites del mapa (GPS) centrados en el casco urbano de Huaraz.
- */
 const MAP_BOUNDS = {
     top: -9.4800,    
     bottom: -9.5800, 
@@ -33,17 +32,18 @@ const getCategoryIcon = (category: BusinessCategory) => {
     }
 };
 
-export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps) {
+export default function StaticMap({ imageUrl, businesses, isEditable, onBusinessMove }: InteractiveMapProps) {
     const t = useTranslations();
     const [transform, setTransform] = useState({ scale: 1, x: 0, y: 0 });
     const [activeBusiness, setActiveBusiness] = useState<Business | null>(null);
     const [imgDimensions, setImgDimensions] = useState<{width: number, height: number} | null>(null);
     const [imageLoaded, setImageLoaded] = useState(false);
-    const [loadError, setLoadError] = useState(false);
+    const [draggedBusinessId, setDraggedBusinessId] = useState<string | null>(null);
     
     const mapRef = useRef<HTMLDivElement>(null);
-    const isDragging = useRef(false);
+    const isPanning = useRef(false);
     const lastPos = useRef({ x: 0, y: 0 });
+    const lastTouchDist = useRef<number | null>(null);
 
     const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
         const { naturalWidth, naturalHeight } = e.currentTarget;
@@ -51,45 +51,145 @@ export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps)
         setImageLoaded(true);
     };
 
-    const handleImageError = () => {
-        setLoadError(true);
-        setImageLoaded(true); 
-        setImgDimensions({ width: 1000, height: 800 }); 
-    };
-
     const setInitialView = useCallback(() => {
         if (!mapRef.current || !imgDimensions) return;
         const container = mapRef.current;
         const { width: containerWidth, height: containerHeight } = container.getBoundingClientRect();
         const { width: imageWidth, height: imageHeight } = imgDimensions;
-
         if (containerWidth === 0 || containerHeight === 0) return;
 
         const scaleX = containerWidth / imageWidth;
         const scaleY = containerHeight / imageHeight;
-        const initialScale = Math.max(scaleX, scaleY) * 1.2; 
-        
+        const initialScale = Math.max(scaleX, scaleY) * 1.1; 
         const initialX = (containerWidth - imageWidth * initialScale) / 2;
         const initialY = (containerHeight - imageHeight * initialScale) / 2;
-
         setTransform({ scale: initialScale, x: initialX, y: initialY });
     }, [imgDimensions]);
 
     useEffect(() => {
         setInitialView();
-        const container = mapRef.current;
-        if (!container) return;
-        const resizeObserver = new ResizeObserver(setInitialView);
-        resizeObserver.observe(container);
-        return () => resizeObserver.disconnect();
     }, [setInitialView]);
 
+    const latLngToPixels = (lat: number, lng: number) => {
+        if (!imgDimensions) return { x: 0, y: 0 };
+        const x = ((lng - MAP_BOUNDS.left) / (MAP_BOUNDS.right - MAP_BOUNDS.left)) * imgDimensions.width;
+        const y = ((lat - MAP_BOUNDS.top) / (MAP_BOUNDS.bottom - MAP_BOUNDS.top)) * imgDimensions.height;
+        return { x, y };
+    };
+
+    const pixelsToLatLng = (x: number, y: number) => {
+        if (!imgDimensions) return { lat: 0, lng: 0 };
+        // FIX: Corrected variable usage from MAP_BOTTOM_BOUND to MAP_BOUNDS.bottom and MAP_TOP_BOUND to MAP_BOUNDS.top.
+        // Also removed redundant/incorrect local assignments for a clean return statement.
+        const lng = (x / imgDimensions.width) * (MAP_BOUNDS.right - MAP_BOUNDS.left) + MAP_BOUNDS.left;
+        const lat = (y / imgDimensions.height) * (MAP_BOUNDS.bottom - MAP_BOUNDS.top) + MAP_BOUNDS.top;
+        return { lat, lng };
+    };
+
+    const handleGlobalMove = (e: MouseEvent | TouchEvent) => {
+        const isTouch = 'touches' in e;
+        
+        // Handle Pinch to Zoom
+        if (isTouch && e.touches.length === 2) {
+            const touch1 = e.touches[0];
+            const touch2 = e.touches[1];
+            const dist = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
+            
+            if (lastTouchDist.current !== null) {
+                const delta = dist / lastTouchDist.current;
+                const newScale = Math.min(Math.max(0.2, transform.scale * delta), 5);
+                
+                // Zoom relative to center between fingers
+                const rect = mapRef.current!.getBoundingClientRect();
+                const midX = (touch1.clientX + touch2.clientX) / 2 - rect.left;
+                const midY = (touch1.clientY + touch2.clientY) / 2 - rect.top;
+                
+                const newX = midX - (midX - transform.x) * (newScale / transform.scale);
+                const newY = midY - (midY - transform.y) * (newScale / transform.scale);
+                
+                setTransform({ scale: newScale, x: newX, y: newY });
+            }
+            lastTouchDist.current = dist;
+            return;
+        }
+
+        const clientX = isTouch ? e.touches[0].clientX : e.clientX;
+        const clientY = isTouch ? e.touches[0].clientY : e.clientY;
+
+        if (draggedBusinessId && isEditable && onBusinessMove && imgDimensions && mapRef.current) {
+            const rect = mapRef.current.getBoundingClientRect();
+            const contentX = (clientX - rect.left - transform.x) / transform.scale;
+            const contentY = (clientY - rect.top - transform.y) / transform.scale;
+            const { lat, lng } = pixelsToLatLng(contentX, contentY);
+            onBusinessMove(draggedBusinessId, lat, lng);
+            return;
+        }
+
+        if (isPanning.current) {
+            const dx = clientX - lastPos.current.x;
+            const dy = clientY - lastPos.current.y;
+            setTransform(prev => ({ ...prev, x: prev.x + dx, y: prev.y + dy }));
+            lastPos.current = { x: clientX, y: clientY };
+        }
+    };
+
+    const handleGlobalUp = () => {
+        isPanning.current = false;
+        setDraggedBusinessId(null);
+        lastTouchDist.current = null;
+    };
+
+    useEffect(() => {
+        window.addEventListener('mousemove', handleGlobalMove);
+        window.addEventListener('mouseup', handleGlobalUp);
+        window.addEventListener('touchmove', handleGlobalMove, { passive: false });
+        window.addEventListener('touchend', handleGlobalUp);
+        return () => {
+            window.removeEventListener('mousemove', handleGlobalMove);
+            window.removeEventListener('mouseup', handleGlobalUp);
+            window.removeEventListener('touchmove', handleGlobalMove);
+            window.removeEventListener('touchend', handleGlobalUp);
+        };
+    }, [draggedBusinessId, isEditable, transform, imgDimensions]);
+
+    const handleMarkerDown = (e: React.MouseEvent | React.TouchEvent, id: string) => {
+        e.stopPropagation();
+        if (isEditable) {
+            setDraggedBusinessId(id);
+            setActiveBusiness(null);
+        } else {
+            const business = businesses.find(b => b.id === id);
+            if (business) {
+                setActiveBusiness(business);
+                // Center slightly below to show the card
+                if (mapRef.current) {
+                    const { x, y } = latLngToPixels(business.lat, business.lng);
+                    const rect = mapRef.current.getBoundingClientRect();
+                    // Smooth transition to business location logic could be added here
+                }
+            }
+        }
+    };
+
+    const handleMapDown = (e: React.MouseEvent | React.TouchEvent) => {
+        const isTouch = 'touches' in e;
+        if (isTouch && e.touches.length === 2) return; // Let pinch handle it
+
+        const clientX = isTouch ? e.touches[0].clientX : e.clientX;
+        const clientY = isTouch ? e.touches[0].clientY : e.clientY;
+        isPanning.current = true;
+        lastPos.current = { x: clientX, y: clientY };
+        
+        // Only clear active business if it wasn't a marker tap
+        // (Handled by marker down propagation stop)
+        if (!isEditable) setActiveBusiness(null);
+    };
+
     const handleWheel = (e: React.WheelEvent) => {
-        if (loadError) return;
         e.preventDefault();
         const scaleFactor = 1.1;
         const newScale = e.deltaY < 0 ? transform.scale * scaleFactor : transform.scale / scaleFactor;
-        const clampedScale = Math.min(Math.max(0.1, newScale), 5); 
+        const clampedScale = Math.min(Math.max(0.2, newScale), 5); 
         
         if (mapRef.current) {
             const rect = mapRef.current.getBoundingClientRect();
@@ -101,58 +201,21 @@ export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps)
         }
     };
 
-    const handleMouseDown = (e: React.MouseEvent) => {
-        if (loadError) return;
-        e.preventDefault(); 
-        isDragging.current = true;
-        lastPos.current = { x: e.clientX, y: e.clientY };
-    };
-
-    const handleMouseMove = (e: React.MouseEvent) => {
-        if (!isDragging.current) return;
-        const dx = e.clientX - lastPos.current.x;
-        const dy = e.clientY - lastPos.current.y;
-        setTransform(prev => ({ ...prev, x: prev.x + dx, y: prev.y + dy }));
-        lastPos.current = { x: e.clientX, y: e.clientY };
-    };
-
-    const handleMouseUp = () => { isDragging.current = false; };
-    
-    useEffect(() => {
-      window.addEventListener('mouseup', handleMouseUp);
-      return () => window.removeEventListener('mouseup', handleMouseUp);
-    }, []);
-
-    const latLngToPixels = (lat: number, lng: number) => {
-        if (!imgDimensions) return { x: 0, y: 0 };
-        const x = ((lng - MAP_BOUNDS.left) / (MAP_BOUNDS.right - MAP_BOUNDS.left)) * imgDimensions.width;
-        const y = ((lat - MAP_BOUNDS.top) / (MAP_BOUNDS.bottom - MAP_BOUNDS.top)) * imgDimensions.height;
-        return { x, y };
-    };
-
-    const handleMarkerClick = (e: React.MouseEvent, business: Business) => {
-        e.stopPropagation();
-        setActiveBusiness(business);
-    };
-
     return (
         <div
             ref={mapRef}
-            className="w-full h-full overflow-hidden relative bg-[#f3f4f6] dark:bg-gray-900 select-none cursor-grab active:cursor-grabbing"
+            className={`w-full h-full overflow-hidden relative bg-[#f3f4f6] dark:bg-gray-900 select-none touch-none ${isEditable ? 'cursor-crosshair' : 'cursor-grab active:cursor-grabbing'}`}
             onWheel={handleWheel}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
+            onMouseDown={handleMapDown}
+            onTouchStart={handleMapDown}
         >
             <style>
                 {`
-                @keyframes marker-pulse {
-                    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 130, 32, 0.7); }
-                    70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(245, 130, 32, 0); }
-                    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 130, 32, 0); }
+                @keyframes slideUp {
+                    from { transform: translateY(100%); }
+                    to { transform: translateY(0); }
                 }
-                .animate-marker-pulse {
-                    animation: marker-pulse 2s infinite;
-                }
+                .animate-slideUp { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
                 `}
             </style>
 
@@ -173,44 +236,46 @@ export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps)
                 <img
                     src={imageUrl}
                     alt="City Map"
-                    className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-90 transition-opacity duration-500"
+                    className="absolute top-0 left-0 w-full h-full pointer-events-none"
                     draggable={false}
                     onLoad={handleImageLoad}
-                    onError={handleImageError}
-                    style={{ opacity: imageLoaded ? 1 : 0 }}
                 />
                 
-                {/* Marcadores Mejorados */}
-                {!loadError && imgDimensions && businesses.map((business) => {
+                {imgDimensions && businesses.map((business) => {
                     const { x, y } = latLngToPixels(business.lat, business.lng);
                     const isPremium = business.adLevel === AdLevel.PREMIUM;
                     const isActive = activeBusiness?.id === business.id;
                     const isTouristSpot = business.category === BusinessCategory.TOURIST_SPOT;
+                    const isDraggingThis = draggedBusinessId === business.id;
                     
                     return (
                         <div 
                             key={business.id}
-                            className={`absolute transform -translate-x-1/2 -translate-y-full transition-all duration-300 ${isActive ? 'z-50' : 'z-10'}`}
+                            className={`absolute transform -translate-x-1/2 -translate-y-full transition-all duration-75 ${isActive || isDraggingThis ? 'z-50' : 'z-10'}`}
                             style={{ left: `${x}px`, top: `${y}px` }}
                         >
-                            <div className="relative group">
-                                {/* Puntero de marcador */}
+                            {/* Larger touch target for mobile */}
+                            <div 
+                                className="absolute inset-0 -m-4 cursor-pointer z-0" 
+                                onMouseDown={(e) => handleMarkerDown(e, business.id)}
+                                onTouchStart={(e) => handleMarkerDown(e, business.id)}
+                            />
+
+                            <div className={`relative group pointer-events-none`}>
                                 <div className={`absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 border-r border-b shadow-sm ${
                                     isPremium ? 'bg-brand-orange border-white' : 
                                     isTouristSpot ? 'bg-emerald-500 border-white' : 'bg-brand-dark-blue border-white'
                                 }`}></div>
 
                                 <button
-                                    onClick={(e) => handleMarkerClick(e, business)}
                                     className={`
-                                        relative w-10 h-10 rounded-xl flex items-center justify-center shadow-xl border-2 transition-transform active:scale-90
-                                        ${isPremium ? 'bg-brand-orange border-brand-accent animate-marker-pulse' : 
+                                        relative w-10 h-10 rounded-xl flex items-center justify-center shadow-xl border-2 transition-transform
+                                        ${isPremium ? 'bg-brand-orange border-brand-accent' : 
                                           isTouristSpot ? 'bg-emerald-500 border-white' : 'bg-brand-dark-blue border-white'}
-                                        ${isActive ? 'scale-125 -translate-y-1' : 'hover:scale-110'}
+                                        ${isActive || isDraggingThis ? 'scale-125 -translate-y-2' : 'hover:scale-110'}
                                     `}
                                 >
                                     <i className={`fas ${getCategoryIcon(business.category)} text-sm text-white`}></i>
-                                    
                                     {isPremium && (
                                         <div className="absolute -top-1 -right-1 w-3 h-3 bg-brand-accent rounded-full border border-white flex items-center justify-center">
                                             <i className="fas fa-star text-[6px] text-brand-dark-blue"></i>
@@ -221,75 +286,65 @@ export default function StaticMap({ imageUrl, businesses }: InteractiveMapProps)
                         </div>
                     );
                 })}
-                
-                {/* Popup Detalle Mejorado */}
-                {!loadError && activeBusiness && (
-                    <div
-                        className="absolute bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-0 w-56 transform -translate-x-1/2 -translate-y-[calc(100%+60px)] z-[100] border border-gray-100 dark:border-gray-700 animate-fadeIn overflow-hidden"
-                        style={{ 
-                            left: `${latLngToPixels(activeBusiness.lat, activeBusiness.lng).x}px`, 
-                            top: `${latLngToPixels(activeBusiness.lat, activeBusiness.lng).y}px` 
-                        }}
-                        onMouseDown={(e) => e.stopPropagation()}
-                    >
-                         {/* Mini header con foto si existe */}
-                         <div className="w-full h-20 bg-gray-100 dark:bg-gray-700 overflow-hidden">
-                            <img 
-                                src={activeBusiness.photos[0]} 
-                                className="w-full h-full object-cover" 
-                                alt={activeBusiness.name} 
-                            />
-                         </div>
+            </div>
 
-                         <div className="p-3">
-                            <div className="flex justify-between items-start mb-2">
-                                <h4 className="font-bold text-sm text-gray-900 dark:text-white flex-1 leading-tight mr-2">
-                                    {activeBusiness.name}
-                                </h4>
-                                <button 
-                                    onClick={() => setActiveBusiness(null)} 
-                                    className="text-gray-400 hover:text-red-500 transition-colors"
-                                >
-                                    <i className="fas fa-times-circle"></i>
+            {/* Business Bottom Card (Mobile Friendly) */}
+            {activeBusiness && !isEditable && (
+                <div className="absolute bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 bg-white dark:bg-gray-800 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.2)] border border-gray-100 dark:border-gray-700 z-[60] animate-slideUp overflow-hidden">
+                    <div className="flex">
+                        <div className="w-24 h-24 shrink-0 bg-gray-100 dark:bg-gray-700">
+                            <img src={activeBusiness.photos[0]} className="w-full h-full object-cover" alt={activeBusiness.name} />
+                        </div>
+                        <div className="flex-1 p-3 flex flex-col justify-between">
+                            <div className="flex justify-between items-start">
+                                <div className="min-w-0">
+                                    <h4 className="font-bold text-sm text-gray-900 dark:text-white truncate">{activeBusiness.name}</h4>
+                                    <p className="text-[10px] text-gray-500 truncate">{activeBusiness.address}</p>
+                                </div>
+                                <button onClick={() => setActiveBusiness(null)} className="text-gray-300 hover:text-red-500 p-1">
+                                    <i className="fas fa-times-circle text-lg"></i>
                                 </button>
                             </div>
-                            
-                            <p className="text-[10px] text-gray-500 dark:text-gray-400 mb-3 truncate">
-                                <i className="fas fa-map-marker-alt mr-1"></i> {activeBusiness.address}
-                            </p>
-
                             <Link 
                                 to={`/business/${activeBusiness.id}`} 
-                                className="block w-full text-center bg-brand-dark-blue hover:bg-brand-blue text-white text-[11px] py-2 rounded-lg transition-colors font-bold tracking-wide"
+                                className="w-full bg-brand-dark-blue hover:bg-brand-blue text-white text-xs py-2 rounded-lg transition-colors font-bold text-center mt-2 flex items-center justify-center gap-2"
                             >
-                                EXPLORAR SITIO
+                                <span>DETALLES</span>
+                                <i className="fas fa-arrow-right text-[10px]"></i>
                             </Link>
-                         </div>
+                        </div>
                     </div>
-                )}
+                </div>
+            )}
+
+            {/* Optimized Zoom Controls for Mobile */}
+            <div className="absolute bottom-6 right-6 flex flex-col gap-3 z-50">
+                <button 
+                    onClick={() => setTransform(p => ({ ...p, scale: Math.min(p.scale * 1.5, 5) }))} 
+                    className="w-14 h-14 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-2xl shadow-xl flex items-center justify-center text-brand-dark-blue dark:text-white border border-gray-100 dark:border-gray-700 active:scale-95 transition-transform"
+                >
+                    <i className="fas fa-plus text-lg"></i>
+                </button>
+                <button 
+                    onClick={() => setTransform(p => ({ ...p, scale: Math.max(p.scale / 1.5, 0.2) }))} 
+                    className="w-14 h-14 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-2xl shadow-xl flex items-center justify-center text-brand-dark-blue dark:text-white border border-gray-100 dark:border-gray-700 active:scale-95 transition-transform"
+                >
+                    <i className="fas fa-minus text-lg"></i>
+                </button>
+                <button 
+                    onClick={setInitialView} 
+                    className="w-14 h-14 bg-brand-orange rounded-2xl shadow-xl flex items-center justify-center text-white active:scale-95 transition-transform"
+                >
+                    <i className="fas fa-compress-arrows-alt text-lg"></i>
+                </button>
             </div>
 
-            {/* Controles de Zoom fijos */}
-            <div className="absolute bottom-6 right-6 flex flex-col gap-2 z-50">
-                <button 
-                    onClick={() => setTransform(p => ({ ...p, scale: Math.min(p.scale * 1.5, 5) }))}
-                    className="w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center text-brand-dark-blue dark:text-white hover:bg-gray-100 transition-colors"
-                >
-                    <i className="fas fa-plus"></i>
-                </button>
-                <button 
-                    onClick={() => setTransform(p => ({ ...p, scale: Math.max(p.scale / 1.5, 0.2) }))}
-                    className="w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center text-brand-dark-blue dark:text-white hover:bg-gray-100 transition-colors"
-                >
-                    <i className="fas fa-minus"></i>
-                </button>
-                <button 
-                    onClick={setInitialView}
-                    className="w-12 h-12 bg-brand-orange rounded-full shadow-lg flex items-center justify-center text-white hover:bg-orange-600 transition-colors"
-                >
-                    <i className="fas fa-compress-arrows-alt"></i>
-                </button>
-            </div>
+            {isEditable && (
+                <div className="absolute top-6 left-1/2 -translate-x-1/2 bg-brand-green text-brand-dark-blue px-6 py-2 rounded-full font-bold shadow-2xl z-50 animate-bounce flex items-center gap-2 border-2 border-white text-sm">
+                    <i className="fas fa-mouse-pointer"></i>
+                    ARRASTRA LOS MARCADORES
+                </div>
+            )}
         </div>
     );
 }
