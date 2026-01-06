@@ -65,7 +65,7 @@ const HomePage: React.FC = () => {
     : filteredBusinesses.slice(0, INITIAL_DISPLAY_COUNT);
 
   const heroImages = [
-    "https://www.lalotravel.com/wp-content/uploads/2025/02/portada-tours-laguna-llanganuco.jpg"
+    "https://www.lalotravel.com/wp-content/uploads/2025/02/portada-tours-laguna-llanganuco.jpg",
     "https://andeanrajuexpeditions.com/wp-content/uploads/2020/03/IMAGEN-DESTACADA-LAGUNA-PARON-BLOG.jpg",
     "https://i.imgur.com/cnfE46t.jpeg", 
     "https://bananomeridiano.com/wp-content/uploads/2022/03/huaraz-peru-1.jpg",
