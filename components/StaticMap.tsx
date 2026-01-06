@@ -79,8 +79,6 @@ export default function StaticMap({ imageUrl, businesses, isEditable, onBusiness
 
     const pixelsToLatLng = (x: number, y: number) => {
         if (!imgDimensions) return { lat: 0, lng: 0 };
-        // FIX: Corrected variable usage from MAP_BOTTOM_BOUND to MAP_BOUNDS.bottom and MAP_TOP_BOUND to MAP_BOUNDS.top.
-        // Also removed redundant/incorrect local assignments for a clean return statement.
         const lng = (x / imgDimensions.width) * (MAP_BOUNDS.right - MAP_BOUNDS.left) + MAP_BOUNDS.left;
         const lat = (y / imgDimensions.height) * (MAP_BOUNDS.bottom - MAP_BOUNDS.top) + MAP_BOUNDS.top;
         return { lat, lng };
@@ -89,7 +87,6 @@ export default function StaticMap({ imageUrl, businesses, isEditable, onBusiness
     const handleGlobalMove = (e: MouseEvent | TouchEvent) => {
         const isTouch = 'touches' in e;
         
-        // Handle Pinch to Zoom
         if (isTouch && e.touches.length === 2) {
             const touch1 = e.touches[0];
             const touch2 = e.touches[1];
@@ -98,15 +95,11 @@ export default function StaticMap({ imageUrl, businesses, isEditable, onBusiness
             if (lastTouchDist.current !== null) {
                 const delta = dist / lastTouchDist.current;
                 const newScale = Math.min(Math.max(0.2, transform.scale * delta), 5);
-                
-                // Zoom relative to center between fingers
                 const rect = mapRef.current!.getBoundingClientRect();
                 const midX = (touch1.clientX + touch2.clientX) / 2 - rect.left;
                 const midY = (touch1.clientY + touch2.clientY) / 2 - rect.top;
-                
                 const newX = midX - (midX - transform.x) * (newScale / transform.scale);
                 const newY = midY - (midY - transform.y) * (newScale / transform.scale);
-                
                 setTransform({ scale: newScale, x: newX, y: newY });
             }
             lastTouchDist.current = dist;
@@ -161,27 +154,19 @@ export default function StaticMap({ imageUrl, businesses, isEditable, onBusiness
             const business = businesses.find(b => b.id === id);
             if (business) {
                 setActiveBusiness(business);
-                // Center slightly below to show the card
-                if (mapRef.current) {
-                    const { x, y } = latLngToPixels(business.lat, business.lng);
-                    const rect = mapRef.current.getBoundingClientRect();
-                    // Smooth transition to business location logic could be added here
-                }
             }
         }
     };
 
     const handleMapDown = (e: React.MouseEvent | React.TouchEvent) => {
         const isTouch = 'touches' in e;
-        if (isTouch && e.touches.length === 2) return; // Let pinch handle it
+        if (isTouch && e.touches.length === 2) return;
 
         const clientX = isTouch ? e.touches[0].clientX : e.clientX;
         const clientY = isTouch ? e.touches[0].clientY : e.clientY;
         isPanning.current = true;
         lastPos.current = { x: clientX, y: clientY };
         
-        // Only clear active business if it wasn't a marker tap
-        // (Handled by marker down propagation stop)
         if (!isEditable) setActiveBusiness(null);
     };
 
@@ -254,7 +239,6 @@ export default function StaticMap({ imageUrl, businesses, isEditable, onBusiness
                             className={`absolute transform -translate-x-1/2 -translate-y-full transition-all duration-75 ${isActive || isDraggingThis ? 'z-50' : 'z-10'}`}
                             style={{ left: `${x}px`, top: `${y}px` }}
                         >
-                            {/* Larger touch target for mobile */}
                             <div 
                                 className="absolute inset-0 -m-4 cursor-pointer z-0" 
                                 onMouseDown={(e) => handleMarkerDown(e, business.id)}
@@ -288,9 +272,13 @@ export default function StaticMap({ imageUrl, businesses, isEditable, onBusiness
                 })}
             </div>
 
-            {/* Business Bottom Card (Mobile Friendly) */}
+            {/* Business Bottom Card - FIX: Added stopPropagation to interaction handlers */}
             {activeBusiness && !isEditable && (
-                <div className="absolute bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 bg-white dark:bg-gray-800 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.2)] border border-gray-100 dark:border-gray-700 z-[60] animate-slideUp overflow-hidden">
+                <div 
+                    className="absolute bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 bg-white dark:bg-gray-800 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.2)] border border-gray-100 dark:border-gray-700 z-[60] animate-slideUp overflow-hidden"
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onTouchStart={(e) => e.stopPropagation()}
+                >
                     <div className="flex">
                         <div className="w-24 h-24 shrink-0 bg-gray-100 dark:bg-gray-700">
                             <img src={activeBusiness.photos[0]} className="w-full h-full object-cover" alt={activeBusiness.name} />
@@ -317,7 +305,6 @@ export default function StaticMap({ imageUrl, businesses, isEditable, onBusiness
                 </div>
             )}
 
-            {/* Optimized Zoom Controls for Mobile */}
             <div className="absolute bottom-6 right-6 flex flex-col gap-3 z-50">
                 <button 
                     onClick={() => setTransform(p => ({ ...p, scale: Math.min(p.scale * 1.5, 5) }))} 
