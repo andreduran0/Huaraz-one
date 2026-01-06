@@ -65,9 +65,9 @@ const HomePage: React.FC = () => {
     : filteredBusinesses.slice(0, INITIAL_DISPLAY_COUNT);
 
   const heroImages = [
-    "https://i.ytimg.com/vi/hpLKsB4uUNY/hq720.jpg?sqp=-oaymwE7CK4FEIIDSFryq4qpAy0IARUAAAAAGAElAADIQj0AgKJD8AEB-AH-CYAC0AWKAgwIABABGC0gEyh_MA8=&rs=AOn4CLD5oVIWpkNFGgfYq-brbuD9LYjU8g", 
+    "https://www.lalotravel.com/wp-content/uploads/2025/02/portada-tours-laguna-llanganuco.jpg"
+    "https://andeanrajuexpeditions.com/wp-content/uploads/2020/03/IMAGEN-DESTACADA-LAGUNA-PARON-BLOG.jpg",
     "https://i.imgur.com/cnfE46t.jpeg", 
-    "https://i.imgur.com/6OmpJf3.jpeg", 
     "https://bananomeridiano.com/wp-content/uploads/2022/03/huaraz-peru-1.jpg",
     "https://pamelatours.com/wp-content/uploads/2019/10/laguna69.jpg",
     "https://www.antamina.com/wp-content/uploads/2020/02/carnaval-huaraz-rompecalle-9.jpg"
