@@ -21,13 +21,11 @@ const MAP_BOUNDS = {
 const getCategoryIcon = (category: BusinessCategory) => {
     switch (category) {
         case BusinessCategory.RESTAURANT: return 'fa-utensils';
-        case BusinessCategory.POLLERIA: return 'fa-drumstick-bite';
         case BusinessCategory.CEVICHERIA: return 'fa-fish';
         case BusinessCategory.HOTEL: return 'fa-bed';
         case BusinessCategory.LAUNDRY: return 'fa-tshirt';
         case BusinessCategory.DENTIST: return 'fa-tooth';
         case BusinessCategory.BAKERY: return 'fa-bread-slice';
-        case BusinessCategory.TOURIST_SPOT: return 'fa-camera-retro';
         default: return 'fa-map-marker-alt';
     }
 };
