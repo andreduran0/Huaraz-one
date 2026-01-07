@@ -406,8 +406,6 @@ export const businesses: Business[] = [
     category: BusinessCategory.POLLERIA,
     description: 'Pollo a la leña, carnes y parrillas en un ambiente campestre.',
     address: 'Carretera a Monterrey Km 3, Huaraz',
-    lat: -9.4990,
-    lng: -77.5010,
     phone: '043-467788',
     whatsapp: '51987654234',
     photos: ['https://picsum.photos/800/600?random=26'],
@@ -525,8 +523,6 @@ export const businesses: Business[] = [
     category: BusinessCategory.TOURIST_SPOT,
     description: 'Impresionante espejo de agua ubicado a 3,900 m.s.n.m. Ofrece una de las mejores vistas de la Cordillera Blanca, reflejando nevados como el Huascarán. Es una caminata de aclimatación perfecta, rodeada de bosques de Queñual.',
     address: 'Independencia, Huaraz (Trekking desde Wilcahuain)',
-    lat: -9.4755,
-    lng: -77.5110,
     phone: '',
     whatsapp: '',
     photos: [
