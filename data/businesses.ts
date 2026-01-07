@@ -518,5 +518,23 @@ export const businesses: Business[] = [
     qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-explorer-30',
     status: 'approved',
     ownerUserId: 'user30',
+  },
+  {
+     id: '31',
+    name: 'Laguna Radián',
+    category: BusinessCategory.TOURIST_SPOT,
+    description: 'Impresionante espejo de agua ubicado a 3,900 m.s.n.m. Ofrece una de las mejores vistas de la Cordillera Blanca, reflejando nevados como el Huascarán. Es una caminata de aclimatación perfecta, rodeada de bosques de Queñual.',
+    address: 'Independencia, Huaraz (Trekking desde Wilcahuain)',
+    lat: -9.4755,
+    lng: -77.5110,
+    phone: '', 
+    whatsapp: '',
+    photos: ['https://images.unsplash.com/photo-1533587851505-d119e13fa0d7?q=80&w=1000&auto=format&fit=crop'],
+    schedule: { 'Lunes - Domingo': '6:00 AM - 5:00 PM' },
+    adLevel: AdLevel.NONE,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-explorer-31',
+    status: 'approved',
+    ownerUserId: 'user31',
+    googleMapsQuery: 'Laguna Radian, Huaraz',
   }
 
