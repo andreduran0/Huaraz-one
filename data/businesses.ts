@@ -536,5 +536,5 @@ export const businesses: Business[] = [
     status: 'approved',
     ownerUserId: 'user31',
     googleMapsQuery: 'Laguna Radian, Huaraz',
-  }
+  };
 
