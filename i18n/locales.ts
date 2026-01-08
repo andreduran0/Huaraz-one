@@ -5,7 +5,7 @@ export const messages = {
     'nav.map': 'Mapa',
     'nav.chat': 'Asistente IA',
     'nav.coupons': 'Cupones',
-    'nav.calendar': 'Agenda', // Short for bottom nav
+    'nav.calendar': 'Fiestas', // Short for bottom nav
     'nav.onboarding': 'Publicita aquí',
     'home.welcome': 'Bienvenido a Huaraz Explorer',
     'home.discover': 'Descubre, Come, Disfruta',
