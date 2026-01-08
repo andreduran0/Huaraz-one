@@ -31,6 +31,9 @@ const Header: React.FC = () => {
         setLanguage(language === 'es' ? 'en' : 'es');
     };
 
+    // La imagen proporcionada por el usuario
+    const logoUrl = "https://i.ibb.co/R4zBjKNh/Whats-App-Image-2026-01-08-at-16-52-48.jpg"; 
+
     return (
         <header className="bg-brand-dark-blue dark:bg-gray-900 text-white shadow-md sticky top-0 z-10">
             <div className="container mx-auto px-4 py-3 flex items-center gap-3">
@@ -39,7 +42,20 @@ const Header: React.FC = () => {
                         <i className="fas fa-arrow-left text-lg"></i>
                     </button>
                 )}
-                <h1 className="text-xl font-bold flex-1 truncate">{getTitle()}</h1>
+                
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <img 
+                        src={logoUrl} 
+                        alt="Huaraz Explorer Logo"
+                        className="w-8 h-8 rounded-lg object-cover border border-white/20 shadow-sm"
+                        onError={(e) => {
+                            // Fallback en caso de que la imagen no cargue
+                            (e.target as HTMLImageElement).src = "https://i.imgur.com/cnfE46t.jpeg";
+                        }}
+                    />
+                    <h1 className="text-xl font-bold truncate tracking-tight">{getTitle()}</h1>
+                </div>
+
                 <button
                     onClick={toggleLanguage}
                     className="ml-2 px-3 py-1 bg-white/10 rounded-full text-xs font-bold hover:bg-white/20 transition-colors border border-white/20"
@@ -54,7 +70,6 @@ const Header: React.FC = () => {
 
 const BottomNav: React.FC = () => {
     const t = useTranslations();
-    // Updated nav items to include Calendar
     const navItems = [
         { path: '/', icon: 'fa-home', label: t('nav.home') },
         { path: '/map', icon: 'fa-map', label: t('nav.map') },
