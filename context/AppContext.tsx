@@ -15,7 +15,6 @@ interface AppContextType {
   heroImages: string[];
   setHeroImages: (images: string[]) => void;
 }
-
 const DEFAULT_HERO_IMAGES = [
   "https://www.lalotravel.com/wp-content/uploads/2025/02/portada-tours-laguna-llanganuco.jpg", 
   "https://bananomeridiano.com/wp-content/uploads/2022/03/huaraz-peru-1.jpg", 
