@@ -27,7 +27,7 @@ const CategoryChip: React.FC<{
 );
 
 const HomePage: React.FC = () => {
-  const { businesses } = useAppContext();
+  const { businesses, heroImages } = useAppContext();
   const t = useTranslations();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<BusinessCategory | 'ALL'>('ALL');
@@ -64,15 +64,6 @@ const HomePage: React.FC = () => {
     ? filteredBusinesses 
     : filteredBusinesses.slice(0, INITIAL_DISPLAY_COUNT);
 
-  const heroImages = [
-    "https://www.lalotravel.com/wp-content/uploads/2025/02/portada-tours-laguna-llanganuco.jpg",
-    "https://andeanrajuexpeditions.com/wp-content/uploads/2020/03/IMAGEN-DESTACADA-LAGUNA-PARON-BLOG.jpg",
-    "https://i.imgur.com/cnfE46t.jpeg", 
-    "https://bananomeridiano.com/wp-content/uploads/2022/03/huaraz-peru-1.jpg",
-    "https://pamelatours.com/wp-content/uploads/2019/10/laguna69.jpg",
-    "https://www.antamina.com/wp-content/uploads/2020/02/carnaval-huaraz-rompecalle-9.jpg"
-  ];
-
   return (
     <div className="container mx-auto px-4 py-6 space-y-6 text-text-light dark:text-text-dark">
       
@@ -85,30 +76,7 @@ const HomePage: React.FC = () => {
                  </div>
             </HeroSlider>
         </div>
-        {/* SEO Intro Section */}
-<section className="mt-6 bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm">
-  <h1 className="text-2xl md:text-3xl font-extrabold text-brand-dark-blue dark:text-brand-green mb-4">
-    Huaraz Explorer
-    <span className="block text-base md:text-lg font-semibold text-gray-600 dark:text-gray-400">
-      Plataforma de recomendaciones turísticas en Huaraz
-    </span>
-  </h1>
 
-  <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-5 max-w-3xl">
-    <strong>Huaraz Explorer</strong> ayuda a viajeros nacionales e internacionales
-    a descubrir los mejores negocios, experiencias y servicios turísticos de
-    Huaraz y la Cordillera Blanca, combinando información local y tecnología.
-  </p>
-
-  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm text-gray-700 dark:text-gray-300">
-    <div>📍 Mapa turístico interactivo</div>
-    <div>⭐ Negocios locales recomendados</div>
-    <div>📅 Festividades y eventos</div>
-    <div>🤖 Agente turístico IA 24/7</div>
-    <div>🎟️ Cupones y beneficios</div>
-    <div>📰 Newsletter & Token Huaraz</div>
-  </div>
-</section>
         {/* Pump.Fun Token Section */}
         <div className="relative bg-[#1b1d22] rounded-xl p-4 shadow-xl my-6 overflow-hidden border-2 border-[#8dc06d]/20 group">
             {/* Background Grid Pattern */}

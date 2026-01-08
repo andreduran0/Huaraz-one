@@ -2,7 +2,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { Business, Coupon } from '../types';
 
-const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const getAiResponse = async (
   prompt: string,
@@ -19,7 +19,7 @@ export const getAiResponse = async (
 
       You are an expert on:
       - How to get to Huaraz and move around.
-      - The local climate and what to wear (Layers are key!).
+      - El local climate and what to wear (Layers are key!).
       - Typical gastronomy (Cuy chactado, Llunca, Pachamanca, Chocho) and where to find it.
       - Adventure tourism in the Ancash region (trekking, climbing, lagoons like Laguna 69, Pastoruri, Chavin, etc.).
 
@@ -50,8 +50,9 @@ export const getAiResponse = async (
       ---
     `;
 
+    // FIX: Updated model to 'gemini-3-flash-preview' for optimal performance in Q&A tasks.
     const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-3-flash-preview',
         contents: prompt,
         config: {
             systemInstruction: systemInstruction,

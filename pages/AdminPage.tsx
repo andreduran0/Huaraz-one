@@ -18,9 +18,10 @@ const StatCard: React.FC<{ title: string; value: string | number; icon: string }
 );
 
 const AdminPage: React.FC = () => {
-  const { businesses, coupons, updateBusiness } = useAppContext();
+  const { businesses, coupons, updateBusiness, heroImages, setHeroImages } = useAppContext();
   const t = useTranslations();
   const [isRepositionMode, setIsRepositionMode] = useState(false);
+  const [newHeroUrl, setNewHeroUrl] = useState('');
 
   const pendingBusinesses = businesses.filter(b => b.status === 'pending');
   const approvedBusinesses = businesses.filter(b => b.status === 'approved');
@@ -31,6 +32,18 @@ const AdminPage: React.FC = () => {
     const business = businesses.find(b => b.id === id);
     if (business) {
       updateBusiness({ ...business, lat, lng });
+    }
+  };
+
+  const removeHeroImage = (index: number) => {
+    const updated = heroImages.filter((_, i) => i !== index);
+    setHeroImages(updated);
+  };
+
+  const addHeroImage = () => {
+    if (newHeroUrl.trim()) {
+      setHeroImages([...heroImages, newHeroUrl.trim()]);
+      setNewHeroUrl('');
     }
   };
 
@@ -64,6 +77,49 @@ const AdminPage: React.FC = () => {
           <StatCard title="Aprobados" value={approvedBusinesses.length} icon="fa-check-circle" />
           <StatCard title="Pendientes" value={pendingBusinesses.length} icon="fa-hourglass-half" />
           <StatCard title="Cupones Activos" value={coupons.length} icon="fa-ticket-alt" />
+        </div>
+      </section>
+
+      {/* Hero Image Management */}
+      <section className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+        <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+            <h2 className="text-xl font-bold flex items-center gap-2">
+                <i className="fas fa-images text-brand-orange"></i>
+                Gestión de Imágenes de Portada
+            </h2>
+            <div className="flex gap-2">
+                <input 
+                    type="text" 
+                    placeholder="Pegar URL de nueva imagen..." 
+                    className="p-2 border rounded-lg text-sm w-64 dark:bg-gray-700 dark:border-gray-600"
+                    value={newHeroUrl}
+                    onChange={(e) => setNewHeroUrl(e.target.value)}
+                />
+                <button 
+                    onClick={addHeroImage}
+                    className="bg-brand-green text-brand-dark-blue px-4 py-2 rounded-lg font-bold text-sm hover:bg-green-400 transition-colors"
+                >
+                    Añadir
+                </button>
+            </div>
+        </div>
+        <div className="p-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {heroImages.map((url, index) => (
+                <div key={index} className="relative aspect-video rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 group">
+                    <img src={url} className="w-full h-full object-cover" alt={`Hero ${index}`} />
+                    <button 
+                        onClick={() => removeHeroImage(index)}
+                        className="absolute top-1 right-1 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                        <i className="fas fa-times text-xs"></i>
+                    </button>
+                </div>
+            ))}
+            {heroImages.length === 0 && (
+                <div className="col-span-full py-8 text-center text-gray-400 italic">
+                    No hay imágenes configuradas. El carrusel estará vacío.
+                </div>
+            )}
         </div>
       </section>
 
