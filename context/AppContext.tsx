@@ -17,8 +17,10 @@ interface AppContextType {
 }
 
 const DEFAULT_HERO_IMAGES = [
+  "https://www.lalotravel.com/wp-content/uploads/2025/02/portada-tours-laguna-llanganuco.jpg", 
+  "https://bananomeridiano.com/wp-content/uploads/2022/03/huaraz-peru-1.jpg", 
   "https://i.imgur.com/cnfE46t.jpeg", 
-  "https://i.imgur.com/6OmpJf3.jpeg", 
+  "https://bananomeridiano.com/wp-content/uploads/2022/03/laguna-paron-huaraz.jpg", 
   "https://pamelatours.com/wp-content/uploads/2019/10/laguna69.jpg",
   "https://www.antamina.com/wp-content/uploads/2020/02/carnaval-huaraz-rompecalle-9.jpg"
 ];
