@@ -29,7 +29,7 @@ const NewsletterPage: React.FC = () => {
 
     try {
       // 2. URL DE ZAPIER (Webhook) - Actualizada con el nuevo hook proporcionado
-      const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/25834181/uaja7zr/';
+      const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/25999340/ug2eyij/';
       
       console.log(`[Newsletter] Enviando datos a: ${zapierWebhookUrl}`);
 
