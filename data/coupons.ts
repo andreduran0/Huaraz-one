@@ -4,10 +4,10 @@ export const coupons: Coupon[] = [
   {
     id: 'c1',
     businessId: '1', // Cumbre
-    title: 'Pisco Sour de Bienvenida',
-    description: 'Disfruta de un Pisco Sour de cortesía por persona al consumir platos de fondo en nuestro restaurante con la mejor vista de Huaraz.',
-    code: 'CUMBREVISTA',
-    expiryDate: '2026-12-31',
+    title: '10% de Descuento en toda la carta',
+    description: 'Obtén un descuento especial del 10% en todos nuestros platos de la carta. Disfruta de la mejor vista de Huaraz con este beneficio exclusivo antes de Semana Santa.',
+    code: 'CUMBRE10',
+    expiryDate: '2026-03-28',
   },
   {
     id: 'c2',
