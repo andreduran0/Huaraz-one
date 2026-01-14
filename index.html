@@ -1,14 +1,38 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Huaraz Explorer</title>
+    
+    <!-- SEO Básico -->
+    <title>Huaraz Explorer | Guía Turística Digital de Huaraz</title>
+    <meta name="description" content="La guía más completa de Huaraz. Encuentra hoteles, restaurantes, tours, cupones de descuento y un asistente IA para tu viaje a la Cordillera Blanca." />
+    <meta name="keywords" content="Huaraz, Turismo, Ancash, Cordillera Blanca, Laguna 69, Pastoruri, Restaurantes Huaraz, Hoteles Huaraz" />
+    <meta name="author" content="Huaraz Explorer" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://huarazexplorer.com/" />
+    <meta property="og:title" content="Huaraz Explorer | Descubre la capital del Trekking" />
+    <meta property="og:description" content="Planifica tu viaje a Huaraz con nuestra App interactiva. Cupones, Mapas y Asistente IA." />
+    <meta property="og:image" content="https://i.ibb.co/R4zBjKNh/Whats-App-Image-2026-01-08-at-16-52-48.jpg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="Huaraz Explorer | Guía Digital" />
+    <meta property="twitter:description" content="Todo lo que necesitas para tu aventura en los Andes peruanos." />
+    <meta property="twitter:image" content="https://i.ibb.co/R4zBjKNh/Whats-App-Image-2026-01-08-at-16-52-48.jpg" />
+    
+    <!-- Metadatos de Identidad Visual -->
+    <link rel="icon" type="image/jpeg" href="https://i.ibb.co/R4zBjKNh/Whats-App-Image-2026-01-08-at-16-52-48.jpg" />
+    <link rel="apple-touch-icon" href="https://i.ibb.co/R4zBjKNh/Whats-App-Image-2026-01-08-at-16-52-48.jpg" />
+    <meta name="theme-color" content="#2A4D69" />
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script>
-        // Basic theme handling
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark')
         } else {
@@ -20,9 +44,9 @@
             theme: {
                 extend: {
                     colors: {
-                        "brand-green": "#13ec5b", // Home primary
-                        "brand-orange": "#F58220", // Map primary
-                        "brand-blue": "#00a8e8",   // Detail primary
+                        "brand-green": "#13ec5b",
+                        "brand-orange": "#F58220",
+                        "brand-blue": "#00a8e8",
                         "brand-dark-blue": "#2A4D69",
                         "brand-accent": "#ffc107",
                         "background-light": "#f6f8f6",
@@ -41,24 +65,22 @@
         }
     </script>
     <style>
-        body {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        .prose img { border-radius: 1rem; }
     </style>
     <script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react-markdown": "https://aistudiocdn.com/react-markdown@^10.1.0",
-    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.6",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.1",
-    "qrcode": "https://aistudiocdn.com/qrcode@^1.5.3"
-  }
-}
-</script>
+    {
+      "imports": {
+        "react/": "https://aistudiocdn.com/react@^19.2.0/",
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "react-markdown": "https://aistudiocdn.com/react-markdown@^10.1.0",
+        "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.6",
+        "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.1",
+        "qrcode": "https://aistudiocdn.com/qrcode@^1.5.3"
+      }
+    }
+    </script>
 <link rel="stylesheet" href="/index.css">
 </head>
 <body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">

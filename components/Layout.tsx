@@ -1,6 +1,6 @@
 
 import React, { ReactNode } from 'react';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate, Link } from 'react-router-dom';
 import { useTranslations } from '../hooks/useTranslations';
 import { useAppContext } from '../context/AppContext';
 
@@ -18,7 +18,9 @@ const Header: React.FC = () => {
             case '/coupons': return t('nav.coupons');
             case '/calendar': return t('calendar.title');
             case '/onboarding': return t('nav.onboarding');
+            case '/blog': return 'Guías y Consejos';
             default:
+                if (location.pathname.startsWith('/blog/')) return "Guía de Viaje";
                 if (location.pathname.startsWith('/business/')) return "Detalle del Negocio";
                 if (location.pathname.startsWith('/admin')) return "Admin Panel";
                 if (location.pathname.startsWith('/newsletter')) return "Boletín Informativo";
@@ -31,11 +33,10 @@ const Header: React.FC = () => {
         setLanguage(language === 'es' ? 'en' : 'es');
     };
 
-    // La imagen proporcionada por el usuario
     const logoUrl = "https://i.ibb.co/R4zBjKNh/Whats-App-Image-2026-01-08-at-16-52-48.jpg"; 
 
     return (
-        <header className="bg-brand-dark-blue dark:bg-gray-900 text-white shadow-md sticky top-0 z-10">
+        <header className="bg-brand-dark-blue dark:bg-gray-900 text-white shadow-md sticky top-0 z-50">
             <div className="container mx-auto px-4 py-3 flex items-center gap-3">
                 {showBackButton && (
                     <button onClick={() => navigate(-1)} className="p-1 hover:bg-white/10 rounded-full transition-colors">
@@ -44,24 +45,30 @@ const Header: React.FC = () => {
                 )}
                 
                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                    <img 
-                        src={logoUrl} 
-                        alt="Huaraz Explorer Logo"
-                        className="w-8 h-8 rounded-lg object-cover border border-white/20 shadow-sm"
-                        onError={(e) => {
-                            // Fallback en caso de que la imagen no cargue
-                            (e.target as HTMLImageElement).src = "https://i.imgur.com/cnfE46t.jpeg";
-                        }}
-                    />
+                    <Link to="/" className="shrink-0 transition-transform active:scale-95">
+                        <img 
+                            src={logoUrl} 
+                            alt="Huaraz Explorer App Logo"
+                            className="w-8 h-8 rounded-lg object-cover border border-white/20 shadow-sm"
+                            onError={(e) => {
+                                (e.target as HTMLImageElement).src = "https://i.imgur.com/cnfE46t.jpeg";
+                            }}
+                        />
+                    </Link>
                     <h1 className="text-xl font-bold truncate tracking-tight">{getTitle()}</h1>
                 </div>
 
-                <button
-                    onClick={toggleLanguage}
-                    className="ml-2 px-3 py-1 bg-white/10 rounded-full text-xs font-bold hover:bg-white/20 transition-colors border border-white/20"
-                >
-                    {language === 'es' ? 'EN' : 'ES'}
-                </button>
+                <div className="flex items-center gap-2">
+                    <Link to="/blog" className="hidden md:flex items-center gap-1 text-xs font-bold bg-white/10 px-3 py-1 rounded-full hover:bg-white/20 transition-colors">
+                        <i className="fas fa-book"></i> BLOG
+                    </Link>
+                    <button
+                        onClick={toggleLanguage}
+                        className="px-3 py-1 bg-white/10 rounded-full text-xs font-bold hover:bg-white/20 transition-colors border border-white/20"
+                    >
+                        {language === 'es' ? 'EN' : 'ES'}
+                    </button>
+                </div>
             </div>
         </header>
     );
@@ -79,7 +86,7 @@ const BottomNav: React.FC = () => {
     ];
 
     return (
-        <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-[0_-2px_5px_rgba(0,0,0,0.1)] z-30 pb-safe">
+        <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-[0_-2px_5px_rgba(0,0,0,0.1)] z-40 pb-safe">
             <div className="container mx-auto flex justify-around">
                 {navItems.map(item => (
                     <NavLink
