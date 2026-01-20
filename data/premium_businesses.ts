@@ -8,7 +8,7 @@ export const premiumBusinesses: Business[] = [
     category: BusinessCategory.RESTAURANT,
     description: 'Restaurante ubicado en el mirador de rataquenua. disfruta de una vista panorámica inigualable de Huaraz y la cordillera blanca junto a una experiencia gastronómica',
     address: 'Mirador de Rataquenua, Huaraz',
-    lat: -9.5020, lng: -77.4954,
+    lat: -9.5020, lng: -77.4955,
     phone: '+51937511052', 
     whatsapp: '+51937511052',
     photos: [
@@ -42,8 +42,8 @@ export const premiumBusinesses: Business[] = [
   {
     id: '3',
     name: '13 Búhos',
-    category: BusinessCategory.BAKERY,
-    description: 'Panadería de masa madre y las mejores pizzas a la leña de Ancash.',
+    category: BusinessCategory.RESTAURANT,
+    description: 'Platos a la carta  y las mejores pizzas a la leña de Ancash.',
     address: 'Jr. José de la Mar 612, Huaraz',
     phone: '043-426677', whatsapp: '51987654456',
     photos: ['https://enhuaraz.com/wp-content/uploads/13buhos2.jpg'],
