@@ -11,7 +11,7 @@ const MapPage: React.FC = () => {
   const approvedBusinesses = businesses.filter(b => b.status === 'approved');
 
   // URL de imagen mejorada para el mapa de Huaraz
-  const mapImageUrl = "https://i.imgur.com/G8W2FRt.jpeg";
+  const mapImageUrl = "https://i.imgur.com/uweRYKK.jpeg";
 
   return (
     <div className="flex flex-col h-[calc(100vh-120px)] w-full bg-background-light dark:bg-background-dark overflow-hidden">
