@@ -8,7 +8,7 @@ export const premiumBusinesses: Business[] = [
     category: BusinessCategory.RESTAURANT,
     description: 'Restaurante ubicado en el mirador de rataquenua. disfruta de una vista panorámica inigualable de Huaraz y la cordillera blanca junto a una experiencia gastronómica',
     address: 'Mirador de Rataquenua, Huaraz',
-    lat: -9.5020, lng: -77.4952,
+    lat: -9.5020, lng: -77.4954,
     phone: '+51937511052', 
     whatsapp: '+51937511052',
     photos: [
