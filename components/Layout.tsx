@@ -80,7 +80,7 @@ const Header: React.FC<{ onMenuOpen: () => void }> = ({ onMenuOpen }) => {
                             alt="Logo"
                             className="w-8 h-8 rounded-lg shadow-sm border border-white/20"
                         />
-                        <span className="text-lg font-bold tracking-tight hidden sm:inline">Huaraz Explorer</span>
+                        <span className="text-base md:text-lg font-bold tracking-tight">Huaraz Explorer</span>
                     </Link>
                 </div>
 
