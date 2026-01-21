@@ -15,7 +15,7 @@ export const coupons: Coupon[] = [
     title: 'Desayuno Buffet Gratis',
     description: 'Muestra este cupón al realizar tu reserva directa y obtén desayuno buffet incluido para dos personas.',
     code: 'ANDINOBFAST',
-    expiryDate: '2025-12-31',
+    expiryDate: '2026-02-10',
   },
   {
     id: 'c3',
