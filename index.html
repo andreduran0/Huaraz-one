@@ -3,7 +3,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     
     <!-- SEO Básico -->
     <title>Huaraz Explorer | Guía Turística Digital de Huaraz</title>
@@ -11,26 +11,32 @@
     <meta name="keywords" content="Huaraz, Turismo, Ancash, Cordillera Blanca, Laguna 69, Pastoruri, Restaurantes Huaraz, Hoteles Huaraz" />
     <meta name="author" content="Huaraz Explorer" />
 
+    <!-- Manifest para PWA y Google Icons -->
+    <link rel="manifest" href="/manifest.json?v=4" />
+    
+    <!-- Compatibilidad iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Huaraz Explorer">
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://huarazexplorer.com/" />
     <meta property="og:title" content="Huaraz Explorer | Descubre la capital del Trekking" />
     <meta property="og:description" content="Planifica tu viaje a Huaraz con nuestra App interactiva. Cupones, Mapas y Asistente IA." />
-    <meta property="og:image" content="https://i.ibb.co/R4zBjKNh/Whats-App-Image-2026-01-08-at-16-52-48.jpg" />
+    <meta property="og:image" content="https://i.imgur.com/Cax54U1.png?v=4" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content="Huaraz Explorer | Guía Digital" />
     <meta property="twitter:description" content="Todo lo que necesitas para tu aventura en los Andes peruanos." />
-    <meta property="twitter:image" content="https://i.ibb.co/R4zBjKNh/Whats-App-Image-2026-01-08-at-16-52-48.jpg" />
+    <meta property="twitter:image" content="https://i.imgur.com/Cax54U1.png?v=4" />
     
     <!-- Metadatos de Identidad Visual -->
-  <meta property="og:image" content="/favicon-512x512.png" />
-<meta property="twitter:image" content="/favicon-512x512.png" /> 
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="apple-touch-icon" href="/favicon-192x192.png">
-<meta name="theme-color" content="#2A4D69" />
+    <link rel="icon" href="https://i.imgur.com/Cax54U1.png?v=4" sizes="any" type="image/png" />
+    <link rel="apple-touch-icon" href="https://i.imgur.com/Cax54U1.png?v=4" />
+    
+    <meta name="theme-color" content="#2A4D69" />
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -70,6 +76,7 @@
     <style>
         body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
         .prose img { border-radius: 1rem; }
+        #root { min-height: 100vh; }
     </style>
     <script type="importmap">
     {
