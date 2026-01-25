@@ -13,7 +13,6 @@ export enum BusinessCategory {
   HOTEL = 'hotel',
   DENTIST = 'dentist',
   BAKERY = 'bakery',
-  // FIX: Added TOURIST_SPOT to the enum to resolve reference errors in other components.
   TOURIST_SPOT = 'tourist_spot',
 }
 
@@ -47,9 +46,15 @@ export interface Coupon {
   expiryDate: string;
 }
 
+export interface GroundingSource {
+  title: string;
+  uri: string;
+}
+
 export interface ChatMessage {
     id: string;
     text: string;
     sender: 'user' | 'ai';
     isLoading?: boolean;
+    sources?: GroundingSource[];
 }

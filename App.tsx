@@ -11,6 +11,8 @@ import AdminPage from './pages/AdminPage';
 import OnboardingPage from './pages/OnboardingPage';
 import NewsletterPage from './pages/NewsletterPage';
 import CalendarPage from './pages/CalendarPage';
+import BlogPage from './pages/BlogPage';
+import BlogPostPage from './pages/BlogPostPage';
 
 const App: React.FC = () => {
   return (
@@ -26,6 +28,8 @@ const App: React.FC = () => {
           <Route path="/newsletter" element={<NewsletterPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:id" element={<BlogPostPage />} />
         </Routes>
       </Layout>
     </HashRouter>

@@ -82,6 +82,9 @@ const AdminPage: React.FC = () => {
       const updated = { ...business, lat, lng };
       updateBusiness(updated);
       setLastMovedBusiness(updated);
+      
+      // Mostrar feedback temporal
+      setTimeout(() => setLastMovedBusiness(null), 3000);
     }
   };
 
@@ -332,13 +335,49 @@ const AdminPage: React.FC = () => {
 
       {activeTab === 'map' && (
         <div className="space-y-6 animate-fadeIn">
-            <div className="h-[600px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white dark:border-gray-800 relative">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-gray-800 p-4 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center gap-3">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${isRepositionMode ? 'bg-red-500 text-white animate-pulse' : 'bg-gray-100 text-gray-400'}`}>
+                        <i className="fas fa-crosshair"></i>
+                    </div>
+                    <div>
+                        <h3 className="font-black uppercase text-xs tracking-widest text-gray-900 dark:text-white">Editor de Ubicaciones</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
+                            {isRepositionMode ? 'Modo Arrastre Activo: Mueve los pines' : 'Mapa bloqueado: Solo lectura'}
+                        </p>
+                    </div>
+                </div>
+                <button 
+                    onClick={() => setIsRepositionMode(!isRepositionMode)}
+                    className={`px-8 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg transition-all active:scale-95 ${
+                        isRepositionMode 
+                        ? 'bg-red-500 hover:bg-red-600 text-white' 
+                        : 'bg-brand-blue hover:bg-blue-600 text-white'
+                    }`}
+                >
+                    {isRepositionMode ? 'Bloquear Mapa y Guardar' : 'Activar Edición de Pins'}
+                </button>
+            </div>
+
+            {lastMovedBusiness && (
+                <div className="fixed bottom-32 left-1/2 -translate-x-1/2 z-[100] bg-brand-green text-brand-dark-blue px-8 py-4 rounded-2xl shadow-2xl font-black uppercase text-xs animate-bounce flex items-center gap-3 border-2 border-white">
+                    <i className="fas fa-check-circle"></i>
+                    <span>{lastMovedBusiness.name} Actualizado!</span>
+                </div>
+            )}
+
+            <div className={`h-[600px] rounded-[3rem] overflow-hidden shadow-2xl border-4 transition-all duration-300 relative ${isRepositionMode ? 'border-red-500/50 ring-8 ring-red-500/10' : 'border-white dark:border-gray-800'}`}>
                 <StaticMap 
-                    imageUrl="https://i.imgur.com/G8W2FRt.jpeg"
                     businesses={businesses}
                     isEditable={isRepositionMode}
                     onBusinessMove={handleMarkerMove}
                 />
+                
+                {isRepositionMode && (
+                    <div className="absolute top-6 left-1/2 -translate-x-1/2 bg-red-600 text-white px-6 py-2 rounded-full font-black text-[10px] uppercase tracking-[0.2em] shadow-xl z-50 pointer-events-none italic">
+                        <i className="fas fa-exclamation-triangle mr-2"></i> Estás editando el mapa en vivo
+                    </div>
+                )}
             </div>
         </div>
       )}

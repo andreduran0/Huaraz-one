@@ -4,72 +4,51 @@ import { useAppContext } from '../context/AppContext';
 import StaticMap from '../components/StaticMap';
 import { useTranslations } from '../hooks/useTranslations';
 import { Link } from 'react-router-dom';
-import { AdLevel } from '../types';
 
 const MapPage: React.FC = () => {
   const { businesses } = useAppContext();
   const t = useTranslations();
   
-  // Filtrar y ordenar: Premium primero, luego Estándar
-  const approvedBusinesses = [...businesses]
-    .filter(b => b.status === 'approved')
-    .sort((a, b) => {
-        if (a.adLevel === AdLevel.PREMIUM && b.adLevel !== AdLevel.PREMIUM) return -1;
-        if (a.adLevel !== AdLevel.PREMIUM && b.adLevel === AdLevel.PREMIUM) return 1;
-        return 0;
-    });
-
-  // URL de imagen mejorada para el mapa de Huaraz
-  const mapImageUrl = "https://i.imgur.com/G8W2FRt.jpeg";
+  // Filtramos la lista para mostrar exclusivamente a Cumbre (ID: '1')
+  const allBusinesses = businesses.filter(b => b.id === '1');
 
   return (
-    <div className="flex flex-col h-[calc(100vh-120px)] w-full bg-background-light dark:bg-background-dark overflow-hidden">
-        {/* Map Container - Full View Priority */}
-        <div className="relative flex-grow w-full bg-gray-200 dark:bg-gray-700 overflow-hidden border-b border-gray-300 dark:border-gray-700 shadow-inner z-0">
-             <StaticMap
-                imageUrl={mapImageUrl}
-                businesses={approvedBusinesses}
-            />
+    <div className="relative h-[calc(100vh-120px)] w-full bg-gray-50 dark:bg-gray-950 overflow-hidden">
+        {/* Map Container - Full Screen */}
+        <div className="absolute inset-0 z-0">
+             <StaticMap businesses={allBusinesses} />
         </div>
 
-        {/* List of POIs - Compact Bottom Panel */}
-        <div className="h-40 shrink-0 overflow-y-auto bg-white dark:bg-gray-900 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
-            <div className="px-4 py-3 sticky top-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-10 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
-                <h2 className="text-sm font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2">
-                    <i className="fas fa-list text-brand-orange"></i>
-                    {t('map.title')}
-                </h2>
-                <span className="text-[10px] bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full font-bold">
-                    {approvedBusinesses.length} SITIOS
-                </span>
-            </div>
-            
-            <div className="flex flex-col">
-                {approvedBusinesses.map(business => (
-                    <Link 
-                        key={business.id}
-                        to={`/business/${business.id}`}
-                        className={`flex items-center gap-4 px-4 py-3 border-b border-gray-50 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${business.adLevel === AdLevel.PREMIUM ? 'bg-brand-orange/5' : ''}`}
-                    >
-                        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
-                            business.adLevel === AdLevel.PREMIUM ? 'bg-brand-orange text-white' : 'bg-brand-orange/10 text-brand-orange'
-                        }`}>
-                            <i className={`fas text-lg ${
-                                business.category === 'restaurant' ? 'fa-utensils' : 
-                                business.category === 'hotel' ? 'fa-bed' : 'fa-map-marker-alt'
-                            }`}></i>
+        {/* Floating Stats Badge */}
+        <div className="absolute top-24 left-6 z-10 pointer-events-none">
+            <div className="bg-brand-dark-blue/80 backdrop-blur-xl px-6 py-3 rounded-2xl shadow-2xl border border-white/10 flex items-center gap-4 text-white">
+                <div className="flex -space-x-3">
+                    {allBusinesses.slice(0, 3).map((b, i) => (
+                        <div key={i} className="w-8 h-8 rounded-full border-2 border-brand-dark-blue overflow-hidden shadow-lg">
+                            <img src={b.photos[0]} className="w-full h-full object-cover" alt="avatar" />
                         </div>
-                        <div className="flex-grow min-w-0">
-                            <div className="flex items-center gap-2">
-                                <h3 className="text-sm font-bold text-text-light dark:text-text-dark truncate">{business.name}</h3>
-                                {business.adLevel === AdLevel.PREMIUM && <i className="fas fa-star text-[10px] text-brand-orange"></i>}
-                            </div>
-                            <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">{business.address}</p>
-                        </div>
-                        <i className="fas fa-chevron-right text-gray-300 text-xs"></i>
-                    </Link>
-                ))}
+                    ))}
+                </div>
+                <div>
+                    <h2 className="font-black text-[10px] uppercase tracking-widest text-brand-orange">{t('map.badge')}</h2>
+                    <p className="text-[10px] font-bold text-white/70 uppercase tracking-widest">
+                        {allBusinesses.length} {t('map.available')}
+                    </p>
+                </div>
             </div>
+        </div>
+
+        {/* Directory Search / Floating Button (Optional) */}
+        <div className="absolute bottom-10 left-10 z-10">
+            <Link to="/coupons" className="group flex items-center gap-4 bg-white dark:bg-gray-900 p-3 pr-8 rounded-full shadow-2xl border border-gray-100 dark:border-gray-800 transition-all hover:scale-105 active:scale-95">
+                <div className="w-12 h-12 rounded-full bg-brand-orange flex items-center justify-center text-white shadow-lg animate-pulse">
+                    <i className="fas fa-ticket-alt"></i>
+                </div>
+                <div className="text-left">
+                    <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Ofertas cerca</p>
+                    <p className="text-xs font-black text-brand-dark-blue dark:text-white uppercase tracking-tighter">Ver Cupones</p>
+                </div>
+            </Link>
         </div>
     </div>
   );
