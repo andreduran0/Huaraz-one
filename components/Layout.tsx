@@ -33,9 +33,13 @@ const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, o
                         <MenuLink to="/blog" icon="fa-newspaper" label="Guías y Relatos" onClick={onClose} />
                         <MenuLink to="/coupons" icon="fa-ticket-alt" label={t('nav.coupons')} onClick={onClose} />
                         <hr className="my-4 border-gray-100 dark:border-gray-800" />
-                        <MenuLink to="/newsletter" icon="fa-envelope" label="Boletín Semanal" onClick={onClose} />
                         <MenuLink to="/onboarding" icon="fa-bullhorn" label="Publicita tu Negocio" onClick={onClose} />
+                        <MenuLink to="/admin" icon="fa-user-shield" label="Panel de Control" onClick={onClose} />
                     </nav>
+                    
+                    <div className="pt-4 mt-auto border-t dark:border-gray-800">
+                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">Versión 1.1.0 (Admin Enabled)</p>
+                    </div>
                 </div>
             </div>
         </>
@@ -58,7 +62,7 @@ const Header: React.FC<{ onMenuOpen: () => void }> = ({ onMenuOpen }) => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const isMainPage = ['/', '/map', '/chat', '/coupons', '/calendar', '/blog'].includes(location.pathname);
+    const isMainPage = ['/', '/map', '/chat', '/coupons', '/calendar', '/blog', '/admin'].includes(location.pathname);
 
     return (
         <header className="bg-[#2A4D69] text-white shadow-md sticky top-0 z-50 h-16">
