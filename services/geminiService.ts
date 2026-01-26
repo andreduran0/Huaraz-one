@@ -16,7 +16,7 @@ export const getAiResponse = async (
   try {
     // Obtenemos la clave directamente de process.env.API_KEY.
     // El shim en index.html asegura que esto no rompa la app si no está definida.
-    const apiKey = API_KEY;
+    const apiKey = import.meta.env.VITE_API_KEY;
 
     if (!apiKey) {
         return {
