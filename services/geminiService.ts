@@ -38,7 +38,7 @@ export const getAiResponse = async (
         };
     }
 
-    const ai = new GoogleGenAI({ apiKey: key });
+    const ai = new GoogleGenAI({ apiKey: import.meta,env.VITE_API_KEY });
     
     const sponsoredBusinesses = businesses.filter(b => b.adLevel !== 'none');
     const now = new Date();
