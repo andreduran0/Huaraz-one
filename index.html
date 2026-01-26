@@ -17,12 +17,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script>
-        // SHIM ROBUSTO PARA VARIABLES DE ENTORNO
-        // Forzamos la creación del objeto process.env antes de que cualquier script lo use
+        // SHIM PARA COMPATIBILIDAD VITE + process.env
         (function() {
             window.process = window.process || {};
             window.process.env = window.process.env || {};
-            // El valor de API_KEY será inyectado por el entorno de ejecución
+            
+            // Si el bundler inyecta variables en import.meta.env (Vite), las pasamos a process.env
+            try {
+                if (typeof import.meta !== 'undefined' && import.meta.env) {
+                    Object.keys(import.meta.env).forEach(key => {
+                        const newKey = key.replace('VITE_', '');
+                        window.process.env[newKey] = import.meta.env[key];
+                        // También mantenemos la original por si acaso
+                        window.process.env[key] = import.meta.env[key];
+                    });
+                }
+            } catch (e) {
+                // Silencioso si falla import.meta
+            }
         })();
 
         // Manejo de Tema (Dark/Light)

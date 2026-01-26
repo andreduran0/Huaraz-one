@@ -14,23 +14,28 @@ export const getAiResponse = async (
   language: 'es' | 'en'
 ): Promise<AiResponse> => {
   try {
-    // 1. Obtención y limpieza profunda de la clave
-    let rawKey = process.env.API_KEY || "";
+    // 1. Obtención y limpieza rigurosa de la clave
+    // Priorizamos process.env.API_KEY pero aceptamos VITE_API_KEY si el shim falló
+    let rawKey = process.env.API_KEY || (process.env as any).VITE_API_KEY || "";
     
-    // Eliminamos posibles comillas accidentales, espacios o saltos de línea
+    // Limpiamos comillas, espacios y caracteres invisibles
     const apiKey = rawKey.replace(/['"]+/g, '').trim();
 
     if (!apiKey || apiKey === "undefined" || apiKey.length < 10) {
-        console.error("DEBUG: API_KEY detected as invalid or too short. Check your environment variables.");
         return {
             text: language === 'es' 
-              ? "⚠️ **Error de Configuración:** La clave de API no está llegando al navegador.\n\n**Solución rápida en Vercel:**\n1. Ve a 'Settings' > 'Environment Variables'.\n2. Asegúrate de que se llame exactamente `API_KEY`.\n3. Haz un **Redeploy** de tu última versión pero **DESMARCA** la opción 'Use existing Build Cache'." 
-              : "⚠️ **Configuration Error:** The API key is not reaching the browser.\n\n**Quick fix on Vercel:**\n1. Go to 'Settings' > 'Environment Variables'.\n2. Ensure it is named exactly `API_KEY`.\n3. Perform a **Redeploy** of your latest version and **UNCHECK** 'Use existing Build Cache'.",
+              ? "⚠️ **Clave de API no detectada.**\n\nPor favor, verifica que has configurado la variable `API_KEY` en tu panel de Vercel y has hecho un **Redeploy desmarcando la caché**." 
+              : "⚠️ **API Key not detected.**\n\nPlease verify you set the `API_KEY` variable in Vercel and performed a **Redeploy unchecking the cache**.",
             sources: []
         };
     }
 
-    // 2. Inicialización del cliente con la clave limpia
+    // Diagnóstico visual interno para el usuario (si la clave parece incompleta)
+    if (apiKey.length === 38) {
+        console.warn("La clave tiene 38 caracteres. Las claves de Google AI Studio suelen tener 39. Revisa si te faltó copiar el último carácter.");
+    }
+
+    // 2. Inicialización obligatoria con objeto de configuración { apiKey }
     const ai = new GoogleGenAI({ apiKey });
     
     const sponsoredBusinesses = businesses.filter(b => b.adLevel !== 'none');
@@ -43,7 +48,7 @@ export const getAiResponse = async (
     Información local: ${JSON.stringify(sponsoredBusinesses.map(b => b.name))}. 
     Responde en ${language === 'es' ? 'español' : 'inglés'}.`;
 
-    // 3. Llamada al modelo
+    // 3. Generación de contenido usando la estructura de partes requerida
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: { 
@@ -65,20 +70,19 @@ export const getAiResponse = async (
     
     const errorMsg = error.toString();
     
-    // Si Google devuelve 400, la clave es estructuralmente correcta pero inválida para ellos
     if (errorMsg.includes("400") || errorMsg.includes("API key not valid")) {
         return {
             text: language === 'es' 
-              ? "❌ **Clave Inválida (Error 400):** Google rechaza tu clave.\n\n**Causas probables:**\n- Copiaste la clave con un espacio extra al final.\n- Estás usando una clave de Google Cloud Console en lugar de una de **Google AI Studio**.\n- La clave ha expirado o ha sido revocada." 
-              : "❌ **Invalid Key (Error 400):** Google rejects your key.\n\n**Probable causes:**\n- You copied the key with a trailing space.\n- You are using a Google Cloud Console key instead of a **Google AI Studio** key.\n- The key has expired or been revoked.",
+              ? "❌ **Error 400: Clave Inválida.**\n\nGoogle rechaza la clave proporcionada. Esto ocurre si:\n1. La clave está incompleta (le falta un carácter al final).\n2. Es de Google Cloud en lugar de **Google AI Studio**.\n3. Tiene restricciones de IP/Referer en la consola de Google." 
+              : "❌ **Error 400: Invalid Key.**\n\nGoogle rejects the provided key. This happens if:\n1. The key is incomplete (missing the last character).\n2. It's from Google Cloud instead of **Google AI Studio**.\n3. It has IP/Referer restrictions in the Google Console.",
             sources: []
         };
     }
 
     return {
       text: language === 'es' 
-        ? "Lo siento, la señal en los nevados es inestable. ¿Podrías intentar de nuevo?" 
-        : "Sorry, the snowy signal is unstable. Could you try again?",
+        ? "Hubo un problema al conectar con el servidor de la Cordillera Blanca. Inténtalo de nuevo." 
+        : "There was a problem connecting to the White Mountain server. Try again.",
       sources: []
     };
   }
