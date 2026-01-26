@@ -15,7 +15,7 @@ export const getAiResponse = async (
 ): Promise<AiResponse> => {
   try {
     // Obtenemos la clave de API
-    const apiKey = process.env.VITE_API_KEY;
+    const apiKey = process.env.API_KEY;
 
     // Validación estricta para entornos de producción (Vercel)
     if (!apiKey || apiKey === "" || apiKey === "undefined" || apiKey === "null") {
@@ -28,7 +28,7 @@ export const getAiResponse = async (
         };
     }
 
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = new GoogleGenAI({ apiKey: import.meta.env.API_KEY });
     
     const sponsoredBusinesses = businesses.filter(b => b.adLevel !== 'none');
     const now = new Date();
