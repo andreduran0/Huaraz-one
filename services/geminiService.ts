@@ -14,20 +14,19 @@ export const getAiResponse = async (
   language: 'es' | 'en'
 ): Promise<AiResponse> => {
   try {
-    // Obtenemos la clave directamente de process.env.API_KEY.
-    // El shim en index.html asegura que esto no rompa la app si no está definida.
-    const apiKey = import.meta.env.VITE_API_KEY;
+    // Referencia directa a process.env.API_KEY según los lineamientos
+    const apiKey = process.env.API_KEY;
 
     if (!apiKey) {
+        console.error("Error: API_KEY no configurada en el entorno.");
         return {
             text: language === 'es' 
-                ? "⚠️ **Error de Configuración:** No se encontró la clave 'API_KEY'. Asegúrate de haberla guardado correctamente en las variables de entorno de Vercel y haber hecho un 'Redeploy'." 
-                : "⚠️ **Configuration Error:** 'API_KEY' not found. Make sure you saved it correctly in Vercel environment variables and triggered a 'Redeploy'.",
+              ? "⚠️ **Configuración incompleta:** No se detectó la clave de API. Por favor, asegúrate de configurar `API_KEY` en el panel de Vercel y hacer un 'Redeploy' sin cache." 
+              : "⚠️ **Incomplete setup:** API Key not detected. Please ensure `API_KEY` is set in Vercel and perform a 'Redeploy' without cache.",
             sources: []
         };
     }
 
-    // Inicialización estándar de Google Gemini API
     const ai = new GoogleGenAI({ apiKey });
     
     const sponsoredBusinesses = businesses.filter(b => b.adLevel !== 'none');
@@ -38,19 +37,11 @@ export const getAiResponse = async (
 
     const systemInstruction = `
       You are the official 'Huaraz Explorer' AI Assistant. 
-      Today is ${dateStr}.
+      Today is ${dateStr}. Respond in ${language === 'es' ? 'Spanish' : 'English'}.
 
       CORE MISSION:
-      Help tourists explore Huaraz and the Ancash region. You are an expert local guide integrated into the Huaraz Explorer platform. Respond in ${language === 'es' ? 'Spanish' : 'English'}.
-
-      RULES:
-      1. IDENTITY: You are 'Huaraz Explorer Assistant'.
-      2. PROMOTE LOCAL: Use provided business data.
-      3. SPONSORED FIRST: Mention sponsored businesses with "[⭐ Patrocinado]".
-      4. REAL-TIME: Use Google Search for weather or news in Huaraz.
-      5. SAFETY: Always warn about altitude sickness (soroche).
-      6. FORMAT: Use Markdown.
-
+      Help tourists explore Huaraz and Ancash. Mention sponsored businesses first.
+      
       DATA CONTEXT:
       - Businesses: ${JSON.stringify(sponsoredBusinesses.map(b => ({ name: b.name, cat: b.category, desc: b.description })))}
       - Coupons: ${JSON.stringify(coupons.map(c => ({ title: c.title, code: c.code })))}
@@ -88,18 +79,10 @@ export const getAiResponse = async (
     return { text, sources: uniqueSources };
   } catch (error: any) {
     console.error("Gemini Error:", error);
-    
-    // Manejo de errores de cuota o clave inválida
-    const errorMessage = error?.message || "";
-    if (errorMessage.includes('429') || errorMessage.includes('quota')) {
-        return {
-            text: language === 'es' ? "⚠️ Límite de consultas diarias alcanzado. Vuelve mañana." : "⚠️ Daily limit reached. Come back tomorrow.",
-            sources: []
-        };
-    }
-
     return {
-      text: language === 'es' ? "Lo siento, la señal en las montañas está débil. ¿Podrías intentar de nuevo?" : "Sorry, the signal in the mountains is weak. Could you try again?",
+      text: language === 'es' 
+        ? "Lo siento, la señal en las montañas está débil o la clave de API es inválida. ¿Podrías intentar de nuevo?" 
+        : "Sorry, the mountain signal is weak or the API Key is invalid. Could you try again?",
       sources: []
     };
   }

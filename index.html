@@ -17,11 +17,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script>
-        // SHIM CRÍTICO: Asegura que process.env exista para que la app no se rompa
-        // Vercel reemplazará las ocurrencias de process.env.API_KEY por el valor real durante el build
+        // SHIM GLOBAL PARA VARIABLES DE ENTORNO EN NAVEGADOR
+        // Este bloque es vital para que 'process.env.API_KEY' sea reconocido en producción.
         window.process = window.process || { env: {} };
-        window.process.env = window.process.env || {};
-
+        
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark')
         } else {
