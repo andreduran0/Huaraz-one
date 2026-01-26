@@ -18,10 +18,14 @@
     
     <script>
         // SHIM ROBUSTO PARA VARIABLES DE ENTORNO
-        // Esto permite que el código use process.env.API_KEY incluso en el navegador
-        window.process = window.process || { env: {} };
-        
-        // Tema oscuro/claro
+        // Forzamos la creación del objeto process.env antes de que cualquier script lo use
+        (function() {
+            window.process = window.process || {};
+            window.process.env = window.process.env || {};
+            // El valor de API_KEY será inyectado por el entorno de ejecución
+        })();
+
+        // Manejo de Tema (Dark/Light)
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark')
         } else {
@@ -54,7 +58,6 @@
         #root { min-height: 100vh; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         
-        /* Animaciones base */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
