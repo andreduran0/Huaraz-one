@@ -14,21 +14,22 @@ export const getAiResponse = async (
   language: 'es' | 'en'
 ): Promise<AiResponse> => {
   try {
-    // Obtenemos la clave de API
+    // Obtenemos la clave de API desde process.env según lineamientos
     const apiKey = process.env.API_KEY;
 
-    // Validación estricta para entornos de producción (Vercel)
-    if (!apiKey || apiKey === "" || apiKey === "undefined" || apiKey === "null") {
-        console.error("CRITICAL: API_KEY is missing or undefined in current context.");
+    // Diagnóstico para Vercel/Vite:
+    // Si la clave llega como string "undefined", significa que Vite no la inyectó correctamente
+    if (!apiKey || apiKey === "undefined" || apiKey === "" || apiKey === "null") {
+        console.error("DEBUG: API_KEY no disponible en el contexto de ejecución.");
         return {
             text: language === 'es' 
-              ? "⚠️ **Error de Configuración:** La aplicación no puede encontrar tu `API_KEY`. \n\n**Para solucionar esto en Vercel:**\n1. Ve a 'Settings' > 'Environment Variables'.\n2. Agrega `API_KEY` con tu valor.\n3. Ve a 'Deployments', selecciona el último y haz clic en **'Redeploy'** (asegúrate de desmarcar 'Use existing Build Cache')." 
-              : "⚠️ **Configuration Error:** The app cannot find your `API_KEY`. \n\n**To fix this on Vercel:**\n1. Go to 'Settings' > 'Environment Variables'.\n2. Add `API_KEY` with your value.\n3. Go to 'Deployments' and click **'Redeploy'** (ensure you uncheck 'Use existing Build Cache').",
+              ? "⚠️ **Error de Conexión:** No se detectó una clave de API válida.\n\n**Para solucionarlo en Vercel:**\n1. Asegúrate de que la variable se llame exactamente `API_KEY`.\n2. Ve a 'Deployments' y haz un **Redeploy** desmarcando la casilla 'Use existing Build Cache'." 
+              : "⚠️ **Connection Error:** No valid API Key detected.\n\n**To fix this on Vercel:**\n1. Ensure the variable is named exactly `API_KEY`.\n2. Go to 'Deployments' and perform a **Redeploy**, unchecking 'Use existing Build Cache'.",
             sources: []
         };
     }
 
-    const ai = new GoogleGenAI({ apiKey: import.meta.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey });
     
     const sponsoredBusinesses = businesses.filter(b => b.adLevel !== 'none');
     const now = new Date();
@@ -37,15 +38,17 @@ export const getAiResponse = async (
     });
 
     const systemInstruction = `
-      You are the official 'Huaraz Explorer' AI Assistant. 
-      Today is ${dateStr}. Respond in ${language === 'es' ? 'Spanish' : 'English'}.
+      Eres el asistente oficial de 'Huaraz Explorer'.
+      Fecha actual: ${dateStr}. Responde en ${language === 'es' ? 'Español' : 'Inglés'}.
 
-      CORE MISSION:
-      Help tourists explore Huaraz and Ancash. Mention sponsored businesses first.
-      
-      DATA CONTEXT:
-      - Businesses: ${JSON.stringify(sponsoredBusinesses.map(b => ({ name: b.name, cat: b.category, desc: b.description })))}
-      - Coupons: ${JSON.stringify(coupons.map(c => ({ title: c.title, code: c.code })))}
+      CONTEXTO:
+      - Negocios destacados: ${JSON.stringify(sponsoredBusinesses.map(b => ({ name: b.name, category: b.category, description: b.description })))}
+      - Cupones activos: ${JSON.stringify(coupons.map(c => ({ title: c.title, code: c.code })))}
+
+      REGLAS:
+      - Ayuda a los turistas a planificar su viaje a Huaraz y la Cordillera Blanca.
+      - Siempre recomienda primero los negocios destacados del contexto.
+      - Sé amable, experto en montaña y usa emojis de vez en cuando.
     `;
 
     const response = await ai.models.generateContent({
@@ -73,28 +76,27 @@ export const getAiResponse = async (
       });
     }
 
-    const uniqueSources = Array.from(new Set(sources.map(s => s.uri)))
-      .map(uri => sources.find(s => s.uri === uri)!)
-      .slice(0, 3);
-
-    return { text, sources: uniqueSources };
+    return { 
+      text, 
+      sources: sources.slice(0, 3) 
+    };
   } catch (error: any) {
     console.error("Gemini Error:", error);
     
-    // Si el error es específicamente de llave inválida después de enviarla
-    if (error.toString().includes("API_KEY_INVALID") || error.toString().includes("400")) {
+    // Captura específica del error 400 que mencionaste
+    if (error.toString().includes("400") || error.toString().includes("API key not valid")) {
         return {
             text: language === 'es' 
-                ? "❌ **Error 400:** La llave de API que configuraste en Vercel es **inválida**. Por favor, revísala en Google AI Studio y vuelve a pegarla en Vercel." 
-                : "❌ **Error 400:** The API key configured in Vercel is **invalid**. Please check it in Google AI Studio and update it in Vercel.",
+              ? "❌ **Error 400:** La clave de API configurada es inválida. Por favor, verifica tu configuración en Google AI Studio y el nombre de la variable en Vercel." 
+              : "❌ **Error 400:** The API Key is invalid. Please check your Google AI Studio setup and Vercel variable name.",
             sources: []
         };
     }
 
     return {
       text: language === 'es' 
-        ? "Lo siento, la señal en las montañas está débil. ¿Podrías intentar de nuevo?" 
-        : "Sorry, the mountain signal is weak. Could you try again?",
+        ? "Lo siento, la señal en las montañas está débil o la configuración de la IA es incorrecta. ¿Podrías intentar de nuevo?" 
+        : "Sorry, the mountain signal is weak or the AI setup is incorrect. Could you try again?",
       sources: []
     };
   }

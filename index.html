@@ -17,10 +17,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script>
-        // SHIM GLOBAL ROBUSTO
-        // Previene que process.env sea undefined y permite que el bundler inyecte la llave
+        // SHIM ROBUSTO PARA VARIABLES DE ENTORNO
+        // Esto permite que el código use process.env.API_KEY incluso en el navegador
         window.process = window.process || { env: {} };
         
+        // Tema oscuro/claro
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark')
         } else {
@@ -52,6 +53,13 @@
         body { -webkit-font-smoothing: antialiased; margin: 0; padding: 0; }
         #root { min-height: 100vh; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* Animaciones base */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 0.5s ease-out forwards; }
     </style>
     <script type="importmap">
     {
