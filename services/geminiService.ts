@@ -2,8 +2,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { Business, Coupon, GroundingSource } from '../types';
 
-const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
-
 export interface AiResponse {
   text: string;
   sources: GroundingSource[];
@@ -16,6 +14,32 @@ export const getAiResponse = async (
   language: 'es' | 'en'
 ): Promise<AiResponse> => {
   try {
+    // Intentamos obtener la clave de varias fuentes posibles para máxima compatibilidad
+    let key = "";
+    
+    if (typeof process !== 'undefined' && process.env) {
+        key = process.env.API_KEY || (process.env as any).VITE_API_KEY || "";
+    }
+    
+    // Si sigue vacía, intentamos buscarla en el objeto global por si el shim la capturó
+    if (!key && (window as any).process?.env?.API_KEY) {
+        key = (window as any).process.env.API_KEY;
+    }
+    if (!key && (window as any).process?.env?.VITE_API_KEY) {
+        key = (window as any).process.env.VITE_API_KEY;
+    }
+
+    if (!key) {
+        return {
+            text: language === 'es' 
+                ? "Asistente desconectado. Por favor, verifica que la variable de entorno 'API_KEY' o 'VITE_API_KEY' esté configurada en Vercel." 
+                : "Assistant disconnected. Please verify that the 'API_KEY' or 'VITE_API_KEY' environment variable is configured in Vercel.",
+            sources: []
+        };
+    }
+
+    const ai = new GoogleGenAI({ apiKey: key });
+    
     const sponsoredBusinesses = businesses.filter(b => b.adLevel !== 'none');
     const now = new Date();
     const dateStr = now.toLocaleDateString(language === 'es' ? 'es-PE' : 'en-US', { 
@@ -72,8 +96,20 @@ export const getAiResponse = async (
       .slice(0, 3);
 
     return { text, sources: uniqueSources };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Gemini Error:", error);
+    
+    const isQuotaError = error?.message?.includes('429') || error?.message?.includes('RESOURCE_EXHAUSTED');
+    
+    if (isQuotaError) {
+        return {
+            text: language === 'es' 
+                ? "⚠️ **Límite de la IA alcanzado:** Hemos agotado las consultas gratuitas por hoy. Por favor, intenta de nuevo más tarde." 
+                : "⚠️ **AI Limit reached:** We have exhausted the free queries for today. Please try again later.",
+            sources: []
+        };
+    }
+
     return {
       text: language === 'es' ? "Lo siento, la señal en las montañas está débil. ¿Podrías intentar de nuevo?" : "Sorry, the signal in the mountains is weak. Could you try again?",
       sources: []
