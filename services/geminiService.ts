@@ -15,7 +15,7 @@ export const getAiResponse = async (
 ): Promise<AiResponse> => {
   try {
     // Obtenemos la clave de API
-    const apiKey = process.env.API_KEY;
+    const apiKey = process.env.VITE_API_KEY;
 
     // Validación estricta para entornos de producción (Vercel)
     if (!apiKey || apiKey === "" || apiKey === "undefined" || apiKey === "null") {
