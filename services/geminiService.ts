@@ -14,15 +14,16 @@ export const getAiResponse = async (
   language: 'es' | 'en'
 ): Promise<AiResponse> => {
   try {
-    // Referencia directa a process.env.API_KEY según los lineamientos
+    // Obtenemos la clave de API
     const apiKey = process.env.API_KEY;
 
-    if (!apiKey) {
-        console.error("Error: API_KEY no configurada en el entorno.");
+    // Validación estricta para entornos de producción (Vercel)
+    if (!apiKey || apiKey === "" || apiKey === "undefined" || apiKey === "null") {
+        console.error("CRITICAL: API_KEY is missing or undefined in current context.");
         return {
             text: language === 'es' 
-              ? "⚠️ **Configuración incompleta:** No se detectó la clave de API. Por favor, asegúrate de configurar `API_KEY` en el panel de Vercel y hacer un 'Redeploy' sin cache." 
-              : "⚠️ **Incomplete setup:** API Key not detected. Please ensure `API_KEY` is set in Vercel and perform a 'Redeploy' without cache.",
+              ? "⚠️ **Error de Configuración:** La aplicación no puede encontrar tu `API_KEY`. \n\n**Para solucionar esto en Vercel:**\n1. Ve a 'Settings' > 'Environment Variables'.\n2. Agrega `API_KEY` con tu valor.\n3. Ve a 'Deployments', selecciona el último y haz clic en **'Redeploy'** (asegúrate de desmarcar 'Use existing Build Cache')." 
+              : "⚠️ **Configuration Error:** The app cannot find your `API_KEY`. \n\n**To fix this on Vercel:**\n1. Go to 'Settings' > 'Environment Variables'.\n2. Add `API_KEY` with your value.\n3. Go to 'Deployments' and click **'Redeploy'** (ensure you uncheck 'Use existing Build Cache').",
             sources: []
         };
     }
@@ -79,10 +80,21 @@ export const getAiResponse = async (
     return { text, sources: uniqueSources };
   } catch (error: any) {
     console.error("Gemini Error:", error);
+    
+    // Si el error es específicamente de llave inválida después de enviarla
+    if (error.toString().includes("API_KEY_INVALID") || error.toString().includes("400")) {
+        return {
+            text: language === 'es' 
+                ? "❌ **Error 400:** La llave de API que configuraste en Vercel es **inválida**. Por favor, revísala en Google AI Studio y vuelve a pegarla en Vercel." 
+                : "❌ **Error 400:** The API key configured in Vercel is **invalid**. Please check it in Google AI Studio and update it in Vercel.",
+            sources: []
+        };
+    }
+
     return {
       text: language === 'es' 
-        ? "Lo siento, la señal en las montañas está débil o la clave de API es inválida. ¿Podrías intentar de nuevo?" 
-        : "Sorry, the mountain signal is weak or the API Key is invalid. Could you try again?",
+        ? "Lo siento, la señal en las montañas está débil. ¿Podrías intentar de nuevo?" 
+        : "Sorry, the mountain signal is weak. Could you try again?",
       sources: []
     };
   }
