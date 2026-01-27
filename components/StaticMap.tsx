@@ -2,7 +2,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Business, BusinessCategory } from '../types';
 import { useNavigate } from 'react-router-dom';
-import { useTranslations } from '../hooks/useTranslations';
 
 interface InteractiveMapProps {
     imageUrl?: string;
@@ -66,36 +65,49 @@ export default function StaticMap({
         return { lat, lng };
     };
 
+    // Función de zoom mejorada: Zoom hacia el centro del contenedor
+    const handleZoom = useCallback((delta: number) => {
+        if (!mapRef.current) return;
+        
+        const container = mapRef.current.getBoundingClientRect();
+        const centerX = container.width / 2;
+        const centerY = container.height / 2;
+
+        setTransform(prev => {
+            const newScale = Math.min(Math.max(0.2, prev.scale * delta), 8);
+            
+            // Calculamos cuánto se desplaza el punto central bajo el nuevo zoom
+            const ratio = newScale / prev.scale;
+            const newX = centerX - (centerX - prev.x) * ratio;
+            const newY = centerY - (centerY - prev.y) * ratio;
+
+            return { scale: newScale, x: newX, y: newY };
+        });
+    }, []);
+
     const centerOnCoords = useCallback((lat: number, lng: number, zoom = 1.2) => {
         if (!mapRef.current) return;
-        const container = mapRef.current;
-        const { width: cw, height: ch } = container.getBoundingClientRect();
+        const container = mapRef.current.getBoundingClientRect();
         const { x, y } = latLngToPixels(lat, lng);
         
-        const newScale = zoom;
         setTransform({
-            scale: newScale,
-            x: (cw / 2) - (x * newScale),
-            y: (ch / 2) - (y * newScale)
+            scale: zoom,
+            x: (container.width / 2) - (x * zoom),
+            y: (container.height / 2) - (y * zoom)
         });
     }, []);
 
     const setInitialView = useCallback(() => {
         if (!mapRef.current) return;
-        const container = mapRef.current;
-        const { width: cw, height: ch } = container.getBoundingClientRect();
-        if (cw === 0 || ch === 0) return;
+        const container = mapRef.current.getBoundingClientRect();
+        if (container.width === 0 || container.height === 0) return;
 
-        // Si solo hay un negocio (Cumbre), centrar directamente en él
-        if (businesses.length === 1) {
-            centerOnCoords(businesses[0].lat, businesses[0].lng, 1.4);
-        } else {
-            const initialScale = Math.min(cw, ch) / 800; 
-            const initialX = (cw - VIRTUAL_WIDTH * initialScale) / 2;
-            const initialY = (ch - VIRTUAL_HEIGHT * initialScale) / 2;
-            setTransform({ scale: initialScale, x: initialX, y: initialY });
-        }
-    }, [businesses, centerOnCoords]);
+        // Vista inicial balanceada
+        const initialScale = Math.min(container.width, container.height) / 1000;
+        const initialX = (container.width - VIRTUAL_WIDTH * initialScale) / 2;
+        const initialY = (container.height - VIRTUAL_HEIGHT * initialScale) / 2;
+        setTransform({ scale: initialScale, x: initialX, y: initialY });
+    }, []);
 
     useEffect(() => {
         setInitialView();
@@ -106,27 +118,28 @@ export default function StaticMap({
                 { enableHighAccuracy: true }
             );
         }
-        window.addEventListener('resize', setInitialView);
-        return () => window.removeEventListener('resize', setInitialView);
     }, [setInitialView]);
 
-    const handleGlobalMove = (e: MouseEvent | TouchEvent) => {
+    const handleGlobalMove = useCallback((e: MouseEvent | TouchEvent) => {
         const isTouch = 'touches' in e;
+        const clientX = isTouch ? e.touches[0].clientX : e.clientX;
+        const clientY = isTouch ? e.touches[0].clientY : e.clientY;
+
+        // Manejo de Pinch-to-zoom (dos dedos)
         if (isTouch && e.touches.length === 2) {
-            const touch1 = e.touches[0];
-            const touch2 = e.touches[1];
-            const dist = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
+            const t1 = e.touches[0];
+            const t2 = e.touches[1];
+            const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+            
             if (lastTouchDist.current !== null) {
                 const delta = dist / lastTouchDist.current;
-                setTransform(prev => ({ ...prev, scale: Math.min(Math.max(0.1, prev.scale * delta), 15) }));
+                handleZoom(delta);
             }
             lastTouchDist.current = dist;
             return;
         }
 
-        const clientX = isTouch ? e.touches[0].clientX : e.clientX;
-        const clientY = isTouch ? e.touches[0].clientY : e.clientY;
-
+        // Mover negocio en modo edición
         if (draggedBusinessId && isEditable && onBusinessMove && mapRef.current) {
             const rect = mapRef.current.getBoundingClientRect();
             const contentX = (clientX - rect.left - transform.x) / transform.scale;
@@ -136,19 +149,20 @@ export default function StaticMap({
             return;
         }
 
+        // Desplazamiento manual (Panning)
         if (isPanning.current) {
             const dx = clientX - lastPos.current.x;
             const dy = clientY - lastPos.current.y;
             setTransform(prev => ({ ...prev, x: prev.x + dx, y: prev.y + dy }));
             lastPos.current = { x: clientX, y: clientY };
         }
-    };
+    }, [draggedBusinessId, isEditable, transform, onBusinessMove, handleZoom]);
 
-    const handleGlobalUp = () => {
+    const handleGlobalUp = useCallback(() => {
         isPanning.current = false;
         setDraggedBusinessId(null);
         lastTouchDist.current = null;
-    };
+    }, []);
 
     useEffect(() => {
         window.addEventListener('mousemove', handleGlobalMove);
@@ -161,7 +175,7 @@ export default function StaticMap({
             window.removeEventListener('touchmove', handleGlobalMove);
             window.removeEventListener('touchend', handleGlobalUp);
         };
-    }, [draggedBusinessId, isEditable, transform]);
+    }, [handleGlobalMove, handleGlobalUp]);
 
     const handleMarkerClick = (e: React.MouseEvent | React.TouchEvent, business: Business) => {
         e.stopPropagation();
@@ -169,67 +183,78 @@ export default function StaticMap({
             setDraggedBusinessId(business.id);
         } else {
             setActiveBusiness(business);
-            centerOnCoords(business.lat, business.lng, Math.max(transform.scale, 1.4));
+            centerOnCoords(business.lat, business.lng, Math.max(transform.scale, 1.5));
         }
     };
 
     return (
         <div
             ref={mapRef}
-            className="w-full h-full overflow-hidden relative bg-[#F8FAFC] select-none touch-none"
+            className="w-full h-full overflow-hidden relative bg-[#050505] select-none touch-none"
             onWheel={(e) => {
                 const delta = e.deltaY < 0 ? 1.1 : 0.9;
-                setTransform(prev => ({ ...prev, scale: Math.min(Math.max(0.1, prev.scale * delta), 15) }));
+                handleZoom(delta);
             }}
-            onMouseDown={(e) => { isPanning.current = true; lastPos.current = { x: e.clientX, y: e.clientY }; }}
-            onTouchStart={(e) => { isPanning.current = true; lastPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }; }}
+            onMouseDown={(e) => { 
+                isPanning.current = true; 
+                lastPos.current = { x: e.clientX, y: e.clientY }; 
+            }}
+            onTouchStart={(e) => { 
+                isPanning.current = true; 
+                lastPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }; 
+            }}
         >
             <style>
                 {`
                 .user-pulse {
-                    width: 22px;
-                    height: 22px;
-                    background: #3b82f6;
+                    width: 24px;
+                    height: 24px;
+                    background: #39FF14;
                     border: 4px solid white;
                     border-radius: 50%;
                     position: relative;
-                    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
+                    box-shadow: 0 0 20px rgba(57, 255, 20, 0.6);
                 }
                 .user-pulse::after {
                     content: '';
                     position: absolute;
-                    inset: -12px;
+                    inset: -15px;
                     border-radius: 50%;
-                    background: #3b82f6;
+                    background: #39FF14;
                     opacity: 0.3;
                     animation: pulse-out 2.5s infinite;
                 }
                 @keyframes pulse-out {
-                    0% { transform: scale(0.5); opacity: 0.6; }
-                    100% { transform: scale(3); opacity: 0; }
+                    0% { transform: scale(0.5); opacity: 0.8; }
+                    100% { transform: scale(4); opacity: 0; }
                 }
-                .camera-transition {
-                    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+                .map-transition {
+                    transition: transform 0.1s linear;
                 }
                 .marker-label {
-                    text-shadow: 0 1px 4px rgba(0,0,0,0.1);
+                    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
                 }
                 `}
             </style>
 
             <div
-                className="relative origin-top-left will-change-transform camera-transition"
+                className="relative origin-top-left will-change-transform map-transition"
                 style={{ 
                     transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale})`,
                     width: `${VIRTUAL_WIDTH}px`,
                     height: `${VIRTUAL_HEIGHT}px`,
                 }}
             >
-                <img src={imageUrl} className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-90" alt="Terrain Map" />
+                <img 
+                    src={imageUrl} 
+                    className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-90" 
+                    alt="Terrain Map" 
+                    onLoad={setInitialView}
+                />
 
                 {/* Marcador de Usuario */}
                 {userPos && (
-                    <div className="absolute z-50 transition-all duration-1000" style={{ 
+                    <div className="absolute z-50" style={{ 
                         left: `${latLngToPixels(userPos.lat, userPos.lng).x}px`, 
                         top: `${latLngToPixels(userPos.lat, userPos.lng).y}px`,
                         transform: 'translate(-50%, -50%)'
@@ -246,27 +271,27 @@ export default function StaticMap({
                     return (
                         <div 
                             key={business.id}
-                            className={`absolute flex items-center justify-center transition-all duration-300 ${isActive ? 'z-[100]' : 'z-10'}`}
+                            className={`absolute flex items-center justify-center ${isActive ? 'z-[100]' : 'z-10'}`}
                             style={{ left: `${x}px`, top: `${y}px`, transform: 'translate(-50%, -100%)' }}
                         >
                             <div 
                                 onClick={(e) => handleMarkerClick(e, business)}
                                 className={`
                                     relative cursor-pointer transition-all duration-300 flex flex-col items-center
-                                    ${isActive ? 'scale-125' : 'scale-100'}
+                                    ${isActive ? 'scale-125' : 'scale-100 hover:scale-110'}
                                 `}
                             >
                                 <div className={`
-                                    w-12 h-12 rounded-2xl flex items-center justify-center border-[3px] border-white shadow-2xl
+                                    w-14 h-14 rounded-2xl flex items-center justify-center border-[4px] border-white shadow-2xl
                                     ${style.color} ${style.text} ring-4 ${style.ring}
-                                    hover:scale-110 active:scale-90 transition-transform
+                                    transition-transform
                                 `}>
-                                    <i className={`fas ${style.icon} text-lg`}></i>
+                                    <i className={`fas ${style.icon} text-xl`}></i>
                                 </div>
-                                <div className={`w-1.5 h-4 ${style.color} -mt-1.5 rounded-full shadow-lg border-x-[1.5px] border-white/30`}></div>
+                                <div className={`w-2 h-5 ${style.color} -mt-2 rounded-full shadow-lg border-x-[2px] border-white/40`}></div>
 
                                 {isActive && (
-                                    <div className="absolute top-16 bg-white/95 backdrop-blur-xl text-[#2A4D69] px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest whitespace-nowrap shadow-2xl border border-white marker-label">
+                                    <div className="absolute top-18 bg-white text-[#2A4D69] px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest whitespace-nowrap shadow-2xl border-2 border-[#2A4D69]/10 marker-label">
                                         {business.name}
                                     </div>
                                 )}
@@ -276,39 +301,36 @@ export default function StaticMap({
                 })}
             </div>
 
-            {/* Info Card - Estilo Ultra-Limpio */}
+            {/* Info Card */}
             {activeBusiness && (
                 <div className="absolute bottom-10 left-6 right-6 md:left-10 md:w-[420px] z-[100] animate-fadeIn">
-                    <div className="bg-white rounded-[3rem] shadow-[0_30px_90px_rgba(0,0,0,0.12)] overflow-hidden border border-slate-100/50">
-                        <div className="relative h-44">
+                    <div className="bg-white rounded-[3rem] shadow-[0_30px_90px_rgba(0,0,0,0.25)] overflow-hidden border border-slate-100">
+                        <div className="relative h-48">
                             <img src={activeBusiness.photos[0]} className="w-full h-full object-cover" alt={activeBusiness.name} />
                             <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
                             <button 
                                 onClick={(e) => { e.stopPropagation(); setActiveBusiness(null); }} 
-                                className="absolute top-6 right-6 w-11 h-11 bg-white/40 backdrop-blur-2xl rounded-full text-slate-800 flex items-center justify-center border border-white/40 hover:bg-white transition-all shadow-sm"
+                                className="absolute top-6 right-6 w-12 h-12 bg-white/60 backdrop-blur-xl rounded-full text-slate-800 flex items-center justify-center border border-white hover:bg-white transition-all shadow-lg"
                             >
                                 <i className="fas fa-times"></i>
                             </button>
                         </div>
-                        <div className="p-10 pt-0 -mt-8 relative z-10">
+                        <div className="p-10 pt-0 -mt-10 relative z-10">
                             <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-50">
-                                <span className="bg-[#2A4D69]/5 text-[#2A4D69] px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest">
+                                <span className="bg-[#2A4D69]/10 text-[#2A4D69] px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest mb-3 inline-block">
                                     {activeBusiness.category}
                                 </span>
-                                <h4 className="text-3xl font-black text-slate-800 uppercase italic tracking-tighter mt-4 leading-none">
+                                <h4 className="text-3xl font-black text-slate-900 uppercase italic tracking-tighter leading-none">
                                     {activeBusiness.name}
                                 </h4>
-                                <div className="flex items-center gap-3 text-slate-400 mt-5">
-                                    <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center">
-                                        <i className="fas fa-location-dot text-brand-orange text-xs"></i>
-                                    </div>
-                                    <p className="text-[11px] font-bold uppercase tracking-wider line-clamp-1">{activeBusiness.address}</p>
-                                </div>
+                                <p className="text-[11px] font-bold text-slate-400 mt-4 uppercase tracking-wider flex items-center gap-2">
+                                    <i className="fas fa-map-pin text-[#F58220]"></i> {activeBusiness.address}
+                                </p>
                                 <button 
                                     onClick={() => navigate(`/business/${activeBusiness.id}`)}
-                                    className="w-full mt-8 bg-[#2A4D69] text-white py-6 rounded-[1.8rem] font-black uppercase text-[11px] tracking-[0.25em] shadow-[0_15px_40px_rgba(42,77,105,0.2)] hover:bg-slate-800 transition-all active:scale-95 flex items-center justify-center gap-3"
+                                    className="w-full mt-8 bg-[#2A4D69] text-white py-6 rounded-[1.8rem] font-black uppercase text-[11px] tracking-[0.2em] shadow-xl hover:bg-slate-800 transition-all active:scale-95 flex items-center justify-center gap-3"
                                 >
-                                    Visitar Perfil <i className="fas fa-arrow-right"></i>
+                                    Ver Detalles <i className="fas fa-arrow-right"></i>
                                 </button>
                             </div>
                         </div>
@@ -316,34 +338,34 @@ export default function StaticMap({
                 </div>
             )}
 
-            {/* Controls - Floating UI */}
+            {/* Controls */}
             <div className="absolute top-10 right-6 flex flex-col gap-4 z-50">
-                <div className="flex flex-col bg-white/80 backdrop-blur-xl rounded-[1.8rem] shadow-2xl border border-white p-1.5 gap-1">
+                <div className="flex flex-col bg-white/90 backdrop-blur-2xl rounded-[2rem] shadow-2xl border border-white/20 p-2 gap-2">
                     <button 
-                        onClick={() => setTransform(prev => ({...prev, scale: Math.min(prev.scale * 1.4, 15)}))} 
-                        className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#2A4D69] hover:bg-slate-50 transition-all border border-slate-100"
+                        onClick={() => handleZoom(1.4)} 
+                        className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#2A4D69] hover:bg-[#39FF14] hover:text-black transition-all border border-slate-100 shadow-sm active:scale-90"
                     >
                         <i className="fas fa-plus"></i>
                     </button>
                     <button 
-                        onClick={() => setTransform(prev => ({...prev, scale: Math.max(prev.scale / 1.4, 0.1)}))} 
-                        className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#2A4D69] hover:bg-slate-50 transition-all border border-slate-100"
+                        onClick={() => handleZoom(0.7)} 
+                        className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#2A4D69] hover:bg-[#39FF14] hover:text-black transition-all border border-slate-100 shadow-sm active:scale-90"
                     >
                         <i className="fas fa-minus"></i>
                     </button>
                 </div>
                 <button 
                     onClick={() => {
-                        if (userPos) centerOnCoords(userPos.lat, userPos.lng, 1.5);
+                        if (userPos) centerOnCoords(userPos.lat, userPos.lng, 2);
                     }} 
-                    className="w-16 h-16 bg-blue-500 text-white rounded-[1.8rem] flex items-center justify-center shadow-[0_10px_30px_rgba(59,130,246,0.3)] hover:bg-blue-600 transition-all active:scale-90"
+                    className="w-16 h-16 bg-[#39FF14] text-black rounded-[2rem] flex items-center justify-center shadow-[0_10px_30px_rgba(57,255,20,0.3)] hover:scale-105 transition-all active:scale-90"
                     title="Mi ubicación"
                 >
                     <i className="fas fa-location-crosshairs text-xl"></i>
                 </button>
                 <button 
                     onClick={setInitialView} 
-                    className="w-16 h-16 bg-[#2A4D69] text-white rounded-[1.8rem] flex items-center justify-center shadow-[0_10px_30px_rgba(42,77,105,0.3)] hover:opacity-90 transition-all"
+                    className="w-16 h-16 bg-[#2A4D69] text-white rounded-[2rem] flex items-center justify-center shadow-xl hover:opacity-90 transition-all active:scale-90"
                     title="Restablecer vista"
                 >
                     <i className="fas fa-expand text-xl"></i>
