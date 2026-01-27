@@ -15,7 +15,7 @@ export const getAiResponse = async (
 ): Promise<AiResponse> => {
   try {
     // Inicialización directa según estándares senior
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: import.meta.env.API_KEY });
     
     const sponsored = businesses.filter(b => b.adLevel !== 'none' && b.status === 'approved');
     
