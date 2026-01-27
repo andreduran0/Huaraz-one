@@ -1,6 +1,7 @@
+
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Business, BusinessCategory, AdLevel } from '../types';
-import { Link } from 'react-router-dom';
+import { Business, BusinessCategory } from '../types';
+import { useNavigate } from 'react-router-dom';
 import { useTranslations } from '../hooks/useTranslations';
 
 interface InteractiveMapProps {
@@ -8,6 +9,7 @@ interface InteractiveMapProps {
     businesses: Business[];
     isEditable?: boolean;
     onBusinessMove?: (id: string, lat: number, lng: number) => void;
+    activeCategory?: string;
 }
 
 const MAP_BOUNDS = {
@@ -24,44 +26,33 @@ const getCategoryStyles = (category: BusinessCategory) => {
     switch (category) {
         case BusinessCategory.RESTAURANT: 
         case BusinessCategory.POLLERIA: 
-            return { icon: 'fa-utensils', color: 'bg-brand-orange', border: 'border-orange-200' };
+            return { icon: 'fa-utensils', color: 'bg-[#F58220]', text: 'text-white', ring: 'ring-orange-200' };
         case BusinessCategory.HOTEL: 
-            return { icon: 'fa-bed', color: 'bg-brand-blue', border: 'border-blue-200' };
-        // Fixed typo: TOURIT_SPOT -> TOURIST_SPOT
+            return { icon: 'fa-bed', color: 'bg-[#2A4D69]', text: 'text-white', ring: 'ring-blue-200' };
         case BusinessCategory.TOURIST_SPOT: 
-            return { icon: 'fa-camera-retro', color: 'bg-emerald-500', border: 'border-emerald-200' };
+            return { icon: 'fa-mountain-sun', color: 'bg-emerald-600', text: 'text-white', ring: 'ring-emerald-200' };
         default: 
-            return { icon: 'fa-map-marker-alt', color: 'bg-brand-dark-blue', border: 'border-slate-300' };
+            return { icon: 'fa-location-dot', color: 'bg-slate-600', text: 'text-white', ring: 'ring-slate-200' };
     }
 };
 
-export default function StaticMap({ businesses, isEditable, onBusinessMove, imageUrl = "https://i.imgur.com/uweRYKK.jpeg" }: InteractiveMapProps) {
-    const t = useTranslations();
+export default function StaticMap({ 
+    businesses, 
+    isEditable, 
+    onBusinessMove, 
+    activeCategory = 'all',
+    imageUrl = "https://i.imgur.com/uweRYKK.jpeg" 
+}: InteractiveMapProps) {
+    const navigate = useNavigate();
     const [transform, setTransform] = useState({ scale: 1, x: 0, y: 0 });
     const [activeBusiness, setActiveBusiness] = useState<Business | null>(null);
+    const [userPos, setUserPos] = useState<{lat: number, lng: number} | null>(null);
     const [draggedBusinessId, setDraggedBusinessId] = useState<string | null>(null);
-    const [filter, setFilter] = useState<string>('all');
     
     const mapRef = useRef<HTMLDivElement>(null);
     const isPanning = useRef(false);
     const lastPos = useRef({ x: 0, y: 0 });
     const lastTouchDist = useRef<number | null>(null);
-
-    const setInitialView = useCallback(() => {
-        if (!mapRef.current) return;
-        const container = mapRef.current;
-        const { width: containerWidth, height: containerHeight } = container.getBoundingClientRect();
-        if (containerWidth === 0 || containerHeight === 0) return;
-
-        const initialScale = Math.min(containerWidth, containerHeight) / 1000; 
-        const initialX = (containerWidth - VIRTUAL_WIDTH * initialScale) / 2;
-        const initialY = (containerHeight - VIRTUAL_HEIGHT * initialScale) / 2;
-        setTransform({ scale: initialScale, x: initialX, y: initialY });
-    }, []);
-
-    useEffect(() => {
-        setInitialView();
-    }, [setInitialView]);
 
     const latLngToPixels = (lat: number, lng: number) => {
         const x = ((lng - MAP_BOUNDS.left) / (MAP_BOUNDS.right - MAP_BOUNDS.left)) * VIRTUAL_WIDTH;
@@ -75,23 +66,59 @@ export default function StaticMap({ businesses, isEditable, onBusinessMove, imag
         return { lat, lng };
     };
 
+    const centerOnCoords = useCallback((lat: number, lng: number, zoom = 1.2) => {
+        if (!mapRef.current) return;
+        const container = mapRef.current;
+        const { width: cw, height: ch } = container.getBoundingClientRect();
+        const { x, y } = latLngToPixels(lat, lng);
+        
+        const newScale = zoom;
+        setTransform({
+            scale: newScale,
+            x: (cw / 2) - (x * newScale),
+            y: (ch / 2) - (y * newScale)
+        });
+    }, []);
+
+    const setInitialView = useCallback(() => {
+        if (!mapRef.current) return;
+        const container = mapRef.current;
+        const { width: cw, height: ch } = container.getBoundingClientRect();
+        if (cw === 0 || ch === 0) return;
+
+        // Si solo hay un negocio (Cumbre), centrar directamente en él
+        if (businesses.length === 1) {
+            centerOnCoords(businesses[0].lat, businesses[0].lng, 1.4);
+        } else {
+            const initialScale = Math.min(cw, ch) / 800; 
+            const initialX = (cw - VIRTUAL_WIDTH * initialScale) / 2;
+            const initialY = (ch - VIRTUAL_HEIGHT * initialScale) / 2;
+            setTransform({ scale: initialScale, x: initialX, y: initialY });
+        }
+    }, [businesses, centerOnCoords]);
+
+    useEffect(() => {
+        setInitialView();
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => setUserPos({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+                null,
+                { enableHighAccuracy: true }
+            );
+        }
+        window.addEventListener('resize', setInitialView);
+        return () => window.removeEventListener('resize', setInitialView);
+    }, [setInitialView]);
+
     const handleGlobalMove = (e: MouseEvent | TouchEvent) => {
         const isTouch = 'touches' in e;
-        
         if (isTouch && e.touches.length === 2) {
             const touch1 = e.touches[0];
             const touch2 = e.touches[1];
             const dist = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
-            
             if (lastTouchDist.current !== null) {
                 const delta = dist / lastTouchDist.current;
-                const newScale = Math.min(Math.max(0.1, transform.scale * delta), 10);
-                const rect = mapRef.current!.getBoundingClientRect();
-                const midX = (touch1.clientX + touch2.clientX) / 2 - rect.left;
-                const midY = (touch1.clientY + touch2.clientY) / 2 - rect.top;
-                const newX = midX - (midX - transform.x) * (newScale / transform.scale);
-                const newY = midY - (midY - transform.y) * (newScale / transform.scale);
-                setTransform({ scale: newScale, x: newX, y: newY });
+                setTransform(prev => ({ ...prev, scale: Math.min(Math.max(0.1, prev.scale * delta), 15) }));
             }
             lastTouchDist.current = dist;
             return;
@@ -136,160 +163,111 @@ export default function StaticMap({ businesses, isEditable, onBusinessMove, imag
         };
     }, [draggedBusinessId, isEditable, transform]);
 
-    const handleMarkerDown = (e: React.MouseEvent | React.TouchEvent, id: string) => {
+    const handleMarkerClick = (e: React.MouseEvent | React.TouchEvent, business: Business) => {
         e.stopPropagation();
         if (isEditable) {
-            setDraggedBusinessId(id);
-            setActiveBusiness(null);
+            setDraggedBusinessId(business.id);
         } else {
-            const business = businesses.find(b => b.id === id);
-            if (business) {
-                setActiveBusiness(business);
-            }
+            setActiveBusiness(business);
+            centerOnCoords(business.lat, business.lng, Math.max(transform.scale, 1.4));
         }
     };
-
-    const handleMapDown = (e: React.MouseEvent | React.TouchEvent) => {
-        const isTouch = 'touches' in e;
-        if (isTouch && e.touches.length === 2) return;
-
-        const clientX = isTouch ? e.touches[0].clientX : e.clientX;
-        const clientY = isTouch ? e.touches[0].clientY : e.clientY;
-        isPanning.current = true;
-        lastPos.current = { x: clientX, y: clientY };
-        
-        if (!isEditable) setActiveBusiness(null);
-    };
-
-    const handleWheel = (e: React.WheelEvent) => {
-        e.preventDefault();
-        const scaleFactor = 1.1;
-        const newScale = e.deltaY < 0 ? transform.scale * scaleFactor : transform.scale / scaleFactor;
-        const clampedScale = Math.min(Math.max(0.1, newScale), 10); 
-        
-        if (mapRef.current) {
-            const rect = mapRef.current.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
-            const newX = mouseX - (mouseX - transform.x) * (clampedScale / transform.scale);
-            const newY = mouseY - (mouseY - transform.y) * (clampedScale / transform.scale);
-            setTransform({ scale: clampedScale, x: newX, y: newY });
-        }
-    };
-
-    const filteredBusinesses = filter === 'all' 
-        ? businesses 
-        : businesses.filter(b => b.category === filter);
 
     return (
         <div
             ref={mapRef}
-            className={`w-full h-full overflow-hidden relative bg-[#f1f5f9] dark:bg-gray-950 select-none touch-none ${isEditable ? 'cursor-crosshair' : 'cursor-grab active:cursor-grabbing'}`}
-            onWheel={handleWheel}
-            onMouseDown={handleMapDown}
-            onTouchStart={handleMapDown}
+            className="w-full h-full overflow-hidden relative bg-[#F8FAFC] select-none touch-none"
+            onWheel={(e) => {
+                const delta = e.deltaY < 0 ? 1.1 : 0.9;
+                setTransform(prev => ({ ...prev, scale: Math.min(Math.max(0.1, prev.scale * delta), 15) }));
+            }}
+            onMouseDown={(e) => { isPanning.current = true; lastPos.current = { x: e.clientX, y: e.clientY }; }}
+            onTouchStart={(e) => { isPanning.current = true; lastPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }; }}
         >
             <style>
                 {`
-                @keyframes marker-appear {
-                    0% { transform: translate(-50%, -80%) scale(0.5); opacity: 0; }
-                    60% { transform: translate(-50%, -105%) scale(1.1); opacity: 1; }
-                    100% { transform: translate(-50%, -100%) scale(1); opacity: 1; }
+                .user-pulse {
+                    width: 22px;
+                    height: 22px;
+                    background: #3b82f6;
+                    border: 4px solid white;
+                    border-radius: 50%;
+                    position: relative;
+                    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
                 }
-                .marker-animate { animation: marker-appear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-                
-                @keyframes bounce-small {
-                    0%, 100% { transform: translateY(0); }
-                    50% { transform: translateY(-5px); }
-                }
-                .marker-hover:hover { animation: bounce-small 0.6s ease infinite; }
-
-                @keyframes ripple {
-                    0% { transform: scale(1); opacity: 0.4; }
-                    100% { transform: scale(2.5); opacity: 0; }
-                }
-                .marker-ripple::after {
+                .user-pulse::after {
                     content: '';
                     position: absolute;
-                    inset: 0;
-                    border-radius: 9999px;
-                    border: 4px solid currentColor;
-                    animation: ripple 2s infinite;
+                    inset: -12px;
+                    border-radius: 50%;
+                    background: #3b82f6;
+                    opacity: 0.3;
+                    animation: pulse-out 2.5s infinite;
+                }
+                @keyframes pulse-out {
+                    0% { transform: scale(0.5); opacity: 0.6; }
+                    100% { transform: scale(3); opacity: 0; }
+                }
+                .camera-transition {
+                    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+                }
+                .marker-label {
+                    text-shadow: 0 1px 4px rgba(0,0,0,0.1);
                 }
                 `}
             </style>
-            
+
             <div
-                className="relative origin-top-left will-change-transform"
+                className="relative origin-top-left will-change-transform camera-transition"
                 style={{ 
                     transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale})`,
                     width: `${VIRTUAL_WIDTH}px`,
                     height: `${VIRTUAL_HEIGHT}px`,
                 }}
             >
-                {/* Background Map Image with nicer tint */}
-                <img 
-                    src={imageUrl} 
-                    className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-1000" 
-                    alt="Huaraz Map"
-                    style={{ filter: 'contrast(1.05) saturate(1.1)' }}
-                />
+                <img src={imageUrl} className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-90" alt="Terrain Map" />
 
-                {filteredBusinesses.map((business) => {
+                {/* Marcador de Usuario */}
+                {userPos && (
+                    <div className="absolute z-50 transition-all duration-1000" style={{ 
+                        left: `${latLngToPixels(userPos.lat, userPos.lng).x}px`, 
+                        top: `${latLngToPixels(userPos.lat, userPos.lng).y}px`,
+                        transform: 'translate(-50%, -50%)'
+                    }}>
+                        <div className="user-pulse"></div>
+                    </div>
+                )}
+
+                {businesses.map((business) => {
                     const { x, y } = latLngToPixels(business.lat, business.lng);
                     const isActive = activeBusiness?.id === business.id;
-                    const isDraggingThis = draggedBusinessId === business.id;
                     const style = getCategoryStyles(business.category);
-                    const isPremium = business.adLevel === AdLevel.PREMIUM;
-                    const isCumbre = business.id === '1';
                     
                     return (
                         <div 
                             key={business.id}
-                            className={`absolute marker-animate ${isActive || isDraggingThis ? 'z-[100]' : (isPremium ? 'z-40' : 'z-10')}`}
+                            className={`absolute flex items-center justify-center transition-all duration-300 ${isActive ? 'z-[100]' : 'z-10'}`}
                             style={{ left: `${x}px`, top: `${y}px`, transform: 'translate(-50%, -100%)' }}
                         >
-                            {/* Interactive Zone */}
                             <div 
-                                className="absolute inset-x-[-20px] top-[-60px] bottom-0 cursor-pointer z-[110]" 
-                                onMouseDown={(e) => handleMarkerDown(e, business.id)}
-                                onTouchStart={(e) => handleMarkerDown(e, business.id)}
-                            />
-
-                            <div className={`relative flex flex-col items-center marker-hover transition-transform duration-300 ${isActive ? 'scale-125' : ''}`}>
-                                
-                                {/* Pin Body */}
+                                onClick={(e) => handleMarkerClick(e, business)}
+                                className={`
+                                    relative cursor-pointer transition-all duration-300 flex flex-col items-center
+                                    ${isActive ? 'scale-125' : 'scale-100'}
+                                `}
+                            >
                                 <div className={`
-                                    relative w-14 h-14 rounded-full flex items-center justify-center shadow-2xl border-4 border-white
-                                    ${style.color} text-white transition-all
-                                    ${isCumbre ? 'w-20 h-20 marker-ripple ring-8 ring-brand-orange/20' : ''}
+                                    w-12 h-12 rounded-2xl flex items-center justify-center border-[3px] border-white shadow-2xl
+                                    ${style.color} ${style.text} ring-4 ${style.ring}
+                                    hover:scale-110 active:scale-90 transition-transform
                                 `}>
-                                    <i className={`fas ${style.icon} ${isCumbre ? 'text-3xl' : 'text-xl'}`}></i>
-                                    
-                                    {/* Premium Star */}
-                                    {isPremium && (
-                                        <div className="absolute -top-1 -right-1 bg-brand-accent w-6 h-6 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
-                                            <i className="fas fa-star text-brand-dark-blue text-[8px]"></i>
-                                        </div>
-                                    )}
+                                    <i className={`fas ${style.icon} text-lg`}></i>
                                 </div>
+                                <div className={`w-1.5 h-4 ${style.color} -mt-1.5 rounded-full shadow-lg border-x-[1.5px] border-white/30`}></div>
 
-                                {/* Pin Tail */}
-                                <div className={`w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[12px] -mt-1 shadow-xl
-                                    ${style.color === 'bg-brand-orange' ? 'border-t-brand-orange' : 
-                                      style.color === 'bg-brand-blue' ? 'border-t-brand-blue' : 
-                                      style.color === 'bg-emerald-500' ? 'border-t-emerald-500' : 'border-t-brand-dark-blue'}
-                                `}></div>
-
-                                {/* Shadow */}
-                                <div className="w-4 h-1 bg-black/20 rounded-full blur-[2px] mt-1"></div>
-                                
-                                {/* Mini Label for important places */}
-                                {(isPremium || transform.scale > 1.5) && (
-                                    <div className="absolute top-full mt-2 bg-white/95 dark:bg-gray-900/95 backdrop-blur px-3 py-1 rounded-lg shadow-xl border border-gray-100 dark:border-gray-800 pointer-events-none">
-                                        <p className="text-[10px] font-black uppercase tracking-widest whitespace-nowrap text-brand-dark-blue dark:text-white">
-                                            {business.name}
-                                        </p>
+                                {isActive && (
+                                    <div className="absolute top-16 bg-white/95 backdrop-blur-xl text-[#2A4D69] px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest whitespace-nowrap shadow-2xl border border-white marker-label">
+                                        {business.name}
                                     </div>
                                 )}
                             </div>
@@ -298,91 +276,79 @@ export default function StaticMap({ businesses, isEditable, onBusinessMove, imag
                 })}
             </div>
 
-            {/* FLOATING UI CONTROLS */}
-            <div className="absolute top-6 left-1/2 -translate-x-1/2 z-[100] w-full max-w-lg px-6">
-                <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-white/20 dark:border-gray-800 rounded-3xl shadow-2xl p-2 flex items-center gap-1 overflow-x-auto no-scrollbar">
-                    <button 
-                        onClick={() => setFilter('all')}
-                        className={`px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${filter === 'all' ? 'bg-brand-dark-blue text-white' : 'text-gray-500 hover:bg-gray-100'}`}
-                    >
-                        Todos
-                    </button>
-                    {Object.values(BusinessCategory).map(cat => (
-                         <button 
-                            key={cat}
-                            onClick={() => setFilter(cat)}
-                            className={`px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${filter === cat ? 'bg-brand-dark-blue text-white' : 'text-gray-500 hover:bg-gray-100'}`}
-                        >
-                            {t(`category.${cat}` as any)}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            {/* ZOOM CONTROLS - Modern glass look */}
-            <div className="absolute bottom-8 right-8 flex flex-col gap-3 z-[100]">
-                <button 
-                    onClick={() => setTransform(p => ({ ...p, scale: Math.min(p.scale * 1.5, 10) }))} 
-                    className="w-16 h-16 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-3xl shadow-2xl flex items-center justify-center text-brand-dark-blue dark:text-white border border-white/20 dark:border-gray-800 active:scale-90 transition-all"
-                >
-                    <i className="fas fa-plus"></i>
-                </button>
-                <button 
-                    onClick={() => setTransform(p => ({ ...p, scale: Math.max(p.scale / 1.5, 0.1) }))} 
-                    className="w-16 h-16 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-3xl shadow-2xl flex items-center justify-center text-brand-dark-blue dark:text-white border border-white/20 dark:border-gray-800 active:scale-90 transition-all"
-                >
-                    <i className="fas fa-minus"></i>
-                </button>
-                <button 
-                    onClick={setInitialView} 
-                    className="w-16 h-16 bg-brand-orange text-white rounded-3xl shadow-2xl flex items-center justify-center active:scale-90 transition-all shadow-orange-500/30"
-                >
-                    <i className="fas fa-expand-arrows-alt"></i>
-                </button>
-            </div>
-
-            {/* SELECTED BUSINESS CARD - Modern Ticket Slide-up */}
-            {activeBusiness && !isEditable && (
-                <div 
-                    className="absolute bottom-10 left-6 right-6 md:left-auto md:right-10 md:w-[450px] bg-white dark:bg-gray-900 rounded-[2.5rem] shadow-[0_30px_100px_rgba(0,0,0,0.4)] z-[150] animate-slideUp overflow-hidden border border-gray-100 dark:border-gray-800"
-                    onMouseDown={(e) => e.stopPropagation()}
-                    onTouchStart={(e) => e.stopPropagation()}
-                >
-                    <div className="flex h-44">
-                        <div className="w-1/3 h-full relative overflow-hidden group">
-                            <img src={activeBusiness.photos[0]} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={activeBusiness.name} />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                            {/* Fixed "Cannot find name 'isPremium'" by checking activeBusiness property directly */}
-                            {activeBusiness.adLevel === AdLevel.PREMIUM && (
-                                <div className="absolute top-3 left-3 bg-brand-orange text-white text-[8px] font-black px-3 py-1 rounded-full shadow-lg uppercase tracking-widest border border-white/20">Premium</div>
-                            )}
+            {/* Info Card - Estilo Ultra-Limpio */}
+            {activeBusiness && (
+                <div className="absolute bottom-10 left-6 right-6 md:left-10 md:w-[420px] z-[100] animate-fadeIn">
+                    <div className="bg-white rounded-[3rem] shadow-[0_30px_90px_rgba(0,0,0,0.12)] overflow-hidden border border-slate-100/50">
+                        <div className="relative h-44">
+                            <img src={activeBusiness.photos[0]} className="w-full h-full object-cover" alt={activeBusiness.name} />
+                            <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
+                            <button 
+                                onClick={(e) => { e.stopPropagation(); setActiveBusiness(null); }} 
+                                className="absolute top-6 right-6 w-11 h-11 bg-white/40 backdrop-blur-2xl rounded-full text-slate-800 flex items-center justify-center border border-white/40 hover:bg-white transition-all shadow-sm"
+                            >
+                                <i className="fas fa-times"></i>
+                            </button>
                         </div>
-                        <div className="flex-1 p-8 flex flex-col justify-between">
-                            <div className="flex justify-between items-start gap-4">
-                                <div className="min-w-0 flex-grow">
-                                    <p className="text-[9px] text-brand-orange font-black uppercase tracking-[0.3em] mb-1">
-                                        {t(`category.${activeBusiness.category}` as any)}
-                                    </p>
-                                    <h4 className="font-black text-2xl text-brand-dark-blue dark:text-white truncate uppercase italic tracking-tighter leading-none mb-2">{activeBusiness.name}</h4>
-                                    <p className="text-[10px] text-gray-400 truncate font-bold uppercase tracking-widest flex items-center gap-2">
-                                        <i className="fas fa-map-marker-alt"></i> {activeBusiness.address}
-                                    </p>
+                        <div className="p-10 pt-0 -mt-8 relative z-10">
+                            <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-50">
+                                <span className="bg-[#2A4D69]/5 text-[#2A4D69] px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest">
+                                    {activeBusiness.category}
+                                </span>
+                                <h4 className="text-3xl font-black text-slate-800 uppercase italic tracking-tighter mt-4 leading-none">
+                                    {activeBusiness.name}
+                                </h4>
+                                <div className="flex items-center gap-3 text-slate-400 mt-5">
+                                    <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center">
+                                        <i className="fas fa-location-dot text-brand-orange text-xs"></i>
+                                    </div>
+                                    <p className="text-[11px] font-bold uppercase tracking-wider line-clamp-1">{activeBusiness.address}</p>
                                 </div>
-                                <button onClick={() => setActiveBusiness(null)} className="text-gray-300 hover:text-red-500 transition-colors">
-                                    <i className="fas fa-times-circle text-2xl"></i>
+                                <button 
+                                    onClick={() => navigate(`/business/${activeBusiness.id}`)}
+                                    className="w-full mt-8 bg-[#2A4D69] text-white py-6 rounded-[1.8rem] font-black uppercase text-[11px] tracking-[0.25em] shadow-[0_15px_40px_rgba(42,77,105,0.2)] hover:bg-slate-800 transition-all active:scale-95 flex items-center justify-center gap-3"
+                                >
+                                    Visitar Perfil <i className="fas fa-arrow-right"></i>
                                 </button>
                             </div>
-                            <Link 
-                                to={`/business/${activeBusiness.id}`} 
-                                className="w-full bg-brand-dark-blue hover:bg-brand-blue text-white text-[11px] py-4 rounded-2xl transition-all font-black text-center mt-4 flex items-center justify-center gap-3 shadow-xl uppercase tracking-widest active:scale-95"
-                            >
-                                <span>Ver detalles</span>
-                                <i className="fas fa-arrow-right text-[9px]"></i>
-                            </Link>
                         </div>
                     </div>
                 </div>
             )}
+
+            {/* Controls - Floating UI */}
+            <div className="absolute top-10 right-6 flex flex-col gap-4 z-50">
+                <div className="flex flex-col bg-white/80 backdrop-blur-xl rounded-[1.8rem] shadow-2xl border border-white p-1.5 gap-1">
+                    <button 
+                        onClick={() => setTransform(prev => ({...prev, scale: Math.min(prev.scale * 1.4, 15)}))} 
+                        className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#2A4D69] hover:bg-slate-50 transition-all border border-slate-100"
+                    >
+                        <i className="fas fa-plus"></i>
+                    </button>
+                    <button 
+                        onClick={() => setTransform(prev => ({...prev, scale: Math.max(prev.scale / 1.4, 0.1)}))} 
+                        className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#2A4D69] hover:bg-slate-50 transition-all border border-slate-100"
+                    >
+                        <i className="fas fa-minus"></i>
+                    </button>
+                </div>
+                <button 
+                    onClick={() => {
+                        if (userPos) centerOnCoords(userPos.lat, userPos.lng, 1.5);
+                    }} 
+                    className="w-16 h-16 bg-blue-500 text-white rounded-[1.8rem] flex items-center justify-center shadow-[0_10px_30px_rgba(59,130,246,0.3)] hover:bg-blue-600 transition-all active:scale-90"
+                    title="Mi ubicación"
+                >
+                    <i className="fas fa-location-crosshairs text-xl"></i>
+                </button>
+                <button 
+                    onClick={setInitialView} 
+                    className="w-16 h-16 bg-[#2A4D69] text-white rounded-[1.8rem] flex items-center justify-center shadow-[0_10px_30px_rgba(42,77,105,0.3)] hover:opacity-90 transition-all"
+                    title="Restablecer vista"
+                >
+                    <i className="fas fa-expand text-xl"></i>
+                </button>
+            </div>
         </div>
     );
 }

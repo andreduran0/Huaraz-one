@@ -13,7 +13,6 @@ const NewsletterPage: React.FC = () => {
     e.preventDefault();
     setMessage('');
 
-    // 1. Validaciones básicas
     if (!name.trim()) {
       setStatus('error');
       setMessage(t('newsletter.nameRequired'));
@@ -28,119 +27,108 @@ const NewsletterPage: React.FC = () => {
     setStatus('loading');
 
     try {
-      // 2. URL DE ZAPIER (Webhook) - Actualizada con el nuevo hook proporcionado por el usuario
       const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/25999340/ug2eyij/';
       
-      console.log(`[Newsletter] Enviando datos a: ${zapierWebhookUrl}`);
-
-      // 3. Preparar los datos como FormData
-      // Esto es CRÍTICO para que Zapier lo lea correctamente sin errores de CORS
       const formData = new FormData();
       formData.append('name', name);
       formData.append('email', email);
-      formData.append('source', 'Huaraz Explorer PWA');
+      formData.append('source', 'Huaraz Explorer PWA - Free PDF Campaign');
       formData.append('timestamp', new Date().toISOString());
 
-      // 4. Enviar la petición
       await fetch(zapierWebhookUrl, {
         method: 'POST',
-        mode: 'no-cors', // Evita que el navegador bloquee la petición por seguridad y permita el envío a Zapier
+        mode: 'no-cors',
         body: formData,
       });
       
-      console.log('[Newsletter] Datos enviados exitosamente (blind request).');
-      
-      // 5. Manejar el éxito (Como es no-cors, asumimos éxito si no hay error de red)
       setStatus('success');
       setName('');
       setEmail('');
 
     } catch (error) {
-      console.error("[Newsletter] Error enviando lead:", error);
+      console.error("[Newsletter] Error:", error);
       setStatus('error');
       setMessage(t('newsletter.error'));
-      
-      setTimeout(() => {
-          if (status === 'error') {
-             setStatus('idle');
-             setMessage('');
-          }
-      }, 5000);
     }
   };
 
-  return (
-    <div className="max-w-2xl mx-auto mt-8 p-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg transition-colors duration-300">
-      <div className="text-center">
-        <i className={`fas ${status === 'success' ? 'fa-check-circle text-green-500' : 'fa-envelope-open-text text-teal-500'} text-5xl mb-4 transition-all`}></i>
-        
-        {status === 'success' ? (
-           <>
-             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('newsletter.successTitle')}</h1>
-             <p className="mt-2 text-gray-600 dark:text-gray-400">{t('newsletter.successMsg')}</p>
-           </>
-        ) : (
-           <>
-             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('newsletter.greeting')}</h1>
-             <p className="mt-2 text-gray-600 dark:text-gray-400">{t('newsletter.intro')}</p>
-           </>
-        )}
-      </div>
-      
-      {status === 'success' ? (
-        <div className="mt-8 text-center">
-          <button 
-              onClick={() => setStatus('idle')}
-              className="text-teal-600 dark:text-teal-400 font-bold hover:underline"
-          >
-              {t('newsletter.reset')}
-          </button>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
-          <input
-            type="text"
-            name="name"
-            autoComplete="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder={t('newsletter.namePlaceholder')}
-            disabled={status === 'loading'}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 transition-colors"
-          />
-          <input
-            type="email"
-            name="email"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={t('newsletter.emailPlaceholder')}
-            disabled={status === 'loading'}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 transition-colors"
-          />
-          
-          {message && status === 'error' && (
-            <div className="p-3 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg text-sm">
-                {message}
-            </div>
-          )}
+  const handleDownload = () => {
+    // Aquí iría la lógica de descarga, por ahora un mock
+    alert("Iniciando descarga de tu Guía PDF Exclusiva de Huaraz Explorer...");
+    // window.open('https://tu-enlace-al-pdf.com/guia.pdf', '_blank');
+  };
 
-          <button
-            type="submit"
-            disabled={status === 'loading'}
-            className={`bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition-all w-full shadow-md flex justify-center items-center ${status === 'loading' ? 'opacity-70 cursor-not-allowed' : ''}`}
-          >
-            {status === 'loading' ? (
-               <>
-                 <i className="fas fa-spinner fa-spin mr-2"></i> {t('newsletter.sending')}
-               </>
-            ) : (
-               t('newsletter.button')
-            )}
-          </button>
-        </form>
-      )}
-      <p className="text-xs text-gray-500 dark:text-gray-400 mt-6 text-center">{t('newsletter.privacy')}</p>
+  return (
+    <div className="min-h-[80vh] flex items-center justify-center px-4 font-['Plus_Jakarta_Sans']">
+      <div className="max-w-2xl w-full bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl p-10 md:p-16 border border-slate-100 dark:border-slate-800 text-center space-y-8 animate-fadeIn">
+        
+        <div className={`w-24 h-24 mx-auto rounded-3xl flex items-center justify-center text-3xl transition-all duration-500 ${status === 'success' ? 'bg-green-500 text-white shadow-xl rotate-12' : 'bg-brand-blue/10 text-brand-blue'}`}>
+          <i className={`fas ${status === 'success' ? 'fa-file-arrow-down' : 'fa-envelope-open-text'}`}></i>
+        </div>
+
+        {status === 'success' ? (
+           <div className="space-y-6">
+             <h1 className="text-4xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter leading-none">{t('newsletter.successTitle')}</h1>
+             <p className="text-slate-500 dark:text-slate-400 font-medium">{t('newsletter.successMsg')}</p>
+             
+             <button 
+                onClick={handleDownload}
+                className="w-full bg-brand-blue text-white py-6 rounded-2xl font-black uppercase text-sm tracking-widest shadow-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-3 active:scale-95"
+             >
+                <i className="fas fa-download"></i> Descargar PDF Ahora
+             </button>
+
+             <button 
+                onClick={() => setStatus('idle')}
+                className="text-slate-400 text-xs font-bold hover:underline"
+             >
+                {t('newsletter.reset')}
+             </button>
+           </div>
+        ) : (
+           <div className="space-y-6">
+             <h1 className="text-4xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter leading-none">{t('newsletter.greeting')}</h1>
+             <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+               Suscríbete a nuestro boletín semanal y recibe información sobre <strong>ciencia, tecnología, turismo y emprendimiento</strong>. ¡Y obtén tu guía PDF de regalo!
+             </p>
+
+             <form onSubmit={handleSubmit} className="space-y-4">
+                <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder={t('newsletter.namePlaceholder')}
+                    disabled={status === 'loading'}
+                    className="w-full p-5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all font-semibold"
+                />
+                <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder={t('newsletter.emailPlaceholder')}
+                    disabled={status === 'loading'}
+                    className="w-full p-5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all font-semibold"
+                />
+                
+                {message && status === 'error' && (
+                    <p className="text-red-500 text-xs font-black uppercase tracking-widest">{message}</p>
+                )}
+
+                <button
+                    type="submit"
+                    disabled={status === 'loading'}
+                    className="w-full bg-brand-blue text-white py-6 rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-3 active:scale-95"
+                >
+                    {status === 'loading' ? <i className="fas fa-spinner fa-spin"></i> : <><i className="fas fa-bolt"></i> {t('newsletter.button')}</>}
+                </button>
+             </form>
+           </div>
+        )}
+
+        <div className="pt-6 border-t border-slate-50 dark:border-slate-800">
+          <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.5em]">{t('newsletter.privacy')}</p>
+        </div>
+      </div>
     </div>
   );
 };
