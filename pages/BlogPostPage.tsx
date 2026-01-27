@@ -16,60 +16,83 @@ const BlogPostPage: React.FC = () => {
   useEffect(() => {
     if (post) {
       document.title = `${post.title} | Blog Huaraz Explorer`;
-      const metaDescription = document.querySelector('meta[name="description"]');
-      if (metaDescription) {
-        metaDescription.setAttribute('content', post.excerpt);
-      }
       window.scrollTo(0, 0);
     }
   }, [post]);
 
   if (!post) {
-    return <div className="p-20 text-center text-xl font-bold">Artículo no encontrado.</div>;
+    return (
+        <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center p-10 text-center">
+            <h1 className="text-4xl font-black text-[#39FF14] uppercase italic tracking-tighter mb-4">Artículo Perdido</h1>
+            <Link to="/blog" className="text-gray-500 font-black uppercase tracking-widest hover:text-white transition-colors">Volver al blog</Link>
+        </div>
+    );
   }
 
   return (
-    <div className="bg-white dark:bg-gray-900 min-h-screen pb-20">
-      <header className="w-full h-[50vh] relative">
+    <div className="bg-[#050505] min-h-screen pb-40 font-['Plus_Jakarta_Sans'] text-white">
+      
+      {/* 1. HERO HEADER */}
+      <header className="w-full h-[70vh] relative overflow-hidden">
         <img 
           src={post.image} 
           alt={post.title} 
-          className="w-full h-full object-cover" 
+          className="w-full h-full object-cover grayscale-[0.3]" 
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end">
-          <div className="container mx-auto px-4 pb-12">
-            <Link to="/blog" className="inline-flex items-center text-white/80 hover:text-white mb-4 text-sm font-bold bg-white/10 backdrop-blur-md px-4 py-2 rounded-full transition-all border border-white/10">
-                <i className="fas fa-arrow-left mr-2"></i> Volver al blog
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent"></div>
+        
+        <div className="absolute inset-0 bg-[#39FF14]/5 pointer-events-none"></div>
+
+        <div className="absolute inset-0 flex flex-col justify-end">
+          <div className="container mx-auto px-8 pb-20 max-w-5xl">
+            <Link to="/blog" className="inline-flex items-center gap-3 text-[#39FF14] mb-8 text-[10px] font-black uppercase tracking-[0.4em] bg-black/50 backdrop-blur-xl border border-[#39FF14]/30 px-6 py-3 rounded-full hover:bg-[#39FF14] hover:text-black transition-all shadow-[0_0_20px_rgba(57,255,20,0.2)]">
+                <i className="fas fa-chevron-left"></i> Volver al blog
             </Link>
-            <h1 className="text-3xl md:text-5xl font-extrabold text-white drop-shadow-2xl leading-tight max-w-4xl">
-              {post.title}
-            </h1>
+            <div className="space-y-4">
+                <div className="flex gap-4 items-center">
+                    <span className="bg-[#39FF14] text-black px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">{post.category}</span>
+                    <span className="text-gray-400 text-[9px] font-black uppercase tracking-widest">{post.date}</span>
+                </div>
+                <h1 className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter leading-none drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
+                  {post.title}
+                </h1>
+            </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 mt-8">
-        <div className="max-w-3xl mx-auto">
-          <div className="flex items-center gap-4 mb-8 pb-8 border-b dark:border-gray-800">
-            <div className="w-12 h-12 rounded-full bg-brand-dark-blue flex items-center justify-center text-white font-bold text-lg shadow-inner">
-                {post.author.charAt(0)}
-            </div>
-            <div>
-                <p className="font-bold text-gray-900 dark:text-white">{post.author}</p>
-                <div className="flex items-center gap-2 text-xs text-gray-500 uppercase font-bold tracking-widest">
-                    <time dateTime={post.date}>{post.date}</time>
-                    <span>•</span>
-                    <span><i className="far fa-clock mr-1"></i> {post.readTime}</span>
+      <div className="container mx-auto px-8 max-w-5xl -mt-10 relative z-10">
+        
+        <div className="max-w-4xl mx-auto">
+          
+          {/* 2. AUTHOR CARD - FLOATING GLASS */}
+          <div className="bg-[#0D0D0D]/80 backdrop-blur-2xl p-8 rounded-[2.5rem] border border-white/10 shadow-3xl mb-16 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="flex items-center gap-6">
+                <div className="w-16 h-16 rounded-2xl bg-[#39FF14] flex items-center justify-center text-black font-black text-2xl italic shadow-[0_0_20px_#39FF14]">
+                    {post.author.charAt(0)}
                 </div>
+                <div>
+                    <p className="text-2xl font-black text-white uppercase italic tracking-tighter leading-none mb-1">{post.author}</p>
+                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-[0.3em]">Editor Autorizado • Huaraz Explorer</p>
+                </div>
+            </div>
+            <div className="flex gap-3">
+                <button className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#39FF14] hover:bg-[#39FF14] hover:text-black transition-all">
+                    <i className="fas fa-share-nodes"></i>
+                </button>
+                <button className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#39FF14] hover:bg-[#39FF14] hover:text-black transition-all">
+                    <i className="fas fa-bookmark"></i>
+                </button>
             </div>
           </div>
 
+          {/* 3. VIDEO CONTENT */}
           {post.youtubeId && (
-            <div className="mb-10 animate-fadeIn">
-              <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-2xl border-4 border-white dark:border-gray-800 bg-black">
+            <div className="mb-20 animate-fadeIn group">
+              <div className="relative w-full aspect-video rounded-[3rem] overflow-hidden shadow-[0_0_60px_rgba(57,255,20,0.1)] border-2 border-[#39FF14]/20 bg-black group-hover:border-[#39FF14]/50 transition-all duration-700">
                 <iframe
-                  src={`https://www.youtube.com/embed/${post.youtubeId}?autoplay=0&rel=0`}
+                  src={`https://www.youtube.com/embed/${post.youtubeId}?autoplay=0&rel=0&modestbranding=1`}
                   title="YouTube video player"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -77,28 +100,39 @@ const BlogPostPage: React.FC = () => {
                   className="absolute inset-0 w-full h-full"
                 ></iframe>
               </div>
-              <p className="text-center text-xs text-gray-400 mt-3 font-bold uppercase tracking-widest">
-                <i className="fab fa-youtube text-red-500 mr-1"></i> Video cortesía de nuestro canal de YouTube
-              </p>
+              <div className="flex items-center justify-center gap-4 mt-6">
+                 <div className="h-px bg-white/5 flex-grow"></div>
+                 <p className="text-[9px] text-[#39FF14] font-black uppercase tracking-[0.4em] italic flex items-center gap-2">
+                    <i className="fab fa-youtube animate-pulse text-red-500"></i> Video Premium Activo
+                 </p>
+                 <div className="h-px bg-white/5 flex-grow"></div>
+              </div>
             </div>
           )}
 
-          <article className="prose prose-lg dark:prose-invert max-w-none prose-teal 
-            prose-headings:font-black prose-headings:tracking-tighter prose-headings:text-brand-dark-blue dark:prose-headings:text-brand-green
-            prose-p:text-gray-600 dark:prose-p:text-gray-300 prose-p:leading-relaxed">
+          {/* 4. MAIN ARTICLE CONTENT */}
+          <article className="prose prose-lg prose-invert max-w-none 
+            prose-headings:font-black prose-headings:uppercase prose-headings:italic prose-headings:tracking-tighter prose-headings:text-[#39FF14]
+            prose-p:text-gray-400 prose-p:leading-loose prose-p:font-medium
+            prose-strong:text-white prose-strong:font-black
+            prose-blockquote:border-[#39FF14] prose-blockquote:bg-white/5 prose-blockquote:rounded-3xl prose-blockquote:py-2
+            prose-li:text-gray-400 prose-li:font-medium
+            mb-24">
             <ReactMarkdown>{post.content}</ReactMarkdown>
           </article>
 
+          {/* 5. RELATED POSTS */}
           {relatedPosts.length > 0 && (
-            <div className="mt-20 pt-10 border-t dark:border-gray-800">
-                <h3 className="text-2xl font-black text-brand-dark-blue dark:text-white mb-6 uppercase tracking-tighter">También te puede interesar</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="mt-32 pt-16 border-t border-white/10">
+                <h3 className="text-4xl font-black text-white uppercase italic tracking-tighter mb-12">Más <span className="text-[#39FF14]">Historias</span></h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
                     {relatedPosts.map(rp => (
-                        <Link key={rp.id} to={`/blog/${rp.id}`} className="group block space-y-3">
-                            <div className="aspect-video rounded-2xl overflow-hidden relative">
-                                <img src={rp.image} alt={rp.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                        <Link key={rp.id} to={`/blog/${rp.id}`} className="group block space-y-6">
+                            <div className="aspect-[16/10] rounded-[2.5rem] overflow-hidden relative border border-white/5 shadow-xl group-hover:border-[#39FF14]/40 transition-all duration-500">
+                                <img src={rp.image} alt={rp.title} className="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                             </div>
-                            <h4 className="font-bold text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors leading-tight">
+                            <h4 className="text-2xl font-black text-gray-400 group-hover:text-[#39FF14] transition-colors leading-none uppercase italic tracking-tighter">
                                 {rp.title}
                             </h4>
                         </Link>
@@ -107,47 +141,55 @@ const BlogPostPage: React.FC = () => {
             </div>
           )}
           
-          <div className="mt-16 p-8 bg-gray-50 dark:bg-gray-800/50 rounded-3xl text-center border-2 border-dashed border-gray-200 dark:border-gray-700">
-            <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">¿Te gustó esta guía de Huaraz?</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">Cada semana publicamos nuevas rutas de trekking y consejos para evitar el soroche. ¡No te pierdas ninguna!</p>
-            <Link to="/newsletter" className="bg-brand-dark-blue text-white px-8 py-4 rounded-full font-bold shadow-lg hover:bg-brand-blue transition-all inline-flex items-center gap-2 active:scale-95">
-                <i className="fas fa-paper-plane"></i> Suscribirme Gratis
+          {/* 6. NEWSLETTER CTA - NEON STYLE */}
+          <div className="mt-24 p-12 bg-gradient-to-br from-[#0D0D0D] to-[#050505] rounded-[4rem] text-center border border-[#39FF14]/20 relative overflow-hidden shadow-3xl">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#39FF14]/10 blur-[100px] pointer-events-none"></div>
+            <h3 className="text-3xl font-black text-white uppercase italic tracking-tighter mb-4">¿Te inspiró esta <span className="text-[#39FF14]">guía?</span></h3>
+            <p className="text-gray-500 text-sm font-medium mb-12 max-w-sm mx-auto leading-relaxed">Suscríbete para recibir alertas de nuevas rutas y secretos de Huaraz antes que nadie.</p>
+            <Link to="/newsletter" className="bg-[#39FF14] text-black px-12 py-6 rounded-3xl font-black uppercase text-xs tracking-[0.2em] shadow-[0_15px_40px_rgba(57,255,20,0.3)] hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-3">
+                <i className="fas fa-bolt"></i> Suscribirme ahora
             </Link>
           </div>
 
-          <div className="mt-12 p-8 bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm">
-            <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-8 text-center">Nuestras Redes Oficiales</h4>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* 7. SOCIAL LINKS SECTION */}
+          <div className="mt-20 p-10 bg-[#0D0D0D] rounded-[3rem] border border-white/5">
+            <h4 className="text-[10px] font-black text-gray-700 uppercase tracking-[0.5em] mb-10 text-center">Protocolo de Conexión</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <a 
                 href={socialLinks.instagram} 
                 target="_blank" 
                 rel="noreferrer"
-                className="flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white rounded-2xl font-bold shadow-md hover:scale-[1.03] transition-all active:scale-95"
+                className="flex items-center justify-center gap-3 px-8 py-5 bg-white/5 border border-white/10 text-gray-400 rounded-3xl font-black uppercase text-[10px] tracking-widest hover:bg-gradient-to-tr hover:from-[#f9ce34] hover:via-[#ee2a7b] hover:to-[#6228d7] hover:text-white hover:border-transparent transition-all active:scale-95"
               >
-                <i className="fab fa-instagram text-xl"></i>
-                <span className="text-sm">Instagram</span>
+                <i className="fab fa-instagram text-lg"></i>
+                <span>Instagram</span>
               </a>
               <a 
                 href={socialLinks.tiktok} 
                 target="_blank" 
                 rel="noreferrer"
-                className="flex items-center justify-center gap-3 px-6 py-4 bg-black text-white rounded-2xl font-bold shadow-md hover:scale-[1.03] transition-all active:scale-95 border border-white/10"
+                className="flex items-center justify-center gap-3 px-8 py-5 bg-white/5 border border-white/10 text-gray-400 rounded-3xl font-black uppercase text-[10px] tracking-widest hover:bg-[#39FF14] hover:text-black hover:border-transparent transition-all active:scale-95"
               >
-                <i className="fab fa-tiktok text-xl"></i>
-                <span className="text-sm">TikTok</span>
+                <i className="fab fa-tiktok text-lg"></i>
+                <span>TikTok</span>
               </a>
               <a 
                 href={socialLinks.youtube} 
                 target="_blank" 
                 rel="noreferrer"
-                className="flex items-center justify-center gap-3 px-6 py-4 bg-[#FF0000] text-white rounded-2xl font-bold shadow-md hover:scale-[1.03] transition-all active:scale-95"
+                className="flex items-center justify-center gap-3 px-8 py-5 bg-white/5 border border-white/10 text-gray-400 rounded-3xl font-black uppercase text-[10px] tracking-widest hover:bg-[#FF0000] hover:text-white hover:border-transparent transition-all active:scale-95"
               >
-                <i className="fab fa-youtube text-xl"></i>
-                <span className="text-sm">YouTube</span>
+                <i className="fab fa-youtube text-lg"></i>
+                <span>YouTube</span>
               </a>
             </div>
           </div>
+
         </div>
+      </div>
+
+      <div className="py-24 text-center">
+         <p className="text-[10px] font-black text-gray-800 uppercase tracking-[0.5em] italic">Huaraz Explorer Network • Protocol v4.0</p>
       </div>
     </div>
   );

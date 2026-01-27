@@ -14,13 +14,13 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ images, children }) => {
 
     const interval = setInterval(() => {
       setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
-    }, 5000); // Change image every 5 seconds
+    }, 5000); // Cambia imagen cada 5 segundos
 
     return () => clearInterval(interval);
   }, [images.length]);
 
   return (
-    <div className="relative w-full h-full overflow-hidden rounded-lg shadow-xl">
+    <div className="relative w-full h-full overflow-hidden">
       {images.map((image, index) => (
         <img
           key={index}
@@ -32,6 +32,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ images, children }) => {
           draggable={false}
         />
       ))}
+      {/* Capa de contenido */}
       <div className="relative z-10 w-full h-full flex items-center justify-center">
         {children}
       </div>

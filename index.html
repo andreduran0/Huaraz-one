@@ -4,77 +4,50 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Huaraz Explorer | Guía Oficial</title>
     
-    <title>Huaraz Explorer | Guía Turística Digital</title>
-    <meta name="description" content="La guía más completa de Huaraz. Encuentra hoteles, restaurantes, tours, cupones de descuento y un asistente IA para tu viaje a la Cordillera Blanca." />
-    
-    <link rel="manifest" href="/manifest.json?v=4" />
-    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#2A4D69" />
-    <link rel="icon" href="https://i.imgur.com/Cax54U1.png?v=4" />
+    <link rel="icon" href="https://i.imgur.com/Cax54U1.png" />
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script>
-        // SHIM PARA COMPATIBILIDAD VITE + process.env
-        (function() {
-            window.process = window.process || {};
-            window.process.env = window.process.env || {};
-            
-            // Si el bundler inyecta variables en import.meta.env (Vite), las pasamos a process.env
-            try {
-                if (typeof import.meta !== 'undefined' && import.meta.env) {
-                    Object.keys(import.meta.env).forEach(key => {
-                        const newKey = key.replace('VITE_', '');
-                        window.process.env[newKey] = import.meta.env[key];
-                        // También mantenemos la original por si acaso
-                        window.process.env[key] = import.meta.env[key];
-                    });
-                }
-            } catch (e) {
-                // Silencioso si falla import.meta
-            }
-        })();
-
-        // Manejo de Tema (Dark/Light)
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
-
+        window.process = { env: { API_KEY: "" } };
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
                     colors: {
-                        "brand-green": "#13ec5b",
+                        "brand-blue": "#2A4D69",
                         "brand-orange": "#F58220",
-                        "brand-blue": "#00a8e8",
-                        "brand-dark-blue": "#2A4D69",
-                        "brand-accent": "#ffc107",
+                        "brand-green": "#10b981",
+                        "slate-bg": "#f8fafc"
                     },
                     borderRadius: {
-                        "DEFAULT": "0.5rem",
-                        "lg": "1rem",
-                        "xl": "1.5rem",
-                        "full": "9999px"
-                    },
+                        "xl": "1rem",
+                        "2xl": "1.5rem",
+                        "3xl": "2rem"
+                    }
                 },
             },
         }
     </script>
     <style>
-        body { -webkit-font-smoothing: antialiased; margin: 0; padding: 0; }
-        #root { min-height: 100vh; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            -webkit-font-smoothing: antialiased;
         }
-        .animate-fadeIn { animation: fadeIn 0.5s ease-out forwards; }
+        
+        .dark body { background-color: #020617; color: #f1f5f9; }
+
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
     <script type="importmap">
     {
@@ -91,7 +64,7 @@
     </script>
 <link rel="stylesheet" href="/index.css">
 </head>
-<body class="bg-[#f6f8f6] dark:bg-[#102216] text-[#111813] dark:text-[#f6f8f6]">
+<body>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
 </body>

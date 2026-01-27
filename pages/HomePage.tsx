@@ -2,23 +2,15 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import BusinessCard from '../components/BusinessCard';
-import { useTranslations } from '../hooks/useTranslations';
-import { Link } from 'react-router-dom';
 import HeroSlider from '../components/HeroSlider';
+import { useTranslations } from '../hooks/useTranslations';
+import { Link, useNavigate } from 'react-router-dom';
 import { BusinessCategory, AdLevel } from '../types';
 
-const FeatureItem: React.FC<{ icon: string; label: string; color: string }> = ({ icon, label, color }) => (
-  <div className="flex items-center gap-3 group">
-    <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white ${color} shadow-lg transform group-hover:rotate-12 transition-transform`}>
-      <i className={`fas ${icon} text-sm`}></i>
-    </div>
-    <span className="text-xs font-black text-gray-700 dark:text-gray-300 uppercase tracking-tight">{label}</span>
-  </div>
-);
-
 const HomePage: React.FC = () => {
-  const { businesses, heroImages, blogPosts } = useAppContext();
+  const { businesses, heroImages } = useAppContext();
   const t = useTranslations();
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
@@ -28,269 +20,232 @@ const HomePage: React.FC = () => {
     const matchesCategory = selectedCategory === 'all' || b.category === selectedCategory;
     return b.status === 'approved' && matchesSearch && matchesCategory;
   });
-  
-  const sponsored = filteredBusinesses.filter(b => b.adLevel === AdLevel.PREMIUM);
-  const others = filteredBusinesses.filter(b => b.adLevel !== AdLevel.PREMIUM);
-
-  const latestPosts = blogPosts.slice(0, 3);
-
-  const categories = [
-    { id: 'all', label: 'Todos', icon: 'fa-th-large' },
-    { id: BusinessCategory.RESTAURANT, label: t('category.restaurant'), icon: 'fa-utensils' },
-    { id: BusinessCategory.HOTEL, label: t('category.hotel'), icon: 'fa-bed' },
-    { id: BusinessCategory.TOURIST_SPOT, label: t('category.tourist_spot'), icon: 'fa-map-marked-alt' },
-    { id: BusinessCategory.POLLERIA, label: t('category.polleria'), icon: 'fa-drumstick-bite' },
-    { id: BusinessCategory.CEVICHERIA, label: t('category.cevicheria'), icon: 'fa-fish' },
-  ];
-
-  const highlights = [
-    { icon: 'fa-map-location-dot', label: 'Mapa Interactivo', color: 'bg-brand-blue' },
-    { icon: 'fa-ticket', label: 'Cuponera', color: 'bg-brand-orange' },
-    { icon: 'fa-robot', label: 'Asistente IA', color: 'bg-brand-dark-blue' },
-    { icon: 'fa-star', label: 'Negocios Patrocinados', color: 'bg-yellow-500' },
-    { icon: 'fa-coins', label: 'Token & Newsletter', color: 'bg-brand-green' },
-    { icon: 'fa-calendar-days', label: 'Calendario Festivo', color: 'bg-red-500' },
-  ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pb-20">
+    <div className="bg-slate-50 dark:bg-slate-950 min-h-screen pb-20 px-4 space-y-6 pt-6 font-['Plus_Jakarta_Sans'] relative">
       
-      {/* 1. HERO SECTION */}
-      <section className="relative h-[65vh] md:h-[85vh] w-full overflow-hidden">
+      {/* 1. HERO CARD DINÁMICO (Con Slider de imágenes) */}
+      <section className="relative h-80 rounded-[2.5rem] overflow-hidden shadow-xl">
         <HeroSlider images={heroImages}>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-gray-50 dark:to-gray-950 flex flex-col items-center justify-center text-center px-4">
-            <div className="max-w-4xl animate-fadeIn">
-              <h1 className="text-white text-5xl md:text-8xl font-black drop-shadow-2xl mb-6 tracking-tighter uppercase italic leading-none">
-                Huaraz <span className="text-brand-orange">Explorer</span>
-              </h1>
-              <p className="text-white text-lg md:text-2xl font-bold drop-shadow-lg opacity-95 mb-10 max-w-2xl mx-auto leading-tight">
-                {t('home.hero.subtitle')}
-              </p>
-              <div className="flex flex-wrap justify-center gap-5">
-                <Link to="/map" className="bg-brand-orange hover:bg-orange-600 text-white px-10 py-5 rounded-2xl font-black uppercase text-sm shadow-2xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
-                  {t('home.hero.cta.map')} <i className="fas fa-map-location-dot"></i>
-                </Link>
-                <Link to="/chat" className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border-2 border-white/20 px-10 py-5 rounded-2xl font-black uppercase text-sm transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
-                  {t('home.hero.cta.ai')} <i className="fas fa-comment-dots"></i>
-                </Link>
-              </div>
-            </div>
+          <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center p-6">
+            <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-2 drop-shadow-lg uppercase italic tracking-tighter">Bienvenido a Huaraz Explorer</h1>
+            <p className="text-xl text-white font-bold tracking-wide drop-shadow-md uppercase italic">Descubre, Come, Disfruta</p>
           </div>
         </HeroSlider>
       </section>
 
-      {/* 2. VALUE PROPOSITION */}
-      <section className="max-w-7xl mx-auto px-4 -mt-16 relative z-20">
-        <div className="bg-white dark:bg-gray-900 rounded-[3.5rem] shadow-2xl p-10 md:p-16 border border-gray-100 dark:border-gray-800">
-          <div className="flex flex-col lg:flex-row gap-16 items-center">
-            <div className="lg:w-1/2 space-y-8">
-              <div className="inline-flex items-center gap-2 bg-brand-orange/10 text-brand-orange text-[11px] font-black px-5 py-2 rounded-full uppercase tracking-[0.2em]">
-                <span className="w-2 h-2 rounded-full bg-brand-orange animate-pulse"></span>
-                {t('home.value.badge')}
-              </div>
-              <h2 className="text-4xl md:text-5xl font-black text-brand-dark-blue dark:text-white leading-[1.1] uppercase tracking-tighter">
-                {t('home.value.title')}
-              </h2>
-              <p className="text-gray-500 dark:text-gray-400 leading-relaxed text-lg font-medium">
-                {t('home.value.description')}
-              </p>
-              
-              {/* Feature Grid Addition */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-6 pt-4 border-t border-gray-100 dark:border-gray-800">
-                  {highlights.map((h, i) => (
-                      <FeatureItem key={i} icon={h.icon} label={h.label} color={h.color} />
-                  ))}
-              </div>
-            </div>
-            <div className="lg:w-1/2 w-full grid grid-cols-2 gap-6">
-               <div className="aspect-[4/5] rounded-[2.5rem] overflow-hidden shadow-2xl transform hover:rotate-0 rotate-2 transition-transform duration-500 border-4 border-white dark:border-gray-800">
-                  <img src="https://i.imgur.com/cnfE46t.jpeg" className="w-full h-full object-cover" alt="Huaraz Experience" />
-               </div>
-               <div className="aspect-[4/5] rounded-[2.5rem] overflow-hidden shadow-2xl transform hover:rotate-0 -rotate-2 mt-12 transition-transform duration-500 border-4 border-white dark:border-gray-800">
-                  <img src="https://pamelatours.com/wp-content/uploads/2019/10/laguna69.jpg" className="w-full h-full object-cover" alt="Cordillera Blanca" />
-               </div>
-            </div>
+      {/* 2. INTRO & FEATURES CARD */}
+      <section className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-md border border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-extrabold text-[#2A4D69] dark:text-white mb-2 uppercase tracking-tighter italic">Huaraz Explorer</h2>
+        <p className="font-bold text-slate-400 dark:text-slate-500 mb-6 uppercase text-xs tracking-[0.2em]">Plataforma de recomendaciones turísticas en Huaraz</p>
+        
+        <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-8 font-medium">
+          <strong>Huaraz Explorer</strong> ayuda a viajeros nacionales e internacionales a descubrir los mejores negocios, experiencias y servicios turísticos de Huaraz y la Cordillera Blanca, combinando información local y tecnología.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-[#2A4D69]/5 flex items-center justify-center text-[#2A4D69]">📍</div>
+            <span className="text-sm font-bold text-slate-700 dark:text-slate-200">Mapa turístico interactivo</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-[#2A4D69]/5 flex items-center justify-center text-[#2A4D69]">⭐</div>
+            <span className="text-sm font-bold text-slate-700 dark:text-slate-200">Negocios locales recomendados</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-[#2A4D69]/5 flex items-center justify-center text-[#2A4D69]">📅</div>
+            <span className="text-sm font-bold text-slate-700 dark:text-slate-200">Festividades y eventos</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-[#2A4D69]/5 flex items-center justify-center text-[#2A4D69]">🤖</div>
+            <span className="text-sm font-bold text-slate-700 dark:text-slate-200">Agente turístico IA 24/7</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-[#2A4D69]/5 flex items-center justify-center text-[#2A4D69]">🎟️</div>
+            <span className="text-sm font-bold text-slate-700 dark:text-slate-200">Cupones y beneficios</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-[#2A4D69]/5 flex items-center justify-center text-[#2A4D69]">📰</div>
+            <span className="text-sm font-bold text-slate-700 dark:text-slate-200">Newsletter & Token Huaraz</span>
           </div>
         </div>
       </section>
 
-      {/* 3. TOKEN WIDGET */}
-      <section className="max-w-7xl mx-auto px-4 py-16">
-        <div className="relative group overflow-hidden rounded-[3.5rem] bg-[#0d1117] p-10 md:p-16 shadow-2xl border border-white/5">
-            <div className="relative z-10 flex flex-col lg:flex-row gap-16 items-center">
-                <div className="flex-1 space-y-8 text-center lg:text-left">
-                    <div className="flex items-center justify-center lg:justify-start gap-5">
-                        <div className="w-20 h-20 bg-brand-green rounded-[2rem] flex items-center justify-center shadow-[0_0_40px_rgba(19,236,91,0.5)] transform hover:rotate-12 transition-transform">
-                            <span className="text-black font-black text-3xl">HZ</span>
-                        </div>
-                        <div className="text-left">
-                            <h3 className="text-white font-black text-4xl tracking-tighter uppercase italic">{t('home.token.title')}</h3>
-                            <div className="flex items-center gap-3 mt-1">
-                              <span className="bg-brand-green/20 text-brand-green text-[10px] px-4 py-1.5 rounded-full font-black uppercase tracking-widest border border-brand-green/30">Solana Ecosystem</span>
-                            </div>
-                        </div>
-                    </div>
-                    <p className="text-gray-400 text-xl max-w-xl leading-relaxed">
-                        {t('home.token.description')}
-                    </p>
-                    <div className="flex flex-wrap justify-center lg:justify-start gap-5">
-                        <div className="bg-white/5 border border-white/10 px-8 py-5 rounded-3xl backdrop-blur-md">
-                            <div className="text-gray-500 text-[10px] font-black uppercase tracking-widest mb-1">{t('home.token.marketcap')}</div>
-                            <div className="text-white font-black text-2xl">$42,500.00</div>
-                        </div>
-                        <div className="bg-white/5 border border-white/10 px-8 py-5 rounded-3xl backdrop-blur-md">
-                            <div className="text-gray-500 text-[10px] font-black uppercase tracking-widest mb-1">{t('home.token.community')}</div>
-                            <div className="text-white font-black text-2xl">1,240+ HZ</div>
-                        </div>
-                    </div>
-                    <a href="https://pump.fun/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-4 bg-brand-green hover:bg-brand-green/90 text-black px-12 py-6 rounded-[2rem] font-black uppercase text-sm transition-all shadow-2xl hover:scale-105 active:scale-95 group">
-                        {t('home.token.invest')} <i className="fas fa-rocket group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-      </section>
+      {/* 3. TOKEN CARD - NEON GREEN & STATISTIC IMPROVED */}
+      <section className="bg-[#0A0A0A] rounded-[2.5rem] p-8 shadow-2xl text-white overflow-hidden relative border border-[#39FF14]/20">
+        {/* Glow Effects */}
+        <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#39FF14]/10 rounded-full blur-[80px]"></div>
+        <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-[#39FF14]/5 rounded-full blur-[80px]"></div>
 
-      {/* 4. NEWSLETTER */}
-      <section className="max-w-7xl mx-auto px-4 py-8">
-        <div className="relative bg-brand-dark-blue rounded-[3.5rem] p-10 md:p-16 shadow-2xl overflow-hidden border border-white/10 group">
-            <div className="relative z-10 flex flex-col lg:flex-row items-center gap-12 text-center lg:text-left">
-                <div className="w-24 h-24 rounded-[2.5rem] bg-white flex items-center justify-center shrink-0 shadow-2xl rotate-6 transition-transform group-hover:rotate-0">
-                    <i className="fas fa-envelope-open-text text-brand-dark-blue text-4xl"></i>
-                </div>
-                <div className="flex-grow space-y-3">
-                    <h3 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-tight uppercase italic">
-                        {t('home.newsletter.title')}
-                    </h3>
-                    <p className="text-white/70 text-lg md:text-xl font-medium max-w-2xl mx-auto lg:mx-0">
-                        {t('home.newsletter.description')}
-                    </p>
-                </div>
-                <Link to="/newsletter" className="group bg-white hover:bg-brand-orange hover:text-white text-brand-dark-blue font-black px-12 py-6 rounded-[2rem] shadow-2xl transition-all transform active:scale-95 flex items-center gap-3 whitespace-nowrap text-lg uppercase tracking-widest">
-                    {t('home.newsletter.button')} <i className="fas fa-paper-plane group-hover:translate-x-1 transition-transform"></i>
-                </Link>
-            </div>
-        </div>
-      </section>
-
-      {/* 5. SEARCH & DIRECTORY */}
-      <section className="max-w-7xl mx-auto px-4 py-20 pb-10">
-        <div className="text-center mb-16 space-y-4">
-          <h2 className="text-4xl md:text-5xl font-black text-brand-dark-blue dark:text-white uppercase tracking-tighter">Guía de Negocios</h2>
-          <p className="text-gray-500 dark:text-gray-400 font-black uppercase tracking-[0.2em] text-[11px]">{t('home.discovery.subtitle')}</p>
-        </div>
-        <div className="max-w-5xl mx-auto space-y-10">
-          <input 
-              type="text" 
-              placeholder={t('home.discovery.placeholder')}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-800 rounded-[2.5rem] py-8 px-10 text-gray-800 dark:text-white focus:outline-none focus:border-brand-orange shadow-lg transition-all text-xl font-bold"
-          />
-          <div className="flex items-center gap-4 overflow-x-auto pb-6 no-scrollbar">
-              {categories.map((cat) => (
-                  <button
-                      key={cat.id}
-                      onClick={() => setSelectedCategory(cat.id)}
-                      className={`flex items-center gap-4 px-8 py-4.5 rounded-[1.5rem] whitespace-nowrap text-xs font-black uppercase tracking-widest transition-all ${
-                          selectedCategory === cat.id ? 'bg-brand-dark-blue text-white shadow-xl' : 'bg-white dark:bg-gray-900 text-gray-500'
-                      }`}
-                  >
-                      {cat.label}
-                  </button>
-              ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 6. BUSINESS CARDS */}
-      <section className="max-w-7xl mx-auto px-4 py-12">
-        {sponsored.length > 0 && (
-            <div className="mb-20">
-                <h3 className="text-3xl font-black text-brand-dark-blue dark:text-white uppercase tracking-tighter italic mb-8">{t('home.premium.title')}</h3>
-                <div className="flex flex-col gap-10">
-                    {sponsored.map(business => <BusinessCard key={business.id} business={business} />)}
-                </div>
-            </div>
-        )}
-        {others.length > 0 && (
+        <div className="flex items-start justify-between mb-8 relative z-10">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 bg-[#39FF14] rounded-2xl flex items-center justify-center text-black font-black text-xl shadow-[0_0_20px_rgba(57,255,20,0.4)]">HZ</div>
             <div>
-                <h3 className="text-3xl font-black text-brand-dark-blue dark:text-white uppercase tracking-tighter mb-8">{t('home.others.title')}</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {others.map(business => <BusinessCard key={business.id} business={business} />)}
-                </div>
+              <h3 className="font-black text-2xl tracking-tighter italic">$HUARAZ <span className="text-[10px] bg-[#39FF14]/20 border border-[#39FF14]/40 px-2 py-0.5 rounded text-[#39FF14] ml-2 font-black uppercase">PUMP.FUN</span></h3>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="w-2 h-2 rounded-full bg-[#39FF14] animate-pulse"></span>
+                <p className="text-[#39FF14] text-xs font-black uppercase tracking-widest">+842.15% <span className="text-gray-600 font-bold ml-1">Live</span></p>
+              </div>
             </div>
-        )}
-      </section>
+          </div>
+          <div className="text-right">
+            <p className="text-[10px] text-gray-500 uppercase font-black tracking-widest mb-1">Market Cap</p>
+            <p className="text-2xl font-black tracking-tighter italic text-[#39FF14]">$124.8K</p>
+          </div>
+        </div>
+        
+        {/* Gráfica Estadística Mejorada */}
+        <div className="h-40 w-full mb-8 relative bg-gray-900/40 rounded-3xl border border-white/5 p-4 group">
+          <div className="absolute top-4 left-4 flex flex-col gap-1 z-10">
+            <span className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Price History</span>
+            <span className="text-lg font-black text-white">$0.00142 <i className="fas fa-caret-up text-[#39FF14]"></i></span>
+          </div>
+          
+          <svg className="w-full h-full drop-shadow-[0_0_8px_rgba(57,255,20,0.5)]" viewBox="0 0 100 40" preserveAspectRatio="none">
+            <line x1="0" y1="10" x2="100" y2="10" stroke="white" strokeOpacity="0.05" strokeWidth="0.5" />
+            <line x1="0" y1="20" x2="100" y2="20" stroke="white" strokeOpacity="0.05" strokeWidth="0.5" />
+            <line x1="0" y1="30" x2="100" y2="30" stroke="white" strokeOpacity="0.05" strokeWidth="0.5" />
+            <path 
+              d="M0,38 L10,35 L20,37 L30,25 L40,28 L50,15 L60,18 L70,8 L80,12 L90,5 L100,2" 
+              fill="none" 
+              stroke="#39FF14" 
+              strokeWidth="2.5" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            />
+            <path 
+              d="M0,38 L10,35 L20,37 L30,25 L40,28 L50,15 L60,18 L70,8 L80,12 L90,5 L100,2 V40 H0 Z" 
+              fill="url(#neonGradient)" 
+              opacity="0.3" 
+            />
+            <defs>
+              <linearGradient id="neonGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style={{stopColor:'#39FF14', stopOpacity:0.8}} />
+                <stop offset="100%" style={{stopColor:'#39FF14', stopOpacity:0}} />
+              </linearGradient>
+            </defs>
+            <circle cx="50" cy="15" r="1.5" fill="#39FF14" className="animate-pulse" />
+            <circle cx="100" cy="2" r="1.5" fill="#39FF14" className="animate-pulse" />
+          </svg>
 
-      {/* 7. BLOG SECTION (SEO OPTIMIZED) */}
-      <section className="max-w-7xl mx-auto px-4 py-24 bg-white dark:bg-gray-900 rounded-[4rem] shadow-inner mt-20 mb-20 border border-gray-100 dark:border-gray-800">
-        <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-6 mb-16 px-6">
-            <div className="text-center md:text-left space-y-4">
-                <div className="inline-flex items-center gap-2 bg-brand-orange/10 text-brand-orange text-[10px] font-black px-5 py-2 rounded-full uppercase tracking-[0.2em] shadow-sm">
-                    <i className="fas fa-feather-pointed"></i> {t('home.blog.subtitle')}
-                </div>
-                <h2 className="text-4xl md:text-7xl font-black text-brand-dark-blue dark:text-white uppercase tracking-tighter italic leading-none">
-                  Turismo & <span className="text-brand-orange">Relatos</span>
-                </h2>
-                <p className="text-gray-500 dark:text-gray-400 font-medium text-lg max-w-xl">
-                  Descubre guías expertas, historias locales y los mejores consejos para tu viaje a la Cordillera Blanca.
-                </p>
-            </div>
-            <Link to="/blog" className="group bg-brand-dark-blue hover:bg-brand-blue text-white px-10 py-5 rounded-[2rem] font-black text-xs uppercase tracking-widest flex items-center gap-4 transition-all shadow-2xl active:scale-95 transform hover:-translate-y-1">
-                {t('home.blog.viewAll')} <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-            </Link>
+          <div className="absolute right-4 bottom-4 flex gap-4">
+            <span className="text-[8px] font-black text-gray-600 uppercase">1H</span>
+            <span className="text-[8px] font-black text-gray-600 uppercase">4H</span>
+            <span className="text-[8px] font-black text-[#39FF14] uppercase border-b border-[#39FF14]">24H</span>
+            <span className="text-[8px] font-black text-gray-600 uppercase">7D</span>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-6">
-            {latestPosts.map((post) => (
-                <Link 
-                    key={post.id} 
-                    to={`/blog/${post.id}`}
-                    className="group relative flex flex-col h-[550px] rounded-[3.5rem] overflow-hidden shadow-2xl transition-all duration-700 hover:-translate-y-4 hover:shadow-[0_40px_80px_rgba(0,0,0,0.15)]"
-                >
-                    <div className="absolute inset-0 overflow-hidden">
-                        <img 
-                            src={post.image} 
-                            alt={`Guía Huaraz: ${post.title}`} 
-                            className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
-                    </div>
-                    
-                    {/* Floating Badge */}
-                    <div className="absolute top-8 left-8 flex items-center gap-2 z-20">
-                         <span className="bg-brand-orange text-white text-[9px] font-black px-5 py-2.5 rounded-full uppercase tracking-[0.2em] shadow-xl border border-white/20">
-                            {post.category}
-                         </span>
-                    </div>
+        <div className="mb-8 relative z-10">
+           <div className="flex justify-between text-[10px] font-black text-gray-400 mb-2 uppercase tracking-[0.2em]">
+              <span>Bonding Curve Progress</span>
+              <span className="text-[#39FF14]">94.2%</span>
+           </div>
+           <div className="w-full bg-gray-800/50 h-3 rounded-full overflow-hidden border border-white/5 p-0.5">
+              <div className="bg-[#39FF14] h-full w-[94.2%] rounded-full shadow-[0_0_15px_rgba(57,255,20,0.6)] relative overflow-hidden">
+                 <div className="absolute inset-0 bg-white/20 animate-[shimmer_2s_infinite]"></div>
+              </div>
+           </div>
+        </div>
 
-                    {/* Content Overlay */}
-                    <div className="relative mt-auto p-12 space-y-5 z-20">
-                        <div className="flex items-center gap-4 text-[10px] text-white/70 font-black uppercase tracking-widest">
-                            <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10">
-                              <i className="far fa-calendar-alt text-brand-orange"></i>
-                              <span>{post.date}</span>
-                            </div>
-                            <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10">
-                              <i className="far fa-clock text-brand-blue"></i>
-                              <span>{post.readTime}</span>
-                            </div>
-                        </div>
-                        <h3 className="text-3xl md:text-4xl font-black text-white leading-[1.1] uppercase italic tracking-tighter group-hover:text-brand-orange transition-colors">
-                            {post.title}
-                        </h3>
-                        <p className="text-white/60 text-sm line-clamp-2 font-medium leading-relaxed group-hover:text-white/90 transition-colors">
-                          {post.excerpt}
-                        </p>
-                        <div className="pt-4 flex items-center gap-3 text-brand-orange font-black text-[10px] uppercase tracking-[0.3em] opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                          Leer guía <i className="fas fa-arrow-right text-[8px]"></i>
-                        </div>
-                    </div>
-                </Link>
-            ))}
+        <div className="flex gap-4 relative z-10">
+          <a href="https://pump.fun/" target="_blank" rel="noreferrer" className="flex-grow bg-[#39FF14] text-black py-5 rounded-3xl font-black uppercase text-sm flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(57,255,20,0.3)] hover:scale-[1.02] active:scale-95 transition-all">
+            Comprar ahora <i className="fas fa-bolt"></i>
+          </a>
+          <button className="w-16 h-16 bg-white/5 border border-white/10 rounded-3xl flex items-center justify-center text-white hover:bg-white/10 transition-all active:scale-95">
+            <i className="fas fa-chart-line text-lg text-[#39FF14]"></i>
+          </button>
         </div>
       </section>
+
+      {/* 4. NEWSLETTER CARD - NEON GREEN & BLACK STYLE */}
+      <section className="bg-[#0A0A0A] rounded-[2.5rem] p-10 text-white text-center shadow-2xl relative overflow-hidden border border-[#39FF14]/20">
+        {/* Glow Effects */}
+        <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#39FF14]/10 rounded-full blur-[80px]"></div>
+        
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+            <img src="https://www.transparenttextures.com/patterns/cubes.png" className="w-full h-full" alt="texture" />
+        </div>
+
+        <div className="w-16 h-16 bg-[#39FF14]/10 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-[#39FF14]/30 shadow-[0_0_15px_rgba(57,255,20,0.2)]">
+           <i className="fas fa-envelope-open-text text-3xl text-[#39FF14]"></i>
+        </div>
+
+        <h3 className="text-3xl font-black mb-4 uppercase tracking-tighter italic relative z-10">
+          ¡Mantente <span className="text-[#39FF14]">Conectado!</span>
+        </h3>
+        <p className="text-gray-400 text-sm mb-10 leading-relaxed font-medium max-w-sm mx-auto relative z-10">
+          Suscríbete a nuestro boletín semanal y recibe noticias, historias de emprendimiento y guías de turismo exclusivas.
+        </p>
+
+        <Link to="/newsletter" className="bg-[#39FF14] hover:scale-[1.02] text-black px-10 py-5 rounded-[1.8rem] font-black uppercase text-xs flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(57,255,20,0.3)] mx-auto w-full max-w-xs transition-all active:scale-95 tracking-widest relative z-10">
+           Suscribirme ahora <i className="fas fa-bolt"></i>
+        </Link>
+
+        {/* Decorative Grid Line */}
+        <div className="mt-8 pt-4 border-t border-white/5">
+           <p className="text-[8px] font-black text-gray-600 uppercase tracking-[0.4em]">Huaraz Explorer Network • No Spam Policy</p>
+        </div>
+      </section>
+
+      {/* 5. DIRECTORIO */}
+      <section className="pt-6 space-y-8">
+        <div className="relative group">
+          <i className="fas fa-search absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#2A4D69] transition-colors"></i>
+          <input 
+            type="text" 
+            placeholder="Buscar lugares, comida, hoteles..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-white dark:bg-slate-900 border-none rounded-[1.8rem] py-5 pl-14 pr-8 shadow-sm focus:ring-4 focus:ring-[#2A4D69]/5 dark:text-white font-semibold transition-all"
+          />
+        </div>
+
+        <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+          {['all', BusinessCategory.RESTAURANT, BusinessCategory.HOTEL, BusinessCategory.TOURIST_SPOT, BusinessCategory.POLLERIA, BusinessCategory.CEVICHERIA].map(cat => (
+            <button 
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`px-7 py-3.5 rounded-full font-black text-[10px] uppercase tracking-widest whitespace-nowrap transition-all border ${
+                selectedCategory === cat 
+                ? 'bg-[#2A4D69] text-white border-[#2A4D69] shadow-lg shadow-[#2A4D69]/20' 
+                : 'bg-white text-slate-400 border-slate-100 dark:bg-slate-800 dark:text-slate-500 dark:border-slate-700'
+              }`}
+            >
+              {cat === 'all' ? 'Todos' : t(`category.${cat}` as any)}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex items-center justify-between px-2">
+            <h2 className="text-2xl font-black text-[#2A4D69] dark:text-white uppercase tracking-tighter italic">Explora Huaraz</h2>
+            <div className="bg-slate-100 dark:bg-slate-800 px-4 py-1.5 rounded-full">
+               <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{filteredBusinesses.length} sitios encontrados</span>
+            </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-8">
+          {filteredBusinesses.map(business => (
+            <BusinessCard key={business.id} business={business} />
+          ))}
+        </div>
+      </section>
+      
+      {/* Botón Flotante de Mapa - Diseño refinado según referencia visual */}
+      <div className="fixed bottom-28 right-6 z-50">
+        <button 
+          onClick={() => navigate('/map')}
+          className="w-16 h-16 bg-[#2A4D69] dark:bg-slate-800 text-white rounded-full flex items-center justify-center shadow-[0_8px_30px_rgba(0,0,0,0.35)] hover:scale-110 active:scale-95 transition-all group"
+        >
+          <i className="fas fa-map text-2xl group-hover:scale-110 transition-transform"></i>
+        </button>
+      </div>
+
+      {/* Footer Info */}
+      <div className="py-12 text-center">
+         <p className="text-[9px] font-black text-slate-300 dark:text-slate-700 uppercase tracking-[0.5em] italic">Huaraz Explorer • Official Digital Guide 2025</p>
+      </div>
+
     </div>
   );
 };

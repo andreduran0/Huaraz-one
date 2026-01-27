@@ -26,77 +26,80 @@ const CouponCard: React.FC<{ coupon: any, business: any }> = ({ coupon, business
 
     return (
         <div className="relative group animate-fadeIn">
-            {/* Decoración de sombra dinámica */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-brand-orange/20 to-brand-blue/20 rounded-[2.6rem] blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+            {/* Glow effect background */}
+            <div className="absolute -inset-1 bg-[#39FF14]/10 rounded-[2.6rem] blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
             
-            <div className="relative flex flex-col md:flex-row bg-white dark:bg-gray-900 rounded-[2.5rem] shadow-xl overflow-hidden border border-gray-100 dark:border-gray-800 transition-all hover:scale-[1.01]">
+            <div className="relative flex flex-col md:flex-row bg-[#0D0D0D] rounded-[2.5rem] shadow-2xl overflow-hidden border border-[#39FF14]/20 transition-all hover:border-[#39FF14]/50 group-hover:scale-[1.01]">
                 
-                {/* Left Section */}
-                <div className="w-full md:w-2/3 p-8 flex flex-col sm:flex-row gap-6 items-center sm:items-start text-center sm:text-left">
-                    <div className="relative w-28 h-28 shrink-0 rounded-3xl overflow-hidden shadow-2xl group-hover:scale-105 transition-transform">
-                        <img src={business.photos[0]} className="w-full h-full object-cover" alt={business.name} />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                {/* Left Section - Business Info */}
+                <div className="w-full md:w-2/3 p-8 flex flex-col sm:flex-row gap-8 items-center sm:items-start text-center sm:text-left">
+                    <div className="relative w-32 h-32 shrink-0 rounded-3xl overflow-hidden border-2 border-[#39FF14]/20 group-hover:border-[#39FF14]/60 transition-all duration-500">
+                        <img src={business.photos[0]} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" alt={business.name} />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                     </div>
                     
-                    <div className="space-y-2 min-w-0">
-                        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                             <Link to={`/business/${business.id}`} className="text-[10px] font-black text-brand-orange uppercase tracking-[0.2em] hover:text-brand-blue transition-colors">
+                    <div className="space-y-4 min-w-0">
+                        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
+                             <Link to={`/business/${business.id}`} className="text-[10px] font-black text-[#39FF14] uppercase tracking-[0.4em] hover:drop-shadow-[0_0_5px_#39FF14] transition-all">
                                 {business.name}
                             </Link>
                             {isExpiringSoon() && (
-                                <span className="bg-red-500 text-white text-[8px] px-3 py-1 rounded-full font-black animate-pulse uppercase tracking-widest">Vence pronto</span>
+                                <span className="bg-red-600 text-white text-[8px] px-3 py-1 rounded-full font-black animate-pulse uppercase tracking-widest border border-red-500/50">Vence pronto</span>
                             )}
                         </div>
-                        <h3 className="text-2xl font-black text-brand-dark-blue dark:text-white uppercase italic tracking-tighter leading-none">
+                        <h3 className="text-3xl font-black text-white uppercase italic tracking-tighter leading-none group-hover:text-[#39FF14] transition-colors">
                             {coupon.title}
                         </h3>
-                        <p className="text-gray-500 dark:text-gray-400 text-sm font-medium leading-relaxed">
+                        <p className="text-gray-500 text-sm font-medium leading-relaxed max-w-md">
                             {coupon.description}
                         </p>
                     </div>
                 </div>
 
-                {/* Perforation Line */}
-                <div className="hidden md:flex flex-col items-center justify-between py-6 relative">
-                    <div className="w-8 h-8 bg-gray-50 dark:bg-gray-950 rounded-full -mt-10 shadow-inner"></div>
-                    <div className="flex-grow border-l-2 border-dashed border-gray-200 dark:border-gray-800 my-4"></div>
-                    <div className="w-8 h-8 bg-gray-50 dark:bg-gray-950 rounded-full -mb-10 shadow-inner"></div>
+                {/* Vertical Divider / Perforation (Digital Style) */}
+                <div className="hidden md:flex flex-col items-center justify-between py-6 relative w-px bg-white/5 mx-2">
+                    <div className="w-6 h-6 bg-[#050505] rounded-full -mt-9 border border-white/5"></div>
+                    <div className="flex-grow border-l-2 border-dashed border-[#39FF14]/20 my-4"></div>
+                    <div className="w-6 h-6 bg-[#050505] rounded-full -mb-9 border border-white/5"></div>
                 </div>
 
-                <div className="flex md:hidden items-center justify-between px-6 relative">
-                    <div className="w-8 h-8 bg-gray-50 dark:bg-gray-950 rounded-full -ml-10 shadow-inner"></div>
-                    <div className="flex-grow border-t-2 border-dashed border-gray-200 dark:border-gray-800 mx-4"></div>
-                    <div className="w-8 h-8 bg-gray-50 dark:bg-gray-950 rounded-full -mr-10 shadow-inner"></div>
+                <div className="flex md:hidden items-center justify-between px-6 relative h-px bg-white/5 my-4">
+                    <div className="w-6 h-6 bg-[#050505] rounded-full -ml-9 border border-white/5"></div>
+                    <div className="flex-grow border-t-2 border-dashed border-[#39FF14]/20 mx-4"></div>
+                    <div className="w-6 h-6 bg-[#050505] rounded-full -mr-9 border border-white/5"></div>
                 </div>
 
-                {/* Right Section */}
-                <div className="w-full md:w-1/3 bg-gray-50/80 dark:bg-gray-800/50 p-8 flex flex-col items-center justify-center text-center">
-                    <div className="w-full mb-5">
-                        <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-2">CÓDIGO EXCLUSIVO</p>
-                        <div className="bg-white dark:bg-gray-900 border-2 border-dashed border-brand-orange/40 p-4 rounded-2xl text-brand-orange font-black text-2xl tracking-[0.3em] shadow-inner relative overflow-hidden group/code">
-                            <span className="relative z-10">{coupon.code}</span>
-                            <div className="absolute inset-0 bg-brand-orange/5 translate-y-full group-hover/code:translate-y-0 transition-transform duration-300"></div>
+                {/* Right Section - Claim Code */}
+                <div className="w-full md:w-1/3 bg-[#111111] p-10 flex flex-col items-center justify-center text-center relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-[#39FF14]/5 blur-[60px] pointer-events-none"></div>
+                    
+                    <div className="w-full mb-6">
+                        <p className="text-[9px] font-black text-gray-600 uppercase tracking-widest mb-3">Código de Desbloqueo</p>
+                        <div className="bg-[#050505] border-2 border-dashed border-[#39FF14]/40 p-5 rounded-2xl text-[#39FF14] font-black text-3xl tracking-[0.3em] shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] relative overflow-hidden group/code">
+                            <span className="relative z-10 drop-shadow-[0_0_10px_rgba(57,255,20,0.4)]">{coupon.code}</span>
+                            <div className="absolute inset-0 bg-[#39FF14]/5 translate-y-full group-hover/code:translate-y-0 transition-transform duration-500"></div>
                         </div>
                     </div>
                     
                     <button 
                         onClick={copyToClipboard}
-                        className={`w-full py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3 ${
+                        className={`w-full py-5 rounded-3xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3 relative overflow-hidden group/btn ${
                             copied 
-                            ? 'bg-brand-green text-brand-dark-blue' 
-                            : 'bg-brand-dark-blue text-white hover:bg-brand-blue'
+                            ? 'bg-white text-black' 
+                            : 'bg-[#39FF14] text-black shadow-[0_10px_30px_rgba(57,255,20,0.3)] hover:scale-105'
                         }`}
                     >
+                        <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000"></div>
                         {copied ? (
-                            <><i className="fas fa-check-circle text-lg"></i> ¡Listo!</>
+                            <><i className="fas fa-check-circle text-lg"></i> Código Copiado</>
                         ) : (
-                            <><i className="fas fa-copy text-lg"></i> Canjear ahora</>
+                            <><i className="fas fa-bolt text-lg"></i> Canjear Cupón</>
                         )}
                     </button>
                     
-                    <div className="mt-4 flex flex-col gap-1">
-                        <p className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">
-                            Válido hasta: <span className="text-gray-600 dark:text-gray-300">{new Date(coupon.expiryDate).toLocaleDateString()}</span>
+                    <div className="mt-5">
+                        <p className="text-[8px] text-gray-700 font-black uppercase tracking-[0.3em]">
+                            Expira: <span className="text-gray-500">{new Date(coupon.expiryDate).toLocaleDateString()}</span>
                         </p>
                     </div>
                 </div>
@@ -110,30 +113,34 @@ const CouponsPage: React.FC = () => {
   const t = useTranslations();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pb-32">
+    <div className="min-h-screen bg-[#050505] pb-40 font-['Plus_Jakarta_Sans']">
         
-        {/* Header Hero */}
-        <div className="relative bg-brand-dark-blue dark:bg-gray-900 pt-20 pb-32 rounded-b-[5rem] shadow-2xl overflow-hidden mb-16">
-            <div className="absolute inset-0 opacity-20 pointer-events-none">
+        {/* Header Hero - Tech Dark Style */}
+        <div className="relative bg-[#0A0A0A] pt-28 pb-40 rounded-b-[5rem] shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden border-b border-[#39FF14]/10">
+            {/* Glow Backgrounds */}
+            <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-[#39FF14]/5 rounded-full blur-[150px] pointer-events-none"></div>
+            <div className="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-[#39FF14]/5 rounded-full blur-[150px] pointer-events-none"></div>
+
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
                 <img src="https://www.transparenttextures.com/patterns/cubes.png" className="w-full h-full" alt="texture" />
             </div>
             
-            <div className="container mx-auto px-6 text-center relative z-10 space-y-6">
-                <div className="inline-flex items-center gap-3 bg-brand-orange text-white px-6 py-2 rounded-full shadow-lg animate-bounce">
-                    <i className="fas fa-percent text-xs"></i>
-                    <span className="text-[10px] font-black uppercase tracking-[0.3em]">Huaraz Explorer Deals</span>
+            <div className="container mx-auto px-8 text-center relative z-10 space-y-8">
+                <div className="inline-flex items-center gap-3 bg-[#39FF14]/10 border border-[#39FF14]/40 text-[#39FF14] px-8 py-3 rounded-full shadow-[0_0_20px_rgba(57,255,20,0.1)]">
+                    <span className="w-2 h-2 rounded-full bg-[#39FF14] animate-pulse"></span>
+                    <span className="text-[10px] font-black uppercase tracking-[0.4em]">Huaraz Explorer Network</span>
                 </div>
-                <h1 className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter leading-none">
-                    Cupones <span className="text-brand-orange">& Ofertas</span>
+                <h1 className="text-6xl md:text-8xl font-black text-white uppercase italic tracking-tighter leading-none">
+                    Cuponera <br /><span className="text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.5)]">Exclusiva</span>
                 </h1>
-                <p className="text-white/60 text-lg md:text-2xl font-medium max-w-3xl mx-auto leading-tight">
-                    Desbloquea beneficios exclusivos en los mejores establecimientos de la ciudad.
+                <p className="text-gray-500 text-lg md:text-xl font-bold max-w-2xl mx-auto leading-relaxed uppercase tracking-wide">
+                    Beneficios especiales desbloqueados solo para exploradores de la comunidad Huaraz Explorer.
                 </p>
             </div>
         </div>
 
         {/* Listado Principal */}
-        <div className="container mx-auto px-6 max-w-5xl -mt-24 relative z-20">
+        <div className="container mx-auto px-8 max-w-5xl -mt-24 relative z-20">
             {coupons.length > 0 ? (
                 <div className="flex flex-col gap-10">
                 {coupons.map(coupon => {
@@ -143,28 +150,35 @@ const CouponsPage: React.FC = () => {
                 })}
                 </div>
             ) : (
-                <div className="py-40 text-center bg-white dark:bg-gray-900 rounded-[4rem] shadow-xl border-4 border-dashed border-gray-100 dark:border-gray-800">
-                    <i className="fas fa-ticket-alt text-gray-200 text-7xl mb-6"></i>
-                    <p className="text-gray-400 font-black uppercase tracking-widest text-sm">Pronto tendremos nuevas ofertas para ti</p>
+                <div className="py-48 text-center bg-[#0D0D0D] rounded-[4rem] shadow-2xl border-2 border-dashed border-white/5">
+                    <i className="fas fa-ticket-alt text-gray-800 text-8xl mb-8"></i>
+                    <p className="text-gray-600 font-black uppercase tracking-[0.4em] text-xs">Cargando nuevas oportunidades de ahorro...</p>
                 </div>
             )}
             
-            {/* CTA Business */}
-            <div className="mt-24 relative overflow-hidden bg-brand-dark-blue rounded-[4rem] p-12 md:p-20 text-center shadow-2xl group">
-                <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/40 via-transparent to-brand-blue/20 opacity-30 group-hover:opacity-50 transition-opacity"></div>
-                <div className="relative z-10 space-y-8">
-                    <h3 className="text-4xl font-black text-white uppercase tracking-tighter italic leading-none">¿Quieres que tu negocio destaque?</h3>
-                    <p className="text-white/70 text-lg max-w-2xl mx-auto font-medium">
-                        Únete a Huaraz Explorer y llega a miles de turistas que buscan las mejores experiencias y ofertas en la región Ancash.
+            {/* CTA Business - Neon Green Style */}
+            <div className="mt-32 relative overflow-hidden bg-[#0A0A0A] rounded-[4rem] p-12 md:p-24 text-center shadow-3xl group border border-[#39FF14]/20">
+                <div className="absolute -inset-2 bg-gradient-to-br from-[#39FF14]/10 via-transparent to-white/5 opacity-50 pointer-events-none"></div>
+                <div className="relative z-10 space-y-10">
+                    <div className="w-20 h-20 bg-[#39FF14]/10 rounded-3xl flex items-center justify-center mx-auto border border-[#39FF14]/30 shadow-inner">
+                        <i className="fas fa-rocket text-3xl text-[#39FF14]"></i>
+                    </div>
+                    <h3 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter italic leading-none">¿Eres dueño de un <br/><span className="text-[#39FF14]">negocio local?</span></h3>
+                    <p className="text-gray-500 text-lg max-w-xl mx-auto font-medium">
+                        Aumenta tu tráfico de clientes y fideliza a los turistas integrando tus cupones en nuestra red de exploración inteligente.
                     </p>
                     <Link 
                         to="/onboarding" 
-                        className="inline-flex items-center gap-4 bg-brand-orange hover:bg-orange-600 text-white px-12 py-6 rounded-3xl font-black uppercase text-sm tracking-widest shadow-2xl transition-all hover:scale-105 active:scale-95"
+                        className="inline-flex items-center gap-4 bg-[#39FF14] hover:scale-105 active:scale-95 text-black px-16 py-7 rounded-[2.5rem] font-black uppercase text-xs tracking-[0.3em] shadow-[0_15px_40px_rgba(57,255,20,0.3)] transition-all"
                     >
-                        Empezar ahora <i className="fas fa-rocket"></i>
+                        Publicar Beneficio <i className="fas fa-bolt"></i>
                     </Link>
                 </div>
             </div>
+        </div>
+
+        <div className="py-24 text-center">
+            <p className="text-[10px] font-black text-gray-700 uppercase tracking-[0.5em] italic">Huaraz Explorer Network • Coupon System v4.0</p>
         </div>
     </div>
   );
