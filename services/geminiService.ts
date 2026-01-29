@@ -1,58 +1,34 @@
-import { GoogleGenerativeAI } from "@google/generative-ai"; // Importación corregida
-import { Business, Coupon, GroundingSource } from '../types';
+import { GoogleGenerativeAI } from "@google/generative-ai";
+// ... tus otros imports
 
-export interface AiResponse {
-  text: string;
-  sources: GroundingSource[];
-}
-
-export const getAiResponse = async (
-  prompt: string,
-  businesses: Business[],
-  coupons: Coupon[],
-  language: 'es' | 'en'
-): Promise<AiResponse> => {
+export const getAiResponse = async (...) => {
   try {
-    // Usar process.env para compatibilidad con Vercel/Node
-    const apiKey = import.meta.env.VITE_API_KEY || process.env.API_KEY; 
+    // 1. Intentar obtener la API KEY de ambos posibles lugares
+    const apiKey = (import.meta.env?.VITE_API_KEY) || (process.env.API_KEY);
     
-    if (!apiKey) throw new Error("API Key missing");
+    if (!apiKey) {
+        throw new Error("No API Key found in environment variables");
+    }
 
     const genAI = new GoogleGenerativeAI(apiKey);
     
-    // Modelo corregido a una versión estable
-    const model = genAI.getGenerativeModel({ 
-        model: "gemini-1.5-flash",
-    });
+    // 2. Usar un modelo estable (el 3-flash-preview puede fallar si no tienes acceso)
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    const sponsored = businesses.filter(b => b.adLevel !== 'none' && b.status === 'approved');
-    
-    const systemInstruction = `Eres 'Huaraz Explorer AI'... (tu prompt actual)`;
+    // ... resto de tu lógica de sponsored
 
-    // Estructura de llamada corregida según el SDK de Google
+    // 3. Estructura correcta de la llamada según la documentación 2024/2025
     const result = await model.generateContent({
-      contents: [{ role: 'user', parts: [{ text: `${systemInstruction}\n\nUser Question: ${prompt}` }] }],
-      generationConfig: {
-        temperature: 0.7,
-        topP: 0.95,
-      },
+      contents: [
+        { role: 'user', parts: [{ text: `System: ${systemInstruction}\n\nUser: ${prompt}` }] }
+      ]
     });
 
     const response = await result.response;
-    const text = response.text();
+    return { text: response.text(), sources: [] };
 
-    return { 
-      text: text || (language === 'es' ? "Lo siento..." : "Sorry..."), 
-      sources: [] 
-    };
-    
-  } catch (error: any) {
-    console.error("Gemini AI Error:", error);
-    return {
-      text: language === 'es' 
-        ? "🏔️ **Señal débil:** Las tormentas en los Andes están interfiriendo." 
-        : "🏔️ **Weak Signal:** Mountain storms are interfering.",
-      sources: []
-    };
+  } catch (error) {
+    console.error("Critical AI Error:", error);
+    // ... tu mensaje de error de las montañas
   }
-};
+}
