@@ -1,10 +1,11 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { getAiResponse } from '../services/geminiService';
+import { createTouristChat } from '../services/geminiService';
 import { useAppContext } from '../context/AppContext';
 import { useTranslations } from '../hooks/useTranslations';
 import { ChatMessage } from '../types';
 import ReactMarkdown from 'react-markdown';
+import { Chat, GenerateContentResponse } from '@google/genai';
 
 const Message: React.FC<{ message: ChatMessage }> = ({ message }) => {
     const isUser = message.sender === 'user';
@@ -57,10 +58,24 @@ const ChatPage: React.FC = () => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  // Referencia para mantener la sesión de chat activa
+  const chatSessionRef = useRef<Chat | null>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Inicializar chat si no existe
+  useEffect(() => {
+    if (!chatSessionRef.current) {
+      try {
+        chatSessionRef.current = createTouristChat(businesses, coupons, language);
+      } catch (e) {
+        console.error("Error initializing chat session", e);
+      }
+    }
+  }, [businesses, coupons, language]);
   
   const handleSend = async (textToSend?: string) => {
     const finalInput = textToSend || input;
@@ -76,16 +91,26 @@ const ChatPage: React.FC = () => {
     setMessages(prev => [...prev, loadingMsg]);
 
     try {
-      const response = await getAiResponse(finalInput, businesses, coupons, language);
+      if (!chatSessionRef.current) {
+        chatSessionRef.current = createTouristChat(businesses, coupons, language);
+      }
+
+      const response: GenerateContentResponse = await chatSessionRef.current.sendMessage({ message: finalInput });
+      
       setMessages(prev => prev.filter(m => m.id !== loadingId));
       setMessages(prev => [...prev, { 
         id: Date.now().toString(), 
-        text: response.text, 
+        text: response.text || "No pude generar una respuesta.", 
         sender: 'ai'
       }]);
     } catch (error) {
+      console.error("Chat Error:", error);
       setMessages(prev => prev.filter(m => m.id !== loadingId));
-      setMessages(prev => [...prev, { id: 'error', text: '🏔️ **Error de conexión.** Inténtalo de nuevo.', sender: 'ai' }]);
+      setMessages(prev => [...prev, { 
+        id: 'error', 
+        text: '🏔️ **Aviso:** No logramos conectar con el satélite en las montañas. Verifica tu conexión e inténtalo de nuevo.', 
+        sender: 'ai' 
+      }]);
     } finally {
       setIsLoading(false);
     }
@@ -114,7 +139,14 @@ const ChatPage: React.FC = () => {
                   <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-1">Guía Inteligente 24/7</p>
               </div>
           </div>
-          <button onClick={() => setMessages([])} className="text-slate-400 hover:text-red-500 transition-colors p-2">
+          <button 
+            onClick={() => {
+                setMessages([]);
+                chatSessionRef.current = createTouristChat(businesses, coupons, language);
+            }} 
+            className="text-slate-400 hover:text-red-500 transition-colors p-2"
+            title="Reiniciar conversación"
+          >
             <i className="fas fa-trash-can"></i>
           </button>
       </div>

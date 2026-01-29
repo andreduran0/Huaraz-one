@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script>
-        window.process = { env: { API_KEY: "" } };
+        // No definimos window.process manual para no romper la inyección del sistema
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -42,12 +42,20 @@
             background-color: #f8fafc;
             color: #0f172a;
             -webkit-font-smoothing: antialiased;
+            overscroll-behavior-y: contain; /* Previene el refresh al arrastrar hacia abajo */
         }
         
         .dark body { background-color: #020617; color: #f1f5f9; }
 
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Animaciones para el asistente */
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
     </style>
     <script type="importmap">
     {
