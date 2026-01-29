@@ -1,5 +1,4 @@
-
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai"; // Importación corregida
 import { Business, Coupon, GroundingSource } from '../types';
 
 export interface AiResponse {
@@ -14,38 +13,36 @@ export const getAiResponse = async (
   language: 'es' | 'en'
 ): Promise<AiResponse> => {
   try {
-    // Inicialización directa según estándares senior
-    const ai = new GoogleGenAI({ apiKey: import.meta.env.API_KEY });
+    // Usar process.env para compatibilidad con Vercel/Node
+    const apiKey = import.meta.env.VITE_API_KEY || process.env.API_KEY; 
     
+    if (!apiKey) throw new Error("API Key missing");
+
+    const genAI = new GoogleGenerativeAI(apiKey);
+    
+    // Modelo corregido a una versión estable
+    const model = genAI.getGenerativeModel({ 
+        model: "gemini-1.5-flash",
+    });
+
     const sponsored = businesses.filter(b => b.adLevel !== 'none' && b.status === 'approved');
     
-    const systemInstruction = `Eres 'Huaraz Explorer AI', el asistente virtual experto #1 en turismo, aventura y cultura de Huaraz, la Cordillera Blanca y el Callejón de Huaylas. 
+    const systemInstruction = `Eres 'Huaraz Explorer AI'... (tu prompt actual)`;
 
-TU MISIÓN:
-1. Proporcionar recomendaciones de viaje precisas, seguras y emocionantes.
-2. Actuar como un experto en trekking (Laguna 69, Parón, Santa Cruz, Pastoruri), andinismo y logística de montaña.
-3. Conocer profundamente la gastronomía ancashina (Cuy Chactado, Llunca Kashki, Picante de Chocho, Helados de Huaraz).
-4. Promover estos negocios locales patrocinados: ${JSON.stringify(sponsored.map(b => ({name: b.name, category: b.category, description: b.description, id: b.id})))}.
-5. Hablar sobre tradiciones como el Carnaval Huaracino, la Semana Santa y la Fiesta del Señor de la Soledad.
-
-TONO Y ESTILO:
-- Responde en ${language === 'es' ? 'español' : 'inglés'}.
-- Sé amable, apasionado por las montañas y muy informativo.
-- Usa formato Markdown (negritas, listas, etc.).
-- Si preguntan por rutas, advierte siempre sobre aclimatación y guías certificados.`;
-
-    const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      config: { 
-        systemInstruction, 
+    // Estructura de llamada corregida según el SDK de Google
+    const result = await model.generateContent({
+      contents: [{ role: 'user', parts: [{ text: `${systemInstruction}\n\nUser Question: ${prompt}` }] }],
+      generationConfig: {
         temperature: 0.7,
-        topP: 0.95
+        topP: 0.95,
       },
     });
 
+    const response = await result.response;
+    const text = response.text();
+
     return { 
-      text: response.text || (language === 'es' ? "Lo siento, no pude procesar esa información." : "Sorry, I couldn't process that information."), 
+      text: text || (language === 'es' ? "Lo siento..." : "Sorry..."), 
       sources: [] 
     };
     
@@ -53,8 +50,8 @@ TONO Y ESTILO:
     console.error("Gemini AI Error:", error);
     return {
       text: language === 'es' 
-        ? "🏔️ **Señal débil:** Las tormentas en los Andes están interfiriendo. ¿Podrías intentar de nuevo en unos segundos?" 
-        : "🏔️ **Weak Signal:** Mountain storms are interfering. Could you try again in a few seconds?",
+        ? "🏔️ **Señal débil:** Las tormentas en los Andes están interfiriendo." 
+        : "🏔️ **Weak Signal:** Mountain storms are interfering.",
       sources: []
     };
   }
