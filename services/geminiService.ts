@@ -1,34 +1,53 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-// ... tus otros imports
+import { Business, Coupon, GroundingSource } from '../types';
 
-export const getAiResponse = async (...) => {
+export interface AiResponse {
+  text: string;
+  sources: GroundingSource[];
+}
+
+export const getAiResponse = async (
+  prompt: string,
+  businesses: Business[],
+  coupons: Coupon[],
+  language: 'es' | 'en'
+): Promise<AiResponse> => {
   try {
-    // 1. Intentar obtener la API KEY de ambos posibles lugares
-    const apiKey = (import.meta.env?.VITE_API_KEY) || (process.env.API_KEY);
-    
+    // Intenta leer de Vite o de proceso estándar de Node/Vercel
+    const apiKey = import.meta.env.VITE_API_KEY || process.env.API_KEY;
+
     if (!apiKey) {
-        throw new Error("No API Key found in environment variables");
+      throw new Error("API Key no configurada en Vercel");
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    
-    // 2. Usar un modelo estable (el 3-flash-preview puede fallar si no tienes acceso)
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    // ... resto de tu lógica de sponsored
+    const sponsored = businesses.filter(b => b.adLevel !== 'none' && b.status === 'approved');
 
-    // 3. Estructura correcta de la llamada según la documentación 2024/2025
-    const result = await model.generateContent({
-      contents: [
-        { role: 'user', parts: [{ text: `System: ${systemInstruction}\n\nUser: ${prompt}` }] }
-      ]
-    });
+    const systemInstruction = `Eres 'Huaraz Explorer AI', experto en turismo en Ancash. 
+    Negocios recomendados: ${JSON.stringify(sponsored.map(b => b.name))}.
+    Idioma: ${language}`;
+
+    const result = await model.generateContent([
+      { text: systemInstruction },
+      { text: prompt }
+    ]);
 
     const response = await result.response;
-    return { text: response.text(), sources: [] };
+    
+    return {
+      text: response.text(),
+      sources: []
+    };
 
-  } catch (error) {
-    console.error("Critical AI Error:", error);
-    // ... tu mensaje de error de las montañas
+  } catch (error: any) {
+    console.error("Error en el chat:", error);
+    return {
+      text: language === 'es' 
+        ? "🏔️ **Señal débil:** Problemas de conexión en la cordillera. Intenta de nuevo." 
+        : "🏔️ **Weak Signal:** Connection issues in the mountains. Try again.",
+      sources: []
+    };
   }
-}
+};
