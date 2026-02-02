@@ -56,26 +56,28 @@ const Header: React.FC<{ onMenuOpen: () => void }> = ({ onMenuOpen }) => {
 
     return (
         <header className="bg-[#2A4D69] text-white sticky top-0 z-50 h-16 shadow-lg border-b border-white/10">
-            <div className="container mx-auto px-4 h-full flex items-center justify-between">
-                <div className="flex items-center gap-3">
+            <div className="container mx-auto px-4 h-full flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
                     <button 
                         onClick={onMenuOpen}
-                        className="w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-xl transition-colors text-white/80"
+                        className="w-10 h-10 shrink-0 flex items-center justify-center hover:bg-white/10 rounded-xl transition-colors text-white/80"
                         aria-label="Menú principal"
                     >
                         <i className="fas fa-bars text-xl"></i>
                     </button>
                     
-                    <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center overflow-hidden">
+                    <Link to="/" className="flex items-center gap-2 min-w-0 overflow-hidden">
+                        <div className="w-8 h-8 shrink-0 bg-white rounded-full flex items-center justify-center overflow-hidden">
                             <img src="https://i.imgur.com/Cax54U1.png?v=4" alt="Logo" className="w-5 h-5 object-contain" />
                         </div>
-                        <span className="text-base md:text-lg font-black tracking-tighter uppercase italic hidden sm:inline-block text-white">Huaraz Explorer</span>
-                    </div>
+                        <span className="text-sm md:text-lg font-black tracking-tighter uppercase italic text-white truncate whitespace-nowrap">
+                            Huaraz Explorer
+                        </span>
+                    </Link>
                 </div>
 
-                {/* Selector Circular de Idioma basado en la imagen de referencia */}
-                <div className="flex items-center">
+                {/* Selector Circular de Idioma */}
+                <div className="flex items-center shrink-0">
                     <button 
                         onClick={() => setLanguage(language === 'es' ? 'en' : 'es')}
                         className="group relative flex items-center justify-center bg-white/10 hover:bg-white/20 border-2 border-white/20 w-12 h-10 md:w-14 md:h-11 rounded-[1.2rem] transition-all active:scale-90 shadow-lg overflow-hidden"
