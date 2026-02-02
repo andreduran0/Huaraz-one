@@ -4,8 +4,20 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Huaraz Explorer | Guía Oficial</title>
     
+    <!-- SEO de Marca Mejorado -->
+    <title>Huaraz Explorer | Guía Turística de Huaraz y la Cordillera Blanca</title>
+    <meta name="description" content="Explora Huaraz con la guía digital definitiva. Encuentra los mejores hoteles, restaurantes, trekkings a la Laguna 69, Pastoruri y Chavín de Huántar. Huaraz Explorer es tu compañero de viaje 24/7 en Ancash." />
+    <meta name="keywords" content="Huaraz Explorer, Turismo Huaraz, Guía Huaraz, Cordillera Blanca, Laguna 69, Restaurantes Huaraz, Hoteles Huaraz, Ancash" />
+    <meta name="author" content="Huaraz Explorer" />
+    
+    <!-- Open Graph para redes sociales -->
+    <meta property="og:title" content="Huaraz Explorer | Guía Turística de Huaraz" />
+    <meta property="og:description" content="Descubre los secretos de la Cordillera Blanca con la guía digital más completa de Ancash." />
+    <meta property="og:image" content="https://i.imgur.com/Cax54U1.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://huarazexplorer.com" />
+
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#2A4D69" />
     <link rel="icon" href="https://i.imgur.com/Cax54U1.png" />
@@ -14,7 +26,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script>
-        // No definimos window.process manual para no romper la inyección del sistema
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -35,14 +46,14 @@
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus_Jakarta_Sans:wght@400;500;600;700;800&display=swap');
         
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #f8fafc;
             color: #0f172a;
             -webkit-font-smoothing: antialiased;
-            overscroll-behavior-y: contain; /* Previene el refresh al arrastrar hacia abajo */
+            overscroll-behavior-y: contain;
         }
         
         .dark body { background-color: #020617; color: #f1f5f9; }
@@ -50,12 +61,36 @@
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Animaciones para el asistente */
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
         }
         .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
+
+        /* Estilos para el contenido SEO de carga */
+        #root:empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #ffffff;
+        }
+        .loading-shell {
+            text-align: center;
+            padding: 2rem;
+            max-width: 400px;
+        }
+        .loading-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            animation: pulse 2s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
     </style>
     <script type="importmap">
     {
@@ -73,7 +108,23 @@
 <link rel="stylesheet" href="/index.css">
 </head>
 <body>
-    <div id="root"></div>
+    <div id="root">
+        <!-- Contenido SEO Estático (Visible para buscadores y durante la carga) -->
+        <div class="loading-shell">
+            <img src="https://i.imgur.com/Cax54U1.png?v=4" alt="Huaraz Explorer Logo" class="loading-logo" />
+            <h1 style="color: #2A4D69; font-size: 1.875rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.05em; font-style: italic; text-transform: uppercase;">
+                Huaraz Explorer
+            </h1>
+            <p style="color: #64748b; font-weight: 600; font-size: 0.875rem; line-height: 1.25rem;">
+                La guía turística oficial de Huaraz y la Cordillera Blanca. Descubre los mejores lugares para comer, dormir y explorar en Ancash, Perú.
+            </p>
+            <div style="margin-top: 2rem; display: flex; justify-content: center; gap: 0.5rem;">
+                <div style="width: 8px; height: 8px; background-color: #2A4D69; border-radius: 9999px; opacity: 0.3;"></div>
+                <div style="width: 8px; height: 8px; background-color: #2A4D69; border-radius: 9999px; opacity: 0.3;"></div>
+                <div style="width: 8px; height: 8px; background-color: #2A4D69; border-radius: 9999px; opacity: 0.3;"></div>
+            </div>
+        </div>
+    </div>
     <script type="module" src="/index.tsx"></script>
 </body>
 </html>

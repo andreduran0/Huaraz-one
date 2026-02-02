@@ -9,10 +9,32 @@ export interface BlogPost {
   image: string;
   category: 'trekking' | 'food' | 'tips' | 'culture';
   readTime: string;
-  youtubeId?: string; // Nuevo campo para el ID del video de YouTube
+  youtubeId?: string; // IMPORTANTE: Solo pon el código final del video
 }
 
 export const blogPosts: BlogPost[] = [
+  {
+    id: 'laguna-69-guia-video',
+    title: 'Guía Completa: Laguna 69 en Video',
+    excerpt: 'Mira nuestra travesía en video y prepárate para la caminata más icónica de Huaraz.',
+    author: 'Huaraz Explorer Team',
+    date: '2025-05-15',
+    category: 'trekking',
+    readTime: '8 min',
+    image: 'https://pamelatours.com/wp-content/uploads/2019/10/laguna69.jpg',
+    youtubeId: '9n4NqXfWl-I', // Ejemplo de ID de video
+    content: `
+# Preparándote para la Laguna 69
+
+En el video de arriba te mostramos el camino real. Aquí algunos puntos clave:
+
+*   **Aclimatación**: Mínimo 2 días en Huaraz antes de ir.
+*   **Equipo**: Lleva capas, el clima cambia rápido arriba.
+*   **Hidratación**: Bebe mucha agua para evitar el mal de montaña.
+
+Disfruta el video y suscríbete para más rutas.
+    `
+  },
   {
     id: 'mejor-epoca-huaraz',
     title: '¿Cuál es la mejor época para visitar Huaraz?',
@@ -22,48 +44,14 @@ export const blogPosts: BlogPost[] = [
     category: 'tips',
     readTime: '5 min',
     image: 'https://bananomeridiano.com/wp-content/uploads/2022/03/laguna-paron-huaraz.jpg',
-    youtubeId: 'dQw4w9WgXcQ', // Ejemplo: ID de un video tuyo
     content: `
 # La Mejor Época para tu Aventura en Huaraz
 
-Huaraz, la capital del trekking en el Perú, tiene dos estaciones muy marcadas. Elegir la correcta dependerá de qué actividades planeas realizar.
+Huaraz tiene dos estaciones muy marcadas.
 
 ## El Verano Andino (Mayo a Septiembre)
 Es la temporada ideal para el montañismo y el trekking. 
 *   **Clima**: Días soleados con cielos de un azul intenso.
-*   **Ventajas**: Visibilidad perfecta de los nevados (Huascarán, Alpamayo).
-*   **Desventajas**: Las noches son muy frías, llegando incluso a temperaturas bajo cero.
-
-## La Temporada de Lluvias (Octubre a Abril)
-Aunque llueve, tiene un encanto especial.
-*   **Clima**: Mañanas nubladas con lluvias por la tarde.
-*   **Ventajas**: Paisajes mucho más verdes, menos turistas y precios más bajos.
-
-### Recomendación Pro
-Si buscas el equilibrio perfecto, intenta viajar en **Mayo o Junio**. El paisaje aún está verde por las lluvias pasadas y el cielo ya está despejado.
-    `
-  },
-  {
-    id: 'guia-gastronomica-huaraz',
-    title: '5 Platos Típicos que no puedes perderte',
-    excerpt: 'Desde la Llunca hasta el Cuy Chactado, un recorrido por los sabores de Ancash.',
-    author: 'Chef Local',
-    date: '2025-06-15',
-    category: 'food',
-    readTime: '7 min',
-    image: 'https://i.imgur.com/UYGAUFo.png',
-    content: `
-# Sabores de la Cordillera: Guía Gastronómica
-
-La cocina huaracina es robusta, caliente y llena de historia. Aquí te presentamos los imperdibles:
-
-1.  **Picante de Cuy**: El plato estrella de las festividades.
-2.  **Llunca Kashki**: Una sopa de trigo resbalado con gallina de corral, ideal para el frío.
-3.  **Puchero**: Un caldo potente con diversas carnes y legumbres.
-4.  **Charqui**: Carne de llama o res deshidratada, un snack milenario.
-5.  **Cebiche de Chocho**: El superalimento de los Andes transformado en un ceviche vegetal delicioso.
-
-**¿Dónde comer?** Te recomendamos visitar negocios patrocinados como **Cumbre** para una experiencia fusión increíble.
     `
   }
 ];

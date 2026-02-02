@@ -28,6 +28,7 @@ interface AppContextType {
   setHeroImages: (images: string[]) => void;
   socialLinks: SocialLinks;
   updateSocialLinks: (links: SocialLinks) => void;
+  lastSync: number;
 }
 
 const DEFAULT_HERO_IMAGES = [
@@ -44,17 +45,20 @@ const DEFAULT_SOCIAL_LINKS: SocialLinks = {
   youtube: 'https://www.youtube.com/'
 };
 
+// Claves estables para evitar pérdida de datos entre versiones
 const STORAGE_KEYS = {
-  BUSINESSES: 'huaraz_explorer_businesses_v11',
-  BLOG_POSTS: 'huaraz_explorer_blog_v11',
-  HERO_IMAGES: 'huaraz_explorer_hero_images_v11',
-  LANGUAGE: 'huaraz_explorer_lang_v11',
-  SOCIAL_LINKS: 'huaraz_explorer_social_v11'
+  BUSINESSES: 'hz_explorer_biz_stable',
+  BLOG_POSTS: 'hz_explorer_blog_stable',
+  HERO_IMAGES: 'hz_explorer_hero_stable',
+  LANGUAGE: 'hz_explorer_lang_stable',
+  SOCIAL_LINKS: 'hz_explorer_social_stable'
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [lastSync, setLastSync] = useState(Date.now());
+  
   const [language, setLanguage] = useState<Language>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.LANGUAGE);
     return (saved === 'es' || saved === 'en') ? saved : 'es';
@@ -82,25 +86,15 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     return saved ? JSON.parse(saved) : DEFAULT_SOCIAL_LINKS;
   });
 
+  // Guardado automático y actualización de timestamp de sincronización
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.BUSINESSES, JSON.stringify(businesses));
-  }, [businesses]);
-
-  useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.BLOG_POSTS, JSON.stringify(blogPosts));
-  }, [blogPosts]);
-
-  useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.HERO_IMAGES, JSON.stringify(heroImages));
-  }, [heroImages]);
-
-  useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.LANGUAGE, language);
-  }, [language]);
-
-  useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.SOCIAL_LINKS, JSON.stringify(socialLinks));
-  }, [socialLinks]);
+    setLastSync(Date.now());
+  }, [businesses, blogPosts, heroImages, language, socialLinks]);
 
   const addBusiness = (business: Business) => {
     setBusinesses(prev => [business, ...prev]);
@@ -145,7 +139,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       heroImages, 
       setHeroImages,
       socialLinks,
-      updateSocialLinks
+      updateSocialLinks,
+      lastSync
     }}>
       {children}
     </AppContext.Provider>

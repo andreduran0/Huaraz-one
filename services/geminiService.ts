@@ -10,7 +10,7 @@ export const createTouristChat = (
   const apiKey = process.env.API_KEY;
   if (!apiKey) throw new Error("API_KEY missing");
 
-  const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
+  const ai = new GoogleGenAI({ apiKey });
   const sponsored = businesses.filter(b => b.adLevel !== 'none' && b.status === 'approved');
 
   return ai.chats.create({
