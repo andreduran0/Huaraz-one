@@ -5,18 +5,72 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     
-    <!-- SEO de Marca Mejorado -->
-    <title>Huaraz Explorer | Guía Turística de Huaraz y la Cordillera Blanca</title>
-    <meta name="description" content="Explora Huaraz con la guía digital definitiva. Encuentra los mejores hoteles, restaurantes, trekkings a la Laguna 69, Pastoruri y Chavín de Huántar. Huaraz Explorer es tu compañero de viaje 24/7 en Ancash." />
-    <meta name="keywords" content="Huaraz Explorer, Turismo Huaraz, Guía Huaraz, Cordillera Blanca, Laguna 69, Restaurantes Huaraz, Hoteles Huaraz, Ancash" />
-    <meta name="author" content="Huaraz Explorer" />
+    <!-- SEO CRÍTICO -->
+    <title>Huaraz Explorer | Guía Turística de Huaraz y Cordillera Blanca</title>
+    <meta name="description" content="La guía digital definitiva de Huaraz. Encuentra hoteles, restaurantes, trekkings a la Laguna 69 y Chavín de Huántar. Huaraz Explorer es tu compañero de viaje oficial en Ancash." />
+    <meta name="keywords" content="Huaraz Explorer, Turismo Huaraz, Guía Ancash, Laguna 69, Cordillera Blanca, Hoteles Huaraz, Restaurantes Huaraz" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://huarazexplorer.com/" />
     
-    <!-- Open Graph para redes sociales -->
-    <meta property="og:title" content="Huaraz Explorer | Guía Turística de Huaraz" />
-    <meta property="og:description" content="Descubre los secretos de la Cordillera Blanca con la guía digital más completa de Ancash." />
+    <!-- Open Graph (Facebook/WhatsApp) -->
+    <meta property="og:site_name" content="Huaraz Explorer" />
+    <meta property="og:title" content="Huaraz Explorer | Explora la Cordillera Blanca" />
+    <meta property="og:description" content="Descubre los mejores lugares para comer, dormir y explorar en Huaraz con nuestra guía interactiva." />
     <meta property="og:image" content="https://i.imgur.com/Cax54U1.png" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://huarazexplorer.com" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Huaraz Explorer" />
+    <meta name="twitter:description" content="Tu guía turística 24/7 en el corazón de los Andes peruanos." />
+    <meta name="twitter:image" content="https://i.imgur.com/Cax54U1.png" />
+
+    <!-- Datos Estructurados (JSON-LD) para Google Search -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TravelAgency",
+      "name": "Huaraz Explorer",
+      "alternateName": "Huaraz Explorer Guide",
+      "description": "Plataforma oficial de recomendaciones turísticas en Huaraz y la Cordillera Blanca.",
+      "url": "https://huarazexplorer.com",
+      "logo": "https://i.imgur.com/Cax54U1.png",
+      "image": "https://i.imgur.com/Cax54U1.png",
+      "areaServed": {
+        "@type": "City",
+        "name": "Huaraz",
+        "sameAs": "https://en.wikipedia.org/wiki/Huaraz"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Huaraz",
+        "addressRegion": "Ancash",
+        "addressCountry": "PE"
+      },
+      "priceRange": "$$",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Servicios Turísticos",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Guía de Trekking Laguna 69"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Directorio de Restaurantes"
+            }
+          }
+        ]
+      }
+    }
+    </script>
 
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#2A4D69" />
@@ -68,7 +122,6 @@
         .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
         .mb-safe { margin-bottom: env(safe-area-inset-bottom); }
 
-        /* Estilo de Barra de Desplazamiento (Scrollbar) Estilo iPhone/Premium */
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
         }
@@ -76,24 +129,16 @@
             background: transparent;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1; /* Gris suave solicitado */
+            background: #cbd5e1;
             border-radius: 10px;
-            border: 2px solid white; /* Espaciado interno */
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+            border: 2px solid white;
         }
         
-        /* Asegurar que la barra sea visible en el menú desplegable */
-        .menu-curtain-container {
-            scrollbar-gutter: stable;
-        }
-
+        .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
 
         #root:empty {
             display: flex;
@@ -142,7 +187,7 @@
                 Huaraz Explorer
             </h1>
             <p style="color: #64748b; font-weight: 600; font-size: 0.875rem; line-height: 1.25rem;">
-                La guía turística oficial de Huaraz y la Cordillera Blanca. Descubre los mejores lugares para comer, dormir y explorar en Ancash, Perú.
+                Cargando la mejor guía de Huaraz...
             </p>
         </div>
     </div>
