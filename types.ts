@@ -27,6 +27,7 @@ export interface Business {
   phone?: string;
   whatsapp?: string;
   photos: string[];
+  menuImages?: string[]; // Campo para las páginas de la carta/menú
   schedule: { [key: string]: string };
   adLevel: AdLevel;
   adStartDate?: string;
