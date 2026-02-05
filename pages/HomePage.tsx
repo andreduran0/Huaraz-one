@@ -44,11 +44,11 @@ const HomePage: React.FC = () => {
       {/* VALUE PROPOSITION */}
       <section className="bg-white dark:bg-slate-900 rounded-[3rem] p-10 md:p-14 shadow-sm border border-slate-100 dark:border-slate-800 space-y-8 animate-fadeIn">
         <div className="space-y-1">
-            <h2 className="text-4xl md:text-5xl font-black text-slate-800 dark:text-white tracking-tighter italic uppercase leading-none">HUARAZEXPLORER</h2>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-800 dark:text-white tracking-tighter italic uppercase leading-none">HUARAZ EXPLORER</h2>
             <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] mb-4">PLATAFORMA DE RECOMENDACIONES TURÍSTICAS EN HUARAZ</p>
         </div>
         <p className="text-slate-600 dark:text-slate-400 text-[17px] font-bold leading-relaxed max-w-2xl">
-            <span className="text-slate-800 dark:text-white">Huaraz Explorer</span> ayuda a viajeros nacionales e internacionales a descubrir los mejores negocios, experiencias y servicios turísticos de Huaraz y la Cordillera Blanca, combinando información local y tecnología.
+            Huaraz Explorer ayuda a viajeros nacionales e internacionales a descubrir los mejores negocios, experiencias y servicios turísticos de Huaraz y la Cordillera Blanca, combinando información local y tecnología.
         </p>
         <div className="flex flex-col gap-5 pt-4">
             <FeatureItem icon="fa-location-dot" color="bg-red-50 text-red-500" label="Mapa turístico interactivo" />
@@ -60,7 +60,7 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* TOKEN $HUARAZ - DESIGN REFINED */}
+      {/* TOKEN $HUARAZ */}
       <section className="bg-[#0A0A0A] rounded-[3.5rem] p-10 shadow-2xl text-white overflow-hidden relative border border-[#39FF14]/30 animate-fadeIn">
         <div className="absolute -top-20 -right-20 w-80 h-80 bg-[#39FF14]/10 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10 relative z-10">
@@ -97,18 +97,44 @@ const HomePage: React.FC = () => {
         </a>
       </section>
 
-      {/* NEWSLETTER */}
-      <section className="bg-[#000000] rounded-[3.5rem] p-12 text-center relative overflow-hidden shadow-2xl border border-white/10 animate-fadeIn">
+      {/* NEWSLETTER - ACTUALIZADA CON MÁS INFORMACIÓN */}
+      <section className="bg-[#000000] rounded-[3.5rem] p-12 text-center relative overflow-hidden shadow-2xl border border-white/10 animate-fadeIn group">
+        {/* Cyber Pattern Background */}
         <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#39FF14 0.8px, transparent 0.8px)', backgroundSize: '24px 24px' }}></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[#39FF14]/5 to-transparent"></div>
+
         <div className="relative z-10 space-y-10">
-            <div className="w-24 h-24 bg-white/5 backdrop-blur-xl rounded-[2rem] flex items-center justify-center mx-auto border border-white/10">
+            <div className="w-24 h-24 bg-white/5 backdrop-blur-xl rounded-[2.5rem] flex items-center justify-center mx-auto border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.5)] transition-transform group-hover:scale-105">
                 <i className="fas fa-envelope-open-text text-4xl text-[#39FF14]"></i>
             </div>
-            <h3 className="text-5xl font-black text-white uppercase italic tracking-tighter leading-none">¡MANTENTE <br/><span className="text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">CONECTADO!</span></h3>
-            <button onClick={() => navigate('/newsletter')} className="w-full bg-[#39FF14] text-black py-7 rounded-[2.2rem] font-black uppercase text-xs tracking-[0.4em] shadow-[0_20px_50px_rgba(57,255,20,0.3)] hover:bg-white transition-all">
+            
+            <div className="space-y-4">
+                <h3 className="text-5xl font-black text-white uppercase italic tracking-tighter leading-none">
+                    ¡MANTENTE <br/><span className="text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">INFORMADO!</span>
+                </h3>
+                <p className="text-white/60 text-base font-bold max-w-sm mx-auto leading-relaxed italic">
+                    Recibe información cada semana sobre <span className="text-white">Ciencia, tecnología, turismo y emprendimiento.</span>
+                </p>
+            </div>
+
+            <button 
+                onClick={() => navigate('/newsletter')} 
+                className="w-full bg-[#39FF14] text-black py-7 rounded-[2.2rem] font-black uppercase text-xs tracking-[0.4em] shadow-[0_20px_50px_rgba(57,255,20,0.3)] hover:bg-white hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-5 overflow-hidden relative"
+            >
+                {/* Sweep effect on button */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]"></div>
                 SUSCRIBIRME AHORA <i className="fas fa-arrow-right text-[10px]"></i>
             </button>
+
+            <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.6em]">HUARAZ EXPLORER • NEWS PROTOCOL</p>
         </div>
+
+        <style>{`
+          @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+          }
+        `}</style>
       </section>
 
       {/* DIRECTORIO */}

@@ -19,28 +19,28 @@ const MetaManager: React.FC = () => {
 
   useEffect(() => {
     const path = location.pathname;
-    let title = "Huaraz Explorer | Guía Turística de Ancash";
-    let desc = "Descubre lo mejor de Huaraz: hoteles, restaurantes y rutas de trekking en la Cordillera Blanca.";
+    let title = "Huaraz Explorer | Guía Turística Oficial 2026";
+    let desc = "Descubre lo mejor de Huaraz en 2026: hoteles, restaurantes y rutas de trekking en la Cordillera Blanca.";
     let image = "https://i.imgur.com/Cax54U1.png";
 
     if (path.includes('/map')) {
-      title = "Mapa Interactivo de Huaraz | Huaraz Explorer";
+      title = "Mapa Interactivo de Huaraz 2026 | Huaraz Explorer";
       desc = "Ubica en tiempo real los mejores puntos turísticos y negocios de Huaraz.";
     } else if (path.includes('/blog')) {
-      title = "Guías y Relatos de Viaje | Huaraz Explorer Blog";
+      title = "Guías y Relatos de Viaje 2026 | Huaraz Explorer Blog";
       desc = "Las mejores historias y consejos de expertos para tu aventura en los Andes.";
     } else if (path.includes('/chat')) {
-      title = "Asistente IA Turístico | Huaraz Explorer";
+      title = "Asistente IA Turístico 2026 | Huaraz Explorer";
       desc = "Pregúntale a nuestra IA sobre rutas, clima y recomendaciones en Huaraz.";
     } else if (path.includes('/coupons')) {
-      title = "Cupones y Descuentos | Huaraz Explorer";
+      title = "Cupones y Descuentos 2026 | Huaraz Explorer";
       desc = "Ahorra en tu viaje con beneficios exclusivos en locales seleccionados.";
     }
 
-    // Actualizar Título
+    // Actualizar Título del Documento
     document.title = title;
 
-    // Actualizar Meta Descripción
+    // Función robusta para actualizar metadatos
     const updateMeta = (name: string, content: string, isProperty = false) => {
       const attr = isProperty ? 'property' : 'name';
       let element = document.querySelector(`meta[${attr}="${name}"]`);
@@ -60,6 +60,7 @@ const MetaManager: React.FC = () => {
     updateMeta('twitter:description', desc);
     updateMeta('twitter:image', image);
 
+    // Forzar scroll al inicio
     window.scrollTo(0, 0);
   }, [location]);
 
