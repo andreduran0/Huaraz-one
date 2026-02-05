@@ -14,7 +14,6 @@ import CalendarPage from './pages/CalendarPage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
 
-// Componente para forzar la actualización de SEO en cada cambio de página
 const MetaManager: React.FC = () => {
   const location = useLocation();
 
@@ -22,23 +21,45 @@ const MetaManager: React.FC = () => {
     const path = location.pathname;
     let title = "Huaraz Explorer | Guía Turística de Ancash";
     let desc = "Descubre lo mejor de Huaraz: hoteles, restaurantes y rutas de trekking en la Cordillera Blanca.";
+    let image = "https://i.imgur.com/Cax54U1.png";
 
     if (path.includes('/map')) {
       title = "Mapa Interactivo de Huaraz | Huaraz Explorer";
-      desc = "Ubica los mejores lugares de Huaraz en tiempo real con nuestro mapa turístico.";
+      desc = "Ubica en tiempo real los mejores puntos turísticos y negocios de Huaraz.";
     } else if (path.includes('/blog')) {
       title = "Guías y Relatos de Viaje | Huaraz Explorer Blog";
-      desc = "Lee las mejores crónicas y consejos para visitar la Laguna 69 y más.";
+      desc = "Las mejores historias y consejos de expertos para tu aventura en los Andes.";
+    } else if (path.includes('/chat')) {
+      title = "Asistente IA Turístico | Huaraz Explorer";
+      desc = "Pregúntale a nuestra IA sobre rutas, clima y recomendaciones en Huaraz.";
     } else if (path.includes('/coupons')) {
-      title = "Cupones y Descuentos en Huaraz | Huaraz Explorer";
-      desc = "Ahorra en tu viaje con beneficios exclusivos en los mejores locales de Huaraz.";
+      title = "Cupones y Descuentos | Huaraz Explorer";
+      desc = "Ahorra en tu viaje con beneficios exclusivos en locales seleccionados.";
     }
 
+    // Actualizar Título
     document.title = title;
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) metaDesc.setAttribute("content", desc);
-    
-    // Avisar a Google que el contenido ha cambiado (para navegadores modernos)
+
+    // Actualizar Meta Descripción
+    const updateMeta = (name: string, content: string, isProperty = false) => {
+      const attr = isProperty ? 'property' : 'name';
+      let element = document.querySelector(`meta[${attr}="${name}"]`);
+      if (!element) {
+        element = document.createElement('meta');
+        element.setAttribute(attr, name);
+        document.head.appendChild(element);
+      }
+      element.setAttribute('content', content);
+    };
+
+    updateMeta('description', desc);
+    updateMeta('og:title', title, true);
+    updateMeta('og:description', desc, true);
+    updateMeta('og:image', image, true);
+    updateMeta('twitter:title', title);
+    updateMeta('twitter:description', desc);
+    updateMeta('twitter:image', image);
+
     window.scrollTo(0, 0);
   }, [location]);
 

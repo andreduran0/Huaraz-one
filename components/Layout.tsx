@@ -10,7 +10,6 @@ const MobileMenu: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen
                 isOpen ? 'visible' : 'invisible'
             }`}
         >
-            {/* Overlay */}
             <div 
                 className={`absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
                     isOpen ? 'opacity-100' : 'opacity-0'
@@ -18,26 +17,21 @@ const MobileMenu: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen
                 onClick={onClose}
             ></div>
             
-            {/* Sidebar Drawer */}
             <div 
                 className={`absolute top-0 left-0 w-[280px] sm:w-[320px] h-full bg-white shadow-2xl transition-transform duration-300 ease-out transform flex flex-col ${
                     isOpen ? 'translate-x-0' : '-translate-x-full'
                 }`}
             >
-                {/* Header del Menú */}
                 <div className="flex items-center justify-between p-5 border-b border-slate-50">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 flex items-center justify-center">
-                            <img src="https://i.imgur.com/Cax54U1.png?v=4" className="w-8 h-8 object-contain" alt="Logo" />
-                        </div>
+                        <img src="https://i.imgur.com/Cax54U1.png?v=4" className="w-8 h-8 object-contain" alt="Logo" />
                         <span className="font-black text-[#2A4D69] text-lg tracking-tighter italic uppercase">Huaraz Explorer</span>
                     </div>
-                    <button onClick={onClose} className="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-colors">
+                    <button onClick={onClose} className="w-10 h-10 flex items-center justify-center text-slate-400">
                         <i className="fas fa-times text-xl"></i>
                     </button>
                 </div>
 
-                {/* Lista de Enlaces */}
                 <nav className="flex-grow overflow-y-auto py-4 px-3 space-y-1">
                     <MenuLink to="/" icon="fa-home" label="Inicio" onClick={onClose} />
                     <MenuLink to="/map" icon="fa-map" label="Mapa" onClick={onClose} />
@@ -45,15 +39,13 @@ const MobileMenu: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen
                     <MenuLink to="/chat" icon="fa-robot" label="Asistente IA" onClick={onClose} />
                     <MenuLink to="/blog" icon="fa-newspaper" label="Guías y Relatos" onClick={onClose} />
                     <MenuLink to="/coupons" icon="fa-ticket-alt" label="Cupones" onClick={onClose} />
-                    
                     <div className="my-4 border-t border-slate-50 mx-4"></div>
-                    
-                    <MenuLink to="/onboarding" icon="fa-bullhorn" label="Publicita tu Negocio" onClick={onClose} />
-                    <MenuLink to="/admin" icon="fa-user-shield" label="Panel de Control" onClick={onClose} />
+                    <MenuLink to="/onboarding" icon="fa-bullhorn" label="Publicita aquí" onClick={onClose} />
+                    <MenuLink to="/admin" icon="fa-user-shield" label="Admin" onClick={onClose} />
                 </nav>
 
                 <div className="p-6 text-center border-t border-slate-50">
-                    <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.3em] italic">Versión 5.2 • 2025</p>
+                    <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.3em] italic">Versión 5.2 • 2026</p>
                 </div>
             </div>
         </div>
@@ -65,50 +57,32 @@ const MenuLink: React.FC<{ to: string; icon: string; label: string; onClick: () 
         to={to} 
         onClick={onClick}
         className={({ isActive }) => `
-            flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all group w-full
-            ${isActive 
-                ? 'bg-[#2A4D69]/5 text-[#2A4D69] font-extrabold' 
-                : 'text-slate-500 hover:bg-slate-50 font-bold'
-            }
+            flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all w-full
+            ${isActive ? 'bg-[#2A4D69]/5 text-[#2A4D69] font-extrabold' : 'text-slate-500 hover:bg-slate-50 font-bold'}
         `}
     >
-        <div className="w-6 flex justify-center">
-            <i className={`fas ${icon} text-lg`}></i>
-        </div>
+        <div className="w-6 flex justify-center"><i className={`fas ${icon} text-lg`}></i></div>
         <span className="text-sm uppercase tracking-widest">{label}</span>
     </NavLink>
 );
 
-// Fix: Destructure onMenuOpen prop to solve "Cannot find name 'onMenuOpen'" error.
 const Header: React.FC<{ onMenuOpen: () => void }> = ({ onMenuOpen }) => {
     const { language, setLanguage } = useAppContext();
-
     return (
         <header className="bg-[#2A4D69] text-white sticky top-0 z-50 h-16 shadow-md border-b border-white/10">
             <div className="container mx-auto px-4 h-full flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <button 
-                        onClick={onMenuOpen}
-                        className="w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-lg transition-all"
-                        aria-label="Abrir menú"
-                    >
+                    <button onClick={onMenuOpen} className="w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-lg">
                         <i className="fas fa-bars text-xl"></i>
                     </button>
-                    
                     <Link to="/" className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
                             <img src="https://i.imgur.com/Cax54U1.png?v=4" alt="Logo" className="w-5 h-5 object-contain" />
                         </div>
-                        <span className="text-sm font-black tracking-tighter uppercase italic text-white">
-                            Huaraz Explorer
-                        </span>
+                        <span className="text-sm font-black tracking-tighter uppercase italic text-white">Huaraz Explorer</span>
                     </Link>
                 </div>
-
-                <button 
-                    onClick={() => setLanguage(language === 'es' ? 'en' : 'es')}
-                    className="bg-white/10 border border-white/20 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest"
-                >
+                <button onClick={() => setLanguage(language === 'es' ? 'en' : 'es')} className="bg-white/10 border border-white/20 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
                     {language === 'es' ? 'ES' : 'EN'}
                 </button>
             </div>
@@ -124,26 +98,13 @@ const BottomNav: React.FC = () => {
         { path: '/chat', icon: 'fa-robot', label: 'ASISTENTE IA' },
         { path: '/coupons', icon: 'fa-ticket', label: 'CUPONES' },
     ];
-
     return (
         <nav className="fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-slate-100 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] pb-safe">
             <div className="flex justify-around items-center h-16 md:h-20 max-w-xl mx-auto">
                 {navItems.map(item => (
-                    <NavLink
-                        key={item.path}
-                        to={item.path}
-                        className={({ isActive }) =>
-                            `flex flex-col items-center justify-center text-center w-full h-full transition-colors ${
-                                isActive ? 'text-[#2A4D69]' : 'text-slate-300'
-                            }`
-                        }
-                    >
-                        <div className="text-xl md:text-2xl mb-1">
-                            <i className={`fas ${item.icon}`}></i>
-                        </div>
-                        <span className="text-[8px] md:text-[9px] font-black uppercase tracking-wider leading-none">
-                            {item.label}
-                        </span>
+                    <NavLink key={item.path} to={item.path} className={({ isActive }) => `flex flex-col items-center justify-center text-center w-full h-full transition-colors ${isActive ? 'text-[#2A4D69]' : 'text-slate-300'}`}>
+                        <div className="text-xl md:text-2xl mb-1"><i className={`fas ${item.icon}`}></i></div>
+                        <span className="text-[8px] md:text-[9px] font-black uppercase tracking-wider leading-none">{item.label}</span>
                     </NavLink>
                 ))}
             </div>
@@ -154,18 +115,12 @@ const BottomNav: React.FC = () => {
 const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
-
-    useEffect(() => {
-        setIsMenuOpen(false);
-    }, [location]);
-
+    useEffect(() => { setIsMenuOpen(false); }, [location]);
     return (
         <div className="flex flex-col min-h-screen">
             <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
             <Header onMenuOpen={() => setIsMenuOpen(true)} />
-            <main className="flex-grow pb-20 md:pb-24 bg-white">
-                {children}
-            </main>
+            <main className="flex-grow pb-20 md:pb-24 bg-white">{children}</main>
             <BottomNav />
         </div>
     );
