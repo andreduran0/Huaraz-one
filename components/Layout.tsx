@@ -82,9 +82,41 @@ const Header: React.FC<{ onMenuOpen: () => void }> = ({ onMenuOpen }) => {
                         <span className="text-sm font-black tracking-tighter uppercase italic text-white">Huaraz Explorer</span>
                     </Link>
                 </div>
-                <button onClick={() => setLanguage(language === 'es' ? 'en' : 'es')} className="bg-white/10 border border-white/20 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
-                    {language === 'es' ? 'ES' : 'EN'}
-                </button>
+
+                {/* Rediseño del Selector de Idiomas */}
+                <div className="bg-white/10 p-1 rounded-full border border-white/10 backdrop-blur-md flex items-center shadow-inner">
+                    <button 
+                        onClick={() => setLanguage('es')}
+                        className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 group ${
+                            language === 'es' 
+                            ? 'bg-white text-[#2A4D69] shadow-[0_4px_12px_rgba(0,0,0,0.15)] scale-100' 
+                            : 'text-white/60 hover:text-white scale-95'
+                        }`}
+                    >
+                        <img 
+                            src="https://flagcdn.com/w40/pe.png" 
+                            className={`w-4 h-4 rounded-full object-cover border border-slate-100 shadow-sm transition-transform group-hover:scale-110 ${language === 'es' ? 'opacity-100' : 'opacity-70'}`} 
+                            alt="ES" 
+                        />
+                        <span className="text-[10px] font-black uppercase tracking-tighter">ES</span>
+                    </button>
+                    
+                    <button 
+                        onClick={() => setLanguage('en')}
+                        className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 group ${
+                            language === 'en' 
+                            ? 'bg-white text-[#2A4D69] shadow-[0_4px_12px_rgba(0,0,0,0.15)] scale-100' 
+                            : 'text-white/60 hover:text-white scale-95'
+                        }`}
+                    >
+                        <img 
+                            src="https://flagcdn.com/w40/us.png" 
+                            className={`w-4 h-4 rounded-full object-cover border border-slate-100 shadow-sm transition-transform group-hover:scale-110 ${language === 'en' ? 'opacity-100' : 'opacity-70'}`} 
+                            alt="EN" 
+                        />
+                        <span className="text-[10px] font-black uppercase tracking-tighter">EN</span>
+                    </button>
+                </div>
             </div>
         </header>
     );
