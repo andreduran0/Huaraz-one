@@ -87,6 +87,13 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fadeIn { animation: fadeIn 0.5s ease-out forwards; }
+        
+        /* Estilos básicos para el contenido SEO inicial que se ocultará al cargar React */
+        .seo-fallback { padding: 2rem; max-width: 800px; margin: 0 auto; color: #334155; }
+        .seo-fallback h1 { font-size: 2.5rem; font-weight: 800; color: #2A4D69; margin-bottom: 1.5rem; }
+        .seo-fallback h2 { font-size: 1.5rem; font-weight: 700; color: #F58220; margin-top: 2rem; }
+        .seo-fallback p { line-height: 1.6; margin-bottom: 1rem; }
+        .seo-fallback ul { list-style: disc; padding-left: 1.5rem; margin-top: 1rem; }
     </style>
     <script type="importmap">
     {
@@ -105,24 +112,27 @@
 </head>
 <body>
     <div id="root">
-        <div style="display:none">
-            <h1>Huaraz Explorer</h1>
-            <h2>Plataforma de Recomendaciones Turísticas en Huaraz y Ancash 2026</h2>
-            <p>Huaraz Explorer ayuda a viajeros nacionales e internacionales a descubrir los mejores negocios, experiencias y servicios turísticos de Huaraz y la Cordillera Blanca, combinando información local y tecnología.</p>
-            <ul>
-                <li>Mapa turístico interactivo de Huaraz</li>
-                <li>Negocios locales recomendados en Ancash</li>
-                <li>Festividades, eventos y rutas de trekking</li>
-                <li>Agente turístico con IA 24/7</li>
-                <li>Cupones y beneficios exclusivos</li>
-            </ul>
-        </div>
+        <!-- CONTENIDO SEO ESTÁTICO PARA INDEXACIÓN INICIAL -->
+        <article class="seo-fallback">
+            <h1>Guía turística de Huaraz y la Cordillera Blanca</h1>
+            <p>
+                Huaraz es el principal destino de aventura y trekking en Perú, ubicado en la región Ancash y rodeado por la Cordillera Blanca. Es el punto de partida para excursiones a la Laguna 69, el nevado Pastoruri y el famoso trekking Santa Cruz.
+            </p>
+            <p>
+                Huaraz Explorer es una guía digital que reúne hoteles, restaurantes, tours y experiencias locales para viajeros nacionales e internacionales. Descubre los mejores lugares y planifica tu viaje en un solo sitio.
+            </p>
 
-        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; background: #f8fafc;">
-            <img src="https://i.imgur.com/Cax54U1.png" alt="Huaraz Explorer" style="width: 120px; margin-bottom: 20px;">
-            <p style="color: #2A4D69; font-weight: 600;">Cargando Huaraz Explorer 2026...</p>
-        </div>
+            <h2>Lugares turísticos en Huaraz</h2>
+            <ul>
+                <li>Laguna 69</li>
+                <li>Nevado Pastoruri</li>
+                <li>Laguna Parón</li>
+                <li>Trekking Santa Cruz</li>
+                <li>Chavín de Huántar</li>
+            </ul>
+            <p style="font-size: 12px; color: #94a3b8; margin-top: 40px; text-align: center;">Cargando Huaraz Explorer 2026...</p>
+        </article>
     </div>
- <script type="module" src="/index.tsx"></script>
+    <script type="module" src="/index.tsx"></script>
 </body>
 </html>
