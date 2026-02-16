@@ -11,6 +11,7 @@ const BlogPostPage: React.FC = () => {
   
   const [leadData, setLeadData] = useState({ name: '', email: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (post) {
@@ -28,10 +29,36 @@ const BlogPostPage: React.FC = () => {
     );
   }
 
-  const handleLeadSubmit = (e: React.FormEvent) => {
+  const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    console.log("Lead captured:", leadData);
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    
+    try {
+      const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/26464693/ucoy3j9/';
+      
+      const formData = new FormData();
+      formData.append('name', leadData.name);
+      formData.append('email', leadData.email);
+      formData.append('source', `Huaraz Explorer Blog - VIP Content (${post.title})`);
+      formData.append('timestamp', new Date().toISOString());
+
+      await fetch(zapierWebhookUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData,
+      });
+      
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Error sending lead data:", error);
+      // En caso de error, mostramos el éxito de todas formas para no romper el flujo del usuario
+      // usualmente con no-cors el fetch no falla aunque no haya respuesta legible.
+      setIsSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const videoUrl = `https://www.youtube.com/watch?v=${post.youtubeId}`;
@@ -60,7 +87,6 @@ const BlogPostPage: React.FC = () => {
 
       {/* Área Multimedia Mixta */}
       <div className="container mx-auto px-6 max-w-4xl space-y-10 mb-20">
-        {/* Imagen de Portada siempre presente si existe */}
         {post.image && (
           <div className="relative">
              <img 
@@ -71,7 +97,6 @@ const BlogPostPage: React.FC = () => {
           </div>
         )}
 
-        {/* Video si existe */}
         {post.youtubeId && (
           <div className="relative group">
             <div className="absolute -inset-4 bg-[#2A4D69]/5 rounded-[3.5rem] blur-2xl opacity-50"></div>
@@ -118,7 +143,7 @@ const BlogPostPage: React.FC = () => {
         {/* Lead Management & Social Footer Section */}
         <div className="mt-32 pt-16 border-t border-slate-100 space-y-16">
           
-          {/* Lead Capture Form */}
+          {/* Lead Capture Form - Conectado a Zapier */}
           <div className="bg-[#0A0A0A] p-10 md:p-16 rounded-[4rem] text-center space-y-8 relative overflow-hidden shadow-2xl">
               <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#2A4D69]/20 rounded-full blur-[100px]"></div>
               
@@ -140,6 +165,7 @@ const BlogPostPage: React.FC = () => {
                       className="w-full p-5 bg-white/5 border border-white/10 rounded-2xl text-white font-bold placeholder-gray-500 focus:border-[#2A4D69] outline-none transition-all"
                       value={leadData.name}
                       onChange={e => setLeadData({...leadData, name: e.target.value})}
+                      disabled={isSubmitting}
                     />
                     <input 
                       required
@@ -148,12 +174,14 @@ const BlogPostPage: React.FC = () => {
                       className="w-full p-5 bg-white/5 border border-white/10 rounded-2xl text-white font-bold placeholder-gray-500 focus:border-[#2A4D69] outline-none transition-all"
                       value={leadData.email}
                       onChange={e => setLeadData({...leadData, email: e.target.value})}
+                      disabled={isSubmitting}
                     />
                     <button 
                       type="submit"
-                      className="w-full bg-[#2A4D69] text-white py-6 rounded-2xl font-black uppercase text-xs tracking-[0.3em] shadow-xl hover:bg-white hover:text-black transition-all active:scale-95"
+                      disabled={isSubmitting}
+                      className="w-full bg-[#2A4D69] text-white py-6 rounded-2xl font-black uppercase text-xs tracking-[0.3em] shadow-xl hover:bg-white hover:text-black transition-all active:scale-95 flex items-center justify-center gap-3"
                     >
-                      REGISTRARME AHORA
+                      {isSubmitting ? <i className="fas fa-spinner fa-spin"></i> : 'REGISTRARME AHORA'}
                     </button>
                   </form>
                 </div>

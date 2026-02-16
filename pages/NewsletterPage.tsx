@@ -27,12 +27,13 @@ const NewsletterPage: React.FC = () => {
     setStatus('loading');
 
     try {
-      const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/25999340/ug2eyij/';
+      // Nuevo Webhook de Zapier actualizado
+      const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/26464693/ucoy3j9/';
       
       const formData = new FormData();
       formData.append('name', name);
       formData.append('email', email);
-      formData.append('source', 'Huaraz Explorer PWA - Free PDF Campaign');
+      formData.append('source', 'Huaraz Explorer PWA - Newsletter Campaign');
       formData.append('timestamp', new Date().toISOString());
 
       await fetch(zapierWebhookUrl, {
@@ -53,7 +54,6 @@ const NewsletterPage: React.FC = () => {
   };
 
   const handleDownload = () => {
-    // Aquí iría la lógica de descarga, por ahora un mock
     alert("Iniciando descarga de tu Guía PDF Exclusiva de Huaraz Explorer...");
     // window.open('https://tu-enlace-al-pdf.com/guia.pdf', '_blank');
   };
