@@ -59,7 +59,33 @@ const HomePage: React.FC = () => {
             <FeatureItem icon="fa-newspaper" color="bg-gray-50 text-gray-500" label="Newsletter & Token Huaraz" />
         </div>
       </section>
+{/* BLOQUE SEO ESTRATÉGICO */}
+<section className="max-w-4xl mx-auto px-6 py-16 text-slate-600 dark:text-slate-400 text-sm leading-relaxed space-y-6">
+  <h2 className="text-2xl font-bold text-slate-800 dark:text-white">
+    Sobre Huaraz Explorer
+  </h2>
 
+  <p>
+    Huaraz Explorer es una web app especializada en turismo en Huaraz y la Cordillera Blanca, Perú. 
+    Nuestra plataforma digital conecta viajeros con negocios locales, tours, hoteles, restaurantes 
+    y experiencias auténticas en la región.
+  </p>
+
+  <p>
+    A través de mapas interactivos, recomendaciones verificadas y herramientas basadas en tecnología, 
+    facilitamos la planificación de viajes y promovemos el crecimiento del ecosistema turístico local.
+  </p>
+
+  <p>
+    Desde destinos icónicos como la Laguna 69, el Nevado Huascarán y el Cañón del Pato, hasta emprendimientos 
+    emergentes, Huaraz Explorer centraliza información actualizada para descubrir lo mejor de Huaraz.
+  </p>
+
+  <p>
+    Nuestro objetivo es convertirnos en la plataforma digital de referencia para el turismo en Huaraz, 
+    combinando innovación tecnológica con identidad local.
+  </p>
+</section>
       {/* TOKEN $HUARAZ */}
       <section className="bg-[#0A0A0A] rounded-[3.5rem] p-10 shadow-2xl text-white overflow-hidden relative border border-[#39FF14]/30 animate-fadeIn">
         <div className="absolute -top-20 -right-20 w-80 h-80 bg-[#39FF14]/10 rounded-full blur-[120px] pointer-events-none"></div>
