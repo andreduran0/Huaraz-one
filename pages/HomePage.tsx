@@ -31,11 +31,14 @@ const HomePage: React.FC = () => {
   return (
     <div className="bg-slate-50 dark:bg-slate-950 min-h-screen pb-40 px-4 space-y-10 pt-6 font-['Plus_Jakarta_Sans'] relative overflow-x-hidden">
       
+      {/* SEO H1 - Visually Hidden but Semantically Primary */}
+      <h1 className="sr-only">Plataforma de recomendaciones turísticas en Huaraz – Hoteles, Restaurantes y Tours en la Cordillera Blanca</h1>
+
       {/* HERO SECTION */}
       <section className="relative h-80 rounded-[2.5rem] overflow-hidden shadow-2xl">
         <HeroSlider images={heroImages}>
           <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center p-6">
-            <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-2 drop-shadow-lg uppercase italic tracking-tighter">Huaraz Explorer</h1>
+            <p className="text-3xl md:text-5xl font-extrabold text-white mb-2 drop-shadow-lg uppercase italic tracking-tighter">Huaraz Explorer</p>
             <p className="text-xl text-white font-bold tracking-wide drop-shadow-md uppercase italic">La Cordillera Blanca a un clic</p>
           </div>
         </HeroSlider>
@@ -59,33 +62,7 @@ const HomePage: React.FC = () => {
             <FeatureItem icon="fa-newspaper" color="bg-gray-50 text-gray-500" label="Newsletter & Token Huaraz" />
         </div>
       </section>
-{/* BLOQUE SEO ESTRATÉGICO */}
-<section className="max-w-4xl mx-auto px-6 py-16 text-slate-600 dark:text-slate-400 text-sm leading-relaxed space-y-6">
-  <h2 className="text-2xl font-bold text-slate-800 dark:text-white">
-    Sobre Huaraz Explorer
-  </h2>
 
-  <p>
-    Huaraz Explorer es una web app especializada en turismo en Huaraz y la Cordillera Blanca, Perú. 
-    Nuestra plataforma digital conecta viajeros con negocios locales, tours, hoteles, restaurantes 
-    y experiencias auténticas en la región.
-  </p>
-
-  <p>
-    A través de mapas interactivos, recomendaciones verificadas y herramientas basadas en tecnología, 
-    facilitamos la planificación de viajes y promovemos el crecimiento del ecosistema turístico local.
-  </p>
-
-  <p>
-    Desde destinos icónicos como la Laguna 69, el Nevado Huascarán y el Cañón del Pato, hasta emprendimientos 
-    emergentes, Huaraz Explorer centraliza información actualizada para descubrir lo mejor de Huaraz.
-  </p>
-
-  <p>
-    Nuestro objetivo es convertirnos en la plataforma digital de referencia para el turismo en Huaraz, 
-    combinando innovación tecnológica con identidad local.
-  </p>
-</section>
       {/* TOKEN $HUARAZ */}
       <section className="bg-[#0A0A0A] rounded-[3.5rem] p-10 shadow-2xl text-white overflow-hidden relative border border-[#39FF14]/30 animate-fadeIn">
         <div className="absolute -top-20 -right-20 w-80 h-80 bg-[#39FF14]/10 rounded-full blur-[120px] pointer-events-none"></div>

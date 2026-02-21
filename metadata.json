@@ -1,6 +1,6 @@
 {
-  "name": "Huaraz Explorer",
-  "description": "An interactive guide to the city of Huaraz, featuring local businesses, an AI tourist assistant, coupons, and more. Explore the best of Huaraz with our comprehensive PWA.",
+  "name": "Huaraz Explorer | Plataforma Turística",
+  "description": "Plataforma de recomendaciones turísticas en Huaraz: Hoteles, Restaurantes y Tours en la Cordillera Blanca. Guía interactiva con asistente IA y mapa en tiempo real.",
   "requestFramePermissions": [
     "geolocation"
   ]

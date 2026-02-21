@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { HashRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import MapPage from './pages/MapPage';
@@ -19,22 +19,37 @@ const MetaManager: React.FC = () => {
 
   useEffect(() => {
     const path = location.pathname;
-    let title = "Huaraz Explorer | Guía Turística Oficial 2026";
-    let desc = "Descubre lo mejor de Huaraz en 2026: hoteles, restaurantes y rutas de trekking en la Cordillera Blanca.";
+    const origin = window.location.origin;
+    let title = "Huaraz Explorer | Plataforma Turística en Huaraz 2026";
+    let desc = "La guía definitiva de Huaraz: Hoteles, Restaurantes y Tours en la Cordillera Blanca. Planifica tu viaje con nuestra plataforma de recomendaciones turísticas.";
     let image = "https://i.imgur.com/Cax54U1.png";
+    let canonical = `${origin}${path}`;
 
-    if (path.includes('/map')) {
-      title = "Mapa Interactivo de Huaraz 2026 | Huaraz Explorer";
-      desc = "Ubica en tiempo real los mejores puntos turísticos y negocios de Huaraz.";
+    if (path === '/') {
+      title = "Huaraz Explorer | Plataforma de Recomendaciones Turísticas en Huaraz";
+      desc = "Descubre lo mejor de Huaraz en 2026: Hoteles, Restaurantes y Tours en la Cordillera Blanca. La guía oficial para el viajero moderno.";
+    } else if (path.includes('/map')) {
+      title = "Mapa Interactivo de Huaraz 2026 | Ubica Hoteles y Tours";
+      desc = "Explora Huaraz con nuestro mapa interactivo. Ubica en tiempo real los mejores puntos turísticos y negocios locales.";
     } else if (path.includes('/blog')) {
-      title = "Guías y Relatos de Viaje 2026 | Huaraz Explorer Blog";
-      desc = "Las mejores historias y consejos de expertos para tu aventura en los Andes.";
+      title = "Guías de Viaje y Trekking en Huaraz | Blog Huaraz Explorer";
+      desc = "Consejos de expertos, rutas de trekking en la Cordillera Blanca y relatos de viaje para tu aventura en Ancash.";
     } else if (path.includes('/chat')) {
-      title = "Asistente IA Turístico 2026 | Huaraz Explorer";
-      desc = "Pregúntale a nuestra IA sobre rutas, clima y recomendaciones en Huaraz.";
+      title = "Asistente IA Turístico de Huaraz | Consultas 24/7";
+      desc = "Pregúntale a nuestra Inteligencia Artificial sobre el clima, rutas de trekking y recomendaciones personalizadas en Huaraz.";
     } else if (path.includes('/coupons')) {
-      title = "Cupones y Descuentos 2026 | Huaraz Explorer";
-      desc = "Ahorra en tu viaje con beneficios exclusivos en locales seleccionados.";
+      title = "Cupones de Descuento en Huaraz | Ahorra en tu Viaje";
+      desc = "Obtén beneficios exclusivos y descuentos en los mejores hoteles y restaurantes de Huaraz con Huaraz Explorer.";
+    } else if (path.includes('/calendar')) {
+      title = "Calendario de Fiestas y Eventos en Huaraz 2026";
+      desc = "No te pierdas ninguna festividad. Consulta el calendario oficial de eventos, fiestas patronales y actividades culturales en Ancash.";
+    } else if (path.includes('/newsletter')) {
+      title = "Newsletter Huaraz Explorer | Noticias de Turismo y Tecnología";
+      desc = "Suscríbete para recibir las últimas novedades sobre turismo, ciencia y tecnología en la región de Huaraz.";
+    } else if (path.includes('/business/')) {
+      // El título específico del negocio se podría manejar aquí si tuviéramos acceso al contexto,
+      // pero por ahora mejoramos el genérico para estas rutas.
+      title = "Detalle del Negocio | Huaraz Explorer";
     }
 
     // Actualizar Título del Documento
@@ -52,10 +67,20 @@ const MetaManager: React.FC = () => {
       element.setAttribute('content', content);
     };
 
+    // Actualizar Canonical
+    let linkCanonical = document.querySelector('link[rel="canonical"]');
+    if (!linkCanonical) {
+      linkCanonical = document.createElement('link');
+      linkCanonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(linkCanonical);
+    }
+    linkCanonical.setAttribute('href', canonical);
+
     updateMeta('description', desc);
     updateMeta('og:title', title, true);
     updateMeta('og:description', desc, true);
     updateMeta('og:image', image, true);
+    updateMeta('og:url', canonical, true);
     updateMeta('twitter:title', title);
     updateMeta('twitter:description', desc);
     updateMeta('twitter:image', image);
@@ -69,7 +94,7 @@ const MetaManager: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <MetaManager />
       <Layout>
         <Routes>
@@ -86,7 +111,7 @@ const App: React.FC = () => {
           <Route path="/blog/:id" element={<BlogPostPage />} />
         </Routes>
       </Layout>
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 
