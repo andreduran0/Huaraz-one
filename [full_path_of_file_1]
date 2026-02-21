@@ -1,1 +1,6 @@
-éer‰íz{h}ø¥{ý
+# Supabase Configuration
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+
+# Gemini API Key (handled by platform, but good to have in example)
+GEMINI_API_KEY=your_gemini_api_key

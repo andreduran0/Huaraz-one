@@ -1,61 +1,40 @@
 
-export enum AdLevel {
-  NONE = 'none',
-  ESTANDAR = 'estandar',
-  PREMIUM = 'premium',
-}
-
-export enum BusinessCategory {
-  RESTAURANT = 'restaurant',
-  POLLERIA = 'polleria',
-  CEVICHERIA = 'cevicheria',
-  LAUNDRY = 'laundry',
-  HOTEL = 'hotel',
-  DENTIST = 'dentist',
-  BAKERY = 'bakery',
-  TOURIST_SPOT = 'tourist_spot',
-}
-
-export interface Business {
-  id: string;
-  name: string;
-  category: BusinessCategory;
-  description: string;
-  address: string;
-  lat: number;
-  lng: number;
-  phone?: string;
-  whatsapp?: string;
-  photos: string[];
-  menuImages?: string[]; // Campo para las páginas de la carta/menú
-  schedule: { [key: string]: string };
-  adLevel: AdLevel;
-  adStartDate?: string;
-  adEndDate?: string;
-  qrCodeUrl: string;
-  status: 'pending' | 'approved' | 'rejected';
-  ownerUserId: string;
-  googleMapsQuery?: string;
-}
-
-export interface Coupon {
-  id: string;
-  businessId: string;
-  title: string;
-  description: string;
-  code: string;
-  expiryDate: string;
-}
-
-export interface GroundingSource {
-  title: string;
-  uri: string;
-}
-
-export interface ChatMessage {
-    id: string;
-    text: string;
-    sender: 'user' | 'ai';
-    isLoading?: boolean;
-    sources?: GroundingSource[];
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://huarazexplorer.com/</loc>
+    <lastmod>2026-02-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://huarazexplorer.com/map</loc>
+    <lastmod>2026-02-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://huarazexplorer.com/chat</loc>
+    <lastmod>2026-02-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://huarazexplorer.com/blog</loc>
+    <lastmod>2026-02-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://huarazexplorer.com/coupons</loc>
+    <lastmod>2026-02-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://huarazexplorer.com/calendar</loc>
+    <lastmod>2026-02-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>
