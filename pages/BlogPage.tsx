@@ -1,10 +1,12 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
+import { supabase } from '../services/supabase';
 
 const BlogCard: React.FC<{ post: any }> = ({ post }) => {
   const getThumbnail = () => {
+    if (post.featured_image) return post.featured_image;
     if (post.image) return post.image;
     if (post.youtubeId) {
       return `https://img.youtube.com/vi/${post.youtubeId}/maxresdefault.jpg`;
@@ -12,11 +14,12 @@ const BlogCard: React.FC<{ post: any }> = ({ post }) => {
     return 'https://via.placeholder.com/1280x720?text=Huaraz+Explorer';
   };
 
-  const videoUrl = `https://www.youtube.com/watch?v=${post.youtubeId}`;
+  const videoUrl = post.youtubeId ? `https://www.youtube.com/watch?v=${post.youtubeId}` : null;
+  const postLink = post.slug ? `/blog/${post.slug}` : `/blog/${post.id}`;
 
   return (
     <article className="space-y-8 animate-fadeIn group/card">
-      <Link to={`/blog/${post.id}`}>
+      <Link to={postLink}>
         <h2 className="text-3xl md:text-5xl font-black text-slate-900 hover:text-[#2A4D69] transition-all duration-300 leading-[1.1] tracking-tight group-hover/card:translate-x-1 uppercase italic">
           {post.title}
         </h2>
@@ -24,10 +27,8 @@ const BlogCard: React.FC<{ post: any }> = ({ post }) => {
 
       {/* Miniatura con Estética Premium */}
       <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200 aspect-video bg-slate-100 border border-slate-50">
-        <a 
-          href={post.youtubeId ? videoUrl : `/blog/${post.id}`} 
-          target={post.youtubeId ? "_blank" : "_self"}
-          rel="noreferrer"
+        <Link 
+          to={postLink}
           className="block w-full h-full relative cursor-pointer overflow-hidden group/thumb"
         >
           <img 
@@ -57,7 +58,7 @@ const BlogCard: React.FC<{ post: any }> = ({ post }) => {
                   Video Disponible
               </div>
           )}
-        </a>
+        </Link>
       </div>
 
       <div className="space-y-6">
@@ -67,14 +68,14 @@ const BlogCard: React.FC<{ post: any }> = ({ post }) => {
         
         <div className="flex flex-wrap items-center gap-4">
           <Link 
-            to={`/blog/${post.id}`} 
+            to={postLink} 
             className="inline-flex items-center gap-3 bg-slate-900 text-white px-8 py-4 rounded-2xl font-black text-sm group/cta shadow-xl hover:bg-[#2A4D69] transition-all active:scale-95"
           >
             <span className="uppercase italic tracking-tighter">Leer guía completa</span>
             <i className="fas fa-arrow-right text-xs transform transition-transform group-hover/cta:translate-x-1"></i>
           </Link>
           
-          {post.youtubeId && (
+          {videoUrl && (
             <a 
               href={videoUrl} 
               target="_blank" 
@@ -91,7 +92,7 @@ const BlogCard: React.FC<{ post: any }> = ({ post }) => {
       <div className="pt-8 flex items-center gap-6 text-[10px] text-slate-300 font-black uppercase tracking-[0.3em]">
         <span>{post.author}</span>
         <span>•</span>
-        <span>{post.date}</span>
+        <span>{post.created_at ? new Date(post.created_at).toLocaleDateString() : post.date}</span>
       </div>
       
       <div className="pt-16 border-b border-slate-100"></div>
@@ -100,7 +101,37 @@ const BlogCard: React.FC<{ post: any }> = ({ post }) => {
 };
 
 const BlogPage: React.FC = () => {
-  const { blogPosts } = useAppContext();
+  const { blogPosts: localPosts } = useAppContext();
+  const [posts, setPosts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('posts')
+          .select('*')
+          .eq('published', true)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        
+        // Combinar con locales si se desea, o solo mostrar DB si hay datos
+        if (data && data.length > 0) {
+          setPosts(data);
+        } else {
+          setPosts(localPosts);
+        }
+      } catch (err) {
+        console.error('Error fetching posts:', err);
+        setPosts(localPosts);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, [localPosts]);
 
   return (
     <div className="bg-white min-h-screen pb-40 font-['Plus_Jakarta_Sans']">
@@ -115,8 +146,12 @@ const BlogPage: React.FC = () => {
       </section>
 
       <div className="container mx-auto px-6 max-w-4xl pt-24 space-y-32">
-        {blogPosts.length > 0 ? (
-          blogPosts.map((post) => (
+        {loading ? (
+          <div className="py-32 text-center">
+            <i className="fas fa-spinner fa-spin text-4xl text-[#2A4D69]"></i>
+          </div>
+        ) : posts.length > 0 ? (
+          posts.map((post) => (
             <BlogCard key={post.id} post={post} />
           ))
         ) : (

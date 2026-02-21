@@ -3,22 +3,81 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import ReactMarkdown from 'react-markdown';
+import { supabase } from '../services/supabase';
 
 const BlogPostPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const { blogPosts, socialLinks } = useAppContext();
-  const post = blogPosts.find(p => p.id === id);
+  const { id: slugOrId } = useParams<{ id: string }>();
+  const { blogPosts: localPosts, socialLinks } = useAppContext();
   
+  const [post, setPost] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [leadData, setLeadData] = useState({ name: '', email: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
+    const fetchPost = async () => {
+      setLoading(true);
+      try {
+        // Intentar buscar por slug primero
+        let { data, error } = await supabase
+          .from('posts')
+          .select('*')
+          .eq('slug', slugOrId)
+          .single();
+
+        // Si no hay por slug, intentar por ID (uuid)
+        if (error || !data) {
+          const { data: dataById, error: errorById } = await supabase
+            .from('posts')
+            .select('*')
+            .eq('id', slugOrId)
+            .single();
+          
+          if (!errorById && dataById) {
+            data = dataById;
+          }
+        }
+
+        if (data) {
+          setPost(data);
+        } else {
+          // Fallback a local
+          const local = localPosts.find(p => p.id === slugOrId || p.slug === slugOrId);
+          setPost(local || null);
+        }
+      } catch (err) {
+        console.error('Error fetching post:', err);
+        const local = localPosts.find(p => p.id === slugOrId || p.slug === slugOrId);
+        setPost(local || null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPost();
+  }, [slugOrId, localPosts]);
+
+  useEffect(() => {
     if (post) {
-      document.title = `${post.title} | Huaraz Explorer`;
+      document.title = `${post.meta_title || post.title} | Huaraz Explorer`;
       window.scrollTo(0, 0);
+
+      // Actualizar meta descripción si existe
+      if (post.meta_description) {
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) metaDesc.setAttribute('content', post.meta_description);
+      }
     }
   }, [post]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <i className="fas fa-spinner fa-spin text-4xl text-[#2A4D69]"></i>
+      </div>
+    );
+  }
 
   if (!post) {
     return (
@@ -53,18 +112,35 @@ const BlogPostPage: React.FC = () => {
       setIsSubmitted(true);
     } catch (error) {
       console.error("Error sending lead data:", error);
-      // En caso de error, mostramos el éxito de todas formas para no romper el flujo del usuario
-      // usualmente con no-cors el fetch no falla aunque no haya respuesta legible.
       setIsSubmitted(true);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const videoUrl = `https://www.youtube.com/watch?v=${post.youtubeId}`;
+  const videoUrl = post.youtubeId ? `https://www.youtube.com/watch?v=${post.youtubeId}` : null;
+  const featuredImage = post.featured_image || post.image;
+
+  // JSON-LD Article
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": post.title,
+    "image": [featuredImage],
+    "datePublished": post.created_at || post.date,
+    "dateModified": post.updated_at || post.date,
+    "author": [{
+        "@type": "Person",
+        "name": post.author,
+        "url": "https://huarazexplorer.com/"
+      }]
+  };
 
   return (
     <div className="bg-white min-h-screen pb-40 font-['Plus_Jakarta_Sans']">
+      <script type="application/ld+json">
+        {JSON.stringify(jsonLd)}
+      </script>
       
       {/* Header del Post */}
       <div className="container mx-auto px-6 max-w-3xl pt-16 pb-12">
@@ -79,18 +155,18 @@ const BlogPostPage: React.FC = () => {
         <div className="flex items-center gap-4 text-xs font-black text-slate-300 uppercase tracking-widest mb-10">
           <span className="text-slate-900">{post.author}</span>
           <span className="w-1.5 h-1.5 bg-slate-100 rounded-full"></span>
-          <span>{post.date}</span>
+          <span>{post.created_at ? new Date(post.created_at).toLocaleDateString() : post.date}</span>
           <span className="w-1.5 h-1.5 bg-slate-100 rounded-full"></span>
-          <span>{post.readTime}</span>
+          <span>{post.readTime || '5 min read'}</span>
         </div>
       </div>
 
       {/* Área Multimedia Mixta */}
       <div className="container mx-auto px-6 max-w-4xl space-y-10 mb-20">
-        {post.image && (
+        {featuredImage && (
           <div className="relative">
              <img 
-                src={post.image} 
+                src={featuredImage} 
                 alt={post.title} 
                 className="w-full rounded-[3rem] shadow-2xl aspect-video object-cover border border-slate-50"
               />
@@ -101,7 +177,7 @@ const BlogPostPage: React.FC = () => {
           <div className="relative group">
             <div className="absolute -inset-4 bg-[#2A4D69]/5 rounded-[3.5rem] blur-2xl opacity-50"></div>
             <a 
-              href={videoUrl} 
+              href={videoUrl || '#'} 
               target="_blank" 
               rel="noreferrer"
               className="block aspect-video rounded-[3rem] overflow-hidden shadow-2xl bg-black border border-slate-100 relative group/link"

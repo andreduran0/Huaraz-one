@@ -1,145 +1,23 @@
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    
-    <!-- SEO TÉCNICO AVANZADO -->
-    <title>Huaraz Explorer | Plataforma de Recomendaciones Turísticas en Huaraz</title>
-    <meta name="description" content="La guía digital definitiva de Huaraz 2026. Encuentra los mejores hoteles, restaurantes y tours en la Cordillera Blanca. Plataforma líder en recomendaciones turísticas en Ancash." />
-    <meta name="keywords" content="Huaraz Explorer, Turismo Huaraz, Ancash 2026, Laguna 69, Pastoruri, Cordillera Blanca, Guía de Viaje Perú, Hoteles Huaraz, Restaurantes Huaraz" />
-    <meta name="author" content="Huaraz Explorer Network" />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://huarazexplorer.com/" />
-    
-    <!-- OPEN GRAPH (Facebook, WhatsApp, LinkedIn) -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://huarazexplorer.com/" />
-    <meta property="og:title" content="Huaraz Explorer | Plataforma de Recomendaciones Turísticas en Huaraz" />
-    <meta property="og:description" content="Descubre los mejores locales, hoteles y tours en la Cordillera Blanca con asistencia de IA. Tu guía oficial de Huaraz 2026." />
-    <meta property="og:image" content="https://i.imgur.com/Cax54U1.png" />
-    <meta property="og:image:secure_url" content="https://i.imgur.com/Cax54U1.png" />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-
-    <!-- TWITTER CARDS -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@HuarazExplorer" />
-    <meta name="twitter:title" content="Huaraz Explorer 2026" />
-    <meta name="twitter:description" content="Tu compañero de viaje inteligente en el corazón de los Andes." />
-    <meta name="twitter:image" content="https://i.imgur.com/Cax54U1.png" />
-
-    <!-- DATOS ESTRUCTURADOS (JSON-LD) PARA GOOGLE -->
-    <script type="application/ld+json">
+{
+  "short_name": "Huaraz Explorer",
+  "name": "Huaraz Explorer | Guía Turística",
+  "icons": [
     {
-      "@context": "https://schema.org",
-      "@type": "TravelAgency",
-      "name": "Huaraz Explorer",
-      "alternateName": "Huaraz Explorer 2026",
-      "url": "https://huarazexplorer.com/",
-      "logo": "https://i.imgur.com/Cax54U1.png",
-      "image": "https://i.imgur.com/Cax54U1.png",
-      "description": "Plataforma líder de recomendaciones turísticas en Huaraz: Hoteles, Restaurantes y Tours en la Cordillera Blanca.",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Huaraz",
-        "addressRegion": "Ancash",
-        "addressCountry": "PE"
-      },
-      "sameAs": [
-        "https://www.instagram.com/huarazexplorer",
-        "https://www.tiktok.com/@huarazexplorer"
-      ]
-    }
-    </script>
-
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#2A4D69" />
-    <link rel="icon" href="https://i.imgur.com/Cax54U1.png" />
-
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "brand-blue": "#2A4D69",
-                        "brand-orange": "#F58220",
-                        "brand-green": "#39FF14",
-                    },
-                    spacing: {
-                        'safe-top': 'env(safe-area-inset-top)',
-                        'safe-bottom': 'env(safe-area-inset-bottom)',
-                    }
-                },
-            },
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus_Jakarta_Sans:wght@400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; overflow-x: hidden; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fadeIn { animation: fadeIn 0.5s ease-out forwards; }
-        
-        /* Estilos básicos para el contenido SEO inicial que se ocultará al cargar React */
-        .seo-fallback { padding: 2rem; max-width: 800px; margin: 0 auto; color: #334155; }
-        .seo-fallback h1 { font-size: 2.5rem; font-weight: 800; color: #2A4D69; margin-bottom: 1.5rem; }
-        .seo-fallback h2 { font-size: 1.5rem; font-weight: 700; color: #F58220; margin-top: 2rem; }
-        .seo-fallback p { line-height: 1.6; margin-bottom: 1rem; }
-        .seo-fallback ul { list-style: disc; padding-left: 1.5rem; margin-top: 1rem; }
-    </style>
-    <script type="importmap">
+      "src": "https://i.imgur.com/Cax54U1.png?v=4",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
     {
-      "imports": {
-        "react/": "https://aistudiocdn.com/react@^19.2.0/",
-        "react": "https://aistudiocdn.com/react@^19.2.0",
-        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-        "react-markdown": "https://aistudiocdn.com/react-markdown@^10.1.0",
-        "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.6",
-        "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.1",
-        "qrcode": "https://aistudiocdn.com/qrcode@^1.5.3"
-      }
+      "src": "https://i.imgur.com/Cax54U1.png?v=4",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
-    </script>
-<link rel="stylesheet" href="/index.css">
-</head>
-<body>
-    <div id="root">
-        <!-- CONTENIDO SEO ESTÁTICO PARA INDEXACIÓN INICIAL -->
-        <article class="seo-fallback">
-            <h1>Plataforma de recomendaciones turísticas en Huaraz – Hoteles, Restaurantes y Tours en la Cordillera Blanca</h1>
-            <p>
-                Huaraz Explorer es la plataforma líder de recomendaciones turísticas en Huaraz y la Cordillera Blanca. Ayudamos a viajeros de todo el mundo a descubrir los mejores hoteles, restaurantes, agencias de tours y experiencias auténticas en el corazón de los Andes peruanos.
-            </p>
-            <p>
-                Ubicada en la región Ancash, Huaraz es el epicentro del turismo de aventura en Perú. Nuestra guía digital ofrece información actualizada sobre la Laguna 69, el Nevado Pastoruri, la Laguna Parón y las rutas de trekking más espectaculares como el Santa Cruz Trek.
-            </p>
-
-            <h2>Servicios Turísticos en Huaraz</h2>
-            <ul>
-                <li><strong>Hoteles y Alojamiento:</strong> Encuentra desde hostales para mochileros hasta hoteles boutique con vista a los nevados.</li>
-                <li><strong>Restaurantes y Gastronomía:</strong> Descubre la mejor comida típica de Ancash y opciones internacionales.</li>
-                <li><strong>Tours y Trekking:</strong> Conecta con guías certificados para explorar la Cordillera Blanca y Huayhuash.</li>
-                <li><strong>Asistencia con IA:</strong> Utiliza nuestro asistente inteligente para planificar tu itinerario y resolver dudas en tiempo real.</li>
-            </ul>
-
-            <h2>Principales Destinos en Ancash</h2>
-            <ul>
-                <li>Laguna 69 y Laguna Parón</li>
-                <li>Monumento Arqueológico Chavín de Huántar</li>
-                <li>Glaciar Pastoruri (Ruta del Cambio Climático)</li>
-                <li>Parque Nacional Huascarán</li>
-            </ul>
-            <p style="font-size: 12px; color: #94a3b8; margin-top: 40px; text-align: center;">Cargando Huaraz Explorer 2026...</p>
-        </article>
-    </div>
-    <script type="module" src="/index.tsx"></script>
-</body>
-</html>
+  ],
+  "start_url": "/index.html",
+  "display": "standalone",
+  "theme_color": "#2A4D69",
+  "background_color": "#ffffff"
+}
