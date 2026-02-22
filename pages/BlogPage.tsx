@@ -22,11 +22,12 @@ const BlogCard: React.FC<{ post: any }> = ({ post }) => {
         </h2>
       </Link>
 
-      <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-video bg-slate-100 border border-slate-50">
+      {/* CONTENEDOR CORREGIDO: w-full asegura que el video se vea gigante y no se encoja a 0 */}
+      <div className="w-full aspect-video rounded-[2.5rem] overflow-hidden shadow-2xl bg-slate-100 border border-slate-50">
         {post.video_url ? (
           <iframe
             src={post.video_url}
-            className="w-full h-full absolute top-0 left-0"
+            className="w-full h-full"
             title={post.title}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
