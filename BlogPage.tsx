@@ -4,7 +4,6 @@ import { useAppContext } from '../context/AppContext';
 import { supabase } from '../services/supabase';
 
 const BlogCard: React.FC<{ post: any }> = ({ post }) => {
-  // Función para extraer el ID de YouTube desde el link para la miniatura de respaldo
   const getYoutubeId = (url: string) => {
     if (!url) return null;
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -23,10 +22,8 @@ const BlogCard: React.FC<{ post: any }> = ({ post }) => {
         </h2>
       </Link>
 
-      {/* REPRODUCTOR DE VIDEO REAL O MINIATURA */}
-      <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200 aspect-video bg-slate-100 border border-slate-50">
+      <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-video bg-slate-100 border border-slate-50">
         {post.video_url ? (
-          /* USAMOS LA COLUMNA video_url DE SUPABASE DIRECTAMENTE */
           <iframe
             src={post.video_url}
             className="w-full h-full"
@@ -36,7 +33,6 @@ const BlogCard: React.FC<{ post: any }> = ({ post }) => {
             allowFullScreen
           ></iframe>
         ) : (
-          /* Respaldo: Imagen si no hay video */
           <Link to={postLink} className="block w-full h-full relative cursor-pointer overflow-hidden group/thumb">
             <img 
               src={post.featured_image || `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`} 
@@ -49,8 +45,7 @@ const BlogCard: React.FC<{ post: any }> = ({ post }) => {
 
       <div className="space-y-6">
         <p className="text-slate-500 text-xl leading-relaxed font-medium max-w-2xl">
-          {/* Muestra tu texto experto de las lagunas como resumen */}
-          {post.excerpt || (post.content ? post.content.substring(0, 160) + "..." : "Explora más sobre Huaraz...")}
+          {post.excerpt || (post.content ? post.content.substring(0, 160) + "..." : "Explora más sobre Huaraz con nuestra guía completa.")}
         </p>
         
         <div className="flex flex-wrap items-center gap-4">
