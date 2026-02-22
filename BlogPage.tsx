@@ -71,9 +71,10 @@ const BlogPage: React.FC = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        // AQUÍ ESTÁ EL CAMBIO CLAVE: Pedimos explícitamente video_url y featured_image
         const { data, error } = await supabase
           .from('posts')
-          .select('*')
+          .select('*, video_url, featured_image')
           .eq('published', true)
           .order('created_at', { ascending: false });
 
