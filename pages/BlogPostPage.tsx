@@ -18,17 +18,17 @@ const BlogPostPage: React.FC = () => {
     const fetchPost = async () => {
       setLoading(true);
       try {
-        // Aseguramos pedir explícitamente video_url
+        // AQUÍ ESTÁ LA ÚNICA SOLUCIÓN REAL: Pedir el video_url
         let { data, error } = await supabase
           .from('posts')
-          .select('*, video_url, featured_image')
+          .select('*, video_url')
           .eq('slug', slugOrId)
           .single();
 
         if (error || !data) {
           const { data: dataById, error: errorById } = await supabase
             .from('posts')
-            .select('*, video_url, featured_image')
+            .select('*, video_url')
             .eq('id', slugOrId)
             .single();
           
@@ -114,7 +114,6 @@ const BlogPostPage: React.FC = () => {
     }
   };
 
-  // Función segura para extraer ID para respaldo
   const getYoutubeId = (url: string) => {
     if (!url) return null;
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -145,7 +144,6 @@ const BlogPostPage: React.FC = () => {
         {JSON.stringify(jsonLd)}
       </script>
       
-      {/* Header del Post */}
       <div className="container mx-auto px-6 max-w-3xl pt-16 pb-12">
         <Link to="/blog" className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-8 inline-block hover:text-[#2A4D69] transition-colors">
           <i className="fas fa-arrow-left mr-2"></i> Volver al blog
@@ -162,7 +160,6 @@ const BlogPostPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Área Multimedia Corregida (REPRODUCTOR REAL) */}
       <div className="container mx-auto px-6 max-w-4xl space-y-10 mb-20">
         {post.video_url ? (
           <div className="relative group">
@@ -189,7 +186,6 @@ const BlogPostPage: React.FC = () => {
         )}
       </div>
 
-      {/* Contenido del Artículo */}
       <div className="container mx-auto px-6 max-w-3xl">
         <article className="prose prose-xl max-w-none 
           prose-headings:text-slate-900 prose-headings:font-black prose-headings:uppercase prose-headings:italic prose-headings:tracking-tighter
@@ -200,7 +196,6 @@ const BlogPostPage: React.FC = () => {
           <ReactMarkdown>{post.content || ''}</ReactMarkdown>
         </article>
         
-        {/* Lead Capture Form - Conectado a Zapier */}
         <div className="mt-32 pt-16 border-t border-slate-100 space-y-16">
           <div className="bg-[#0A0A0A] p-10 md:p-16 rounded-[4rem] text-center space-y-8 relative overflow-hidden shadow-2xl">
               <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#2A4D69]/20 rounded-full blur-[100px]"></div>
@@ -254,64 +249,10 @@ const BlogPostPage: React.FC = () => {
               )}
           </div>
 
-          {/* Social Media Highlight Section */}
           <div className="text-center space-y-10">
             <div className="space-y-2">
               <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em]">Síguenos en tiempo real</p>
               <h3 className="text-3xl font-black text-slate-900 uppercase italic tracking-tighter">Nuestras <span className="text-[#2A4D69]">Comunidades</span></h3>
             </div>
             
-            <div className="flex flex-col sm:flex-row justify-center gap-6">
-              <a 
-                href={socialLinks.instagram} 
-                target="_blank" 
-                rel="noreferrer"
-                className="group flex items-center gap-4 bg-white border border-slate-100 p-6 rounded-[2.5rem] shadow-sm hover:shadow-xl hover:border-[#E1306C]/30 transition-all active:scale-95"
-              >
-                <div className="w-14 h-14 bg-gradient-to-tr from-[#FFDC80] via-[#E1306C] to-[#833AB4] rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg group-hover:rotate-6 transition-transform">
-                  <i className="fab fa-instagram"></i>
-                </div>
-                <div className="text-left">
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Instagram</p>
-                  <p className="text-lg font-black text-slate-900 uppercase italic tracking-tighter">@HuarazExplorer</p>
-                </div>
-              </a>
-
-              <a 
-                href={socialLinks.tiktok} 
-                target="_blank" 
-                rel="noreferrer"
-                className="group flex items-center gap-4 bg-white border border-slate-100 p-6 rounded-[2.5rem] shadow-sm hover:shadow-xl hover:border-black/30 transition-all active:scale-95"
-              >
-                <div className="w-14 h-14 bg-black rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg group-hover:-rotate-6 transition-transform">
-                  <i className="fab fa-tiktok"></i>
-                </div>
-                <div className="text-left">
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">TikTok</p>
-                  <p className="text-lg font-black text-slate-900 uppercase italic tracking-tighter">Huaraz.Explorer</p>
-                </div>
-              </a>
-            </div>
-          </div>
-
-          {/* Compartir */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8 pt-10">
-            <div className="space-y-2 text-center md:text-left">
-               <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em]">¿Te gustó este relato?</p>
-               <h3 className="text-xl font-black text-slate-900 uppercase italic tracking-tighter">Compártelo con otros viajeros</h3>
-            </div>
-            <div className="flex gap-4">
-              <ShareButton icon="fa-facebook-f" />
-              <ShareButton icon="fa-whatsapp" />
-              <ShareButton icon="fa-twitter" />
-              <ShareButton icon="fa-link" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const ShareButton: React.FC<{ icon: string }> = ({ icon }) => (
-    <button className="w-14 h-14 bg-white border border-slate-100 rounded-2xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#2A4D69] hover:border-[#2A4D6
+            <div className="flex flex-col
