@@ -22,8 +22,11 @@ const BlogCard: React.FC<{ post: any }> = ({ post }) => {
         </h2>
       </Link>
 
-      {/* CONTENEDOR CORREGIDO: Esto evita que el video se vea aplastado */}
-      <div className="relative w-full aspect-video rounded-[2.5rem] overflow-hidden shadow-2xl bg-slate-100 border border-slate-50">
+      {/* CONTENEDOR A PRUEBA DE BALAS: Obliga a tener la altura exacta de YouTube */}
+      <div 
+        className="relative w-full rounded-[2.5rem] overflow-hidden shadow-2xl bg-slate-100 border border-slate-50"
+        style={{ paddingBottom: '56.25%' }}
+      >
         {post.video_url ? (
           <iframe
             src={post.video_url}
@@ -34,11 +37,11 @@ const BlogCard: React.FC<{ post: any }> = ({ post }) => {
             allowFullScreen
           ></iframe>
         ) : (
-          <Link to={postLink} className="block w-full h-full relative cursor-pointer overflow-hidden group/thumb">
+          <Link to={postLink} className="absolute top-0 left-0 w-full h-full cursor-pointer overflow-hidden group/thumb">
             <img 
               src={post.featured_image || `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`} 
               alt={post.title} 
-              className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-1000 group-hover/card:scale-105"
+              className="w-full h-full object-cover transition-transform duration-1000 group-hover/card:scale-105"
             />
           </Link>
         )}
