@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
@@ -19,18 +18,17 @@ const BlogPostPage: React.FC = () => {
     const fetchPost = async () => {
       setLoading(true);
       try {
-        // Intentar buscar por slug primero
+        // Aseguramos pedir explícitamente video_url
         let { data, error } = await supabase
           .from('posts')
-          .select('*')
+          .select('*, video_url, featured_image')
           .eq('slug', slugOrId)
           .single();
 
-        // Si no hay por slug, intentar por ID (uuid)
         if (error || !data) {
           const { data: dataById, error: errorById } = await supabase
             .from('posts')
-            .select('*')
+            .select('*, video_url, featured_image')
             .eq('id', slugOrId)
             .single();
           
@@ -42,7 +40,6 @@ const BlogPostPage: React.FC = () => {
         if (data) {
           setPost(data);
         } else {
-          // Fallback a local
           const local = localPosts.find(p => p.id === slugOrId || p.slug === slugOrId);
           setPost(local || null);
         }
@@ -63,7 +60,6 @@ const BlogPostPage: React.FC = () => {
       document.title = `${post.meta_title || post.title} | Huaraz Explorer`;
       window.scrollTo(0, 0);
 
-      // Actualizar meta descripción si existe
       if (post.meta_description) {
         const metaDesc = document.querySelector('meta[name="description"]');
         if (metaDesc) metaDesc.setAttribute('content', post.meta_description);
@@ -81,10 +77,10 @@ const BlogPostPage: React.FC = () => {
 
   if (!post) {
     return (
-        <div className="min-h-screen bg-white flex flex-col items-center justify-center p-10 text-center">
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">Artículo no encontrado</h1>
-            <Link to="/blog" className="text-[#2A4D69] font-bold underline">Volver al blog</Link>
-        </div>
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-10 text-center">
+        <h1 className="text-2xl font-bold text-gray-800 mb-4">Artículo no encontrado</h1>
+        <Link to="/blog" className="text-[#2A4D69] font-bold underline">Volver al blog</Link>
+      </div>
     );
   }
 
@@ -118,10 +114,17 @@ const BlogPostPage: React.FC = () => {
     }
   };
 
-  const videoUrl = post.youtubeId ? `https://www.youtube.com/watch?v=${post.youtubeId}` : null;
-  const featuredImage = post.featured_image || post.image;
+  // Función segura para extraer ID para respaldo
+  const getYoutubeId = (url: string) => {
+    if (!url) return null;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
 
-  // JSON-LD Article
+  const backupYoutubeId = getYoutubeId(post.video_url);
+  const featuredImage = post.featured_image || post.image || (backupYoutubeId ? `https://img.youtube.com/vi/${backupYoutubeId}/maxresdefault.jpg` : null);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -131,7 +134,7 @@ const BlogPostPage: React.FC = () => {
     "dateModified": post.updated_at || post.date,
     "author": [{
         "@type": "Person",
-        "name": post.author,
+        "name": post.author || "Huaraz Explorer",
         "url": "https://huarazexplorer.com/"
       }]
   };
@@ -153,54 +156,35 @@ const BlogPostPage: React.FC = () => {
         </h1>
         
         <div className="flex items-center gap-4 text-xs font-black text-slate-300 uppercase tracking-widest mb-10">
-          <span className="text-slate-900">{post.author}</span>
+          <span className="text-slate-900">{post.author || 'Equipo Explorer'}</span>
           <span className="w-1.5 h-1.5 bg-slate-100 rounded-full"></span>
           <span>{post.created_at ? new Date(post.created_at).toLocaleDateString() : post.date}</span>
-          <span className="w-1.5 h-1.5 bg-slate-100 rounded-full"></span>
-          <span>{post.readTime || '5 min read'}</span>
         </div>
       </div>
 
-      {/* Área Multimedia Mixta */}
+      {/* Área Multimedia Corregida (REPRODUCTOR REAL) */}
       <div className="container mx-auto px-6 max-w-4xl space-y-10 mb-20">
-        {featuredImage && (
+        {post.video_url ? (
+          <div className="relative group">
+            <div className="absolute -inset-4 bg-[#2A4D69]/5 rounded-[3.5rem] blur-2xl opacity-50"></div>
+            <div className="block aspect-video rounded-[3rem] overflow-hidden shadow-2xl bg-black border border-slate-100 relative">
+               <iframe
+                 className="w-full h-full"
+                 src={post.video_url}
+                 title={post.title}
+                 frameBorder="0"
+                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                 allowFullScreen
+               ></iframe>
+            </div>
+          </div>
+        ) : featuredImage && (
           <div className="relative">
              <img 
                 src={featuredImage} 
                 alt={post.title} 
                 className="w-full rounded-[3rem] shadow-2xl aspect-video object-cover border border-slate-50"
               />
-          </div>
-        )}
-
-        {post.youtubeId && (
-          <div className="relative group">
-            <div className="absolute -inset-4 bg-[#2A4D69]/5 rounded-[3.5rem] blur-2xl opacity-50"></div>
-            <a 
-              href={videoUrl || '#'} 
-              target="_blank" 
-              rel="noreferrer"
-              className="block aspect-video rounded-[3rem] overflow-hidden shadow-2xl bg-black border border-slate-100 relative group/link"
-            >
-              <img 
-                src={`https://img.youtube.com/vi/${post.youtubeId}/maxresdefault.jpg`} 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover/link:scale-105"
-                onError={(e) => {
-                  e.currentTarget.src = `https://img.youtube.com/vi/${post.youtubeId}/hqdefault.jpg`;
-                }}
-                alt={post.title}
-              />
-              <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                  <div className="w-24 h-24 bg-red-600 text-white rounded-[2rem] flex items-center justify-center text-4xl shadow-2xl transition-all group-hover/link:scale-110 group-hover/link:rotate-3">
-                      <i className="fas fa-play ml-1"></i>
-                  </div>
-              </div>
-              <div className="absolute bottom-8 left-0 right-0 flex justify-center">
-                 <div className="bg-white/90 backdrop-blur-md text-slate-900 px-8 py-3 rounded-full font-black text-xs uppercase tracking-widest shadow-xl flex items-center gap-3">
-                    <i className="fab fa-youtube text-red-600 text-xl"></i> Ver Video en YouTube
-                 </div>
-              </div>
-            </a>
           </div>
         )}
       </div>
@@ -213,13 +197,11 @@ const BlogPostPage: React.FC = () => {
           prose-strong:text-slate-900 prose-strong:font-black
           prose-a:text-[#2A4D69] prose-a:font-black prose-a:no-underline prose-a:border-b-4 prose-a:border-[#2A4D69]/10 hover:prose-a:border-[#2A4D69] transition-all
           prose-img:rounded-[2.5rem] prose-img:shadow-xl prose-li:text-slate-600">
-          <ReactMarkdown>{post.content}</ReactMarkdown>
+          <ReactMarkdown>{post.content || ''}</ReactMarkdown>
         </article>
         
-        {/* Lead Management & Social Footer Section */}
+        {/* Lead Capture Form - Conectado a Zapier */}
         <div className="mt-32 pt-16 border-t border-slate-100 space-y-16">
-          
-          {/* Lead Capture Form - Conectado a Zapier */}
           <div className="bg-[#0A0A0A] p-10 md:p-16 rounded-[4rem] text-center space-y-8 relative overflow-hidden shadow-2xl">
               <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#2A4D69]/20 rounded-full blur-[100px]"></div>
               
@@ -332,9 +314,4 @@ const BlogPostPage: React.FC = () => {
 };
 
 const ShareButton: React.FC<{ icon: string }> = ({ icon }) => (
-    <button className="w-14 h-14 bg-white border border-slate-100 rounded-2xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#2A4D69] hover:border-[#2A4D69] transition-all shadow-sm active:scale-90">
-        <i className={`fab ${icon} text-lg`}></i>
-    </button>
-);
-
-export default BlogPostPage;
+    <button className="w-14 h-14 bg-white border border-slate-100 rounded-2xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#2A4D69] hover:border-[#2A4D6
