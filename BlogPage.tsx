@@ -22,7 +22,8 @@ const BlogCard: React.FC<{ post: any }> = ({ post }) => {
         </h2>
       </Link>
 
-      <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-video bg-slate-100 border border-slate-50">
+      {/* CONTENEDOR CORREGIDO: w-full asegura que el video se vea gigante y no se encoja a 0 */}
+      <div className="w-full aspect-video rounded-[2.5rem] overflow-hidden shadow-2xl bg-slate-100 border border-slate-50">
         {post.video_url ? (
           <iframe
             src={post.video_url}
@@ -71,7 +72,6 @@ const BlogPage: React.FC = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        // AQUÍ ESTÁ EL CAMBIO CLAVE: Pedimos explícitamente video_url y featured_image
         const { data, error } = await supabase
           .from('posts')
           .select('*, video_url, featured_image')
