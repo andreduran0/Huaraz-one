@@ -22,12 +22,12 @@ const BlogCard: React.FC<{ post: any }> = ({ post }) => {
         </h2>
       </Link>
 
-      {/* CONTENEDOR CORREGIDO: w-full asegura que el video se vea gigante y no se encoja a 0 */}
-      <div className="w-full aspect-video rounded-[2.5rem] overflow-hidden shadow-2xl bg-slate-100 border border-slate-50">
+      {/* CONTENEDOR CORREGIDO: Esto evita que el video se vea aplastado */}
+      <div className="relative w-full aspect-video rounded-[2.5rem] overflow-hidden shadow-2xl bg-slate-100 border border-slate-50">
         {post.video_url ? (
           <iframe
             src={post.video_url}
-            className="w-full h-full"
+            className="absolute top-0 left-0 w-full h-full"
             title={post.title}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -38,7 +38,7 @@ const BlogCard: React.FC<{ post: any }> = ({ post }) => {
             <img 
               src={post.featured_image || `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`} 
               alt={post.title} 
-              className="w-full h-full object-cover transition-transform duration-1000 group-hover/card:scale-105"
+              className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-1000 group-hover/card:scale-105"
             />
           </Link>
         )}
