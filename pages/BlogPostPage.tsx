@@ -124,7 +124,7 @@ const BlogPostPage: React.FC = () => {
     "dateModified": post.updated_at || post.date,
     "author": [{
         "@type": "Person",
-        "name": post.author,
+        "name": post.author || "Huaraz Explorer",
         "url": "https://huarazexplorer.com/"
       }]
   };
@@ -154,31 +154,33 @@ const BlogPostPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Área Multimedia */}
+      {/* Área Multimedia (A PRUEBA DE BALAS) */}
       <div className="container mx-auto px-6 max-w-4xl space-y-10 mb-20">
-        {post.video_url ? (
-          <div className="relative group">
-            <div className="absolute -inset-4 bg-[#2A4D69]/5 rounded-[3.5rem] blur-2xl opacity-50"></div>
-            <div className="block aspect-video rounded-[3rem] overflow-hidden shadow-2xl bg-black border border-slate-100 relative">
+        <div className="relative group">
+          <div className="absolute -inset-4 bg-[#2A4D69]/5 rounded-[3.5rem] blur-2xl opacity-50"></div>
+          
+          <div 
+            className="relative w-full rounded-[3rem] overflow-hidden shadow-2xl bg-black border border-slate-100"
+            style={{ paddingBottom: '56.25%' }}
+          >
+            {post.video_url ? (
                <iframe
-                 className="w-full h-full absolute top-0 left-0"
+                 className="absolute top-0 left-0 w-full h-full"
                  src={post.video_url}
                  title={post.title}
                  frameBorder="0"
                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                  allowFullScreen
                ></iframe>
-            </div>
+            ) : featuredImage && (
+               <img 
+                  src={featuredImage} 
+                  alt={post.title} 
+                  className="absolute top-0 left-0 w-full h-full object-cover"
+                />
+            )}
           </div>
-        ) : featuredImage && (
-          <div className="relative">
-             <img 
-                src={featuredImage} 
-                alt={post.title} 
-                className="w-full rounded-[3rem] shadow-2xl aspect-video object-cover border border-slate-50"
-              />
-          </div>
-        )}
+        </div>
       </div>
 
       {/* Contenido del Artículo */}
