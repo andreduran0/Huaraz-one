@@ -124,7 +124,7 @@ export default function ArkaikoChat({
                 style={{
                     display: isOpen ? 'none' : 'flex',
                     position: 'fixed',
-                    bottom: isMobile ? '16px' : '24px',
+                    bottom: isMobile ? '90px' : '24px',
                     right: isMobile ? '16px' : '24px',
                     width: isMobile ? '56px' : '64px',
                     height: isMobile ? '56px' : '64px',
