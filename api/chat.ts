@@ -18,8 +18,6 @@ REGLAS DE TU COMPORTAMIENTO:
 3. Puedes usar palabras breves en quechua como "Allin mikhuna" (buen provecho) o "Sumaq kawsay" (buen vivir) si el contexto es cultural.
 4. Siempre que recomiendes un tour, hotel o restaurante, invita al usuario a contactar al negocio por WhatsApp.
 5. Nunca des respuestas larguísimas. Sé conversacional.
-
-CONTEXTO ACTUAL DE NEGOCIOS Y CONOCIMIENTO:
 `;
 
 async function getContext(userMessage: string, ciudadId: string): Promise<string> {
@@ -77,13 +75,18 @@ export default async function handler(req: any, res: any) {
 
     const model = geminiClient.getGenerativeModel({
       model: 'gemini-1.5-flash',
-      systemInstruction: ARKAIKO_SYSTEM_PROMPT + context,
+      systemInstruction: ARKAIKO_SYSTEM_PROMPT + '\n\nCONTEXTO:\n' + context,
     });
 
-    const geminiHistory = history.map((msg: any) => ({
+    let geminiHistory = history.map((msg: any) => ({
       role: msg.role === 'user' ? 'user' : 'model',
       parts: [{ text: msg.content }],
     }));
+
+    // LA CURA EXACTA: Si la memoria empieza con Arkáiko ('model'), la cortamos para cumplir la regla de Google.
+    while (geminiHistory.length > 0 && geminiHistory[0].role === 'model') {
+      geminiHistory.shift();
+    }
 
     const chat = model.startChat({ history: geminiHistory });
     const result = await chat.sendMessage(message);
@@ -100,6 +103,6 @@ export default async function handler(req: any, res: any) {
 
   } catch (error: any) {
     console.error('Error en el chat:', error);
-    return res.status(500).json({ reply: 'Los Apus están en silencio en este momento. Intenta de nuevo en unos instantes 🏔️' });
+    return res.status(500).json({ reply: 'Los Apus están en silencio momentáneamente. Intenta de nuevo 🏔️' });
   }
 }
