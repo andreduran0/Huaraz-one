@@ -22,6 +22,7 @@ export default function ArkaikoChat({
 }: ArkaikoChatProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [isMinimized, setMin] = useState(false);
+    const [isMobile, setIsMobile] = useState(false); // ✨ El nuevo sensor de celulares
     const [messages, setMessages] = useState<Message[]>([
         {
             role: 'assistant',
@@ -35,15 +36,23 @@ export default function ArkaikoChat({
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
 
+    // ✨ Lógica para detectar el tamaño de la pantalla en tiempo real
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages, loading]);
 
     useEffect(() => {
-        if (isOpen && !isMinimized) {
+        if (isOpen && !isMinimized && !isMobile) {
             setTimeout(() => inputRef.current?.focus(), 100);
         }
-    }, [isOpen, isMinimized]);
+    }, [isOpen, isMinimized, isMobile]);
 
     const sendMessage = useCallback(async () => {
         if (!input.trim() || loading) return;
@@ -106,25 +115,19 @@ export default function ArkaikoChat({
         }
     };
 
-    const quickReplies = [
-        '¿Qué tours hay disponibles?',
-        '¿Dónde comer en Huaraz?',
-        '¿Dónde hospedarme?',
-        '¿Qué eventos hay?',
-    ];
-
     return (
         <>
+            {/* Botón Flotante */}
             <button
                 onClick={() => { setIsOpen(true); setMin(false); }}
                 aria-label="Abrir chat con Arkáiko"
                 style={{
                     display: isOpen ? 'none' : 'flex',
                     position: 'fixed',
-                    bottom: '24px',
-                    right: '24px',
-                    width: '64px',
-                    height: '64px',
+                    bottom: isMobile ? '16px' : '24px',
+                    right: isMobile ? '16px' : '24px',
+                    width: isMobile ? '56px' : '64px',
+                    height: isMobile ? '56px' : '64px',
                     borderRadius: '50%',
                     background: `linear-gradient(135deg, ${colorPrimario}, ${DARK})`,
                     border: `2px solid ${colorDorado}`,
@@ -133,7 +136,7 @@ export default function ArkaikoChat({
                     zIndex: 9999,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '26px',
+                    fontSize: isMobile ? '22px' : '26px',
                     transition: 'transform 0.2s, box-shadow 0.2s',
                     outline: 'none',
                 }}
@@ -141,28 +144,30 @@ export default function ArkaikoChat({
                 🏔️
             </button>
 
+            {/* Ventana de Chat */}
             {isOpen && (
                 <div
                     style={{
                         position: 'fixed',
-                        bottom: '24px',
-                        right: '24px',
-                        width: '380px',
-                        height: isMinimized ? 'auto' : '560px',
+                        bottom: isMobile ? '0' : '24px',
+                        right: isMobile ? '0' : '24px',
+                        width: isMobile ? '100%' : '380px',
+                        height: isMinimized ? 'auto' : (isMobile ? '100%' : '560px'),
                         background: '#FFFFFF',
-                        borderRadius: '20px',
+                        borderRadius: isMobile && !isMinimized ? '0' : (isMobile && isMinimized ? '16px 16px 0 0' : '20px'),
                         boxShadow: '0 12px 48px rgba(0,0,0,0.22)',
                         zIndex: 9998,
                         display: 'flex',
                         flexDirection: 'column',
                         overflow: 'hidden',
                         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif',
-                        border: `1px solid rgba(200,150,12,0.2)`,
+                        border: isMobile ? 'none' : `1px solid rgba(200,150,12,0.2)`,
                     }}
                 >
+                    {/* Cabecera */}
                     <div style={{
                         background: `linear-gradient(135deg, ${DARK} 0%, ${colorPrimario} 100%)`,
-                        padding: '14px 16px',
+                        padding: isMobile ? '16px 16px' : '14px 16px',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '12px',
@@ -179,11 +184,12 @@ export default function ArkaikoChat({
                             style={{
                                 background: 'rgba(255,255,255,0.15)', border: 'none',
                                 color: '#FFFFFF', cursor: 'pointer', borderRadius: '50%',
-                                width: '28px', height: '28px',
+                                width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center'
                             }}
                         >✕</button>
                     </div>
 
+                    {/* Área de Mensajes */}
                     {!isMinimized && (
                         <>
                             <div style={{
@@ -198,33 +204,37 @@ export default function ArkaikoChat({
                                         alignItems: msg.role === 'user' ? 'flex-end' : 'flex-start',
                                     }}>
                                         <div style={{
-                                            maxWidth: '82%', padding: '10px 14px',
+                                            maxWidth: isMobile ? '90%' : '82%', padding: '10px 14px',
                                             borderRadius: msg.role === 'user' ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
                                             background: msg.role === 'user' ? `linear-gradient(135deg, ${colorPrimario}, ${DARK})` : '#FFFFFF',
                                             color: msg.role === 'user' ? '#FFFFFF' : '#1A1A1A',
                                             fontSize: '14px', whiteSpace: 'pre-wrap',
+                                            boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
                                         }}>
                                             {msg.content}
                                         </div>
                                     </div>
                                 ))}
-                                {loading && <div style={{ fontSize: '13px', color: '#888' }}>Arkáiko consulta los Apus...</div>}
+                                {loading && <div style={{ fontSize: '13px', color: '#888', marginLeft: '4px' }}>Arkáiko consulta los Apus...</div>}
                                 <div ref={messagesEndRef} />
                             </div>
 
+                            {/* Input (Teclado) */}
                             <div style={{
-                                padding: '12px 14px', borderTop: '1px solid #EEEEEE', background: '#FFFFFF',
-                                display: 'flex', gap: '8px',
+                                padding: isMobile ? '10px 14px 20px 14px' : '12px 14px',
+                                borderTop: '1px solid #EEEEEE', background: '#FFFFFF',
+                                display: 'flex', gap: '8px', alignItems: 'center'
                             }}>
                                 <textarea
                                     ref={inputRef}
                                     value={input}
                                     onChange={e => setInput(e.target.value)}
                                     onKeyDown={handleKeyDown}
-                                    placeholder="Pregúntale a Arkáiko..."
+                                    placeholder="Escribe tu mensaje..."
                                     style={{
                                         flex: 1, border: `1px solid #DDDDDD`, borderRadius: '20px',
-                                        padding: '10px 16px', fontSize: '14px', resize: 'none', outline: 'none',
+                                        padding: '12px 16px', fontSize: '16px', resize: 'none', outline: 'none',
+                                        maxHeight: '80px', minHeight: '44px', fontFamily: 'inherit'
                                     }}
                                     rows={1}
                                 />
@@ -232,9 +242,10 @@ export default function ArkaikoChat({
                                     onClick={sendMessage}
                                     disabled={loading || !input.trim()}
                                     style={{
-                                        width: '42px', height: '42px', borderRadius: '50%',
+                                        width: '44px', height: '44px', borderRadius: '50%',
                                         background: loading || !input.trim() ? '#CCC' : colorPrimario,
                                         border: 'none', color: '#FFF', cursor: 'pointer',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center'
                                     }}
                                 >➤</button>
                             </div>
