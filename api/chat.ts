@@ -83,7 +83,12 @@ export default async function handler(req: any, res: any) {
       parts: [{ text: msg.content }],
     }));
 
-    // LA CURA EXACTA: Si la memoria empieza con Arkáiko ('model'), la cortamos para cumplir la regla de Google.
+    // ✨ LA NUEVA CURA: Quitamos el último mensaje repetido para no confundir a Google
+    if (geminiHistory.length > 0 && geminiHistory[geminiHistory.length - 1].role === 'user') {
+      geminiHistory.pop();
+    }
+
+    // ✨ CURA ANTERIOR: Si la memoria empieza con Arkáiko, lo cortamos.
     while (geminiHistory.length > 0 && geminiHistory[0].role === 'model') {
       geminiHistory.shift();
     }
