@@ -13,7 +13,7 @@ import NewsletterPage from './pages/NewsletterPage';
 import CalendarPage from './pages/CalendarPage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
-import ArkaikoChat from './components/ArkaikoChat';
+
 const MetaManager: React.FC = () => {
   const location = useLocation();
 
@@ -115,7 +115,6 @@ const App: React.FC = () => {
           <Route path="/blog/:id" element={<BlogPostPage />} />
         </Routes>
       </Layout>
-      <ArkaikoChat ciudadId="huaraz" />
     </BrowserRouter>
   );
 };
