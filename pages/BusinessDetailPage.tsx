@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useTranslations } from '../hooks/useTranslations';
-import { AdLevel } from '../types';
+import { AdLevel, BusinessCategory } from '../types';
 
 const BusinessDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -58,7 +58,9 @@ const BusinessDetailPage: React.FC = () => {
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.googleMapsQuery)}`
     : `https://www.google.com/maps/search/?api=1&query=${business.lat},${business.lng}`;
 
-  const whatsappMessage = encodeURIComponent(`Hola, quisiera hacer una reserva en ${business.name}. Lo vi en Huaraz Explorer.`);
+  const whatsappMessage = business.category === BusinessCategory.EDUCATION
+    ? encodeURIComponent(`Hola, quisiera solicitar una entrevista para el Colegio Nobel Ingenieros. Lo vi en Huaraz Explorer.`)
+    : encodeURIComponent(`Hola, quisiera hacer una reserva en ${business.name}. Lo vi en Huaraz Explorer.`);
 
   return (
     <div className="bg-slate-50 dark:bg-slate-950 min-h-screen relative font-['Plus_Jakarta_Sans']">
@@ -131,8 +133,13 @@ const BusinessDetailPage: React.FC = () => {
                 <div className="space-y-10 animate-fadeIn">
                     <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 px-4">
                         <div className="space-y-2">
-                            <h3 className="text-4xl md:text-6xl font-black text-[#2A4D69] dark:text-white uppercase italic tracking-tighter">Nuestra <span className="text-[#F58220]">Carta</span></h3>
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em]">Consulta nuestros platos y especialidades</p>
+                            <h3 className="text-4xl md:text-6xl font-black text-[#2A4D69] dark:text-white uppercase italic tracking-tighter">
+                                {business.category === BusinessCategory.EDUCATION ? 'NUESTRA PROPUESTA ' : 'Nuestra '}
+                                <span className="text-[#F58220]">{business.category === BusinessCategory.EDUCATION ? 'EDUCATIVA' : 'Carta'}</span>
+                            </h3>
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em]">
+                                {business.category === BusinessCategory.EDUCATION ? 'Conoce nuestro modelo de enseñanza y valores' : 'Consulta nuestros platos y especialidades'}
+                            </p>
                         </div>
                         <div className="bg-slate-100 dark:bg-slate-800 px-8 py-3 rounded-full border border-slate-200 shadow-inner flex items-center gap-3">
                             <i className="fas fa-book-open text-[#F58220] text-xs"></i>
@@ -182,17 +189,23 @@ const BusinessDetailPage: React.FC = () => {
                     <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 group-hover:scale-150 transition-transform duration-[2s]"></div>
                     <div className="relative z-10 space-y-8">
                         <div className="inline-flex items-center gap-4 bg-white/10 px-6 py-2.5 rounded-full border border-white/10">
-                             <i className="fas fa-calendar-check text-[#F58220]"></i>
-                             <span className="text-[10px] font-black uppercase tracking-[0.4em]">Reserva Inmediata</span>
+                             <i className={`fas ${business.category === BusinessCategory.EDUCATION ? 'fa-user-graduate' : 'fa-calendar-check'} text-[#F58220]`}></i>
+                             <span className="text-[10px] font-black uppercase tracking-[0.4em]">
+                                {business.category === BusinessCategory.EDUCATION ? 'Inscripción Estratégica' : 'Reserva Inmediata'}
+                             </span>
                         </div>
                         <h3 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase leading-[0.9]">
-                            Asegura tu lugar en <span className="text-[#F58220]">la Cima.</span>
+                            {business.category === BusinessCategory.EDUCATION ? 'FORJA EL FUTURO EN ' : 'Asegura tu lugar en '}
+                            <span className="text-[#F58220]">LA CIMA</span>
                         </h3>
                         <p className="text-lg font-bold text-white/60 leading-relaxed max-w-sm italic">
-                            Vive la cena más espectacular de Huaraz con vista directa a los nevados.
+                            {business.category === BusinessCategory.EDUCATION 
+                                ? 'Únete a la institución que forma a los líderes e ingenieros del mañana en Huaraz.'
+                                : 'Vive la cena más espectacular de Huaraz con vista directa a los nevados.'}
                         </p>
                         <a href={`https://wa.me/${business.whatsapp}?text=${whatsappMessage}`} target="_blank" rel="noreferrer" className="inline-flex bg-white text-[#2A4D69] px-12 py-7 rounded-[2rem] font-black uppercase text-xs tracking-[0.4em] items-center gap-5 shadow-2xl hover:bg-slate-50 transition-all active:scale-95 group/btn">
-                            Reservar Ahora <i className="fab fa-whatsapp text-2xl group-hover/btn:rotate-12 transition-transform"></i>
+                            {business.category === BusinessCategory.EDUCATION ? 'SOLICITAR ENTREVISTA' : 'Reservar Ahora'} 
+                            <i className="fab fa-whatsapp text-2xl group-hover/btn:rotate-12 transition-transform"></i>
                         </a>
                     </div>
                 </div>
