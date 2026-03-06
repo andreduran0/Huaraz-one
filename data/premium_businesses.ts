@@ -39,5 +39,37 @@ export const premiumBusinesses: Business[] = [
     status: 'approved', 
     ownerUserId: 'u1',
     googleMapsQuery: 'Mirador de Rataquenua Huaraz',
+  },
+  {
+    id: 'nobel-ingenieros',
+    name: 'Colegio Nobel Ingenieros - Huaraz',
+    category: BusinessCategory.EDUCATION,
+    description: 'Institución Educativa líder en Huaraz, dedicada a la formación integral de estudiantes con un enfoque en ingeniería y ciencias. Nuestra propuesta educativa combina la excelencia académica con el desarrollo de valores, preparando a los líderes del mañana en un entorno moderno y estratégico.',
+    address: 'Jr. Augusto B. Leguía n.º 267, Huaraz - Independencia',
+    lat: -9.5260, lng: -77.5280, // Coordenadas aproximadas para Huaraz Independencia
+    phone: '914915067',
+    whatsapp: '51929866812',
+    photos: [
+      'https://i.imgur.com/sWSy9U7.jpeg', // Foto principal
+      'https://i.imgur.com/5ggUUSy.jpeg',
+      'https://i.imgur.com/mvA1Qv4.jpeg',
+      'https://i.imgur.com/e3RpShL.jpeg',
+      'https://i.imgur.com/WXYVg0m.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/Bo4Q31y.jpeg',
+      'https://i.imgur.com/ekwynG7.jpeg',
+      'https://i.imgur.com/F8QGM0R.jpeg',
+      'https://i.imgur.com/N5gwaj0.jpeg',
+      'https://i.imgur.com/Gk2JhpV.jpeg'
+    ],
+    schedule: {
+      'Lunes - Viernes': '7:15 A. M. - 1:00 P. M. | 3:30 P. M. - 7:00 P. M.'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-nobel',
+    status: 'approved',
+    ownerUserId: 'u2',
+    googleMapsQuery: 'Colegio Nobel Ingenieros Huaraz',
   }
 ];

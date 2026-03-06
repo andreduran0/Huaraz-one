@@ -66,12 +66,40 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   
   const [businesses, setBusinesses] = useState<Business[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.BUSINESSES);
-    return saved ? JSON.parse(saved) : businessData;
+    if (!saved) return businessData;
+    
+    try {
+      const savedBiz: Business[] = JSON.parse(saved);
+      
+      // Crear un mapa de los negocios guardados (negocios de usuarios)
+      const savedMap = new Map(savedBiz.map(b => [b.id, b]));
+      
+      // Los negocios del código (businessData) SIEMPRE tienen prioridad y deben estar presentes
+      // Identificamos cuáles son del sistema (están en businessData)
+      const systemIds = new Set(businessData.map(b => b.id));
+      
+      // Negocios que el usuario pudo haber añadido manualmente (no están en el código)
+      const userAddedBiz = savedBiz.filter(b => !systemIds.has(b.id));
+      
+      // El estado final es: Negocios del código + Negocios añadidos por el usuario
+      return [...businessData, ...userAddedBiz];
+    } catch (e) {
+      return businessData;
+    }
   });
 
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.BLOG_POSTS);
-    return saved ? JSON.parse(saved) : initialBlogPosts;
+    if (!saved) return initialBlogPosts;
+    
+    try {
+      const savedPosts: BlogPost[] = JSON.parse(saved);
+      const systemIds = new Set(initialBlogPosts.map(p => p.id));
+      const userAddedPosts = savedPosts.filter(p => !systemIds.has(p.id));
+      return [...initialBlogPosts, ...userAddedPosts];
+    } catch (e) {
+      return initialBlogPosts;
+    }
   });
 
   const [coupons] = useState<Coupon[]>(couponData);
