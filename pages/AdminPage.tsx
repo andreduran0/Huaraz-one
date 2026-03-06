@@ -4,6 +4,7 @@ import { useAppContext } from '../context/AppContext';
 import StaticMap from '../components/StaticMap';
 import { Business, BusinessCategory, AdLevel } from '../types';
 import { BlogPost } from '../data/blogPosts';
+import { useTranslations } from '../hooks/useTranslations';
 
 const ADMIN_PASSWORD = "Huaraz2025"; 
 
@@ -28,6 +29,7 @@ const AdminPage: React.FC = () => {
     heroImages, blogPosts, addBlogPost, deleteBlogPost,
     socialLinks, updateSocialLinks, lastSync
   } = useAppContext();
+  const t = useTranslations();
   
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
@@ -214,7 +216,7 @@ const AdminPage: React.FC = () => {
                                 <img src={biz.photos[0]} className="w-16 h-16 rounded-2xl object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
                                 <div>
                                   <h3 className="font-black text-white uppercase italic tracking-tighter">{biz.name}</h3>
-                                  <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest">{biz.category}</p>
+                                  <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest">{t(`category.${biz.category}` as any)}</p>
                                 </div>
                             </div>
                             <button onClick={() => { deleteBusiness(biz.id); showToast("Eliminado de la memoria"); }} className="w-12 h-12 rounded-2xl bg-red-950/30 text-red-500 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center">

@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Business, BusinessCategory } from '../types';
 import { useNavigate } from 'react-router-dom';
+import { useTranslations } from '../hooks/useTranslations';
 
 interface InteractiveMapProps {
     imageUrl?: string;
@@ -30,6 +31,8 @@ const getCategoryStyles = (category: BusinessCategory) => {
             return { icon: 'fa-bed', color: 'bg-[#2A4D69]', text: 'text-white', ring: 'ring-blue-200' };
         case BusinessCategory.TOURIST_SPOT: 
             return { icon: 'fa-mountain-sun', color: 'bg-emerald-600', text: 'text-white', ring: 'ring-emerald-200' };
+        case BusinessCategory.EDUCATION:
+            return { icon: 'fa-user-graduate', color: 'bg-indigo-600', text: 'text-white', ring: 'ring-indigo-200' };
         default: 
             return { icon: 'fa-location-dot', color: 'bg-slate-600', text: 'text-white', ring: 'ring-slate-200' };
     }
@@ -43,6 +46,7 @@ export default function StaticMap({
     imageUrl = "https://i.imgur.com/uweRYKK.jpeg" 
 }: InteractiveMapProps) {
     const navigate = useNavigate();
+    const t = useTranslations();
     const [transform, setTransform] = useState({ scale: 1, x: 0, y: 0 });
     const [activeBusiness, setActiveBusiness] = useState<Business | null>(null);
     const [userPos, setUserPos] = useState<{lat: number, lng: number} | null>(null);
@@ -318,7 +322,7 @@ export default function StaticMap({
                         <div className="p-10 pt-0 -mt-10 relative z-10">
                             <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-50">
                                 <span className="bg-[#2A4D69]/10 text-[#2A4D69] px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest mb-3 inline-block">
-                                    {activeBusiness.category}
+                                    {t(`category.${activeBusiness.category}` as any)}
                                 </span>
                                 <h4 className="text-3xl font-black text-slate-900 uppercase italic tracking-tighter leading-none">
                                     {activeBusiness.name}
