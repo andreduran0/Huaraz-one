@@ -54,7 +54,12 @@ export const premiumBusinesses: Business[] = [
       'https://i.imgur.com/5ggUUSy.jpeg',
       'https://i.imgur.com/mvA1Qv4.jpeg',
       'https://i.imgur.com/e3RpShL.jpeg',
-      'https://i.imgur.com/WXYVg0m.jpeg'
+      'https://i.imgur.com/WXYVg0m.jpeg',
+      'https://i.imgur.com/5yMkzBx.jpeg',
+      'https://i.imgur.com/GxiGrB4.jpeg',
+      'https://i.imgur.com/dHCJc59.jpeg',
+      'https://i.imgur.com/Z00ya3W.jpeg',
+      'https://i.imgur.com/YzFeoO2.jpeg'
     ],
     menuImages: [
       'https://i.imgur.com/Bo4Q31y.jpeg',
@@ -71,5 +76,34 @@ export const premiumBusinesses: Business[] = [
     status: 'approved',
     ownerUserId: 'u2',
     googleMapsQuery: 'Colegio Nobel Ingenieros Huaraz',
+  },
+  {
+    id: 'policlinico-doctor-d',
+    name: 'Policlínico Doctor D - Huaraz',
+    category: BusinessCategory.HEALTH,
+    description: 'Policlínico especializado en brindar atención médica integral de alta calidad en Huaraz. Contamos con un equipo de profesionales comprometidos con tu bienestar, ofreciendo servicios de diagnóstico, consulta externa y especialidades médicas con tecnología de vanguardia y calidez humana.',
+    address: 'Jr. Damaso Antúnez N.º 744, Huaraz',
+    lat: -9.5290, lng: -77.5270, // Coordenadas aproximadas para Jr. Damaso Antúnez
+    phone: '954758684',
+    whatsapp: '51954758684',
+    photos: [
+      'https://i.imgur.com/jdi4vRu.jpeg', // Foto principal
+      'https://i.imgur.com/79ugdQF.jpeg'  // Galería
+    ],
+    menuImages: [
+      'https://i.imgur.com/79ugdQF.jpeg',
+      'https://i.imgur.com/2ZmoEhR.jpeg',
+      'https://i.imgur.com/hsEbVpb.jpeg',
+      'https://i.imgur.com/hsEbVpb.jpeg',
+      'https://i.imgur.com/AasZwU8.jpeg'
+    ],
+    schedule: {
+      'Lunes - Sábado': '7:00 A. M. - 7:00 P. M.'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-doctor-d',
+    status: 'approved',
+    ownerUserId: 'u3',
+    googleMapsQuery: 'Jr. Damaso Antúnez 744 Huaraz',
   }
 ];

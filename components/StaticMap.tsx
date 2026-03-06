@@ -33,6 +33,8 @@ const getCategoryStyles = (category: BusinessCategory) => {
             return { icon: 'fa-mountain-sun', color: 'bg-emerald-600', text: 'text-white', ring: 'ring-emerald-200' };
         case BusinessCategory.EDUCATION:
             return { icon: 'fa-user-graduate', color: 'bg-indigo-600', text: 'text-white', ring: 'ring-indigo-200' };
+        case BusinessCategory.HEALTH:
+            return { icon: 'fa-stethoscope', color: 'bg-red-600', text: 'text-white', ring: 'ring-red-200' };
         default: 
             return { icon: 'fa-location-dot', color: 'bg-slate-600', text: 'text-white', ring: 'ring-slate-200' };
     }
