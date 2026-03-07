@@ -1,4 +1,4 @@
-
+import ArkaikoChat from './components/ArkaikoChat';
 import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
@@ -13,7 +13,6 @@ import NewsletterPage from './pages/NewsletterPage';
 import CalendarPage from './pages/CalendarPage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
-import ArkaikoChat from './components/ArkaikoChat';
 const MetaManager: React.FC = () => {
   const location = useLocation();
 
@@ -114,8 +113,8 @@ const App: React.FC = () => {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:id" element={<BlogPostPage />} />
         </Routes>
+        <ArkaikoChat ciudadId="huaraz" />
       </Layout>
-      <ArkaikoChat ciudadId="huaraz" />
     </BrowserRouter>
   );
 };

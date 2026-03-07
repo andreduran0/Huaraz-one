@@ -29,7 +29,7 @@ const NewsletterPage: React.FC = () => {
     try {
       // Nuevo Webhook de Zapier actualizado
       const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/26464693/ucoy3j9/';
-      
+
       const formData = new FormData();
       formData.append('name', name);
       formData.append('email', email);
@@ -41,7 +41,7 @@ const NewsletterPage: React.FC = () => {
         mode: 'no-cors',
         body: formData,
       });
-      
+
       setStatus('success');
       setName('');
       setEmail('');
@@ -61,68 +61,68 @@ const NewsletterPage: React.FC = () => {
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 font-['Plus_Jakarta_Sans']">
       <div className="max-w-2xl w-full bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl p-10 md:p-16 border border-slate-100 dark:border-slate-800 text-center space-y-8 animate-fadeIn">
-        
+
         <div className={`w-24 h-24 mx-auto rounded-3xl flex items-center justify-center text-3xl transition-all duration-500 ${status === 'success' ? 'bg-green-500 text-white shadow-xl rotate-12' : 'bg-brand-blue/10 text-brand-blue'}`}>
           <i className={`fas ${status === 'success' ? 'fa-file-arrow-down' : 'fa-envelope-open-text'}`}></i>
         </div>
 
         {status === 'success' ? (
-           <div className="space-y-6">
-             <h1 className="text-4xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter leading-none">{t('newsletter.successTitle')}</h1>
-             <p className="text-slate-500 dark:text-slate-400 font-medium">{t('newsletter.successMsg')}</p>
-             
-             <button 
-                onClick={handleDownload}
-                className="w-full bg-brand-blue text-white py-6 rounded-2xl font-black uppercase text-sm tracking-widest shadow-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-3 active:scale-95"
-             >
-                <i className="fas fa-download"></i> Descargar PDF Ahora
-             </button>
+          <div className="space-y-6">
+            <h1 className="text-4xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter leading-none">{t('newsletter.successTitle')}</h1>
+            <p className="text-slate-500 dark:text-slate-400 font-medium">{t('newsletter.successMsg')}</p>
 
-             <button 
-                onClick={() => setStatus('idle')}
-                className="text-slate-400 text-xs font-bold hover:underline"
-             >
-                {t('newsletter.reset')}
-             </button>
-           </div>
+            <button
+              onClick={handleDownload}
+              className="w-full bg-brand-blue text-white py-6 rounded-2xl font-black uppercase text-sm tracking-widest shadow-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-3 active:scale-95"
+            >
+              <i className="fas fa-download"></i> Descargar PDF Ahora
+            </button>
+
+            <button
+              onClick={() => setStatus('idle')}
+              className="text-slate-400 text-xs font-bold hover:underline"
+            >
+              {t('newsletter.reset')}
+            </button>
+          </div>
         ) : (
-           <div className="space-y-6">
-             <h1 className="text-4xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter leading-none">{t('newsletter.greeting')}</h1>
-             <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
-               Suscríbete a nuestro boletín semanal y recibe información sobre <strong>ciencia, tecnología, turismo y emprendimiento</strong>. ¡Y obtén tu guía PDF de regalo!
-             </p>
+          <div className="space-y-6">
+            <h1 className="text-4xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter leading-none">{t('newsletter.greeting')}</h1>
+            <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+              Suscríbete a nuestro boletín semanal y recibe información sobre <strong>ciencia, tecnología, turismo y emprendimiento</strong>. ¡Y obtén tu guía PDF de regalo!
+            </p>
 
-             <form onSubmit={handleSubmit} className="space-y-4">
-                <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder={t('newsletter.namePlaceholder')}
-                    disabled={status === 'loading'}
-                    className="w-full p-5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all font-semibold"
-                />
-                <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder={t('newsletter.emailPlaceholder')}
-                    disabled={status === 'loading'}
-                    className="w-full p-5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all font-semibold"
-                />
-                
-                {message && status === 'error' && (
-                    <p className="text-red-500 text-xs font-black uppercase tracking-widest">{message}</p>
-                )}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder={t('newsletter.namePlaceholder')}
+                disabled={status === 'loading'}
+                className="w-full p-5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all font-semibold"
+              />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={t('newsletter.emailPlaceholder')}
+                disabled={status === 'loading'}
+                className="w-full p-5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all font-semibold"
+              />
 
-                <button
-                    type="submit"
-                    disabled={status === 'loading'}
-                    className="w-full bg-brand-blue text-white py-6 rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-3 active:scale-95"
-                >
-                    {status === 'loading' ? <i className="fas fa-spinner fa-spin"></i> : <><i className="fas fa-bolt"></i> {t('newsletter.button')}</>}
-                </button>
-             </form>
-           </div>
+              {message && status === 'error' && (
+                <p className="text-red-500 text-xs font-black uppercase tracking-widest">{message}</p>
+              )}
+
+              <button
+                type="submit"
+                disabled={status === 'loading'}
+                className="w-full bg-brand-blue text-white py-6 rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-3 active:scale-95"
+              >
+                {status === 'loading' ? <i className="fas fa-spinner fa-spin"></i> : <><i className="fas fa-bolt"></i> {t('newsletter.button')}</>}
+              </button>
+            </form>
+          </div>
         )}
 
         <div className="pt-6 border-t border-slate-50 dark:border-slate-800">
