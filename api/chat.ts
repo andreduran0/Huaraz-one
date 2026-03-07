@@ -5,8 +5,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY || '';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// @ts-ignore
-const geminiApiKey = (import.meta as any).env.VITE_GEMINI_API_KEY || '';
+const geminiApiKey = process.env.GEMINI_API_KEY || '';
 const geminiClient = new GoogleGenerativeAI(geminiApiKey);
 const ARKAIKO_SYSTEM_PROMPT = `
 Eres Arkáiko — la memoria viva de los Andes. Eres un sabio andino que guía a los viajeros en Huaraz y la Cordillera Blanca.
