@@ -14,6 +14,8 @@ export enum BusinessCategory {
   DENTIST = 'dentist',
   BAKERY = 'bakery',
   TOURIST_SPOT = 'tourist_spot',
+  EDUCATION = 'education',
+  HEALTH = 'health',
 }
 
 export interface Business {
