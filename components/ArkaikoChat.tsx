@@ -2,18 +2,17 @@ import ReactMarkdown from 'react-markdown';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-// Inicializamos el cliente de Supabase una sola vez
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+// Esto evita que la página se ponga en blanco si faltan las llaves
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// Función para registrar los clics
 const logClick = async (businessName: string) => {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return; // No hace nada si no hay llaves
     try {
         await supabase.from('clicks_log').insert([{ business_name: businessName }]);
-        console.log("✅ Clic registrado");
     } catch (err) {
-        console.error("❌ Error registrando clic:", err);
+        console.error("Error:", err);
     }
 };
 
