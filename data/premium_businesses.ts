@@ -1,4 +1,3 @@
-
 import { Business, AdLevel, BusinessCategory } from '../types';
 
 export const premiumBusinesses: Business[] = [
@@ -46,11 +45,11 @@ export const premiumBusinesses: Business[] = [
     category: BusinessCategory.EDUCATION,
     description: 'Institución Educativa líder en Huaraz, dedicada a la formación integral de estudiantes con un enfoque en ingeniería y ciencias. Nuestra propuesta educativa combina la excelencia académica con el desarrollo de valores, preparando a los líderes del mañana en un entorno moderno y estratégico.',
     address: 'Jr. Augusto B. Leguía n.º 267, Huaraz - Independencia',
-    lat: -9.5260, lng: -77.5280, // Coordenadas aproximadas para Huaraz Independencia
+    lat: -9.5260, lng: -77.5280, 
     phone: '914915067',
     whatsapp: '51929866812',
     photos: [
-      'https://i.imgur.com/sWSy9U7.jpeg', // Foto principal
+      'https://i.imgur.com/sWSy9U7.jpeg',
       'https://i.imgur.com/5ggUUSy.jpeg',
       'https://i.imgur.com/mvA1Qv4.jpeg',
       'https://i.imgur.com/e3RpShL.jpeg',
@@ -83,12 +82,12 @@ export const premiumBusinesses: Business[] = [
     category: BusinessCategory.HEALTH,
     description: 'Policlínico especializado en brindar atención médica integral de alta calidad en Huaraz. Contamos con un equipo de profesionales comprometidos con tu bienestar, ofreciendo servicios de diagnóstico, consulta externa y especialidades médicas con tecnología de vanguardia y calidez humana.',
     address: 'Jr. Damaso Antúnez N.º 744, Huaraz',
-    lat: -9.5290, lng: -77.5270, // Coordenadas aproximadas para Jr. Damaso Antúnez
+    lat: -9.5290, lng: -77.5270, 
     phone: '954758684',
     whatsapp: '51954758684',
     photos: [
-      'https://i.imgur.com/jdi4vRu.jpeg', // Foto principal
-      'https://i.imgur.com/79ugdQF.jpeg'  // Galería
+      'https://i.imgur.com/jdi4vRu.jpeg', 
+      'https://i.imgur.com/79ugdQF.jpeg'  
     ],
     menuImages: [
       'https://i.imgur.com/79ugdQF.jpeg',
@@ -105,5 +104,34 @@ export const premiumBusinesses: Business[] = [
     status: 'approved',
     ownerUserId: 'u3',
     googleMapsQuery: 'Jr. Damaso Antúnez 744 Huaraz',
+  },
+  {
+    id: ' Del sole-huaraz',
+    name: 'Del Sole - Huaraz',
+    category: BusinessCategory.RESTAURANT,
+    description: 'Restaurante ubicado en una zona estratégica de Huaraz. Disfruta de nuestra variada propuesta gastronómica con atención en horario extendido. Explora nuestra carta y solicita tu reserva de manera rápida y segura.',
+    address: 'Av. Luzuriaga N° 1004 Belén (Ref: Jr. Damaso Antúnez N° 744), Huaraz',
+    lat: -9.5285, lng: -77.5276,
+    phone: '961951453',
+    whatsapp: '51961951453',
+    photos: [
+      'https://i.imgur.com/DnMZLSY.jpeg',
+      'https://i.imgur.com/GOjggrc.jpeg'
+    ],
+    menuImages: [
+      'https://imgur.com/b5edf9c3-3340-4904-96ed-65f6d9c98230.jpeg',
+      'https://imgur.com/b5edf9c3-3340-4904-96ed-65f6d9c98230.jpeg',
+      'https://imgur.com/b5edf9c3-3340-4904-96ed-65f6d9c98230.jpeg',
+      'https://imgur.com/b5edf9c3-3340-4904-96ed-65f6d9c98230.jpeg',
+      'https://imgur.com/b5edf9c3-3340-4904-96ed-65f6d9c98230.jpeg'
+    ],
+    schedule: {
+      'Lunes - Domingo': '12:00 P. M. - 11:00 P. M.'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-sole',
+    status: 'approved',
+    ownerUserId: 'u4',
+    googleMapsQuery: 'Av Luzuriaga 1004 Huaraz'
   }
 ];
