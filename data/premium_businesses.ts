@@ -119,11 +119,7 @@ export const premiumBusinesses: Business[] = [
       'https://i.imgur.com/GOjggrc.jpeg'
     ],
     menuImages: [
-      'https://imgur.com/b5edf9c3-3340-4904-96ed-65f6d9c98230.jpeg',
-      'https://imgur.com/b5edf9c3-3340-4904-96ed-65f6d9c98230.jpeg',
-      'https://imgur.com/b5edf9c3-3340-4904-96ed-65f6d9c98230.jpeg',
-      'https://imgur.com/b5edf9c3-3340-4904-96ed-65f6d9c98230.jpeg',
-      'https://imgur.com/b5edf9c3-3340-4904-96ed-65f6d9c98230.jpeg'
+      'https://i.imgur.com/BNyaQ6M.jpeg',
     ],
     schedule: {
       'Lunes - Domingo': '12:00 P. M. - 11:00 P. M.'
