@@ -1,3 +1,4 @@
+import ReactMarkdown from 'react-markdown';
 import { useState, useRef, useEffect, useCallback } from 'react';
 
 interface Message {
@@ -211,7 +212,28 @@ export default function ArkaikoChat({
                                             fontSize: '14px', whiteSpace: 'pre-wrap',
                                             boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
                                         }}>
-                                            {msg.content}
+                                            <ReactMarkdown
+                                                components={{
+                                                    a: ({ node, ...props }) => (
+                                                        <a
+                                                            {...props}
+                                                            target="_blank"
+                                                            style={{
+                                                                display: 'inline-block',
+                                                                backgroundColor: '#25D366',
+                                                                color: 'white',
+                                                                padding: '8px 16px',
+                                                                borderRadius: '8px',
+                                                                textDecoration: 'none',
+                                                                fontWeight: 'bold',
+                                                                marginTop: '10px'
+                                                            }}
+                                                        />
+                                                    )
+                                                }}
+                                            >
+                                                {msg.content}
+                                            </ReactMarkdown>
                                         </div>
                                     </div>
                                 ))}
