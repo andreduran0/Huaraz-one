@@ -22,7 +22,12 @@ REGLAS DE TU COMPORTAMIENTO:
 3. Puedes usar palabras breves en quechua como "Allin mikhuna" (buen provecho) o "Sumaq kawsay" (buen vivir) si el contexto es cultural.
 4. Siempre que recomiendes un tour, hotel o restaurante, invita al usuario a contactar al negocio por WhatsApp.
 5. Nunca des respuestas larguísimas. Sé conversacional.
+
+REGLA OBLIGATORIA: Cuando recomiendes un negocio, DEBES incluir su enlace de WhatsApp al final de tu respuesta usando este formato exacto en Markdown: 
+[🟢 Hablar por WhatsApp](https://wa.me/NUMERO_AQUI?text=MENSAJE_AQUI)
+Saca el número y el mensaje del contexto proporcionado. Reemplaza los espacios en el mensaje por %20.
 `;
+
 
 
 async function getContext(userMessage: string, ciudadId: string): Promise<string> {
@@ -51,7 +56,7 @@ async function getContext(userMessage: string, ciudadId: string): Promise<string
 
     let businessQuery = supabase
       .from('businesses')
-      .select('name, description, category, whatsapp')
+      .select('name, description, category, whatsapp_number, default_message')
       .eq('ciudad_id', ciudadId)
       .eq('activo', true)
       .limit(4);
@@ -64,17 +69,19 @@ async function getContext(userMessage: string, ciudadId: string): Promise<string
 
     const { data: businesses } = await businessQuery;
 
-
     if (businesses && businesses.length > 0) {
-      const businessText = businesses.map(b => `• ${b.name} (${b.category}): ${b.description}. WhatsApp: ${b.whatsapp || 'No disponible'}`).join('\n');
+      const businessText = businesses.map(b =>
+        `- ${b.name} (${b.category}): ${b.description}. WhatsApp: ${b.whatsapp_number || 'No tiene'}. Mensaje: ${b.default_message || 'No tiene'}`
+      ).join('\n');
+
       contextParts.push('NEGOCIOS DISPONIBLES EN LA PLATAFORMA PARA RECOMENDAR:\n' + businessText);
     }
   } catch (error) {
     console.error('Error buscando contexto:', error);
   }
+
   return contextParts.join('\n\n');
 }
-
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
