@@ -1,6 +1,10 @@
 import ReactMarkdown from 'react-markdown';
 import { useState, useRef, useEffect, useCallback } from 'react';
-
+import { createClient } from '@supabase/supabase-js';
+// Inicializamos el cliente de Supabase para el frontend
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 interface Message {
     role: 'user' | 'assistant';
     content: string;
@@ -15,6 +19,21 @@ interface ArkaikoChatProps {
 const NAVY = '#1A3C5E';
 const GOLD = '#C8960C';
 const DARK = '#0D2137';
+const logClick = async (businessName: string) => {
+    // Asegúrate de tener acceso a tu cliente de supabase aquí
+    // Si no, puedes importarlo o pasarlo como prop
+    console.log(`Intentando registrar clic para: ${businessName}`);
+    try {
+        const { error } = await supabase
+            .from('clicks_log')
+            .insert([{ business_name: businessName }]);
+
+        if (error) throw error;
+        console.log("✅ Clic guardado en Supabase");
+    } catch (err) {
+        console.error("❌ Error al registrar clic:", err);
+    }
+};
 
 export default function ArkaikoChat({
     ciudadId = 'huaraz',
@@ -218,6 +237,10 @@ export default function ArkaikoChat({
                                                         <a
                                                             {...props}
                                                             target="_blank"
+                                                            onClick={() => {
+                                                                // Esta es la magia: extraemos el nombre del negocio...
+                                                                logClick(props.title || "Contacto WhatsApp");
+                                                            }}
                                                             style={{
                                                                 display: 'inline-block',
                                                                 backgroundColor: '#25D366',
