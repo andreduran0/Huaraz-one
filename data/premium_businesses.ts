@@ -110,7 +110,7 @@ export const premiumBusinesses: Business[] = [
     name: 'Del Sole - Huaraz',
     category: BusinessCategory.RESTAURANT,
     description: 'Restaurante ubicado en una zona estratégica de Huaraz. Disfruta de nuestra variada propuesta gastronómica con atención en horario extendido. Explora nuestra carta y solicita tu reserva de manera rápida y segura.',
-    address: 'Av. Luzuriaga N° 1004 Belén (Ref: Jr. Damaso Antúnez N° 744), Huaraz',
+    address: 'Av. Luzuriaga N° 1004 Belén ',
     lat: -9.5285, lng: -77.5276,
     phone: '961951453',
     whatsapp: '51961951453',
