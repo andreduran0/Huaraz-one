@@ -36,7 +36,7 @@ const MobileMenu: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen
                     <MenuLink to="/" icon="fa-home" label="Inicio" onClick={onClose} />
                     <MenuLink to="/map" icon="fa-map" label="Mapa" onClick={onClose} />
                     <MenuLink to="/calendar" icon="fa-calendar-alt" label="Fiestas" onClick={onClose} />
-                    <MenuLink to="/chat" icon="fa-robot" label="Asistente IA" onClick={onClose} />
+                    <MenuLink to="/chat" icon="fa-robot" label="Guía 24/7" onClick={onClose} />
                     <MenuLink to="/blog" icon="fa-newspaper" label="Guías y Relatos" onClick={onClose} />
                     <MenuLink to="/coupons" icon="fa-ticket-alt" label="Cupones" onClick={onClose} />
                     <div className="my-4 border-t border-slate-50 mx-4"></div>
