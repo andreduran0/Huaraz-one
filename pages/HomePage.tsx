@@ -60,6 +60,8 @@ const HomePage: React.FC = () => {
             <FeatureItem icon="fa-robot" color="bg-slate-100 text-slate-600" label="Agente turístico IA 24/7" />
             <FeatureItem icon="fa-ticket" color="bg-orange-50 text-orange-500" label="Cupones y beneficios" />
             <FeatureItem icon="fa-newspaper" color="bg-gray-50 text-gray-500" label="Newsletter & Token Huaraz" />
+          <FeatureItem   icon="fa-briefcase" color="bg-emerald-50 text-emerald-600" label="Bolsa de trabajo para empresas"  />
+         
         </div>
       </section>
 
