@@ -127,7 +127,7 @@ const BottomNav: React.FC = () => {
         { path: '/', icon: 'fa-house', label: 'INICIO' },
         { path: '/map', icon: 'fa-map', label: 'MAPA' },
         { path: '/calendar', icon: 'fa-calendar-days', label: 'FIESTAS' },
-        { path: '/chat', icon: 'fa-robot', label: 'ASISTENTE IA' },
+        { path: '/chat', icon: 'fa-robot', label: 'GUÍA 24/7' },
         { path: '/coupons', icon: 'fa-ticket', label: 'CUPONES' },
     ];
     return (
