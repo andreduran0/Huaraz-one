@@ -57,7 +57,7 @@ const HomePage: React.FC = () => {
             <FeatureItem icon="fa-location-dot" color="bg-red-50 text-red-500" label="Mapa turístico interactivo" />
             <FeatureItem icon="fa-star" color="bg-yellow-50 text-yellow-500" label="Negocios locales recomendados" />
             <FeatureItem icon="fa-calendar-day" color="bg-blue-50 text-blue-500" label="Festividades y eventos" />
-            <FeatureItem icon="fa-robot" color="bg-slate-100 text-slate-600" label="Agente turístico IA 24/7" />
+            <FeatureItem icon="fa-robot" color="bg-slate-100 text-slate-600" label="Guía turístico IA 24/7" />
             <FeatureItem icon="fa-ticket" color="bg-orange-50 text-orange-500" label="Cupones y beneficios" />
             <FeatureItem icon="fa-newspaper" color="bg-gray-50 text-gray-500" label="Newsletter & Token Huaraz" />
           <FeatureItem   icon="fa-briefcase" color="bg-emerald-50 text-emerald-600" label="Bolsa de trabajo para empresas"  />
