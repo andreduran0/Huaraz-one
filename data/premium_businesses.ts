@@ -130,4 +130,29 @@ export const premiumBusinesses: Business[] = [
     ownerUserId: 'u4',
     googleMapsQuery: 'Av Luzuriaga 1004 Huaraz'
   }
+  {
+    id: '5',
+    name: 'Casa de Cambio Huayaney',
+    category: BusinessCategory.SERVICES, // Ajustado para que TypeScript no de error
+    description: 'Cambio de moneda seguro y con la mejor tasa del mercado en el corazón de Huaraz. Ubicación estratégica y atención confiable para turistas y locales. ¡Cambia tus dólares o euros con total tranquilidad!',
+    address: 'Pasaje Comercio (1era. Tienda costado del Banco Interbank), Jirón José de Sucre S/N, Huaraz',
+    lat: -9.5301, lng: -77.5288, // Ajustadas para que aparezca cerca de la Plaza de Armas
+    phone: '943121714',
+    whatsapp: '51943121714', // Añadido el 51 para que el enlace funcione
+    photos: [
+      'https://i.imgur.com/QsA2tix.jpeg', // Usamos esta como principal
+      'https://i.imgur.com/QsA2tix.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/h4B5C2k.jpeg'
+    ],
+    schedule: {
+      'Lunes - Domingo': '9:00 A. M. - 5:00 P. M.'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-huayaney',
+    status: 'approved',
+    ownerUserId: 'u5',
+    googleMapsQuery: 'Jirón José de Sucre Pasaje Comercio Huaraz'
+  }
 ];
