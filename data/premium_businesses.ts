@@ -129,7 +129,7 @@ export const premiumBusinesses: Business[] = [
     status: 'approved',
     ownerUserId: 'u4',
     googleMapsQuery: 'Av Luzuriaga 1004 Huaraz'
-  }
+  },
   {
     id: '5',
     name: 'Casa de Cambio Huayaney',
