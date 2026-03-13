@@ -32,6 +32,9 @@ const BusinessDetailPage: React.FC = () => {
 
   const isSponsored = business.adLevel !== AdLevel.NONE;
   const hasMenu = business.menuImages && business.menuImages.length > 0;
+  
+  // Convertimos la categoría a texto simple (minúsculas) para evitar errores de enum
+  const categoryText = String(business.category).toLowerCase();
 
   const openLightbox = (index: number, mode: 'gallery' | 'menu') => {
     setCurrentImageIndex(index);
@@ -57,13 +60,13 @@ const BusinessDetailPage: React.FC = () => {
     ? `http://googleusercontent.com/maps.google.com/?q=${encodeURIComponent(business.googleMapsQuery)}`
     : `http://googleusercontent.com/maps.google.com/?q=${business.lat},${business.lng}`;
 
-  // Lógica Dinámica para el mensaje de WhatsApp
+  // Lógica Dinámica para el mensaje de WhatsApp (Reforzada)
   const getWhatsappMessage = () => {
-    if (business.category === BusinessCategory.EDUCATION) {
+    if (categoryText === 'education') {
         return `Hola, quisiera solicitar una entrevista para el ${business.name}. Lo vi en Huaraz Explorer.`;
-    } else if (business.category === 'exchange' || business.category === 'SERVICES') {
+    } else if (categoryText === 'exchange' || categoryText === 'services') {
         return `Hola, quisiera consultar el tipo de cambio del día en ${business.name}. Lo vi en Huaraz Explorer.`;
-    } else if (business.category === BusinessCategory.HEALTH) {
+    } else if (categoryText === 'health') {
         return `Hola, quisiera agendar una cita en ${business.name}. Lo vi en Huaraz Explorer.`;
     } else {
         return `Hola, quisiera hacer una reserva o consulta en ${business.name}. Lo vi en Huaraz Explorer.`;
@@ -71,18 +74,16 @@ const BusinessDetailPage: React.FC = () => {
   };
   const whatsappMessage = encodeURIComponent(getWhatsappMessage());
 
-  // Lógica Dinámica para los títulos
+  // Lógica Dinámica para los títulos (Reforzada)
   const getMenuTitle = () => {
-    switch (business.category) {
-        case BusinessCategory.EDUCATION:
-            return { prefix: 'NUESTRA PROPUESTA ', highlight: 'EDUCATIVA', subtitle: 'Conoce nuestro modelo de enseñanza y valores' };
-        case 'exchange':
-        case 'SERVICES':
-            return { prefix: 'NUESTROS ', highlight: 'SERVICIOS', subtitle: 'Conoce nuestras tasas y opciones de cambio' };
-        case BusinessCategory.HEALTH:
-            return { prefix: 'NUESTRAS ', highlight: 'ESPECIALIDADES', subtitle: 'Conoce nuestros servicios médicos' };
-        default:
-            return { prefix: 'Nuestra ', highlight: 'Carta', subtitle: 'Consulta nuestros platos y especialidades' };
+    if (categoryText === 'education') {
+        return { prefix: 'NUESTRA PROPUESTA ', highlight: 'EDUCATIVA', subtitle: 'Conoce nuestro modelo de enseñanza y valores' };
+    } else if (categoryText === 'exchange' || categoryText === 'services') {
+        return { prefix: 'NUESTROS ', highlight: 'SERVICIOS', subtitle: 'Conoce nuestras tasas y opciones de cambio' };
+    } else if (categoryText === 'health') {
+        return { prefix: 'NUESTRAS ', highlight: 'ESPECIALIDADES', subtitle: 'Conoce nuestros servicios médicos' };
+    } else {
+        return { prefix: 'Nuestra ', highlight: 'Carta', subtitle: 'Consulta nuestros platos y especialidades' };
     }
   };
   const menuTitle = getMenuTitle();
@@ -214,24 +215,24 @@ const BusinessDetailPage: React.FC = () => {
                     <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 group-hover:scale-150 transition-transform duration-[2s]"></div>
                     <div className="relative z-10 space-y-8">
                         <div className="inline-flex items-center gap-4 bg-white/10 px-6 py-2.5 rounded-full border border-white/10">
-                             <i className={`fas ${business.category === BusinessCategory.EDUCATION ? 'fa-user-graduate' : business.category === 'exchange' ? 'fa-money-bill-wave' : 'fa-calendar-check'} text-[#F58220]`}></i>
+                             <i className={`fas ${categoryText === 'education' ? 'fa-user-graduate' : categoryText === 'exchange' ? 'fa-money-bill-wave' : 'fa-calendar-check'} text-[#F58220]`}></i>
                              <span className="text-[10px] font-black uppercase tracking-[0.4em]">
-                                {business.category === BusinessCategory.EDUCATION ? 'Inscripción Estratégica' : business.category === 'exchange' ? 'Atención Inmediata' : 'Reserva Inmediata'}
+                                {categoryText === 'education' ? 'Inscripción Estratégica' : categoryText === 'exchange' ? 'Atención Inmediata' : 'Reserva Inmediata'}
                              </span>
                         </div>
                         <h3 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase leading-[0.9]">
-                            {business.category === BusinessCategory.EDUCATION ? 'FORJA EL FUTURO EN ' : business.category === 'exchange' ? 'CAMBIA CON ' : 'Asegura tu lugar en '}
-                            <span className="text-[#F58220]">{business.category === 'exchange' ? 'SEGURIDAD' : 'LA CIMA'}</span>
+                            {categoryText === 'education' ? 'FORJA EL FUTURO EN ' : categoryText === 'exchange' ? 'CAMBIA CON ' : 'Asegura tu lugar en '}
+                            <span className="text-[#F58220]">{categoryText === 'exchange' ? 'SEGURIDAD' : 'LA CIMA'}</span>
                         </h3>
                         <p className="text-lg font-bold text-white/60 leading-relaxed max-w-sm italic">
-                            {business.category === BusinessCategory.EDUCATION 
+                            {categoryText === 'education' 
                                 ? 'Únete a la institución que forma a los líderes e ingenieros del mañana en Huaraz.'
-                                : business.category === 'exchange' 
+                                : categoryText === 'exchange' 
                                 ? 'Cotiza el mejor tipo de cambio de Huaraz de forma rápida y confiable.'
                                 : 'Vive la mejor experiencia de Huaraz con nuestra atención de primera.'}
                         </p>
                         <a href={`https://wa.me/${business.whatsapp}?text=${whatsappMessage}`} target="_blank" rel="noreferrer" className="inline-flex bg-white text-[#2A4D69] px-12 py-7 rounded-[2rem] font-black uppercase text-xs tracking-[0.4em] items-center gap-5 shadow-2xl hover:bg-slate-50 transition-all active:scale-95 group/btn">
-                            {business.category === BusinessCategory.EDUCATION ? 'SOLICITAR ENTREVISTA' : business.category === 'exchange' ? 'Cotizar Cambio' : 'Reservar Ahora'} 
+                            {categoryText === 'education' ? 'SOLICITAR ENTREVISTA' : categoryText === 'exchange' ? 'Cotizar Cambio' : 'Reservar Ahora'} 
                             <i className="fab fa-whatsapp text-2xl group-hover/btn:rotate-12 transition-transform"></i>
                         </a>
                     </div>
