@@ -114,6 +114,10 @@ const BusinessDetailPage: React.FC = () => {
                 <h1 className="text-5xl md:text-9xl font-black italic tracking-tighter uppercase leading-[0.85] drop-shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
                     {business.name}
                 </h1>
+              {/* EL CHISMOSO: Borraremos esto cuando descubramos el error */}
+                <div className="bg-red-500 text-white p-4 text-2xl font-bold mt-4 z-50 relative">
+                    CATEGORÍA DETECTADA: "{categoryText}"
+                </div>
             </div>
         </div>
 
