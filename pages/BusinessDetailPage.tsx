@@ -57,8 +57,8 @@ const BusinessDetailPage: React.FC = () => {
   };
 
   const mapUrl = business.googleMapsQuery 
-    ? `http://googleusercontent.com/maps.google.com/?q=${encodeURIComponent(business.googleMapsQuery)}`
-    : `http://googleusercontent.com/maps.google.com/?q=${business.lat},${business.lng}`;
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.googleMapsQuery)}`
+    : `https://www.google.com/maps/search/?api=1&query=${business.lat},${business.lng}`;
 
   // Lógica Dinámica para el mensaje de WhatsApp (Reforzada)
   const getWhatsappMessage = () => {
