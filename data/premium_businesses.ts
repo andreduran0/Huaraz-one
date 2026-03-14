@@ -143,7 +143,6 @@ export const premiumBusinesses: Business[] = [
       'https://i.imgur.com/QsA2tix.jpeg', // Usamos esta como principal
       'https://i.imgur.com/w03Lg3j.jpeg'
       'https://i.imgur.com/aBpTQOx.jpeg'
-      'blob:https://web.whatsapp.com/bd4e4934-269c-4da4-a353-fb8478d9cdde' 
     ],
     menuImages: [
       'https://i.imgur.com/w03Lg3j.jpeg'
