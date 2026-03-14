@@ -141,13 +141,16 @@ export const premiumBusinesses: Business[] = [
     whatsapp: '51943121714', // Añadido el 51 para que el enlace funcione
     photos: [
       'https://i.imgur.com/QsA2tix.jpeg', // Usamos esta como principal
-      'https://i.imgur.com/QsA2tix.jpeg'
+      'https://i.imgur.com/w03Lg3j.jpeg'
+      'https://i.imgur.com/aBpTQOx.jpeg'
+      'blob:https://web.whatsapp.com/bd4e4934-269c-4da4-a353-fb8478d9cdde' 
     ],
     menuImages: [
-      'https://i.imgur.com/h4B5C2k.jpeg'
+      'https://i.imgur.com/w03Lg3j.jpeg'
+      'https://i.imgur.com/L19rlcr.jpeg'
     ],
     schedule: {
-      'Lunes - Domingo': '9:00 A. M. - 5:00 P. M.'
+      'Lunes - Domingo': '8:00 A. M. - 5:00 P. M.'
     },
     adLevel: AdLevel.PREMIUM,
     qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-huayaney',
