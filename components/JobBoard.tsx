@@ -1,25 +1,10 @@
 import React from 'react';
 import { jobsData, JobOffer } from '../data/jobsData';
-import { supabase } from '../services/supabase'; // Asegúrate de que esta ruta sea correcta
 
 const JobBoard: React.FC = () => {
-  const logJobApplication = async (job: JobOffer) => {
-    try {
-      await supabase
-        .from('clicks_log')
-        .insert([
-          { 
-            business_name: `POSTULACIÓN: ${job.title} - ${job.businessName}`,
-            created_at: new Date().toISOString()
-          }
-        ]);
-    } catch (err) {
-      console.error('Error logging job application:', err);
-    }
-  };
 
   const handleApply = (job: JobOffer) => {
-    logJobApplication(job);
+    // Solo abre WhatsApp, sin buscar a Supabase
     const message = encodeURIComponent(`Hola, vi su oferta de ${job.title} en Huaraz Explorer y me gustaría postular.`);
     const contact = job.whatsappContact.startsWith('51') ? job.whatsappContact : `51${job.whatsappContact}`;
     const whatsappUrl = `https://wa.me/${contact}?text=${message}`;
