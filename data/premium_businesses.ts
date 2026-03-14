@@ -133,19 +133,19 @@ export const premiumBusinesses: Business[] = [
   {
     id: '5',
     name: 'Casa de Cambio Huayaney',
-    category: BusinessCategory.EXCHANGE, // Ajustado para que TypeScript no de error
+    category: BusinessCategory.EXCHANGE,
     description: 'Cambio de moneda seguro y con la mejor tasa del mercado en el corazón de Huaraz. Ubicación estratégica y atención confiable para turistas y locales. ¡Cambia tus dólares o euros con total tranquilidad!',
     address: 'Pasaje Comercio (1era. Tienda costado del Banco Interbank), Jirón José de Sucre S/N, Huaraz',
-    lat: -9.5301, lng: -77.5288, // Ajustadas para que aparezca cerca de la Plaza de Armas
+    lat: -9.5301, lng: -77.5288,
     phone: '943121714',
-    whatsapp: '51943121714', // Añadido el 51 para que el enlace funcione
+    whatsapp: '51943121714',
     photos: [
-      'https://i.imgur.com/QsA2tix.jpeg', // Usamos esta como principal
-      'https://i.imgur.com/w03Lg3j.jpeg'
+      'https://i.imgur.com/QsA2tix.jpeg',
+      'https://i.imgur.com/w03Lg3j.jpeg',
       'https://i.imgur.com/aBpTQOx.jpeg'
     ],
     menuImages: [
-      'https://i.imgur.com/w03Lg3j.jpeg'
+      'https://i.imgur.com/w03Lg3j.jpeg',
       'https://i.imgur.com/L19rlcr.jpeg'
     ],
     schedule: {
