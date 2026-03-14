@@ -1,4 +1,3 @@
-
 import React, { ReactNode, useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
@@ -39,7 +38,8 @@ const MobileMenu: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen
                     <MenuLink to="/chat" icon="fa-robot" label="Guía 24/7" onClick={onClose} />
                     <MenuLink to="/blog" icon="fa-newspaper" label="Guías y Relatos" onClick={onClose} />
                     <MenuLink to="/coupons" icon="fa-ticket-alt" label="Cupones" onClick={onClose} />
-                    <MenuLink to="/empleos" icon="fa-briefcase" label="Bolsa de Trabajo" onClick={onClose} />
+                    {/* AQUÍ ESTÁ LA RUTA CORREGIDA A /jobs */}
+                    <MenuLink to="/jobs" icon="fa-briefcase" label="Bolsa de Trabajo" onClick={onClose} />
                     <div className="my-4 border-t border-slate-50 mx-4"></div>
                     <MenuLink to="/onboarding" icon="fa-bullhorn" label="Publicita aquí" onClick={onClose} />
                     <MenuLink to="/admin" icon="fa-user-shield" label="Admin" onClick={onClose} />
