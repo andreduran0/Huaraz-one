@@ -1,3 +1,4 @@
+import JobsPage from './pages/JobsPage';
 import ArkaikoChat from './components/ArkaikoChat';
 import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
@@ -13,6 +14,7 @@ import NewsletterPage from './pages/NewsletterPage';
 import CalendarPage from './pages/CalendarPage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
+
 const MetaManager: React.FC = () => {
   const location = useLocation();
 
@@ -28,8 +30,6 @@ const MetaManager: React.FC = () => {
       title = "Huaraz Explorer | Plataforma de Recomendaciones Turísticas en Huaraz";
       desc = "Descubre lo mejor de Huaraz en 2026: Hoteles, Restaurantes y Tours en la Cordillera Blanca. La guía oficial para el viajero moderno.";
     } else if (path.startsWith('/blog/')) {
-      // Para el blog, el título se maneja dentro de BlogPostPage, 
-      // pero aquí aseguramos que el canonical sea correcto.
       title = "Guía de Viaje | Huaraz Explorer";
     } else if (path.includes('/map')) {
       title = "Mapa Interactivo de Huaraz 2026 | Ubica Hoteles y Tours";
@@ -50,15 +50,14 @@ const MetaManager: React.FC = () => {
       title = "Newsletter Huaraz Explorer | Noticias de Turismo y Tecnología";
       desc = "Suscríbete para recibir las últimas novedades sobre turismo, ciencia y tecnología en la región de Huaraz.";
     } else if (path.includes('/business/')) {
-      // El título específico del negocio se podría manejar aquí si tuviéramos acceso al contexto,
-      // pero por ahora mejoramos el genérico para estas rutas.
       title = "Detalle del Negocio | Huaraz Explorer";
+    } else if (path.includes('/empleos')) { // <-- NUEVO: SEO PARA BOLSA DE TRABAJO
+      title = "Bolsa de Trabajo en Huaraz | Huaraz Explorer";
+      desc = "Encuentra las mejores oportunidades laborales en hoteles, restaurantes y empresas turísticas de Huaraz. ¡Postula hoy mismo!";
     }
 
-    // Actualizar Título del Documento
     document.title = title;
 
-    // Función robusta para actualizar metadatos
     const updateMeta = (name: string, content: string, isProperty = false) => {
       const attr = isProperty ? 'property' : 'name';
       let element = document.querySelector(`meta[${attr}="${name}"]`);
@@ -70,7 +69,6 @@ const MetaManager: React.FC = () => {
       element.setAttribute('content', content);
     };
 
-    // Actualizar Canonical
     let linkCanonical = document.querySelector('link[rel="canonical"]');
     if (!linkCanonical) {
       linkCanonical = document.createElement('link');
@@ -88,7 +86,6 @@ const MetaManager: React.FC = () => {
     updateMeta('twitter:description', desc);
     updateMeta('twitter:image', image);
 
-    // Forzar scroll al inicio
     window.scrollTo(0, 0);
   }, [location]);
 
@@ -112,6 +109,7 @@ const App: React.FC = () => {
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:id" element={<BlogPostPage />} />
+          <Route path="/empleos" element={<JobsPage />} /> {/* <-- NUEVO: RUTA REGISTRADA */}
         </Routes>
         <ArkaikoChat ciudadId="huaraz" />
       </Layout>
