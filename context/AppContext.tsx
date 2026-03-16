@@ -32,7 +32,8 @@ interface AppContextType {
 }
 
 const DEFAULT_HERO_IMAGES = [
-   "https://i.imgur.com/ScqpbHr.jpeg", 
+   "https://i.imgur.com/xkGFioX.jpeg", 
+    "https://i.imgur.com/ScqpbHr.jpeg",
   "https://i.imgur.com/Ub8hD9l.jpeg", 
   "https://i.imgur.com/cnfE46t.jpeg", 
   "https://bananomeridiano.com/wp-content/uploads/2022/03/laguna-paron-huaraz.jpg", 
