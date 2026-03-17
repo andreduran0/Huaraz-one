@@ -1,9 +1,25 @@
-
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Business, AdLevel } from '../types';
 import { useTranslations } from '../hooks/useTranslations';
 import { messages } from '../i18n/locales';
+import { createClient } from '@supabase/supabase-js';
+
+// --- CONFIGURACIÓN DE SUPABASE ---
+const supabaseUrl = process.env.VITE_SUPABASE_URL || ''; 
+const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+const logClick = async (businessName: string) => {
+  if (!supabaseUrl) return;
+  try {
+    await supabase.from('clicks_log').insert([{ business_name: businessName }]);
+    console.log(`Clic registrado para: ${businessName}`);
+  } catch (err) {
+    console.error("Error al registrar clic en Supabase:", err);
+  }
+};
+// ---------------------------------
 
 interface BusinessCardProps {
   business: Business;
@@ -18,6 +34,20 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
   const handleContactClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Evita que al hacer clic en los botones se abra el detalle
   };
+
+  // --- NUEVA FUNCIÓN PARA EL BOTÓN DE WHATSAPP ---
+  const handleWhatsAppClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // Evita que la etiqueta <a> navegue inmediatamente
+    e.stopPropagation(); // Evita que se abra el detalle del negocio
+    
+    // 1. Registramos el clic
+    logClick(business.name);
+    
+    // 2. Abrimos WhatsApp en una pestaña nueva
+    const whatsappUrl = `https://wa.me/${business.whatsapp}`;
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+  };
+  // -----------------------------------------------
 
   return (
     <div 
@@ -67,6 +97,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
              {business.whatsapp && (
                <a 
                  href={`https://wa.me/${business.whatsapp}`}
+                 onClick={handleWhatsAppClick} // <-- ¡EL HACK EN ACCIÓN!
                  target="_blank"
                  rel="noreferrer"
                  className="w-12 h-12 rounded-full bg-slate-50 dark:bg-slate-800 text-green-500 flex items-center justify-center border border-slate-100 dark:border-slate-700 shadow-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
