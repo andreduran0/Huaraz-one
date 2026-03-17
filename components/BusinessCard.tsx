@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Business, AdLevel } from '../types';
 import { useTranslations } from '../hooks/useTranslations';
 import { messages } from '../i18n/locales';
+import { createClient } from '@supabase/supabase-js'; // Importamos Supabase aquí
 
 interface BusinessCardProps {
   business: Business;
@@ -18,13 +19,38 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
     e.stopPropagation(); // Evita que al hacer clic en los botones se abra el detalle
   };
 
+  // 👇 AQUÍ ESTÁ LA FUNCIÓN BLINDADA 👇
   const handleWhatsAppClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    // Botón directo sin Supabase por ahora para evitar caídas
+
+    // 🕵️‍♂️ Lanzamos el rastreador en "segundo plano" para que no crashee nada
+    const registrarClic = async () => {
+      try {
+        // Buscamos las llaves dinámicamente sin romper la página
+        const url = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SUPABASE_URL) 
+                    || (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_SUPABASE_URL);
+        const key = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SUPABASE_ANON_KEY) 
+                    || (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
+        if (url && key) {
+          const supabase = createClient(url, key);
+          await supabase.from('clicks_log').insert([{ business_name: business.name }]);
+        }
+      } catch (error) {
+        // Si falla, solo lo vemos tú y yo en la consola, la página sigue viva
+        console.error("Error silencioso del espía:", error);
+      }
+    };
+
+    // Disparamos el espía
+    registrarClic();
+
+    // 🟢 Abrimos WhatsApp instantáneamente para que el cliente no espere
     const whatsappUrl = `https://wa.me/${business.whatsapp}`;
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
   };
+  // 👆 FIN DE LA FUNCIÓN BLINDADA 👆
 
   return (
     <div 
