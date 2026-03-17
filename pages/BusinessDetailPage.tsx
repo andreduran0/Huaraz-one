@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
@@ -33,6 +32,9 @@ const BusinessDetailPage: React.FC = () => {
 
   const isSponsored = business.adLevel !== AdLevel.NONE;
   const hasMenu = business.menuImages && business.menuImages.length > 0;
+  
+  // Convertimos la categoría a texto simple (minúsculas) para evitar errores de enum
+  const categoryText = String(business.category).toLowerCase();
 
   const openLightbox = (index: number, mode: 'gallery' | 'menu') => {
     setCurrentImageIndex(index);
@@ -58,11 +60,33 @@ const BusinessDetailPage: React.FC = () => {
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.googleMapsQuery)}`
     : `https://www.google.com/maps/search/?api=1&query=${business.lat},${business.lng}`;
 
-  const whatsappMessage = business.category === BusinessCategory.EDUCATION
-    ? encodeURIComponent(`Hola, quisiera solicitar una entrevista para el Colegio Nobel Ingenieros. Lo vi en Huaraz Explorer.`)
-    : business.category === BusinessCategory.HEALTH
-    ? encodeURIComponent(`Hola, quisiera solicitar una consulta médica en ${business.name}. Lo vi en Huaraz Explorer.`)
-    : encodeURIComponent(`Hola, quisiera hacer una reserva en ${business.name}. Lo vi en Huaraz Explorer.`);
+  // Lógica Dinámica para el mensaje de WhatsApp (Reforzada)
+  const getWhatsappMessage = () => {
+    if (categoryText === 'education') {
+        return `Hola, quisiera solicitar una entrevista para el ${business.name}. Lo vi en Huaraz Explorer.`;
+    } else if (categoryText === 'exchange' || categoryText === 'services') {
+        return `Hola, quisiera consultar el tipo de cambio del día en ${business.name}. Lo vi en Huaraz Explorer.`;
+    } else if (categoryText === 'health') {
+        return `Hola, quisiera agendar una cita en ${business.name}. Lo vi en Huaraz Explorer.`;
+    } else {
+        return `Hola, quisiera hacer una reserva o consulta en ${business.name}. Lo vi en Huaraz Explorer.`;
+    }
+  };
+  const whatsappMessage = encodeURIComponent(getWhatsappMessage());
+
+  // Lógica Dinámica para los títulos (Reforzada)
+  const getMenuTitle = () => {
+    if (categoryText === 'education') {
+        return { prefix: 'NUESTRA PROPUESTA ', highlight: 'EDUCATIVA', subtitle: 'Conoce nuestro modelo de enseñanza y valores' };
+    } else if (categoryText === 'exchange' || categoryText === 'services') {
+        return { prefix: 'NUESTROS ', highlight: 'SERVICIOS', subtitle: 'Conoce nuestras tasas y opciones de cambio' };
+    } else if (categoryText === 'health') {
+        return { prefix: 'NUESTRAS ', highlight: 'ESPECIALIDADES', subtitle: 'Conoce nuestros servicios médicos' };
+    } else {
+        return { prefix: 'Nuestra ', highlight: 'Carta', subtitle: 'Consulta nuestros platos y especialidades' };
+    }
+  };
+  const menuTitle = getMenuTitle();
 
   return (
     <div className="bg-slate-50 dark:bg-slate-950 min-h-screen relative font-['Plus_Jakarta_Sans']">
@@ -79,7 +103,7 @@ const BusinessDetailPage: React.FC = () => {
             <div className="absolute bottom-16 left-8 right-8 text-white max-w-5xl mx-auto">
                 <div className="flex flex-wrap items-center gap-3 mb-6">
                     <span className="bg-[#2A4D69] text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] px-5 py-2.5 rounded-full border border-white/20 backdrop-blur-md shadow-2xl">
-                        {t(`category.${business.category}` as any)}
+                        {t(`category.${business.category}` as any) || business.category}
                     </span>
                     {isSponsored && (
                         <span className="bg-[#F58220] text-black text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] px-5 py-2.5 rounded-full shadow-[0_10px_30px_rgba(245,130,32,0.3)]">
@@ -130,17 +154,17 @@ const BusinessDetailPage: React.FC = () => {
                 </p>
             </div>
 
-            {/* SECCIÓN: LA CARTA */}
+            {/* SECCIÓN: LA CARTA / SERVICIOS */}
             {hasMenu && (
                 <div className="space-y-10 animate-fadeIn">
                     <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 px-4">
                         <div className="space-y-2">
                             <h3 className="text-4xl md:text-6xl font-black text-[#2A4D69] dark:text-white uppercase italic tracking-tighter">
-                                {business.category === BusinessCategory.EDUCATION ? 'NUESTRA PROPUESTA ' : business.category === BusinessCategory.HEALTH ? 'NUESTRA PROPUESTA ' : 'Nuestra '}
-                                <span className="text-[#F58220]">{business.category === BusinessCategory.EDUCATION ? 'EDUCATIVA' : business.category === BusinessCategory.HEALTH ? 'MEDICA' : 'Carta'}</span>
+                                {menuTitle.prefix}
+                                <span className="text-[#F58220]">{menuTitle.highlight}</span>
                             </h3>
                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em]">
-                                {business.category === BusinessCategory.EDUCATION ? 'Conoce nuestro modelo de enseñanza y valores' : business.category === BusinessCategory.HEALTH ? 'Conoce nuestros servicios y especialidades médicas' : 'Consulta nuestros platos y especialidades'}
+                                {menuTitle.subtitle}
                             </p>
                         </div>
                         <div className="bg-slate-100 dark:bg-slate-800 px-8 py-3 rounded-full border border-slate-200 shadow-inner flex items-center gap-3">
@@ -191,24 +215,24 @@ const BusinessDetailPage: React.FC = () => {
                     <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 group-hover:scale-150 transition-transform duration-[2s]"></div>
                     <div className="relative z-10 space-y-8">
                         <div className="inline-flex items-center gap-4 bg-white/10 px-6 py-2.5 rounded-full border border-white/10">
-                             <i className={`fas ${business.category === BusinessCategory.EDUCATION ? 'fa-user-graduate' : business.category === BusinessCategory.HEALTH ? 'fa-stethoscope' : 'fa-calendar-check'} text-[#F58220]`}></i>
+                             <i className={`fas ${categoryText === 'education' ? 'fa-user-graduate' : categoryText === 'exchange' ? 'fa-money-bill-wave' : 'fa-calendar-check'} text-[#F58220]`}></i>
                              <span className="text-[10px] font-black uppercase tracking-[0.4em]">
-                                {business.category === BusinessCategory.EDUCATION ? 'Inscripción Estratégica' : business.category === BusinessCategory.HEALTH ? 'Inscripción Medica' : 'Reserva Inmediata'}
+                                {categoryText === 'education' ? 'Inscripción Estratégica' : categoryText === 'exchange' ? 'Atención Inmediata' : 'Reserva Inmediata'}
                              </span>
                         </div>
                         <h3 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase leading-[0.9]">
-                            {business.category === BusinessCategory.EDUCATION ? 'FORJA EL FUTURO EN ' : business.category === BusinessCategory.HEALTH ? 'CUIDA TU SALUD ' : 'Asegura tu lugar en '}
-                            <span className="text-[#F58220]">{business.category === BusinessCategory.HEALTH ? 'INTEGRAL' : 'LA CIMA'}</span>
+                            {categoryText === 'education' ? 'FORJA EL FUTURO EN ' : categoryText === 'exchange' ? 'CAMBIA CON ' : 'Asegura tu lugar en '}
+                            <span className="text-[#F58220]">{categoryText === 'exchange' ? 'SEGURIDAD' : 'LA CIMA'}</span>
                         </h3>
                         <p className="text-lg font-bold text-white/60 leading-relaxed max-w-sm italic">
-                            {business.category === BusinessCategory.EDUCATION 
+                            {categoryText === 'education' 
                                 ? 'Únete a la institución que forma a los líderes e ingenieros del mañana en Huaraz.'
-                                : business.category === BusinessCategory.HEALTH
-                                ? 'Accede a la mejor atención médica en Huaraz con especialistas de confianza.'
-                                : 'Vive la cena más espectacular de Huaraz con vista directa a los nevados.'}
+                                : categoryText === 'exchange' 
+                                ? 'Cotiza el mejor tipo de cambio de Huaraz de forma rápida y confiable.'
+                                : 'Vive la mejor experiencia de Huaraz con nuestra atención de primera.'}
                         </p>
                         <a href={`https://wa.me/${business.whatsapp}?text=${whatsappMessage}`} target="_blank" rel="noreferrer" className="inline-flex bg-white text-[#2A4D69] px-12 py-7 rounded-[2rem] font-black uppercase text-xs tracking-[0.4em] items-center gap-5 shadow-2xl hover:bg-slate-50 transition-all active:scale-95 group/btn">
-                            {business.category === BusinessCategory.EDUCATION ? 'SOLICITAR ENTREVISTA' : business.category === BusinessCategory.HEALTH ? 'SOLICITAR CONSULTA' : 'Reservar Ahora'} 
+                            {categoryText === 'education' ? 'SOLICITAR ENTREVISTA' : categoryText === 'exchange' ? 'Cotizar Cambio' : 'Reservar Ahora'} 
                             <i className="fab fa-whatsapp text-2xl group-hover/btn:rotate-12 transition-transform"></i>
                         </a>
                     </div>
@@ -246,7 +270,7 @@ const BusinessDetailPage: React.FC = () => {
                 <div className="p-8 flex items-center justify-between text-white border-b border-white/5 bg-black/20 backdrop-blur-xl">
                     <div className="flex flex-col">
                         <span className="text-[10px] font-black uppercase tracking-[0.6em] text-white/40">Visor Premium</span>
-                        <span className="text-sm font-black uppercase italic tracking-tighter">{lightboxMode === 'menu' ? (business.category === BusinessCategory.HEALTH ? 'Propuesta Médica Especializada' : 'Nuestra Carta Gastronómica') : 'Galería del Local'}</span>
+                        <span className="text-sm font-black uppercase italic tracking-tighter">{lightboxMode === 'menu' ? 'Nuestros Detalles' : 'Galería del Local'}</span>
                     </div>
                     <button 
                         onClick={closeLightbox}
