@@ -1,17 +1,14 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Business, AdLevel } from '../types';
-import { useTranslations } from '../hooks/useTranslations';
-import { messages } from '../i18n/locales';
+// --- CONFIGURACIÓN DE SUPABASE (VERSIÓN SEGURA) ---
 import { createClient } from '@supabase/supabase-js';
 
-// --- CONFIGURACIÓN DE SUPABASE ---
-const supabaseUrl = process.env.VITE_SUPABASE_URL || ''; 
-const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || '';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const logClick = async (businessName: string) => {
-  if (!supabaseUrl) return;
+  // Evitamos enviar datos si estamos usando las llaves de mentira
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return; 
+  
   try {
     await supabase.from('clicks_log').insert([{ business_name: businessName }]);
     console.log(`Clic registrado para: ${businessName}`);
@@ -19,7 +16,7 @@ const logClick = async (businessName: string) => {
     console.error("Error al registrar clic en Supabase:", err);
   }
 };
-// ---------------------------------
+// ---------------------------------------------------
 
 interface BusinessCardProps {
   business: Business;
