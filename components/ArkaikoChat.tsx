@@ -254,35 +254,34 @@ export default function ArkaikoChat({
                                         }}>
                                             <ReactMarkdown
                                                 components={{
-                                                  a: ({ node, ...props }) => {
-  // Magia para robar el texto visible del enlace (Ej: "Restaurante Cumbre")
-  let nombreNegocio = "Link de WhatsApp Arkaiko";
-  if (props.children && Array.isArray(props.children) && props.children.length > 0) {
-    nombreNegocio = String(props.children[0]);
-  } else if (typeof props.children === 'string') {
-    nombreNegocio = props.children;
-  }
+                                                a: ({ node, ...props }) => {
+            // Extraemos el nombre que Arkaiko escribió en el chat
+            const nombreNegocio = typeof props.children === 'string' 
+              ? props.children 
+              : (Array.isArray(props.children) ? String(props.children[0]) : "Negocio Arkaiko");
 
-  return (
-    <a
-      {...props}
-      target="_blank"
-      onClick={() => {
-        // Disparamos el espía con el nombre que la IA escribió
-        logClick(`Arkaiko - ${nombreNegocio}`);
-      }}
-      style={{
-        display: 'inline-block',
-        backgroundColor: '#25D366',
-        color: 'white',
-        padding: '8px 16px',
-        borderRadius: '8px',
-        textDecoration: 'none',
-        fontWeight: 'bold',
-        marginTop: '10px'
-      }}
-    >
-      {props.children}
-    </a>
-  );
-}
+            return (
+              <a
+                {...props}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => {
+                  // No bloqueamos el link, pero disparamos el espía
+                  logClick(`Arkaiko - ${nombreNegocio}`);
+                }}
+                style={{
+                  display: 'inline-block',
+                  backgroundColor: '#25D366',
+                  color: 'white',
+                  padding: '8px 16px',
+                  borderRadius: '12px',
+                  textDecoration: 'none',
+                  fontWeight: 'bold',
+                  marginTop: '10px',
+                  boxShadow: '0 4px 12px rgba(37,211,102,0.3)'
+                }}
+              >
+                {props.children}
+              </a>
+            );
+          }
