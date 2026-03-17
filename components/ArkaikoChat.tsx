@@ -2,7 +2,7 @@ import ReactMarkdown from 'react-markdown';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-// 👇 NUEVO ESPÍA BLINDADO PARA ARKAIKO 👇
+// 👇 EL ESPÍA DEFINITIVO PARA ARKAIKO 👇
 const logClick = async (businessName: string) => {
   try {
     const url = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SUPABASE_URL) 
@@ -10,13 +10,21 @@ const logClick = async (businessName: string) => {
     const key = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SUPABASE_ANON_KEY) 
                 || (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
-    if (url && key && url !== 'https://placeholder.supabase.co') {
-      const supabase = createClient(url, key);
-      await supabase.from('clicks_log').insert([{ business_name: businessName }]);
-      console.log(`Clic registrado desde Arkaiko: ${businessName}`);
+    if (!url || !key) {
+      console.error("Espía Arkaiko: No se encontraron las llaves de Supabase.");
+      return;
+    }
+
+    const supabase = createClient(url, key);
+    const { error } = await supabase.from('clicks_log').insert([{ business_name: businessName }]);
+    
+    if (error) {
+      console.error("Espía Arkaiko: Error al insertar en BD:", error);
+    } else {
+      console.log(`✅ Clic guardado con éxito desde Arkaiko: ${businessName}`);
     }
   } catch (err) {
-    console.error("Error silencioso del espía en Arkaiko:", err);
+    console.error("Error crítico del espía en Arkaiko:", err);
   }
 };
 // 👆 FIN DEL ESPÍA 👆
@@ -246,71 +254,35 @@ export default function ArkaikoChat({
                                         }}>
                                             <ReactMarkdown
                                                 components={{
-                                                    a: ({ node, ...props }) => (
-                                                        <a
-                                                            {...props}
-                                                            target="_blank"
-                                                            onClick={() => {
-                                                                // Esta es la magia: extraemos el nombre del negocio...
-                                                                logClick(props.title || "Contacto WhatsApp");
-                                                            }}
-                                                            style={{
-                                                                display: 'inline-block',
-                                                                backgroundColor: '#25D366',
-                                                                color: 'white',
-                                                                padding: '8px 16px',
-                                                                borderRadius: '8px',
-                                                                textDecoration: 'none',
-                                                                fontWeight: 'bold',
-                                                                marginTop: '10px'
-                                                            }}
-                                                        />
-                                                    )
-                                                }}
-                                            >
-                                                {msg.content}
-                                            </ReactMarkdown>
-                                        </div>
-                                    </div>
-                                ))}
-                                {loading && <div style={{ fontSize: '13px', color: '#888', marginLeft: '4px' }}>Arkáiko consulta los Apus...</div>}
-                                <div ref={messagesEndRef} />
-                            </div>
+                                                  a: ({ node, ...props }) => {
+  // Magia para robar el texto visible del enlace (Ej: "Restaurante Cumbre")
+  let nombreNegocio = "Link de WhatsApp Arkaiko";
+  if (props.children && Array.isArray(props.children) && props.children.length > 0) {
+    nombreNegocio = String(props.children[0]);
+  } else if (typeof props.children === 'string') {
+    nombreNegocio = props.children;
+  }
 
-                            {/* Input (Teclado) */}
-                            <div style={{
-                                padding: isMobile ? '10px 14px 20px 14px' : '12px 14px',
-                                borderTop: '1px solid #EEEEEE', background: '#FFFFFF',
-                                display: 'flex', gap: '8px', alignItems: 'center'
-                            }}>
-                                <textarea
-                                    ref={inputRef}
-                                    value={input}
-                                    onChange={e => setInput(e.target.value)}
-                                    onKeyDown={handleKeyDown}
-                                    placeholder="Escribe tu mensaje..."
-                                    style={{
-                                        flex: 1, border: `1px solid #DDDDDD`, borderRadius: '20px',
-                                        padding: '12px 16px', fontSize: '16px', resize: 'none', outline: 'none',
-                                        maxHeight: '80px', minHeight: '44px', fontFamily: 'inherit'
-                                    }}
-                                    rows={1}
-                                />
-                                <button
-                                    onClick={sendMessage}
-                                    disabled={loading || !input.trim()}
-                                    style={{
-                                        width: '44px', height: '44px', borderRadius: '50%',
-                                        background: loading || !input.trim() ? '#CCC' : colorPrimario,
-                                        border: 'none', color: '#FFF', cursor: 'pointer',
-                                        display: 'flex', alignItems: 'center', justifyContent: 'center'
-                                    }}
-                                >➤</button>
-                            </div>
-                        </>
-                    )}
-                </div>
-            )}
-        </>
-    );
+  return (
+    <a
+      {...props}
+      target="_blank"
+      onClick={() => {
+        // Disparamos el espía con el nombre que la IA escribió
+        logClick(`Arkaiko - ${nombreNegocio}`);
+      }}
+      style={{
+        display: 'inline-block',
+        backgroundColor: '#25D366',
+        color: 'white',
+        padding: '8px 16px',
+        borderRadius: '8px',
+        textDecoration: 'none',
+        fontWeight: 'bold',
+        marginTop: '10px'
+      }}
+    >
+      {props.children}
+    </a>
+  );
 }
