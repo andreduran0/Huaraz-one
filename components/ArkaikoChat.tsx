@@ -2,18 +2,30 @@ import ReactMarkdown from 'react-markdown';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-// Esto evita que la página se ponga en blanco si faltan las llaves
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder';
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
+// 👇 NUEVO ESPÍA BLINDADO PARA ARKAIKO 👇
 const logClick = async (businessName: string) => {
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return; // No hace nada si no hay llaves
-    try {
-        await supabase.from('clicks_log').insert([{ business_name: businessName }]);
-    } catch (err) {
-        console.error("Error:", err);
+  try {
+    const url = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SUPABASE_URL) 
+                || (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_SUPABASE_URL);
+    const key = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SUPABASE_ANON_KEY) 
+                || (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
+    if (url && key && url !== 'https://placeholder.supabase.co') {
+      const supabase = createClient(url, key);
+      await supabase.from('clicks_log').insert([{ business_name: businessName }]);
+      console.log(`Clic registrado desde Arkaiko: ${businessName}`);
     }
+  } catch (err) {
+    console.error("Error silencioso del espía en Arkaiko:", err);
+  }
+};
+// 👆 FIN DEL ESPÍA 👆
+
+interface Message {
+    role: 'user' | 'assistant';
+    content: string;
+    timestamp?: Date;
+}
 };
 
 interface Message {
