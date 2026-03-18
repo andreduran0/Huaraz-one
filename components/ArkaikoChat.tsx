@@ -5,13 +5,21 @@ import { createClient } from '@supabase/supabase-js';
 // --- EL ESPÍA DEFINITIVO PARA ARKAIKO ---
 const logClick = async (businessName: string) => {
     try {
-        const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-        const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+        // Truco: Silenciamos a TypeScript para leer las llaves reales de Vite sin errores
+        // @ts-ignore
+        const viteUrl = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_URL : null;
+        // @ts-ignore
+        const viteKey = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_ANON_KEY : null;
+
+        const nextUrl = typeof process !== 'undefined' && process.env ? process.env.NEXT_PUBLIC_SUPABASE_URL : null;
+        const nextKey = typeof process !== 'undefined' && process.env ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY : null;
+
+        const url = viteUrl || nextUrl;
+        const key = viteKey || nextKey;
 
         if (url && key && url !== 'https://placeholder.supabase.co') {
             const supabase = createClient(url, key);
             await supabase.from('clicks_log').insert([{ business_name: businessName }]);
-            console.log(`✅ Clic guardado desde Arkaiko: ${businessName}`);
         }
     } catch (err) {
         console.error("Error silencioso del espía:", err);
@@ -132,9 +140,12 @@ export default function ArkaikoChat({
                                             <ReactMarkdown
                                                 components={{
                                                     a: ({ node, ...props }) => {
-                                                        const nombre = typeof props.children === 'string'
-                                                            ? props.children
-                                                            : (Array.isArray(props.children) ? String(props.children[0]) : "Negocio Arkaiko");
+                                                        let nombre = "Link Arkaiko";
+                                                        if (typeof props.children === 'string') {
+                                                            nombre = props.children;
+                                                        } else if (Array.isArray(props.children)) {
+                                                            nombre = String(props.children[0]);
+                                                        }
                                                         return (
                                                             <a
                                                                 {...props}
