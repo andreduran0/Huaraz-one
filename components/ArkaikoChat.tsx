@@ -2,38 +2,20 @@ import ReactMarkdown from 'react-markdown';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-// 👇 EL ESPÍA DEFINITIVO PARA ARKAIKO 👇
+// --- EL ESPÍA DEFINITIVO PARA ARKAIKO ---
 const logClick = async (businessName: string) => {
-  try {
-    const url = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SUPABASE_URL) 
-                || (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_SUPABASE_URL);
-    const key = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SUPABASE_ANON_KEY) 
-                || (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+    try {
+        const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-    if (!url || !key) {
-      console.error("Espía Arkaiko: No se encontraron las llaves de Supabase.");
-      return;
+        if (url && key && url !== 'https://placeholder.supabase.co') {
+            const supabase = createClient(url, key);
+            await supabase.from('clicks_log').insert([{ business_name: businessName }]);
+            console.log(`✅ Clic guardado desde Arkaiko: ${businessName}`);
+        }
+    } catch (err) {
+        console.error("Error silencioso del espía:", err);
     }
-
-    const supabase = createClient(url, key);
-    const { error } = await supabase.from('clicks_log').insert([{ business_name: businessName }]);
-    
-    if (error) {
-      console.error("Espía Arkaiko: Error al insertar en BD:", error);
-    } else {
-      console.log(`✅ Clic guardado con éxito desde Arkaiko: ${businessName}`);
-    }
-  } catch (err) {
-    console.error("Error crítico del espía en Arkaiko:", err);
-  }
-};
-// 👆 FIN DEL ESPÍA 👆
-
-interface Message {
-    role: 'user' | 'assistant';
-    content: string;
-    timestamp?: Date;
-}
 };
 
 interface Message {
@@ -41,11 +23,7 @@ interface Message {
     content: string;
     timestamp?: Date;
 }
-interface Message {
-    role: 'user' | 'assistant';
-    content: string;
-    timestamp?: Date;
-}
+
 interface ArkaikoChatProps {
     ciudadId?: string;
     colorPrimario?: string;
@@ -63,11 +41,11 @@ export default function ArkaikoChat({
 }: ArkaikoChatProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [isMinimized, setMin] = useState(false);
-    const [isMobile, setIsMobile] = useState(false); // ✨ El nuevo sensor de celulares
+    const [isMobile, setIsMobile] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
         {
             role: 'assistant',
-            content: '✨ Soy Arkáiko — la memoria viva de los Andes.\n\n¿Qué experiencia buscas en Huaraz? Puedo guiarte hacia negocios, tours, eventos y lugares que la mayoría de viajeros nunca descubren.',
+            content: '✨ Soy Arkáiko — la memoria viva de los Andes.\n\n¿Qué experiencia buscas en Huaraz?',
             timestamp: new Date(),
         },
     ]);
@@ -75,9 +53,7 @@ export default function ArkaikoChat({
     const [loading, setLoading] = useState(false);
     const [sessionId] = useState(() => `session_${Date.now()}`);
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    const inputRef = useRef<HTMLTextAreaElement>(null);
 
-    // ✨ Lógica para detectar el tamaño de la pantalla en tiempo real
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth <= 768);
         checkMobile();
@@ -89,199 +65,128 @@ export default function ArkaikoChat({
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages, loading]);
 
-    useEffect(() => {
-        if (isOpen && !isMinimized && !isMobile) {
-            setTimeout(() => inputRef.current?.focus(), 100);
-        }
-    }, [isOpen, isMinimized, isMobile]);
-
     const sendMessage = useCallback(async () => {
         if (!input.trim() || loading) return;
-
         const userText = input.trim();
         setInput('');
         setLoading(true);
 
-        const updatedHistory: Message[] = [
-            ...messages,
-            { role: 'user', content: userText, timestamp: new Date() },
-        ];
-        setMessages(updatedHistory);
+        const updatedHistory = [...messages, { role: 'user', content: userText, timestamp: new Date() }];
+        setMessages(updatedHistory as Message[]);
 
         try {
             const response = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message: userText,
-                    history: updatedHistory.slice(-8).map(m => ({
-                        role: m.role,
-                        content: m.content,
-                    })),
-                    ciudadId,
-                    sessionId,
-                }),
+                body: JSON.stringify({ message: userText, history: updatedHistory.slice(-8), ciudadId, sessionId }),
             });
-
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
             const data = await response.json();
-
-            setMessages(prev => [
-                ...prev,
-                {
-                    role: 'assistant',
-                    content: data.reply || 'No pude procesar tu mensaje.',
-                    timestamp: new Date(),
-                },
-            ]);
+            setMessages(prev => [...prev, { role: 'assistant', content: data.reply, timestamp: new Date() }]);
         } catch (err) {
-            setMessages(prev => [
-                ...prev,
-                {
-                    role: 'assistant',
-                    content: 'Los Apus están en silencio momentáneamente. Intenta de nuevo 🏔️',
-                    timestamp: new Date(),
-                },
-            ]);
+            setMessages(prev => [...prev, { role: 'assistant', content: 'Los Apus están en silencio. 🏔️' }]);
         } finally {
             setLoading(false);
         }
     }, [input, loading, messages, ciudadId, sessionId]);
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendMessage();
-        }
-    };
-
     return (
         <>
-            {/* Botón Flotante */}
             <button
                 onClick={() => { setIsOpen(true); setMin(false); }}
-                aria-label="Abrir chat con Arkáiko"
                 style={{
                     display: isOpen ? 'none' : 'flex',
-                    position: 'fixed',
-                    bottom: isMobile ? '90px' : '24px',
-                    right: isMobile ? '16px' : '24px',
-                    width: isMobile ? '56px' : '64px',
-                    height: isMobile ? '56px' : '64px',
-                    borderRadius: '50%',
+                    position: 'fixed', bottom: '24px', right: '24px',
+                    width: '64px', height: '64px', borderRadius: '50%',
                     background: `linear-gradient(135deg, ${colorPrimario}, ${DARK})`,
-                    border: `2px solid ${colorDorado}`,
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 24px rgba(200,150,12,0.35)',
-                    zIndex: 9999,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: isMobile ? '22px' : '26px',
-                    transition: 'transform 0.2s, box-shadow 0.2s',
-                    outline: 'none',
+                    border: `2px solid ${colorDorado}`, color: 'white',
+                    zIndex: 9999, alignItems: 'center', justifyContent: 'center', fontSize: '26px',
+                    cursor: 'pointer'
                 }}
             >
                 🏔️
             </button>
 
-            {/* Ventana de Chat */}
             {isOpen && (
-                <div
-                    style={{
-                        position: 'fixed',
-                        bottom: isMobile ? '0' : '24px',
-                        right: isMobile ? '0' : '24px',
-                        width: isMobile ? '100%' : '380px',
-                        height: isMinimized ? 'auto' : (isMobile ? '100%' : '560px'),
-                        background: '#FFFFFF',
-                        borderRadius: isMobile && !isMinimized ? '0' : (isMobile && isMinimized ? '16px 16px 0 0' : '20px'),
-                        boxShadow: '0 12px 48px rgba(0,0,0,0.22)',
-                        zIndex: 9998,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        overflow: 'hidden',
-                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif',
-                        border: isMobile ? 'none' : `1px solid rgba(200,150,12,0.2)`,
-                    }}
-                >
-                    {/* Cabecera */}
-                    <div style={{
-                        background: `linear-gradient(135deg, ${DARK} 0%, ${colorPrimario} 100%)`,
-                        padding: isMobile ? '16px 16px' : '14px 16px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '12px',
-                        cursor: 'pointer',
-                    }}
-                        onClick={() => setMin(!isMinimized)}
-                    >
-                        <div style={{ flex: 1 }}>
-                            <div style={{ color: '#FFFFFF', fontWeight: '700', fontSize: '15px' }}>Arkáiko</div>
-                            <div style={{ color: colorDorado, fontSize: '11px' }}>Memoria viva de los Andes</div>
-                        </div>
-                        <button
-                            onClick={e => { e.stopPropagation(); setIsOpen(false); }}
-                            style={{
-                                background: 'rgba(255,255,255,0.15)', border: 'none',
-                                color: '#FFFFFF', cursor: 'pointer', borderRadius: '50%',
-                                width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center'
-                            }}
-                        >✕</button>
+                <div style={{
+                    position: 'fixed', bottom: isMobile ? '0' : '24px', right: isMobile ? '0' : '24px',
+                    width: isMobile ? '100%' : '380px', height: isMinimized ? 'auto' : (isMobile ? '100%' : '560px'),
+                    background: '#FFF', borderRadius: isMobile && !isMinimized ? '0' : '20px', zIndex: 9998,
+                    display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 12px 48px rgba(0,0,0,0.2)'
+                }}>
+                    <div style={{ background: DARK, padding: '16px', display: 'flex', color: 'white', cursor: 'pointer' }} onClick={() => setMin(!isMinimized)}>
+                        <div style={{ flex: 1, fontWeight: 'bold' }}>Arkáiko</div>
+                        <button onClick={(e) => { e.stopPropagation(); setIsOpen(false); }} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>✕</button>
                     </div>
 
-                    {/* Área de Mensajes */}
                     {!isMinimized && (
                         <>
-                            <div style={{
-                                flex: 1, overflowY: 'auto', padding: '16px 14px',
-                                display: 'flex', flexDirection: 'column', gap: '10px',
-                                background: '#F7F8FA',
-                            }}>
+                            <div style={{ flex: 1, overflowY: 'auto', padding: '16px', background: '#F7F8FA', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                 {messages.map((msg, i) => (
-                                    <div key={i} style={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: msg.role === 'user' ? 'flex-end' : 'flex-start',
-                                    }}>
+                                    <div key={i} style={{ alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '85%' }}>
                                         <div style={{
-                                            maxWidth: isMobile ? '90%' : '82%', padding: '10px 14px',
-                                            borderRadius: msg.role === 'user' ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-                                            background: msg.role === 'user' ? `linear-gradient(135deg, ${colorPrimario}, ${DARK})` : '#FFFFFF',
-                                            color: msg.role === 'user' ? '#FFFFFF' : '#1A1A1A',
-                                            fontSize: '14px', whiteSpace: 'pre-wrap',
+                                            padding: '12px', borderRadius: '12px',
+                                            background: msg.role === 'user' ? colorPrimario : 'white',
+                                            color: msg.role === 'user' ? 'white' : 'black',
                                             boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
                                         }}>
                                             <ReactMarkdown
                                                 components={{
-                                                a: ({ node, ...props }) => {
-            // Extraemos el nombre que Arkaiko escribió en el chat
-            const nombreNegocio = typeof props.children === 'string' 
-              ? props.children 
-              : (Array.isArray(props.children) ? String(props.children[0]) : "Negocio Arkaiko");
+                                                    a: ({ node, ...props }) => {
+                                                        const nombre = typeof props.children === 'string'
+                                                            ? props.children
+                                                            : (Array.isArray(props.children) ? String(props.children[0]) : "Negocio Arkaiko");
+                                                        return (
+                                                            <a
+                                                                {...props}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                onClick={() => logClick(`Arkaiko - ${nombre}`)}
+                                                                style={{
+                                                                    display: 'inline-block', background: '#25D366', color: 'white',
+                                                                    padding: '8px 16px', borderRadius: '8px', marginTop: '8px',
+                                                                    textDecoration: 'none', fontWeight: 'bold'
+                                                                }}
+                                                            >
+                                                                {props.children}
+                                                            </a>
+                                                        );
+                                                    }
+                                                }}
+                                            >
+                                                {msg.content}
+                                            </ReactMarkdown>
+                                        </div>
+                                    </div>
+                                ))}
+                                {loading && <div style={{ fontSize: '13px', color: '#888' }}>Arkáiko consulta los Apus...</div>}
+                                <div ref={messagesEndRef} />
+                            </div>
 
-            return (
-              <a
-                {...props}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => {
-                  // No bloqueamos el link, pero disparamos el espía
-                  logClick(`Arkaiko - ${nombreNegocio}`);
-                }}
-                style={{
-                  display: 'inline-block',
-                  backgroundColor: '#25D366',
-                  color: 'white',
-                  padding: '8px 16px',
-                  borderRadius: '12px',
-                  textDecoration: 'none',
-                  fontWeight: 'bold',
-                  marginTop: '10px',
-                  boxShadow: '0 4px 12px rgba(37,211,102,0.3)'
-                }}
-              >
-                {props.children}
-              </a>
-            );
-          }
+                            <div style={{ padding: '12px', display: 'flex', gap: '8px', borderTop: '1px solid #EEE' }}>
+                                <textarea
+                                    value={input}
+                                    onChange={e => setInput(e.target.value)}
+                                    onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
+                                    placeholder="Escribe tu mensaje..."
+                                    style={{ flex: 1, borderRadius: '20px', padding: '10px 14px', border: '1px solid #DDD', resize: 'none', outline: 'none' }}
+                                    rows={1}
+                                />
+                                <button
+                                    onClick={sendMessage}
+                                    disabled={loading || !input.trim()}
+                                    style={{
+                                        background: loading || !input.trim() ? '#CCC' : colorPrimario,
+                                        color: 'white', borderRadius: '50%', width: '44px', height: '44px',
+                                        border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                    }}
+                                >
+                                    ➤
+                                </button>
+                            </div>
+                        </>
+                    )}
+                </div>
+            )}
+        </>
+    );
+}
