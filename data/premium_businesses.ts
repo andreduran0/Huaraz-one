@@ -11,23 +11,23 @@ export const premiumBusinesses: Business[] = [
     phone: '+51 937 511 052', 
     whatsapp: '51937511052',
     photos: [
-      'https://i.imgur.com/UYGAUFo.png', // Imagen Principal (Hero)
-      'https://i.imgur.com/D71gIL8.jpeg', // Vista Nocturna/Ambiente
-      'https://i.imgur.com/RFp35tk.jpeg', // Experiencia/Plato
-      'https://i.imgur.com/BjB7oO5.jpeg', // Paisaje
-      'https://i.imgur.com/QL9W5eh.png',  // Nueva foto añadida
-      'https://i.imgur.com/KfueoI2.png',  // Nueva foto añadida
-      'https://i.imgur.com/me8ec0a.png',  // Nueva foto añadida
-      'https://i.imgur.com/yuSQkZR.jpeg', // Nueva foto añadida
-      'https://i.imgur.com/X7D3n07.jpeg'  // Nueva foto añadida
+      'https://i.imgur.com/UYGAUFo.png',
+      'https://i.imgur.com/D71gIL8.jpeg',
+      'https://i.imgur.com/RFp35tk.jpeg',
+      'https://i.imgur.com/BjB7oO5.jpeg',
+      'https://i.imgur.com/QL9W5eh.png',
+      'https://i.imgur.com/KfueoI2.png',
+      'https://i.imgur.com/me8ec0a.png',
+      'https://i.imgur.com/yuSQkZR.jpeg',
+      'https://i.imgur.com/X7D3n07.jpeg'
     ],
     menuImages: [
-      'https://i.imgur.com/ShOgyni.jpeg', // Carta Pág 1
-      'https://i.imgur.com/czMNuCu.jpeg', // Carta Pág 2
-      'https://i.imgur.com/fwjErEv.jpeg', // Carta Pág 3
-      'https://i.imgur.com/tJesKoY.jpeg', // Carta Pág 4
-      'https://i.imgur.com/7mwJlNr.jpeg', // Carta Pág 5
-      'https://i.imgur.com/d3K0vND.jpeg'  // Carta Pág 6
+      'https://i.imgur.com/ShOgyni.jpeg',
+      'https://i.imgur.com/czMNuCu.jpeg',
+      'https://i.imgur.com/fwjErEv.jpeg',
+      'https://i.imgur.com/tJesKoY.jpeg',
+      'https://i.imgur.com/7mwJlNr.jpeg',
+      'https://i.imgur.com/d3K0vND.jpeg'
     ],
     schedule: { 
       'Martes - Sábado': '11:30 AM - 9:00 PM',
@@ -106,7 +106,7 @@ export const premiumBusinesses: Business[] = [
     googleMapsQuery: 'Jr. Damaso Antúnez 744 Huaraz',
   },
   {
-    id: ' Del sole-huaraz',
+    id: 'del-sole-huaraz',
     name: 'Del Sole - Huaraz',
     category: BusinessCategory.RESTAURANT,
     description: 'Restaurante ubicado en una zona estratégica de Huaraz. Disfruta de nuestra variada propuesta gastronómica con atención en horario extendido. Explora nuestra carta y solicita tu reserva de manera rápida y segura.',
@@ -156,5 +156,43 @@ export const premiumBusinesses: Business[] = [
     status: 'approved',
     ownerUserId: 'u5',
     googleMapsQuery: 'Jirón José de Sucre Pasaje Comercio Huaraz'
+  }, // <--- AQUÍ FALTABA ESTA COMA
+  {
+    id: 'la-carpa-rosa',
+    name: 'La Carpa Rosa',
+    category: BusinessCategory.RESTAURANT,
+    description: 'La Carpa Rosa es un espacio gastronómico en el corazón de Huaraz que combina sabor, calidez y una experiencia acogedora que invita a quedarse. Este restaurante destaca por ofrecer una propuesta de cocina peruana con énfasis en parrillas, caldos reconfortantes y platos preparados al momento, con ese toque casero que conquista desde el primer bocado.\n\nEl ambiente del local es uno de sus mayores atractivos: un espacio tranquilo, familiar y cuidadosamente ambientado que transmite la sensación de estar en casa. Es el lugar ideal tanto para compartir con amigos como para disfrutar en familia o tener una cena relajada. La iluminación cálida y el concepto del espacio crean una experiencia íntima y agradable.\n\nEn su carta destacan opciones como alitas a la parrilla, bistec y chuletas jugosas, preparadas con un estilo tradicional y un sabor auténtico que resalta la cocina peruana. Cada plato refleja dedicación, sencillez y calidad, convirtiendo cada visita en una experiencia reconfortante.\n\nAdemás, La Carpa Rosa no solo es un restaurante, sino también un punto de encuentro donde se viven momentos especiales, con eventos, música y celebraciones que le dan vida al lugar y lo convierten en un espacio lleno de alegría.',
+    address: 'Jr. Teófilo Castillo 555, Huaraz',
+    lat: -9.5280, lng: -77.5270,
+    phone: '+51 972 399 950', 
+    whatsapp: '51972399950',
+    photos: [
+      'https://i.imgur.com/GzLTgsb.jpeg',
+      'https://i.imgur.com/qKfHrvI.jpeg',
+      'https://i.imgur.com/bywYCLE.jpeg',
+      'https://i.imgur.com/tffGiMN.jpeg',
+      'https://i.imgur.com/VwXsY4v.jpeg',
+      'https://i.imgur.com/SM2HcNP.jpeg',
+      'https://i.imgur.com/me8ec0a.png',
+      'https://i.imgur.com/lVlo3Ao.jpeg',
+      'https://i.imgur.com/X7clC6l.jpeg',
+      'https://i.imgur.com/3auk61T.jpeg',
+      'https://i.imgur.com/u5uRLt0.jpeg',
+      'https://i.imgur.com/clrNKMZ.jpeg',
+      'https://i.imgur.com/Qoq0Nai.jpeg',
+      'https://i.imgur.com/5jRq1N9.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/DCqjS4k.jpeg',
+      'https://i.imgur.com/0YpkPTe.jpeg'
+    ],
+    schedule: { 
+      'Lunes - Sábado': '6:00 PM - 11:00 PM'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-carpa-rosa',
+    status: 'approved', 
+    ownerUserId: 'u6',
+    googleMapsQuery: 'JR.teofilo castillo 555,Huaraz,Peru'
   }
 ];
