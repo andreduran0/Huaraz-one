@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { createClient } from '@supabase/supabase-js';
+import { useTranslations } from '../hooks/useTranslations'; // 👈 Agregamos el traductor
 import { Business, AdLevel } from '../types';
 
 interface BusinessCardProps {
@@ -8,8 +9,9 @@ interface BusinessCardProps {
 }
 
 const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
+  const t = useTranslations(); // 👈 Activamos el traductor
 
-  // 👇 FUNCIÓN ESPÍA BLINDADA 👇
+  // 👇 FUNCIÓN ESPÍA BLINDADA (Tuya de hace 17 horas) 👇
   const handleWhatsAppClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation(); // Evita que al darle al WhatsApp te mande a "Ver Detalles"
@@ -53,10 +55,10 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
         <div className="h-48 w-full relative">
           <img src={business.photos[0]} alt={business.name} className="w-full h-full object-cover" />
 
-          {/* ETIQUETA DE PATROCINADO (Como en tu captura) */}
+          {/* ETIQUETA DE PATROCINADO (Ahora con traductor) */}
           {isSponsored && (
             <div className="absolute top-4 left-4 bg-[#F58220] text-black text-[10px] font-black uppercase px-4 py-1.5 rounded-full shadow-md">
-              Patrocinado
+              {t('business.sponsored')}
             </div>
           )}
         </div>
@@ -71,22 +73,22 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
             <h3 className="text-2xl font-black text-[#2A4D69] leading-tight">
               {business.name}
             </h3>
-            {/* LA ESTRELLITA (Como en tu captura) */}
+            {/* LA ESTRELLITA */}
             <div className="flex items-center gap-1 text-[#F58220] font-bold text-lg shrink-0">
               <i className="fas fa-star"></i> 4.8
             </div>
           </div>
 
-          {/* CATEGORÍA Y DIRECCIÓN GRIS */}
+          {/* CATEGORÍA Y DIRECCIÓN GRIS (Ahora con traductor) */}
           <p className="text-slate-500 font-bold text-sm mb-6">
-            {business.category} • {business.address}
+            {t(`category.${business.category}` as any) || business.category} • {business.address}
           </p>
 
           {/* LA LÍNEA SEPARADORA FINA */}
           <div className="w-full h-px bg-slate-100 mb-6"></div>
         </Link>
 
-        {/* 🔘 BOTONES DE ACCIÓN (IDÉNTICOS A TU CAPTURA) */}
+        {/* 🔘 BOTONES DE ACCIÓN */}
         <div className="flex items-center justify-between mt-auto">
           <div className="flex gap-4">
 
@@ -101,7 +103,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
               </a>
             )}
 
-            {/* BOTÓN WHATSAPP CIRCULAR VERDE (CON EL ESPÍA ACTIVADO) */}
+            {/* BOTÓN WHATSAPP CIRCULAR VERDE */}
             {business.whatsapp && (
               <button
                 onClick={handleWhatsAppClick}
