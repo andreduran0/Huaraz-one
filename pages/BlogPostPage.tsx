@@ -1,284 +1,343 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import ReactMarkdown from 'react-markdown';
-import { supabase } from '../services/supabase';
+import { useTranslations } from '../hooks/useTranslations';
+import { AdLevel, BusinessCategory } from '../types';
+import { createClient } from '@supabase/supabase-js';
 
-const BlogPostPage: React.FC = () => {
-  const { id: slugOrId } = useParams<{ id: string }>();
-  const { blogPosts: localPosts, socialLinks } = useAppContext();
-  
-  const [post, setPost] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [leadData, setLeadData] = useState({ name: '', email: '' });
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+// 👇 EL ESPÍA BLINDADO PARA LA PÁGINA DE DETALLES 👇
+const logClick = async (businessName: string) => {
+    try {
+        // @ts-ignore
+        const viteUrl = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_URL : null;
+        // @ts-ignore
+        const viteKey = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_ANON_KEY : null;
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      setLoading(true);
-      try {
-        let { data, error } = await supabase
-          .from('posts')
-          .select('*, video_url')
-          .eq('slug', slugOrId)
-          .single();
+        const nextUrl = typeof process !== 'undefined' && process.env ? process.env.NEXT_PUBLIC_SUPABASE_URL : null;
+        const nextKey = typeof process !== 'undefined' && process.env ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY : null;
 
-        if (error || !data) {
-          const { data: dataById, error: errorById } = await supabase
-            .from('posts')
-            .select('*, video_url')
-            .eq('id', slugOrId)
-            .single();
-          
-          if (!errorById && dataById) {
-            data = dataById;
-          }
+        const url = viteUrl || nextUrl;
+        const key = viteKey || nextKey;
+
+        if (url && key && url !== 'https://placeholder.supabase.co') {
+            const supabase = createClient(url, key);
+            await supabase.from('clicks_log').insert([{ business_name: businessName }]);
+            console.log(`✅ Clic guardado desde Detalles: ${businessName}`);
         }
+    } catch (err) {
+        console.error("Error silencioso del espía:", err);
+    }
+};
+// 👆 FIN DEL ESPÍA 👆
 
-        if (data) {
-          setPost(data);
-        } else {
-          const local = localPosts.find(p => p.id === slugOrId || p.slug === slugOrId);
-          setPost(local || null);
-        }
-      } catch (err) {
-        console.error('Error fetching post:', err);
-        const local = localPosts.find(p => p.id === slugOrId || p.slug === slugOrId);
-        setPost(local || null);
-      } finally {
-        setLoading(false);
-      }
+const BusinessDetailPage: React.FC = () => {
+    const { id } = useParams<{ id: string }>();
+    const { businesses } = useAppContext();
+    const t = useTranslations();
+    const business = businesses.find(b => b.id === id);
+
+    // Lightbox state
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [lightboxMode, setLightboxMode] = useState<'gallery' | 'menu'>('gallery');
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [id]);
+
+    if (!business) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
+                <div className="text-center space-y-4">
+                    <i className="fas fa-search text-4xl text-slate-200"></i>
+                    <p className="font-black text-slate-400 uppercase tracking-widest text-xs">Negocio no encontrado</p>
+                </div>
+            </div>
+        );
+    }
+
+    const isSponsored = business.adLevel !== AdLevel.NONE;
+    const hasMenu = business.menuImages && business.menuImages.length > 0;
+
+    // Convertimos la categoría a texto simple (minúsculas)
+    const categoryText = String(business.category).toLowerCase();
+
+    const openLightbox = (index: number, mode: 'gallery' | 'menu') => {
+        setCurrentImageIndex(index);
+        setLightboxMode(mode);
+        setIsLightboxOpen(true);
     };
 
-    fetchPost();
-  }, [slugOrId, localPosts]);
+    const closeLightbox = () => setIsLightboxOpen(false);
 
-  useEffect(() => {
-    if (post) {
-      document.title = `${post.meta_title || post.title} | Huaraz Explorer`;
-      window.scrollTo(0, 0);
+    const currentImages = lightboxMode === 'gallery' ? business.photos : (business.menuImages || []);
 
-      if (post.meta_description) {
-        const metaDesc = document.querySelector('meta[name="description"]');
-        if (metaDesc) metaDesc.setAttribute('content', post.meta_description);
-      }
-    }
-  }, [post]);
+    const nextImage = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setCurrentImageIndex((prev) => (prev + 1) % currentImages.length);
+    };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <i className="fas fa-spinner fa-spin text-4xl text-[#2A4D69]"></i>
-      </div>
-    );
-  }
+    const prevImage = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setCurrentImageIndex((prev) => (prev - 1 + currentImages.length) % currentImages.length);
+    };
 
-  if (!post) {
-    return (
-        <div className="min-h-screen bg-white flex flex-col items-center justify-center p-10 text-center">
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">Artículo no encontrado</h1>
-            <Link to="/blog" className="text-[#2A4D69] font-bold underline">Volver al blog</Link>
-        </div>
-    );
-  }
+    const mapUrl = business.googleMapsQuery
+        ? `http://googleusercontent.com/maps.google.com/?q=${encodeURIComponent(business.googleMapsQuery)}`
+        : `http://googleusercontent.com/maps.google.com/?q=${business.lat},${business.lng}`;
 
-  const handleLeadSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (isSubmitting) return;
+    // Lógica VIP Dinámica para el mensaje de WhatsApp
+    const getWhatsappMessage = () => {
+        if (business.id === 'la-carpa-rosa') {
+            return `¡Hola! Vengo de Huaraz Explorer 🐧. Quisiera reservar una mesa en La Carpa Rosa para disfrutar de sus parrillas y alitas. ¿Tienen disponibilidad para hoy?`;
+        }
+        if (business.id === 'cumbre-rataquenua') {
+            return `¡Hola! Vengo de Huaraz Explorer 🐧. Quisiera hacer una reserva en Cumbre para cenar con la vista panorámica de Huaraz. ¿Qué horarios tienen libres?`;
+        }
+        if (business.id === 'del-sole-huaraz') {
+            return `¡Hola! Vengo de Huaraz Explorer 🐧. Quisiera hacer una reserva en su restaurante Del Sole, por favor.`;
+        }
 
-    setIsSubmitting(true);
-    
-    try {
-      const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/26464693/ucoy3j9/';
-      
-      const formData = new FormData();
-      formData.append('name', leadData.name);
-      formData.append('email', leadData.email);
-      formData.append('source', `Huaraz Explorer Blog - VIP Content (${post.title})`);
-      formData.append('timestamp', new Date().toISOString());
+        if (categoryText === 'education') {
+            return `Hola, quisiera solicitar una entrevista para el ${business.name}. Lo vi en Huaraz Explorer 🐧.`;
+        } else if (categoryText === 'exchange' || categoryText === 'services') {
+            return `Hola, quisiera consultar el tipo de cambio del día en ${business.name}. Lo vi en Huaraz Explorer 🐧.`;
+        } else if (categoryText === 'health') {
+            return `Hola, quisiera agendar una cita en ${business.name}. Lo vi en Huaraz Explorer 🐧.`;
+        } else {
+            return `Hola, quisiera hacer una reserva o consulta en ${business.name}. Lo vi en Huaraz Explorer 🐧.`;
+        }
+    };
+    const whatsappMessage = encodeURIComponent(getWhatsappMessage());
 
-      await fetch(zapierWebhookUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: formData,
-      });
-      
-      setIsSubmitted(true);
-    } catch (error) {
-      console.error("Error sending lead data:", error);
-      setIsSubmitted(true);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    // Lógica Dinámica para los títulos de la Carta
+    const getMenuTitle = () => {
+        if (categoryText === 'education') {
+            return { prefix: 'NUESTRA PROPUESTA ', highlight: 'EDUCATIVA', subtitle: 'Conoce nuestro modelo de enseñanza y valores' };
+        } else if (categoryText === 'exchange' || categoryText === 'services') {
+            return { prefix: 'NUESTROS ', highlight: 'SERVICIOS', subtitle: 'Conoce nuestras tasas y opciones de cambio' };
+        } else if (categoryText === 'health') {
+            return { prefix: 'NUESTRAS ', highlight: 'ESPECIALIDADES', subtitle: 'Conoce nuestros servicios médicos' };
+        } else {
+            return { prefix: 'Nuestra ', highlight: 'Carta', subtitle: 'Consulta nuestros platos y especialidades' };
+        }
+    };
+    const menuTitle = getMenuTitle();
 
-  const featuredImage = post.featured_image || post.image;
-
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": post.title,
-    "image": [featuredImage],
-    "datePublished": post.created_at || post.date,
-    "dateModified": post.updated_at || post.date,
-    "author": [{
-        "@type": "Person",
-        "name": post.author || "Huaraz Explorer",
-        "url": "https://huarazexplorer.com/"
-      }]
-  };
-
-  return (
-    <div className="bg-white min-h-screen pb-40 font-['Plus_Jakarta_Sans']">
-      <script type="application/ld+json">
-        {JSON.stringify(jsonLd)}
-      </script>
-      
-      {/* Header del Post */}
-      <div className="container mx-auto px-6 max-w-3xl pt-16 pb-12">
-        <Link to="/blog" className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-8 inline-block hover:text-[#2A4D69] transition-colors">
-          <i className="fas fa-arrow-left mr-2"></i> Volver al blog
-        </Link>
-        
-        <h1 className="text-4xl md:text-6xl font-black text-slate-900 leading-[1.05] mb-8 uppercase italic tracking-tighter">
-          {post.title}
-        </h1>
-        
-        <div className="flex items-center gap-4 text-xs font-black text-slate-300 uppercase tracking-widest mb-10">
-          <span className="text-slate-900">{post.author || 'Huaraz Explorer'}</span>
-          <span className="w-1.5 h-1.5 bg-slate-100 rounded-full"></span>
-          <span>{post.created_at ? new Date(post.created_at).toLocaleDateString() : post.date}</span>
-          <span className="w-1.5 h-1.5 bg-slate-100 rounded-full"></span>
-          <span>{post.readTime || '5 min read'}</span>
-        </div>
-      </div>
-
-      {/* Área Multimedia (A PRUEBA DE BALAS) */}
-      <div className="container mx-auto px-6 max-w-4xl space-y-10 mb-20">
-        <div className="relative group">
-          <div className="absolute -inset-4 bg-[#2A4D69]/5 rounded-[3.5rem] blur-2xl opacity-50"></div>
-          
-          <div 
-            className="relative w-full rounded-[3rem] overflow-hidden shadow-2xl bg-black border border-slate-100"
-            style={{ paddingBottom: '56.25%' }}
-          >
-            {post.video_url ? (
-               <iframe
-                 className="absolute top-0 left-0 w-full h-full"
-                 src={post.video_url}
-                 title={post.title}
-                 frameBorder="0"
-                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                 allowFullScreen
-               ></iframe>
-            ) : featuredImage && (
-               <img 
-                  src={featuredImage} 
-                  alt={post.title} 
-                  className="absolute top-0 left-0 w-full h-full object-cover"
-                />
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Contenido del Artículo */}
-      <div className="container mx-auto px-6 max-w-3xl">
-        <article className="prose prose-xl max-w-none 
-          prose-headings:text-slate-900 prose-headings:font-black prose-headings:uppercase prose-headings:italic prose-headings:tracking-tighter
-          prose-p:text-slate-600 prose-p:leading-relaxed prose-p:font-medium
-          prose-strong:text-slate-900 prose-strong:font-black
-          prose-a:text-[#2A4D69] prose-a:font-black prose-a:no-underline prose-a:border-b-4 prose-a:border-[#2A4D69]/10 hover:prose-a:border-[#2A4D69] transition-all
-          prose-img:rounded-[2.5rem] prose-img:shadow-xl prose-li:text-slate-600">
-          <ReactMarkdown>{post.content || ''}</ReactMarkdown>
-        </article>
-        
-        {/* Formularios y Redes Sociales */}
-        <div className="mt-32 pt-16 border-t border-slate-100 space-y-16">
-          <div className="bg-[#0A0A0A] p-10 md:p-16 rounded-[4rem] text-center space-y-8 relative overflow-hidden shadow-2xl">
-              <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#2A4D69]/20 rounded-full blur-[100px]"></div>
-              
-              {!isSubmitted ? (
-                <div className="relative z-10 space-y-8">
-                  <div className="w-20 h-20 bg-white/5 border border-white/10 rounded-3xl flex items-center justify-center mx-auto shadow-inner">
-                      <i className="fas fa-gem text-3xl text-white"></i>
-                  </div>
-                  <div className="space-y-3">
-                    <h4 className="text-3xl md:text-4xl font-black text-white uppercase italic tracking-tighter">Descarga Guías <span className="text-[#2A4D69]">VIP</span></h4>
-                    <p className="text-gray-400 font-medium max-w-md mx-auto">Únete a nuestra lista exclusiva y recibe itinerarios secretos de la Cordillera Blanca directamente en tu email.</p>
-                  </div>
-                  
-                  <form onSubmit={handleLeadSubmit} className="max-w-md mx-auto space-y-4">
-                    <input required type="text" placeholder="Tu nombre" className="w-full p-5 bg-white/5 border border-white/10 rounded-2xl text-white font-bold placeholder-gray-500 focus:border-[#2A4D69] outline-none transition-all" value={leadData.name} onChange={e => setLeadData({...leadData, name: e.target.value})} disabled={isSubmitting} />
-                    <input required type="email" placeholder="tu@email.com" className="w-full p-5 bg-white/5 border border-white/10 rounded-2xl text-white font-bold placeholder-gray-500 focus:border-[#2A4D69] outline-none transition-all" value={leadData.email} onChange={e => setLeadData({...leadData, email: e.target.value})} disabled={isSubmitting} />
-                    <button type="submit" disabled={isSubmitting} className="w-full bg-[#2A4D69] text-white py-6 rounded-2xl font-black uppercase text-xs tracking-[0.3em] shadow-xl hover:bg-white hover:text-black transition-all active:scale-95 flex items-center justify-center gap-3">
-                      {isSubmitting ? <i className="fas fa-spinner fa-spin"></i> : 'REGISTRARME AHORA'}
-                    </button>
-                  </form>
-                </div>
-              ) : (
-                <div className="relative z-10 space-y-6 py-10 animate-fadeIn">
-                  <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto text-white text-4xl shadow-[0_0_30px_rgba(34,197,94,0.4)]">
-                    <i className="fas fa-check"></i>
-                  </div>
-                  <h4 className="text-3xl font-black text-white uppercase italic tracking-tighter">¡Ya estás en la lista!</h4>
-                  <p className="text-gray-400 font-medium">Revisa tu correo para confirmar tu acceso al contenido VIP.</p>
-                </div>
-              )}
-          </div>
-
-          <div className="text-center space-y-10">
-            <div className="space-y-2">
-              <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em]">Síguenos en tiempo real</p>
-              <h3 className="text-3xl font-black text-slate-900 uppercase italic tracking-tighter">Nuestras <span className="text-[#2A4D69]">Comunidades</span></h3>
-            </div>
+    // Lógica VIP Dinámica para el Cuadro de Reservas (Con Colores y Textos)
+    const getWidgetContent = () => {
+        switch (business.id) {
+            case 'la-carpa-rosa':
+                return {
+                    bgColor: '#831843', 
+                    icon: 'fa-fire',
+                    badge: 'Sabor Casero',
+                    titlePrefix: 'DISFRUTA NUESTRAS ',
+                    titleHighlight: 'PARRILLAS',
+                    description: 'Asegura tu mesa en La Carpa Rosa y vive una experiencia acogedora con los mejores cortes, alitas y caldos.',
+                    buttonText: 'RESERVAR MESA'
+                };
+            case 'cumbre-rataquenua':
+                return {
+                    bgColor: '#0f172a', 
+                    icon: 'fa-mountain',
+                    badge: 'Vista Panorámica',
+                    titlePrefix: 'CENA EN LA ',
+                    titleHighlight: 'CUMBRE',
+                    description: 'Haz tu reserva ahora y disfruta de la mejor vista de Huaraz y la Cordillera Blanca.',
+                    buttonText: 'RESERVAR CON VISTA'
+                };
+            case 'del-sole-huaraz':
+                return {
+                    bgColor: '#9a3412', 
+                    icon: 'fa-utensils',
+                    badge: 'Atención Extendida',
+                    titlePrefix: 'SABOR Y ',
+                    titleHighlight: 'TRADICIÓN',
+                    description: 'Reserva tu mesa de manera rápida y segura en una zona estratégica de Huaraz.',
+                    buttonText: 'RESERVAR AHORA'
+                };
+            case 'casa-huayaney':
+                return {
+                    bgColor: '#064e3b', 
+                    icon: 'fa-money-bill-wave',
+                    badge: 'Tasa Preferencial',
+                    titlePrefix: 'CAMBIA CON ',
+                    titleHighlight: 'SEGURIDAD',
+                    description: 'Cotiza el mejor tipo de cambio de dólares y euros hoy mismo en el centro de Huaraz.',
+                    buttonText: 'COTIZAR CAMBIO'
+                };
+            case 'nobel-ingenieros':
+                return {
+                    bgColor: '#172554', 
+                    icon: 'fa-user-graduate',
+                    badge: 'Matrícula Abierta',
+                    titlePrefix: 'FORJA EL ',
+                    titleHighlight: 'FUTURO',
+                    description: 'Únete a la institución que forma a los líderes e ingenieros del mañana en Huaraz.',
+                    buttonText: 'SOLICITAR ENTREVISTA'
+                };
+            case 'policlinico-doctor-d':
+                return {
+                    bgColor: '#164e63', 
+                    icon: 'fa-stethoscope',
+                    badge: 'Atención Integral',
+                    titlePrefix: 'CUIDAMOS TU ',
+                    titleHighlight: 'SALUD',
+                    description: 'Agenda tu consulta médica con nuestros especialistas y tecnología de vanguardia.',
+                    buttonText: 'AGENDAR CITA'
+                };
             
-            <div className="flex flex-col sm:flex-row justify-center gap-6">
-              <a href={socialLinks?.instagram || '#'} target="_blank" rel="noreferrer" className="group flex items-center gap-4 bg-white border border-slate-100 p-6 rounded-[2.5rem] shadow-sm hover:shadow-xl hover:border-[#E1306C]/30 transition-all active:scale-95">
-                <div className="w-14 h-14 bg-gradient-to-tr from-[#FFDC80] via-[#E1306C] to-[#833AB4] rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg group-hover:rotate-6 transition-transform">
-                  <i className="fab fa-instagram"></i>
-                </div>
-                <div className="text-left">
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Instagram</p>
-                  <p className="text-lg font-black text-slate-900 uppercase italic tracking-tighter">@HuarazExplorer</p>
-                </div>
-              </a>
+            default:
+                if (categoryText === 'education') {
+                    return { bgColor: '#1e3a8a', icon: 'fa-book', badge: 'Inscripción Estratégica', titlePrefix: 'FORJA TU ', titleHighlight: 'FUTURO', description: 'Solicita más información de nuestra propuesta.', buttonText: 'CONTACTAR' };
+                } else if (categoryText === 'health') {
+                    return { bgColor: '#0f766e', icon: 'fa-heartbeat', badge: 'Salud y Bienestar', titlePrefix: 'TU SALUD ES ', titleHighlight: 'PRIMERO', description: 'Agenda tu cita con nuestros profesionales.', buttonText: 'RESERVAR CITA' };
+                } else {
+                    return { bgColor: '#2A4D69', icon: 'fa-calendar-check', badge: 'Reserva Inmediata', titlePrefix: 'ASEGURA TU ', titleHighlight: 'LUGAR', description: 'Vive la mejor experiencia separando tu espacio ahora.', buttonText: 'RESERVAR AHORA' };
+                }
+        }
+    };
+    const widget = getWidgetContent();
 
-              <a href={socialLinks?.tiktok || '#'} target="_blank" rel="noreferrer" className="group flex items-center gap-4 bg-white border border-slate-100 p-6 rounded-[2.5rem] shadow-sm hover:shadow-xl hover:border-black/30 transition-all active:scale-95">
-                <div className="w-14 h-14 bg-black rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg group-hover:-rotate-6 transition-transform">
-                  <i className="fab fa-tiktok"></i>
+    return (
+        <div className="bg-slate-50 dark:bg-slate-950 min-h-screen relative font-['Plus_Jakarta_Sans']">
+
+            {/* HERO SECTION */}
+            <div className="w-full h-[60vh] md:h-[70vh] relative overflow-hidden bg-black">
+                <img
+                    src={business.photos[0]}
+                    alt={business.name}
+                    className="w-full h-full object-cover opacity-90 transition-transform duration-[10s] hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+
+                <div className="absolute bottom-16 left-8 right-8 text-white max-w-5xl mx-auto">
+                    <div className="flex flex-wrap items-center gap-3 mb-6">
+                        <span className="bg-[#2A4D69] text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] px-5 py-2.5 rounded-full border border-white/20 backdrop-blur-md shadow-2xl">
+                            {t(`category.${business.category}` as any) || business.category}
+                        </span>
+                        {isSponsored && (
+                            <span className="bg-[#F58220] text-black text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] px-5 py-2.5 rounded-full shadow-[0_10px_30px_rgba(245,130,32,0.3)]">
+                                {t('business.sponsored')}
+                            </span>
+                        )}
+                    </div>
+                    <h1 className="text-5xl md:text-9xl font-black italic tracking-tighter uppercase leading-[0.85] drop-shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+                        {business.name}
+                    </h1>
                 </div>
-                <div className="text-left">
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">TikTok</p>
-                  <p className="text-lg font-black text-slate-900 uppercase italic tracking-tighter">Huaraz.Explorer</p>
-                </div>
-              </a>
             </div>
-          </div>
 
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8 pt-10">
-            <div className="space-y-2 text-center md:text-left">
-               <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em]">¿Te gustó este relato?</p>
-               <h3 className="text-xl font-black text-slate-900 uppercase italic tracking-tighter">Compártelo con otros viajeros</h3>
-            </div>
-            <div className="flex gap-4">
-              <ShareButton icon="fa-facebook-f" />
-              <ShareButton icon="fa-whatsapp" />
-              <ShareButton icon="fa-twitter" />
-              <ShareButton icon="fa-link" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+            {/* CONTENIDO PRINCIPAL */}
+            <div className="max-w-5xl mx-auto px-6 -mt-12 relative z-10 space-y-16 pb-48">
 
-const ShareButton: React.FC<{ icon: string }> = ({ icon }) => (
-    <button className="w-14 h-14 bg-white border border-slate-100 rounded-2xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#2A4D69] hover:border-[#2A4D69] transition-all shadow-sm active:scale-90">
-        <i className={`fab ${icon} text-lg`}></i>
-    </button>
-);
+                {/* Tarjeta de Acciones Rápidas */}
+                <div className="bg-white dark:bg-slate-900 rounded-[3.5rem] p-8 md:p-12 shadow-[0_40px_80px_rgba(0,0,0,0.08)] border border-slate-100 dark:border-slate-800 flex flex-col lg:flex-row gap-10 items-center justify-between">
+                    <div className="space-y-3 text-center lg:text-left">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] mb-1">Ubicación Estratégica</p>
+                        <p className="text-xl md:text-2xl font-extrabold text-slate-800 dark:text-slate-100 leading-tight">
+                            {business.address}
+                        </p>
+                    </div>
+                    <div className="flex flex-wrap justify-center gap-4">
+                        {business.phone && (
+                            <a href={`tel:${business.phone}`} className="w-16 h-16 md:w-20 md:h-20 bg-slate-50 dark:bg-slate-800 rounded-[2rem] flex items-center justify-center text-[#2A4D69] border border-slate-100 dark:border-slate-700 active:scale-95 transition-all shadow-sm">
+                                <i className="fas fa-phone text-xl md:text-2xl"></i>
+                            </a>
+                        )}
+                        {business.whatsapp && (
+                            <a
+                                href={`https://wa.me/${business.whatsapp}?text=${whatsappMessage}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                onClick={() => logClick(`Llamada Rápida - ${business.name}`)}
+                                className="w-16 h-16 md:w-20 md:h-20 bg-green-50 dark:bg-green-900/20 rounded-[2rem] flex items-center justify-center text-green-500 border border-green-100 dark:border-green-900/40 active:scale-95 transition-all shadow-sm"
+                            >
+                                <i className="fab fa-whatsapp text-3xl md:text-4xl"></i>
+                            </a>
+                        )}
+                        <a href={mapUrl} target="_blank" rel="noreferrer" className="bg-[#2A4D69] text-white px-10 md:px-14 py-6 md:py-8 rounded-[2rem] font-black uppercase text-[10px] md:text-xs tracking-[0.3em] shadow-2xl flex items-center gap-4 active:scale-95 transition-all">
+                            Ver Mapa <i className="fas fa-location-arrow"></i>
+                        </a>
+                    </div>
+                </div>
 
-export default BlogPostPage;
+                {/* Reseña Destacada */}
+                <div className="bg-white dark:bg-slate-900 rounded-[3.5rem] p-12 md:p-20 shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-3 h-full bg-[#F58220]"></div>
+                    <i className="fas fa-quote-left absolute top-10 right-10 text-slate-50 dark:text-slate-800 text-8xl -z-10"></i>
+                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-bold text-2xl md:text-3xl italic relative z-10 whitespace-pre-line">
+                        "{business.description}"
+                    </p>
+                </div>
+
+                {/* SECCIÓN: LA CARTA / SERVICIOS */}
+                {hasMenu && (
+                    <div className="space-y-10 animate-fadeIn">
+                        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 px-4">
+                            <div className="space-y-2">
+                                <h3 className="text-4xl md:text-6xl font-black text-[#2A4D69] dark:text-white uppercase italic tracking-tighter">
+                                    {menuTitle.prefix}
+                                    <span className="text-[#F58220]">{menuTitle.highlight}</span>
+                                </h3>
+                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em]">
+                                    {menuTitle.subtitle}
+                                </p>
+                            </div>
+                            <div className="bg-slate-100 dark:bg-slate-800 px-8 py-3 rounded-full border border-slate-200 shadow-inner flex items-center gap-3">
+                                <i className="fas fa-book-open text-[#F58220] text-xs"></i>
+                                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{business.menuImages?.length} páginas</span>
+                            </div>
+                        </div>
+                        <div className="flex gap-8 overflow-x-auto no-scrollbar pb-12 px-4 snap-x">
+                            {business.menuImages?.map((page, idx) => (
+                                <div
+                                    key={idx}
+                                    onClick={() => openLightbox(idx, 'menu')}
+                                    className="relative flex-shrink-0 w-72 md:w-96 aspect-[3/4.2] rounded-[3rem] overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.12)] border-2 border-slate-200 dark:border-slate-800 cursor-pointer group hover:scale-[1.03] transition-all duration-700 snap-center"
+                                >
+                                    <img src={page} className="w-full h-full object-cover" alt={`Página de la carta ${idx + 1}`} />
+                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-[#2A4D69]/30 transition-all flex items-center justify-center">
+                                        <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center text-[#2A4D69] opacity-0 group-hover:opacity-100 transform translate-y-8 group-hover:translate-y-0 transition-all shadow-2xl">
+                                            <i className="fas fa-search-plus text-2xl"></i>
+                                        </div>
+                                    </div>
+                                    <div className="absolute top-8 left-8">
+                                        <span className="bg-black/80 backdrop-blur-xl text-white text-[9px] font-black px-5 py-2.5 rounded-full uppercase tracking-widest shadow-2xl border border-white/10">Pág. {idx + 1}</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Horarios y Reserva VIP */}
+                <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                    
+                    {/* Tarjeta de Horarios */}
+                    <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-12 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-sm space-y-10">
+                        <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.5em] flex items-center gap-4">
+                            <i className="fas fa-clock text-[#F58220] text-xl"></i> {t('business.schedule')}
+                        </h3>
+                        <ul className="space-y-6">
+                            {Object.entries(business.schedule).map(([day, hours]) => (
+                                <li key={day} className="flex justify-between items-center border-b border-slate-50 dark:border-slate-800 pb-4">
+                                    <span className="text-slate-500 dark:text-slate-400 font-extrabold uppercase text-[10px] tracking-[0.2em]">{day}</span>
+                                    <span className="text-slate-900 dark:text-white font-black text-xs uppercase tracking-widest">{hours}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* CUADRO DE RESERVAS VIP (Con Colores y Textos Dinámicos) */}
+                    <div 
+                        className="lg:col-span-3 p-12 md:p-20 rounded-[4rem] shadow-2xl text-white relative overflow-hidden group transition-colors duration-500"
+                        style={{ backgroundColor: widget.bgColor }}
+                    >
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 group-hover:scale-150 transition-transform duration-[2s]"></div>
+                        
+                        <div className="relative z-10 space-y-8">
+                            {/* Etiqueta Pequeña */}
+                            <div className="inline-flex items-center gap-4 bg-white/10 px-6 py-2.5 rounded-full border border-white/10">
+                                <i className={`fas ${widget.icon}
