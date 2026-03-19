@@ -3,18 +3,48 @@ import { useParams } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useTranslations } from '../hooks/useTranslations';
 import { AdLevel, BusinessCategory } from '../types';
+import { createClient } from '@supabase/supabase-js'; // 👈 IMPORTAMOS EL ESPÍA
+
+// 👇 EL ESPÍA BLINDADO PARA LA PÁGINA DE DETALLES 👇
+const logClick = async (businessName: string) => {
+    try {
+        // @ts-ignore
+        const viteUrl = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_URL : null;
+        // @ts-ignore
+        const viteKey = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_ANON_KEY : null;
+
+        const nextUrl = typeof process !== 'undefined' && process.env ? process.env.NEXT_PUBLIC_SUPABASE_URL : null;
+        const nextKey = typeof process !== 'undefined' && process.env ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY : null;
+
+        const url = viteUrl || nextUrl;
+        const key = viteKey || nextKey;
+
+        if (url && key && url !== 'https://placeholder.supabase.co') {
+            const supabase = createClient(url, key);
+            await supabase.from('clicks_log').insert([{ business_name: businessName }]);
+            console.log(`✅ Clic guardado desde Detalles: ${businessName}`);
+        }
+    } catch (err) {
+        console.error("Error silencioso del espía:", err);
+    }
+};
+// 👆 FIN DEL ESPÍA 👆
+
 const BusinessDetailPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const { businesses } = useAppContext();
     const t = useTranslations();
     const business = businesses.find(b => b.id === id);
+
     // Lightbox state
     const [isLightboxOpen, setIsLightboxOpen] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [lightboxMode, setLightboxMode] = useState<'gallery' | 'menu'>('gallery');
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [id]);
+
     if (!business) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
@@ -25,29 +55,37 @@ const BusinessDetailPage: React.FC = () => {
             </div>
         );
     }
+
     const isSponsored = business.adLevel !== AdLevel.NONE;
     const hasMenu = business.menuImages && business.menuImages.length > 0;
 
     // Convertimos la categoría a texto simple (minúsculas) para evitar errores de enum
     const categoryText = String(business.category).toLowerCase();
+
     const openLightbox = (index: number, mode: 'gallery' | 'menu') => {
         setCurrentImageIndex(index);
         setLightboxMode(mode);
         setIsLightboxOpen(true);
     };
+
     const closeLightbox = () => setIsLightboxOpen(false);
+
     const currentImages = lightboxMode === 'gallery' ? business.photos : (business.menuImages || []);
+
     const nextImage = (e: React.MouseEvent) => {
         e.stopPropagation();
         setCurrentImageIndex((prev) => (prev + 1) % currentImages.length);
     };
+
     const prevImage = (e: React.MouseEvent) => {
         e.stopPropagation();
         setCurrentImageIndex((prev) => (prev - 1 + currentImages.length) % currentImages.length);
     };
+
     const mapUrl = business.googleMapsQuery
         ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.googleMapsQuery)}`
         : `https://www.google.com/maps/search/?api=1&query=${business.lat},${business.lng}`;
+
     // Lógica Dinámica para el mensaje de WhatsApp (Reforzada)
     const getWhatsappMessage = () => {
         if (categoryText === 'education') {
@@ -61,6 +99,7 @@ const BusinessDetailPage: React.FC = () => {
         }
     };
     const whatsappMessage = encodeURIComponent(getWhatsappMessage());
+
     // Lógica Dinámica para los títulos (Reforzada)
     const getMenuTitle = () => {
         if (categoryText === 'education') {
@@ -74,6 +113,7 @@ const BusinessDetailPage: React.FC = () => {
         }
     };
     const menuTitle = getMenuTitle();
+
     return (
         <div className="bg-slate-50 dark:bg-slate-950 min-h-screen relative font-['Plus_Jakarta_Sans']">
 
@@ -120,7 +160,13 @@ const BusinessDetailPage: React.FC = () => {
                             </a>
                         )}
                         {business.whatsapp && (
-                            <a href={`https://wa.me/${business.whatsapp}?text=${whatsappMessage}`} target="_blank" rel="noreferrer" className="w-16 h-16 md:w-20 md:h-20 bg-green-50 dark:bg-green-900/20 rounded-[2rem] flex items-center justify-center text-green-500 border border-green-100 dark:border-green-900/40 active:scale-95 transition-all shadow-sm">
+                            <a
+                                href={`https://wa.me/${business.whatsapp}?text=${whatsappMessage}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                onClick={() => logClick(`Detalle - ${business.name}`)} // 👈 AQUÍ VIGILAMOS EL CLIC
+                                className="w-16 h-16 md:w-20 md:h-20 bg-green-50 dark:bg-green-900/20 rounded-[2rem] flex items-center justify-center text-green-500 border border-green-100 dark:border-green-900/40 active:scale-95 transition-all shadow-sm"
+                            >
                                 <i className="fab fa-whatsapp text-3xl md:text-4xl"></i>
                             </a>
                         )}
@@ -212,7 +258,13 @@ const BusinessDetailPage: React.FC = () => {
                                         ? 'Cotiza el mejor tipo de cambio de Huaraz de forma rápida y confiable.'
                                         : 'Vive la mejor experiencia de Huaraz con nuestra atención de primera.'}
                             </p>
-                            <a href={`https://wa.me/${business.whatsapp}?text=${whatsappMessage}`} target="_blank" rel="noreferrer" className="inline-flex bg-white text-[#2A4D69] px-12 py-7 rounded-[2rem] font-black uppercase text-xs tracking-[0.4em] items-center gap-5 shadow-2xl hover:bg-slate-50 transition-all active:scale-95 group/btn">
+                            <a
+                                href={`https://wa.me/${business.whatsapp}?text=${whatsappMessage}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                onClick={() => logClick(`Detalle - ${business.name}`)} // 👈 AQUÍ VIGILAMOS EL CLIC
+                                className="inline-flex bg-white text-[#2A4D69] px-12 py-7 rounded-[2rem] font-black uppercase text-xs tracking-[0.4em] items-center gap-5 shadow-2xl hover:bg-slate-50 transition-all active:scale-95 group/btn"
+                            >
                                 {categoryText === 'education' ? 'SOLICITAR ENTREVISTA' : categoryText === 'exchange' ? 'Cotizar Cambio' : 'Reservar Ahora'}
                                 <i className="fab fa-whatsapp text-2xl group-hover/btn:rotate-12 transition-transform"></i>
                             </a>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // 👈 IMPORTANTE: Restauramos la navegación a la página de detalle
 import { createClient } from '@supabase/supabase-js';
 import { Business } from '../types';
 
@@ -8,8 +9,9 @@ interface BusinessCardProps {
 
 const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
 
-  // 👇 AQUÍ ESTÁ LA FUNCIÓN BLINDADA (CORREGIDA PARA TYPESCRIPT) 👇
+  // 👇 FUNCIÓN ESPÍA BLINDADA CON DETENCIÓN DE PROPAGACIÓN 👇
   const handleWhatsAppClick = (e: React.MouseEvent) => {
+    // Estas dos líneas son CLAVE. Detienen el clic para que el Link padre no se active.
     e.preventDefault();
     e.stopPropagation();
 
@@ -48,21 +50,28 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
   // 👆 FIN DE LA FUNCIÓN BLINDADA 👆
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-lg border border-slate-100 dark:border-slate-800 hover:shadow-2xl transition-all group">
-      <div className="relative h-48 overflow-hidden">
-        <img
-          src={business.photos[0]}
-          alt={business.name}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-        />
-      </div>
-      <div className="p-6 space-y-4">
-        <h3 className="text-xl font-bold text-slate-800 dark:text-white">{business.name}</h3>
-        <p className="text-slate-500 dark:text-slate-400 text-sm line-clamp-2">{business.description}</p>
+    <div className="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-lg border border-slate-100 dark:border-slate-800 hover:shadow-2xl transition-all group relative">
 
+      {/* 👇 HACEMOS CLICKEABLE EL CONTENIDO PRINCIPAL USANDO UN ENLACE DE REACT-ROUTER👇 */}
+      <Link to={`/business/${business.id}`} className="block">
+        <div className="relative h-48 overflow-hidden">
+          <img
+            src={business.photos[0]}
+            alt={business.name}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          />
+        </div>
+        <div className="p-6 space-y-4">
+          <h3 className="text-xl font-bold text-slate-800 dark:text-white group-hover:text-[#F58220] transition-colors">{business.name}</h3>
+          <p className="text-slate-500 dark:text-slate-400 text-sm line-clamp-2">{business.description}</p>
+        </div>
+      </Link>
+
+      {/* 👇 EL BOTÓN DE WHATSAPP FUERA DEL LINK, PERO VISUALMENTE DENTRO DE LA TARJETA 👇 */}
+      <div className="px-6 pb-6 relative z-10">
         <button
-          onClick={handleWhatsAppClick}
-          className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-colors"
+          onClick={handleWhatsAppClick} // Su e.stopPropagation() previene navegar al padre
+          className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-colors relative z-10"
         >
           <i className="fab fa-whatsapp text-xl"></i>
           Contactar
