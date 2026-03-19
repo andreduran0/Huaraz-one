@@ -2,7 +2,7 @@ import { Business, AdLevel, BusinessCategory } from '../types';
 
 export const premiumBusinesses: Business[] = [
   {
-    id: 'cumbre-rataquenua',
+    id: '1',
     name: 'Cumbre - Mirador Rataquenua',
     category: BusinessCategory.RESTAURANT,
     description: 'Restaurante ubicado en el mirador de Rataquenua. Disfruta de una vista panorámica inigualable de Huaraz y la Cordillera Blanca junto a una experiencia gastronómica de altura con platos regionales y fusión.',
@@ -131,7 +131,7 @@ export const premiumBusinesses: Business[] = [
     googleMapsQuery: 'Av Luzuriaga 1004 Huaraz'
   },
   {
-    id: 'casa-huayaney',
+    id: '5',
     name: 'Casa de Cambio Huayaney',
     category: BusinessCategory.EXCHANGE,
     description: 'Cambio de moneda seguro y con la mejor tasa del mercado en el corazón de Huaraz. Ubicación estratégica y atención confiable para turistas y locales. ¡Cambia tus dólares o euros con total tranquilidad!',
@@ -161,11 +161,11 @@ export const premiumBusinesses: Business[] = [
     id: 'la-carpa-rosa',
     name: 'La Carpa Rosa',
     category: BusinessCategory.RESTAURANT,
-    description: 'La Carpa Rosa es un espacio gastronómico en el corazón de Huaraz que combina sabor, calidez y una experiencia acogedora que invita a quedarse. Este restaurante destaca por ofrecer una propuesta de cocina peruana con énfasis en parrillas, caldos reconfortantes y platos preparados al momento, con ese toque casero que conquista desde el primer bocado.\n\nEl ambiente del local es uno de sus mayores atractivos: un espacio tranquilo, familiar y cuidadosamente ambientado que transmite la sensación de estar en casa. Es el lugar ideal tanto para compartir con amigos como para disfrutar en familia o tener una cena relajada. La iluminación cálida y el concepto del espacio crean una experiencia íntima y agradable.\n\nEn su carta destacan opciones como alitas a la parrilla, bistec y chuletas jugosas, preparadas con un estilo tradicional y un sabor auténtico que resalta la cocina peruana. Cada plato refleja dedicación, sencillez y calidad, convirtiendo cada visita en una experiencia reconfortante.\n\nAdemás, La Carpa Rosa no solo es un restaurante, sino también un punto de encuentro donde se viven momentos especiales, con eventos, música y celebraciones que le dan vida al lugar y lo convierten en un espacio lleno de alegría.',
+    description: 'La Carpa Rosa es un espacio gastronómico en el corazón de Huaraz que combina sabor, calidez y una experiencia acogedora. Destaca por su propuesta de cocina peruana con énfasis en parrillas, caldos reconfortantes y platos preparados al momento con ese toque casero que conquista. Es el lugar ideal para compartir con amigos o en familia en un ambiente íntimo y agradable, donde la iluminación cálida y la buena música crean momentos especiales.',
     address: 'Jr. Teófilo Castillo 555, Huaraz',
-    lat: -9.5280, lng: -77.5270,
+    lat: -9.4280, lng: -77.4270, 
     phone: '+51 972 399 950', 
-    whatsapp: '51972399950',
+    whatsapp: '51972399950', 
     photos: [
       'https://i.imgur.com/GzLTgsb.jpeg',
       'https://i.imgur.com/qKfHrvI.jpeg',
