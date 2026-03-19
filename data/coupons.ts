@@ -11,10 +11,18 @@ export const coupons: Coupon[] = [
   },
   {
     id: 'c2',
-    businessId: 'nobel-ingenieros', // Conectado exactamente con el ID del colegio
+    businessId: 'nobel-ingenieros', // Colegio Nobel
     title: 'S/ 30 de Descuento en Matrícula o Pensión',
     description: 'Obtén S/ 30 de descuento directo en tu matrícula o en la pensión del mes. Presenta este cupón digital en nuestra secretaría para hacer válido tu beneficio exclusivo de Huaraz Explorer.',
     code: 'NOBEL30',
-    expiryDate: '2026-04-30', // Le puse fecha hasta fines de abril para que tengan tiempo
+    expiryDate: '2026-04-30',
   },
+  {
+    id: 'c3',
+    businessId: 'la-carpa-rosa', // La Carpa Rosa
+    title: 'Promo Cócteles: 2 x S/ 25',
+    description: '¡Refresca tu tarde o noche! Disfruta de nuestra promoción especial de 2 cócteles por solo 25 soles. Válido presentando este cupón digital al momento de hacer tu pedido en el local. ¡Salud!',
+    code: 'CARPA2X25',
+    expiryDate: '2026-04-30',
+  }
 ];
