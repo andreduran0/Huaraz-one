@@ -2,7 +2,7 @@ import { Business, AdLevel, BusinessCategory } from '../types';
 
 export const premiumBusinesses: Business[] = [
   {
-    id: '1',
+    id: 'cumbre-rataquenua',
     name: 'Cumbre - Mirador Rataquenua',
     category: BusinessCategory.RESTAURANT,
     description: 'Restaurante ubicado en el mirador de Rataquenua. Disfruta de una vista panorámica inigualable de Huaraz y la Cordillera Blanca junto a una experiencia gastronómica de altura con platos regionales y fusión.',
@@ -131,7 +131,7 @@ export const premiumBusinesses: Business[] = [
     googleMapsQuery: 'Av Luzuriaga 1004 Huaraz'
   },
   {
-    id: '5',
+    id: 'casa-huayaney',
     name: 'Casa de Cambio Huayaney',
     category: BusinessCategory.EXCHANGE,
     description: 'Cambio de moneda seguro y con la mejor tasa del mercado en el corazón de Huaraz. Ubicación estratégica y atención confiable para turistas y locales. ¡Cambia tus dólares o euros con total tranquilidad!',
@@ -156,7 +156,7 @@ export const premiumBusinesses: Business[] = [
     status: 'approved',
     ownerUserId: 'u5',
     googleMapsQuery: 'Jirón José de Sucre Pasaje Comercio Huaraz'
-  }, // <--- AQUÍ FALTABA ESTA COMA
+  },
   {
     id: 'la-carpa-rosa',
     name: 'La Carpa Rosa',
