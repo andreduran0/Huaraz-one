@@ -103,7 +103,8 @@ export default function ArkaikoChat({
                 onClick={() => { setIsOpen(true); setMin(false); }}
                 style={{
                     display: isOpen ? 'none' : 'flex',
-                    position: 'fixed', bottom: '24px', right: '24px',
+                    // 👇 AQUÍ SUBIMOS EL BOTÓN (DE 24px A 90px) 👇
+                    position: 'fixed', bottom: '90px', right: '24px',
                     width: '64px', height: '64px', borderRadius: '50%',
                     background: `linear-gradient(135deg, ${colorPrimario}, ${DARK})`,
                     border: `2px solid ${colorDorado}`, color: 'white',
@@ -116,9 +117,10 @@ export default function ArkaikoChat({
 
             {isOpen && (
                 <div style={{
-                    position: 'fixed', bottom: isMobile ? '0' : '24px', right: isMobile ? '0' : '24px',
-                    width: isMobile ? '100%' : '380px', height: isMinimized ? 'auto' : (isMobile ? '100%' : '560px'),
-                    background: '#FFF', borderRadius: isMobile && !isMinimized ? '0' : '20px', zIndex: 9998,
+                    // 👇 AQUÍ SUBIMOS LA VENTANA DEL CHAT EN MÓVIL (DE 0 A 70px) PARA QUE NO TAPE EL MENÚ 👇
+                    position: 'fixed', bottom: isMobile ? '70px' : '90px', right: isMobile ? '0' : '24px',
+                    width: isMobile ? '100%' : '380px', height: isMinimized ? 'auto' : (isMobile ? 'calc(100% - 70px)' : '560px'),
+                    background: '#FFF', borderRadius: isMobile && !isMinimized ? '20px 20px 0 0' : '20px', zIndex: 9998,
                     display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 12px 48px rgba(0,0,0,0.2)'
                 }}>
                     <div style={{ background: DARK, padding: '16px', display: 'flex', color: 'white', cursor: 'pointer' }} onClick={() => setMin(!isMinimized)}>
