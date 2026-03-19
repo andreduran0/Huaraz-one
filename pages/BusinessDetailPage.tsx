@@ -3,48 +3,18 @@ import { useParams } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useTranslations } from '../hooks/useTranslations';
 import { AdLevel, BusinessCategory } from '../types';
-import { createClient } from '@supabase/supabase-js';
-
-// --- EL ESPÍA BLINDADO PARA LA PÁGINA DE DETALLES ---
-const logClick = async (businessName: string) => {
-    try {
-        // @ts-ignore
-        const viteUrl = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_URL : null;
-        // @ts-ignore
-        const viteKey = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_ANON_KEY : null;
-
-        const nextUrl = typeof process !== 'undefined' && process.env ? process.env.NEXT_PUBLIC_SUPABASE_URL : null;
-        const nextKey = typeof process !== 'undefined' && process.env ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY : null;
-
-        const url = viteUrl || nextUrl;
-        const key = viteKey || nextKey;
-
-        if (url && key && url !== 'https://placeholder.supabase.co') {
-            const supabase = createClient(url, key);
-            await supabase.from('clicks_log').insert([{ business_name: businessName }]);
-            console.log(`✅ Clic guardado desde Detalles: ${businessName}`);
-        }
-    } catch (err) {
-        console.error("Error silencioso del espía:", err);
-    }
-};
-// --- FIN DEL ESPÍA ---
-
 const BusinessDetailPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const { businesses } = useAppContext();
     const t = useTranslations();
     const business = businesses.find(b => b.id === id);
-
     // Lightbox state
     const [isLightboxOpen, setIsLightboxOpen] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [lightboxMode, setLightboxMode] = useState<'gallery' | 'menu'>('gallery');
-
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [id]);
-
     if (!business) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
@@ -55,36 +25,30 @@ const BusinessDetailPage: React.FC = () => {
             </div>
         );
     }
-
     const isSponsored = business.adLevel !== AdLevel.NONE;
     const hasMenu = business.menuImages && business.menuImages.length > 0;
 
+    // Convertimos la categoría a texto simple (minúsculas) para evitar errores de enum
     const categoryText = String(business.category).toLowerCase();
-
     const openLightbox = (index: number, mode: 'gallery' | 'menu') => {
         setCurrentImageIndex(index);
         setLightboxMode(mode);
         setIsLightboxOpen(true);
     };
-
     const closeLightbox = () => setIsLightboxOpen(false);
-
     const currentImages = lightboxMode === 'gallery' ? business.photos : (business.menuImages || []);
-
     const nextImage = (e: React.MouseEvent) => {
         e.stopPropagation();
         setCurrentImageIndex((prev) => (prev + 1) % currentImages.length);
     };
-
     const prevImage = (e: React.MouseEvent) => {
         e.stopPropagation();
         setCurrentImageIndex((prev) => (prev - 1 + currentImages.length) % currentImages.length);
     };
-
     const mapUrl = business.googleMapsQuery
         ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.googleMapsQuery)}`
         : `https://www.google.com/maps/search/?api=1&query=${business.lat},${business.lng}`;
-
+    // Lógica Dinámica para el mensaje de WhatsApp (Reforzada)
     const getWhatsappMessage = () => {
         if (categoryText === 'education') {
             return `Hola, quisiera solicitar una entrevista para el ${business.name}. Lo vi en Huaraz Explorer.`;
@@ -97,7 +61,7 @@ const BusinessDetailPage: React.FC = () => {
         }
     };
     const whatsappMessage = encodeURIComponent(getWhatsappMessage());
-
+    // Lógica Dinámica para los títulos (Reforzada)
     const getMenuTitle = () => {
         if (categoryText === 'education') {
             return { prefix: 'NUESTRA PROPUESTA ', highlight: 'EDUCATIVA', subtitle: 'Conoce nuestro modelo de enseñanza y valores' };
@@ -110,7 +74,6 @@ const BusinessDetailPage: React.FC = () => {
         }
     };
     const menuTitle = getMenuTitle();
-
     return (
         <div className="bg-slate-50 dark:bg-slate-950 min-h-screen relative font-['Plus_Jakarta_Sans']">
 
@@ -139,7 +102,6 @@ const BusinessDetailPage: React.FC = () => {
                     </h1>
                 </div>
             </div>
-
             {/* CONTENIDO PRINCIPAL */}
             <div className="max-w-5xl mx-auto px-6 -mt-12 relative z-10 space-y-16 pb-48">
 
@@ -158,13 +120,7 @@ const BusinessDetailPage: React.FC = () => {
                             </a>
                         )}
                         {business.whatsapp && (
-                            <a
-                                href={`https://wa.me/${business.whatsapp}?text=${whatsappMessage}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                onClick={() => logClick(`Detalle - ${business.name}`)}
-                                className="w-16 h-16 md:w-20 md:h-20 bg-green-50 dark:bg-green-900/20 rounded-[2rem] flex items-center justify-center text-green-500 border border-green-100 dark:border-green-900/40 active:scale-95 transition-all shadow-sm"
-                            >
+                            <a href={`https://wa.me/${business.whatsapp}?text=${whatsappMessage}`} target="_blank" rel="noreferrer" className="w-16 h-16 md:w-20 md:h-20 bg-green-50 dark:bg-green-900/20 rounded-[2rem] flex items-center justify-center text-green-500 border border-green-100 dark:border-green-900/40 active:scale-95 transition-all shadow-sm">
                                 <i className="fab fa-whatsapp text-3xl md:text-4xl"></i>
                             </a>
                         )}
@@ -173,7 +129,6 @@ const BusinessDetailPage: React.FC = () => {
                         </a>
                     </div>
                 </div>
-
                 {/* Reseña Destacada */}
                 <div className="bg-white dark:bg-slate-900 rounded-[3.5rem] p-12 md:p-20 shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-3 h-full bg-[#F58220]"></div>
@@ -182,7 +137,6 @@ const BusinessDetailPage: React.FC = () => {
                         "{business.description}"
                     </p>
                 </div>
-
                 {/* SECCIÓN: LA CARTA / SERVICIOS */}
                 {hasMenu && (
                     <div className="space-y-10 animate-fadeIn">
@@ -201,7 +155,6 @@ const BusinessDetailPage: React.FC = () => {
                                 <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{business.menuImages?.length} páginas</span>
                             </div>
                         </div>
-
                         <div className="flex gap-8 overflow-x-auto no-scrollbar pb-12 px-4 snap-x">
                             {business.menuImages?.map((page, idx) => (
                                 <div
@@ -223,7 +176,6 @@ const BusinessDetailPage: React.FC = () => {
                         </div>
                     </div>
                 )}
-
                 {/* Horarios y Reserva */}
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
                     <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-12 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-sm space-y-10">
@@ -260,21 +212,13 @@ const BusinessDetailPage: React.FC = () => {
                                         ? 'Cotiza el mejor tipo de cambio de Huaraz de forma rápida y confiable.'
                                         : 'Vive la mejor experiencia de Huaraz con nuestra atención de primera.'}
                             </p>
-
-                            <a
-                                href={`https://wa.me/${business.whatsapp}?text=${whatsappMessage}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                onClick={() => logClick(`Detalle - ${business.name}`)}
-                                className="inline-flex bg-white text-[#2A4D69] px-12 py-7 rounded-[2rem] font-black uppercase text-xs tracking-[0.4em] items-center gap-5 shadow-2xl hover:bg-slate-50 transition-all active:scale-95 group/btn"
-                            >
+                            <a href={`https://wa.me/${business.whatsapp}?text=${whatsappMessage}`} target="_blank" rel="noreferrer" className="inline-flex bg-white text-[#2A4D69] px-12 py-7 rounded-[2rem] font-black uppercase text-xs tracking-[0.4em] items-center gap-5 shadow-2xl hover:bg-slate-50 transition-all active:scale-95 group/btn">
                                 {categoryText === 'education' ? 'SOLICITAR ENTREVISTA' : categoryText === 'exchange' ? 'Cotizar Cambio' : 'Reservar Ahora'}
                                 <i className="fab fa-whatsapp text-2xl group-hover/btn:rotate-12 transition-transform"></i>
                             </a>
                         </div>
                     </div>
                 </div>
-
                 {/* GALERÍA DEL LOCAL */}
                 <div className="space-y-12">
                     <div className="flex items-center justify-between px-6">
@@ -299,7 +243,6 @@ const BusinessDetailPage: React.FC = () => {
                 </div>
 
             </div>
-
             {/* LIGHTBOX MODAL */}
             {isLightboxOpen && (
                 <div className="fixed inset-0 z-[200] bg-slate-950/98 flex flex-col animate-fadeIn">
@@ -315,13 +258,11 @@ const BusinessDetailPage: React.FC = () => {
                             <i className="fas fa-times text-xl"></i>
                         </button>
                     </div>
-
                     <div className="flex-grow relative flex items-center justify-center p-4 md:p-12 overflow-hidden">
                         <button onClick={prevImage} className="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 text-white/30 hover:text-white w-20 h-20 rounded-full hover:bg-white/5 transition-all z-50 flex items-center justify-center hidden md:flex"><i className="fas fa-chevron-left text-5xl"></i></button>
                         <img src={currentImages[currentImageIndex]} className="max-w-full max-h-full object-contain rounded-xl shadow-[0_0_150px_rgba(0,0,0,0.8)] border border-white/5" alt="Vista ampliada" />
                         <button onClick={nextImage} className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 text-white/30 hover:text-white w-20 h-20 rounded-full hover:bg-white/5 transition-all z-50 flex items-center justify-center hidden md:flex"><i className="fas fa-chevron-right text-5xl"></i></button>
                     </div>
-
                     <div className="p-10 flex flex-col items-center gap-6 bg-black/40 backdrop-blur-md">
                         <div className="bg-white/5 backdrop-blur-2xl px-12 py-5 rounded-full text-white font-black text-xs uppercase tracking-[0.5em] border border-white/10 shadow-2xl">{currentImageIndex + 1} de {currentImages.length}</div>
                         <div className="flex gap-10 md:hidden">
@@ -334,5 +275,4 @@ const BusinessDetailPage: React.FC = () => {
         </div>
     );
 };
-
 export default BusinessDetailPage;
