@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { createClient } from '@supabase/supabase-js';
-import { Business } from '../types';
+import { Business, AdLevel } from '../types';
 
 interface BusinessCardProps {
   business: Business;
@@ -9,10 +9,10 @@ interface BusinessCardProps {
 
 const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
 
-  // 👇 LA FUNCIÓN ESPÍA QUE YA FUNCIONA PERFECTO 👇
+  // 👇 FUNCIÓN ESPÍA BLINDADA 👇
   const handleWhatsAppClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    e.stopPropagation();
+    e.stopPropagation(); // Evita que al darle al WhatsApp te mande a "Ver Detalles"
 
     const registrarClic = async () => {
       try {
@@ -43,63 +43,85 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
   };
   // 👆 FIN DEL ESPÍA 👆
 
-  return (
-    <div className="bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden shadow-lg border border-slate-100 dark:border-slate-800 hover:shadow-2xl transition-all group flex flex-col h-full">
+  const isSponsored = business.adLevel !== AdLevel.NONE;
 
-      {/* 👇 ZONA 1: CLICKEABLE PARA ENTRAR A VER QUÉ HAY ADENTRO 👇 */}
-      <Link to={`/business/${business.id}`} className="flex-grow block relative cursor-pointer">
-        <div className="relative h-56 overflow-hidden">
-          <img
-            src={business.photos[0]}
-            alt={business.name}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
-          <div className="absolute bottom-4 left-4 right-4">
-            <h3 className="text-2xl font-black italic tracking-tighter text-white uppercase drop-shadow-md">{business.name}</h3>
-          </div>
-        </div>
-        <div className="p-5">
-          <p className="text-slate-500 dark:text-slate-400 text-sm line-clamp-3 font-medium">{business.description}</p>
+  return (
+    <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden flex flex-col h-full">
+
+      {/* 📸 FOTO SUPERIOR CLICKEABLE */}
+      <Link to={`/business/${business.id}`} className="block relative">
+        <div className="h-48 w-full relative">
+          <img src={business.photos[0]} alt={business.name} className="w-full h-full object-cover" />
+
+          {/* ETIQUETA DE PATROCINADO (Como en tu captura) */}
+          {isSponsored && (
+            <div className="absolute top-4 left-4 bg-[#F58220] text-black text-[10px] font-black uppercase px-4 py-1.5 rounded-full shadow-md">
+              Patrocinado
+            </div>
+          )}
         </div>
       </Link>
 
-      {/* 👇 ZONA 2: LOS BOTONES ORIGINALES (LLAMADA, WHATSAPP, DETALLES) 👇 */}
-      <div className="p-5 pt-0 mt-auto">
-        <div className="flex items-center gap-3">
+      {/* 📄 CONTENIDO INFERIOR */}
+      <div className="p-6 flex flex-col flex-grow">
 
-          {/* BOTÓN 1: Símbolo de Llamada */}
-          {business.phone && (
-            <a
-              href={`tel:${business.phone}`}
-              onClick={(e) => e.stopPropagation()}
-              className="w-12 h-12 flex-shrink-0 bg-slate-100 dark:bg-slate-800 text-[#2A4D69] dark:text-slate-300 rounded-xl flex items-center justify-center text-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors active:scale-90"
-              title="Llamar"
-            >
-              <i className="fas fa-phone"></i>
-            </a>
-          )}
+        {/* TEXTOS CLICKEABLES */}
+        <Link to={`/business/${business.id}`} className="block flex-grow">
+          <div className="flex justify-between items-start gap-4 mb-2">
+            <h3 className="text-2xl font-black text-[#2A4D69] leading-tight">
+              {business.name}
+            </h3>
+            {/* LA ESTRELLITA (Como en tu captura) */}
+            <div className="flex items-center gap-1 text-[#F58220] font-bold text-lg shrink-0">
+              <i className="fas fa-star"></i> 4.8
+            </div>
+          </div>
 
-          {/* BOTÓN 2: WhatsApp con el Espía */}
-          {business.whatsapp && (
-            <button
-              onClick={handleWhatsAppClick}
-              className="flex-grow bg-green-500 hover:bg-green-600 text-white font-black uppercase tracking-widest text-[10px] md:text-xs py-3 rounded-xl flex items-center justify-center gap-2 transition-colors active:scale-95 shadow-md"
-            >
-              <i className="fab fa-whatsapp text-lg"></i>
-              WhatsApp
-            </button>
-          )}
+          {/* CATEGORÍA Y DIRECCIÓN GRIS */}
+          <p className="text-slate-500 font-bold text-sm mb-6">
+            {business.category} • {business.address}
+          </p>
 
-          {/* BOTÓN 3: Ver Detalles */}
+          {/* LA LÍNEA SEPARADORA FINA */}
+          <div className="w-full h-px bg-slate-100 mb-6"></div>
+        </Link>
+
+        {/* 🔘 BOTONES DE ACCIÓN (IDÉNTICOS A TU CAPTURA) */}
+        <div className="flex items-center justify-between mt-auto">
+          <div className="flex gap-4">
+
+            {/* BOTÓN TELÉFONO CIRCULAR */}
+            {business.phone && (
+              <a
+                href={`tel:${business.phone}`}
+                onClick={(e) => e.stopPropagation()}
+                className="w-12 h-12 rounded-full border-2 border-slate-100 flex items-center justify-center text-[#2A4D69] hover:bg-slate-50 transition-colors active:scale-90"
+              >
+                <i className="fas fa-phone"></i>
+              </a>
+            )}
+
+            {/* BOTÓN WHATSAPP CIRCULAR VERDE (CON EL ESPÍA ACTIVADO) */}
+            {business.whatsapp && (
+              <button
+                onClick={handleWhatsAppClick}
+                className="w-12 h-12 rounded-full border-2 border-green-100 flex items-center justify-center text-green-500 hover:bg-green-50 transition-colors active:scale-90"
+              >
+                <i className="fab fa-whatsapp text-xl"></i>
+              </button>
+            )}
+
+          </div>
+
+          {/* TEXTO VER DETALLES SUBRAYADO */}
           <Link
             to={`/business/${business.id}`}
-            className="flex-grow bg-[#2A4D69] hover:bg-[#1a3346] text-white font-black uppercase tracking-widest text-[10px] md:text-xs py-3 rounded-xl flex items-center justify-center gap-2 transition-colors active:scale-95 shadow-md"
+            className="text-[#2A4D69] font-black text-sm underline decoration-2 underline-offset-4 hover:text-[#1a3346]"
           >
-            Detalles <i className="fas fa-arrow-right"></i>
+            Ver Detalles
           </Link>
-
         </div>
+
       </div>
     </div>
   );
