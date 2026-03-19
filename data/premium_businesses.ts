@@ -162,7 +162,7 @@ export const premiumBusinesses: Business[] = [
     name: 'La Carpa Rosa',
     category: BusinessCategory.RESTAURANT,
     description: 'La Carpa Rosa es un espacio gastronómico en el corazón de Huaraz que combina sabor, calidez y una experiencia acogedora. Destaca por su propuesta de cocina peruana con énfasis en parrillas, caldos reconfortantes y platos preparados al momento con ese toque casero que conquista. Es el lugar ideal para compartir con amigos o en familia en un ambiente íntimo y agradable, donde la iluminación cálida y la buena música crean momentos especiales.',
-    address: 'Jr. Teófilo Castillo 555, Huaraz',
+    address: 'Jr. Teófilo Castillo 539, Huaraz',
     lat: -9.4280, lng: -77.4270, 
     phone: '+51 972 399 950', 
     whatsapp: '51972399950', 
@@ -193,6 +193,6 @@ export const premiumBusinesses: Business[] = [
     qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-carpa-rosa',
     status: 'approved', 
     ownerUserId: 'u6',
-    googleMapsQuery: 'JR.teofilo castillo 555,Huaraz,Peru'
+    googleMapsQuery: 'JR.teofilo castillo 539,Huaraz,Peru'
   }
 ];
