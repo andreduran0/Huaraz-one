@@ -195,4 +195,44 @@ export const premiumBusinesses: Business[] = [
     ownerUserId: 'u6',
     googleMapsQuery: 'JR.teofilo castillo 539,Huaraz,Peru'
   }
+  {
+    id: 'encuentro-de-los-andes',
+    name: 'Encuentro de los Andes',
+    category: BusinessCategory.RESTAURANT,
+    description: 'Sumérgete en la tradición y disfruta de los auténticos sabores andinos que hemos preparado especialmente para ti.\n\n¡Una experiencia gastronómica que honra nuestras raíces!\n¡Te esperamos para compartir esta fecha especial!',
+    address: 'Av. Luzuriaga N·702 (Segundo piso Serpost) - Huaraz',
+    lat: -9.3320, lng: -77.5955,
+    phone: '+51 920 784 431', 
+    whatsapp: '51920784431',
+    photos: [
+      'https://i.imgur.com/Uk4Hsz5.jpeg',
+      'https://i.imgur.com/IWcEyPs.jpeg',
+      'https://i.imgur.com/K3yMslb.jpeg',
+      'https://i.imgur.com/jMkMfRT.jpeg',
+      'https://i.imgur.com/t2KWtH5.jpeg',
+      'https://i.imgur.com/0z1xYwP.jpeg',
+      'https://i.imgur.com/me8ec0a.png',
+      'https://i.imgur.com/jsXCVce.jpeg',
+      'https://i.imgur.com/97AH2FD.jpeg',
+      'https://i.imgur.com/ECNAZ0r.jpeg',
+      'https://i.imgur.com/fcJi0gv.jpeg',
+      'https://i.imgur.com/d93aboS.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/97AH2FD.jpeg',
+      'https://i.imgur.com/me8ec0a.png',
+      'https://i.imgur.com/jsXCVce.jpeg',
+      'https://i.imgur.com/tJesKoY.jpeg',
+      'https://i.imgur.com/97AH2FD.jpeg',
+      'https://i.imgur.com/ECNAZ0r.jpeg'          
+    ],
+    schedule: { 
+      'Lunes - Domingo': '7:00 AM - 12:00 AM'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-encuentro-andes',
+    status: 'approved', 
+    ownerUserId: 'u7',
+    googleMapsQuery: 'Av. Luzuriaga 702 Huaraz'
+  }
 ];
