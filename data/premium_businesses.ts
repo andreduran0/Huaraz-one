@@ -194,7 +194,7 @@ export const premiumBusinesses: Business[] = [
     status: 'approved', 
     ownerUserId: 'u6',
     googleMapsQuery: 'JR.teofilo castillo 539,Huaraz,Peru'
-  }
+  }, // <--- ¡AQUÍ ESTABA EL ERROR! Faltaba esta pequeña pero destructiva coma.
   {
     id: 'encuentro-de-los-andes',
     name: 'Encuentro de los Andes',
