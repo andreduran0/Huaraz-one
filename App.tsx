@@ -1,3 +1,4 @@
+import ArkaikoPage from './ArkaikoPage';
 
 import ArkaikoChat from './components/ArkaikoChat';
 
@@ -204,6 +205,7 @@ const App: React.FC = () => {
       <Layout>
 
         <Routes>
+          <Route path="/arkaiko" element={<ArkaikoPage />} />
 
           <Route path="/" element={<HomePage />} />
 
