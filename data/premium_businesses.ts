@@ -230,5 +230,42 @@ export const premiumBusinesses: Business[] = [
     status: 'approved', 
     ownerUserId: 'u7',
     googleMapsQuery: 'Av. Luzuriaga 702 Huaraz'
+  },
+  {
+    id: '8',
+    name: 'Norabuena pollos y parillas',
+    category: BusinessCategory.RESTAURANT,
+    description: '¡El verdadero sabor a la brasa en el corazón de Huaraz! En Norabuena Pollos y Parrillas te esperamos con los pollos más jugosos, doraditos y con esa sazón inconfundible que nos caracteriza. Disfruta también de nuestras contundentes parrillas, carnes seleccionadas y guarniciones generosas. Un ambiente familiar y atención de primera, justo frente al histórico monumento de Pumacayán. ¡Tu antojo de un buen pollo a la brasa se cumple aquí!',
+    address: 'Jr.Ramón Castilla 1ra.Cuadra -Frente al monumento pumacayan ,Huaraz',
+    lat: -9.5020, 
+    lng: -77.4655,
+    phone: '+51 930811600', 
+    whatsapp: '51930811600',
+    photos: [
+      'https://i.imgur.com/O6f4j0e.jpeg',
+      'https://i.imgur.com/Rj1BovP.jpeg',
+      'https://i.imgur.com/swW2iCB.jpeg',
+      'https://i.imgur.com/2ZMLDYb.jpeg',
+      'https://i.imgur.com/yaCbzmw.jpeg',
+      'https://i.imgur.com/urYuVVz.jpeg',
+      'https://i.imgur.com/me8ec0a.png',
+      'https://i.imgur.com/Cvx0nZl.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/aB4OnKu.jpeg',
+      'https://i.imgur.com/NYCp4CN.jpeg',
+      'https://i.imgur.com/jJLu1Cl.jpeg',
+      'https://i.imgur.com/tJesKoY.jpeg',
+      'https://i.imgur.com/7mwJlNr.jpeg'
+    ],
+    schedule: { 
+      'Lunes- Sábado': '12:00 AM - 11:45 PM',
+      'Domingo': '12:00 AM - 12:45 PM'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-1',
+    status: 'approved', 
+    ownerUserId: 'u8',
+    googleMapsQuery: 'Jr.Ramón Castilla 1ra .cuadra - frente al monumento de pumacayan'
   }
 ];
