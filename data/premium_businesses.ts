@@ -267,5 +267,48 @@ export const premiumBusinesses: Business[] = [
     status: 'approved', 
     ownerUserId: 'u8',
     googleMapsQuery: 'Jr.Ramón Castilla 1ra .cuadra - frente al monumento de pumacayan'
-  }
+  },
+  {
+    id: 'chifa-gran-muralla-2',
+    name: 'Chifa la Gran Muralla 2 - Huaraz',
+    category: BusinessCategory.RESTAURANT,
+    description: 'Descubre la verdadera fusión peruano-china en el corazón de Huaraz. En Chifa La Gran Muralla 2 te ofrecemos platillos generosos con ese inconfundible sabor a wok: desde el clásico Arroz Chaufa y Tallarín Saltado, hasta nuestras especialidades de la casa. El ambiente ideal para compartir en familia, con amigos o recargar energías después de un intenso día de trekking por la Cordillera Blanca. ¡Tradición, rapidez y excelente sabor garantizados!',
+    address: 'Jr. San Martin 746, Huaraz',
+    lat: -9.5020, 
+    lng: -77.4915,
+    phone: '+51 953604939', 
+    whatsapp: '51953604939',
+    photos: [
+      'https://i.imgur.com/b1wtWbn.jpeg',
+      'https://i.imgur.com/zAXoJmG.jpeg',
+      'https://i.imgur.com/B3n05vg.jpeg',
+      'https://i.imgur.com/aEI048s.jpeg',
+      'https://i.imgur.com/aCvCeGC.jpeg',
+      'https://i.imgur.com/lIUScrV.jpeg',
+      'https://i.imgur.com/dKm8vtU.jpeg',
+      'https://i.imgur.com/2RObRKw.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/ShOgyni.jpeg',
+      'https://i.imgur.com/1bgG7sf.jpeg',
+      'https://i.imgur.com/zU64hB1.jpeg',
+      'https://i.imgur.com/DklUbHd.jpeg',
+      'https://i.imgur.com/V3yIilM.jpeg',
+      'https://i.imgur.com/9EoyOiE.jpeg',
+      'https://i.imgur.com/mL2f57t.jpeg',
+      'https://i.imgur.com/9gOJ7Kq.jpeg',
+      'https://i.imgur.com/lpB1UC8.jpeg',
+      'https://i.imgur.com/47d2Jr7.jpeg',
+      'https://i.imgur.com/a5ATN6a.jpeg',
+      'https://i.imgur.com/75xjv1i.jpeg'
+    ],
+    schedule: { 
+      'Lunes - Domingo': '12:00 PM - 10:30 PM'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-gran-muralla-2',
+    status: 'approved', 
+    ownerUserId: 'u9',
+    googleMapsQuery: 'Jr. San Martin 746 Huaraz',
+  },
 ];
