@@ -327,7 +327,6 @@ export const premiumBusinesses: Business[] = [
       'https://i.imgur.com/suo6VOf.jpeg',
       'https://i.imgur.com/BdcVhM5.jpeg',
       'https://i.imgur.com/fQ9k4Ff.jpeg',
-      'https://i.imgur.com/yuSQkZR.jpeg',
       'https://i.imgur.com/Gf9GIDS.jpeg',
       'https://i.imgur.com/5KuG2pr.jpeg',
       'https://i.imgur.com/SW4aCx4.jpeg',
@@ -346,7 +345,7 @@ export const premiumBusinesses: Business[] = [
       'https://i.imgur.com/m7MzBmJ.jpeg',
       'https://i.imgur.com/UT7IlZJ.jpeg',
       'https://i.imgur.com/xtrZR2b.jpeg',
-      'https://i.imgur.com/xtrZR2b.jpeg'
+      'https://i.imgur.com/RooqYXW.jpeg'
     ],
     schedule: { 
       'Lunes - Jueves': '4:00 PM - 12:00 AM',
