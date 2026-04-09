@@ -345,6 +345,7 @@ export const premiumBusinesses: Business[] = [
       'https://i.imgur.com/RVRmvPn.jpeg',
       'https://i.imgur.com/m7MzBmJ.jpeg',
       'https://i.imgur.com/UT7IlZJ.jpeg',
+      'https://i.imgur.com/xtrZR2b.jpeg',
       'https://i.imgur.com/xtrZR2b.jpeg'
     ],
     schedule: { 
