@@ -322,13 +322,11 @@ export const premiumBusinesses: Business[] = [
     phone: '+51 942441725', 
     whatsapp: '51942441725',
     photos: [
-      'https://i.imgur.com/UYGAUFo.png',
       'https://i.imgur.com/Xvktmxq.jpeg',
       'https://i.imgur.com/PfNzYlC.jpeg',
       'https://i.imgur.com/suo6VOf.jpeg',
       'https://i.imgur.com/BdcVhM5.jpeg',
       'https://i.imgur.com/fQ9k4Ff.jpeg',
-      'https://i.imgur.com/7Ck4w3d.jpeg',
       'https://i.imgur.com/yuSQkZR.jpeg',
       'https://i.imgur.com/Gf9GIDS.jpeg',
       'https://i.imgur.com/5KuG2pr.jpeg',
