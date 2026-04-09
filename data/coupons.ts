@@ -7,7 +7,7 @@ export const coupons: Coupon[] = [
     title: '10% de Descuento en toda la carta',
     description: 'Obtén un descuento especial del 10% en todos nuestros platos de la carta. Disfruta de la mejor vista de Huaraz con este beneficio exclusivo.',
     code: 'CUMBRE10',
-    expiryDate: '2026-03-28',
+    expiryDate: '2026-06-30', // Le puse junio para que no te salga vencido (estamos 9 de abril)
   },
   {
     id: 'c2',
@@ -24,5 +24,13 @@ export const coupons: Coupon[] = [
     description: '¡Refresca tu tarde o noche! Disfruta de nuestra promoción especial de 2 cócteles por solo 25 soles. Válido presentando este cupón digital al momento de hacer tu pedido en el local. ¡Salud!',
     code: 'CARPA2X25',
     expiryDate: '2026-04-30',
-  }
+  }, // <--- ¡AQUÍ FALTABA ESTA COMA!
+  {
+    id: 'c4',
+    businessId: '10', // El Tío Enrique
+    title: 'Promo Cerveza Antepasado: 12 x S/ 30',
+    description: 'Disfruta de la cultura cervecera con nuestra promoción exclusiva: llévate 12 cervezas Antepasado por solo S/ 30. Válido presentando este cupón digital en El Tío Enrique Restopub.',
+    code: 'ANTEPASADO12X30',
+    expiryDate: '2026-04-30',
+  },
 ];
