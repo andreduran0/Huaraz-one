@@ -28,7 +28,7 @@ export const coupons: Coupon[] = [
   {
     id: 'c4',
     businessId: 'el-tio-enrique', // El Tío Enrique
-    title: 'Promo Cerveza Antepasado: 12 x S/ 30',
+    title: 'Promo Cerveza Antepasado: 2 x S/ 30',
     description: 'Disfruta de la cultura cervecera con nuestra promoción exclusiva: llévate 12 cervezas Antepasado por solo S/ 30. Válido presentando este cupón digital en El Tío Enrique Restopub.',
     code: 'ANTEPASADO12X30',
     expiryDate: '2026-04-30',
