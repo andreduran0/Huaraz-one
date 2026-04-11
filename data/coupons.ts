@@ -24,7 +24,7 @@ export const coupons: Coupon[] = [
     description: '¡Refresca tu tarde o noche! Disfruta de nuestra promoción especial de 2 cócteles por solo 25 soles. Válido presentando este cupón digital al momento de hacer tu pedido en el local. ¡Salud!',
     code: 'CARPA2X25',
     expiryDate: '2026-04-30',
-  }, // <--- ¡AQUÍ FALTABA ESTA COMA!
+  },
   {
     id: 'c4',
     businessId: '10', // El Tío Enrique
