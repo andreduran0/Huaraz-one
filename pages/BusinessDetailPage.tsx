@@ -327,4 +327,4 @@ const BusinessDetailPage: React.FC = () => {
         </div>
     );
 };
-export default BusinessDetailPage; ¿ esta bien esto ?
+export default BusinessDetailPage; 
