@@ -33,4 +33,12 @@ export const coupons: Coupon[] = [
     code: 'ANTEPASADO12X30',
     expiryDate: '2026-04-30',
   },
+  {
+    id: 'c9',
+    businessId: 'chifa-gran-muralla-2', //
+    title: 'Triple Promo: Cumpleañero Gratis, 6to Gratis y Menú + Gaseosa',
+    description: '¡Disfruta de la mejor comida oriental con tres promociones exclusivas! 1) Trae a 5 amigos y tu consumo es GRATIS. 2) ¡El cumpleañero no paga! (presentando DNI). 3) De lunes a viernes, todo menú incluye una gaseosa pequeña de cortesía. Válido mostrando este cupón.',
+    code: 'MURALLATRIPLET',
+    expiryDate: '2026-06-30', 
+  },
 ];
