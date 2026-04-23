@@ -370,6 +370,8 @@ export const premiumBusinesses: Business[] = [
     photos: [
       'https://i.imgur.com/sjKRvJw.jpeg',
       'https://i.imgur.com/AW8ebUO.jpeg',
+       'https://i.imgur.com/nrO4bgb.jpeg',
+       'https://i.imgur.com/FURGgt1.jpeg',
       'https://i.imgur.com/3SV1XGc.jpeg',
       'https://i.imgur.com/PbLFKJs.jpeg',
       'https://i.imgur.com/QWE7Sdi.jpeg',
