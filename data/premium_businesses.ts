@@ -358,4 +358,57 @@ export const premiumBusinesses: Business[] = [
     ownerUserId: 'u10',
     googleMapsQuery: 'Jirón Simon Bolivar 572 Huaraz',
   },
+  {
+    id: '47-ronnin-sushi-bar', // Usamos este ID para que la URL sea más profesional
+    name: '47 RONNIN Sushi Bar',
+    category: BusinessCategory.RESTAURANT,
+    description: '47 RONNIN Sushi Bar es cocina japonesa con alma peruana, donde los sabores se encuentran con la tradición y la fusión cobra vida en cada plato. Una experiencia auténtica y llena de identidad.',
+    address: 'Jr. Víctor Cordero 866 (Entre el Parque de las Banderas y la Av. Gamarra), Huaraz',
+    lat: -9.5080, lng: -77.4955,
+    phone: '+51 919589738', 
+    whatsapp: '51919589738',
+    photos: [
+      'https://i.imgur.com/sjKRvJw.jpeg',
+      'https://i.imgur.com/AW8ebUO.jpeg',
+      'https://i.imgur.com/3SV1XGc.jpeg',
+      'https://i.imgur.com/PbLFKJs.jpeg',
+      'https://i.imgur.com/QWE7Sdi.jpeg',
+      'https://i.imgur.com/sJn7exu.jpeg',
+      'https://i.imgur.com/K7g8s99.jpeg',
+      'https://i.imgur.com/TkEZ1Fr.jpeg',
+      'https://i.imgur.com/TXDxDrB.jpeg',
+      'https://i.imgur.com/EWTQxbw.jpeg',
+      'https://i.imgur.com/62QpcfB.jpeg',
+      'https://i.imgur.com/YbhjIuo.jpeg',
+      'https://i.imgur.com/EP7kphs.jpeg',
+      'https://i.imgur.com/UYNwkA5.jpeg',
+      'https://i.imgur.com/Tx5cXIL.jpeg',
+      'https://i.imgur.com/Ij22xnD.jpeg',
+      'https://i.imgur.com/Vt3Xs7b.jpeg',
+      'https://i.imgur.com/JO8jxG7.jpeg',
+      'https://i.imgur.com/Y86qTMb.jpeg',
+      'https://i.imgur.com/iIQZZu9.jpeg',
+      'https://i.imgur.com/P3u61uQ.jpeg',
+      'https://i.imgur.com/XK1eh6L.jpeg',
+      'https://i.imgur.com/JW9RPdA.jpeg',
+      'https://i.imgur.com/uXEfyNB.jpeg',
+      'https://i.imgur.com/h4WkHfK.jpeg',
+      'https://i.imgur.com/QI6Ll4k.jpeg',
+      'https://i.imgur.com/EXJ8tzz.jpeg',
+      'https://i.imgur.com/3oCZ7YL.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/AW8ebUO.jpeg',
+      'https://i.imgur.com/nrO4bgb.jpeg',
+      'https://i.imgur.com/FURGgt1.jpeg'
+    ],
+    schedule: { 
+      'Martes - Sábado': '5:00 PM - 11:00 PM'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-47-ronnin',
+    status: 'approved', 
+    ownerUserId: 'u11', // Corregido el 'u1'1 que tenías
+    googleMapsQuery: '47 RONNIN Sushi Bar Huaraz',
+  },
 ];
