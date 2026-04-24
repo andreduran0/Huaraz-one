@@ -7,7 +7,7 @@ export const coupons: Coupon[] = [
     title: '10% de Descuento en toda la carta',
     description: 'Obtén un descuento especial del 10% en todos nuestros platos de la carta. Disfruta de la mejor vista de Huaraz con este beneficio exclusivo.',
     code: 'CUMBRE10',
-    expiryDate: '2026-06-30', // Le puse junio para que no te salga vencido (estamos 9 de abril)
+    expiryDate: '2026-06-30', 
   },
   {
     id: 'c2',
@@ -29,16 +29,32 @@ export const coupons: Coupon[] = [
     id: 'c4',
     businessId: 'el-tio-enrique', // El Tío Enrique
     title: 'Promo Cerveza Antepasado: 2 x S/ 30',
-    description: 'Disfruta de la cultura cervecera con nuestra promoción exclusiva: llévate 12 cervezas Antepasado por solo S/ 30. Válido presentando este cupón digital en El Tío Enrique Restopub.',
-    code: 'ANTEPASADO12X30',
+    description: 'Disfruta de la cultura cervecera con nuestra promoción exclusiva: llévate 2 cervezas Antepasado por solo S/ 30. Válido presentando este cupón digital en El Tío Enrique Restopub.',
+    code: 'ANTEPASADO2X30',
     expiryDate: '2026-04-30',
   },
   {
     id: 'c9',
-    businessId: 'chifa-gran-muralla-2', //
+    businessId: 'chifa-gran-muralla-2', // Chifa
     title: 'Triple Promo: Cumpleañero Gratis, 6to Gratis y Menú + Gaseosa',
     description: '¡Disfruta de la mejor comida oriental con tres promociones exclusivas! 1) Trae a 5 amigos y tu consumo es GRATIS. 2) ¡El cumpleañero no paga! (presentando DNI). 3) De lunes a viernes, todo menú incluye una gaseosa pequeña de cortesía. Válido mostrando este cupón.',
     code: 'MURALLATRIPLET',
     expiryDate: '2026-06-30', 
+  },
+  {
+    id: 'c10',
+    businessId: '47-ronnin-sushi-bar', // 47 RONNIN
+    title: 'Promo Martes: Makis a S/ 25',
+    description: '¡Todos los martes son de 47 RONNIN! Disfruta de una selección especial de nuestros mejores makis por solo S/ 25.00. Válido presentando este cupón digital en el local para consumo en salón.',
+    code: 'RONNINMARTES25',
+    expiryDate: '2026-06-30',
+  },
+  {
+    id: 'c11',
+    businessId: '47-ronnin-sushi-bar', // 47 RONNIN
+    title: 'Miércoles Nikkei: Maki de 6 piezas GRATIS',
+    description: '¡Corta la semana con el mejor sushi! Por la compra de 2 makis (de 12 piezas cada uno), llévate totalmente GRATIS 1 maki adicional de 6 piezas. Válido presentando este cupón digital en el local.',
+    code: 'RONNINMIERCOLES',
+    expiryDate: '2026-06-30',
   },
 ];
