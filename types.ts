@@ -1,4 +1,3 @@
-
 export enum AdLevel {
   NONE = 'none',
   ESTANDAR = 'estandar',
@@ -17,6 +16,7 @@ export enum BusinessCategory {
   EDUCATION = 'education',
   HEALTH = 'health',
   EXCHANGE = 'exchange',
+  CHOCOLATERIA = 'chocolateria',
 }
 
 export interface Business {
