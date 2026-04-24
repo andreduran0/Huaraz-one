@@ -416,7 +416,7 @@ export const premiumBusinesses: Business[] = [
   {
     id: 'qorianka-chocolateria', // ID optimizado para una URL profesional
     name: 'Qorianka - Chocolatería',
-    category: BusinessCategory.CHOCOLATERIA, // ⚠️ Asegúrate de tener SHOP, CAFE o RESTAURANT en tu archivo types.ts
+    category: 'chocolateria' as BusinessCategory, // ⚠️ Asegúrate de tener SHOP, CAFE o RESTAURANT en tu archivo types.ts
     description: 'Descubre la magia del auténtico cacao peruano en Qorianka. Te ofrecemos los más exquisitos chocolates artesanales, bombones, chocotejas y postres elaborados con insumos de primera calidad. Ya sea para recargar energías tras una ruta por la Cordillera Blanca, disfrutar de una bebida caliente o llevar el mejor recuerdo de Huaraz, cada bocado es una experiencia de altura.',
     address: 'Jr. Damaso Antunez 726 - Belén, Huaraz',
     lat: -9.5720, lng: -77.4954,
