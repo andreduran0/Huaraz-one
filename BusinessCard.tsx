@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Business, BusinessCategory } from '../types';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +20,7 @@ const MAP_BOUNDS = {
 const VIRTUAL_WIDTH = 3000;
 const VIRTUAL_HEIGHT = 3000;
 
+// Estilos del Mapa (¡Corregido sin 'default' repetido!)
 const getCategoryStyles = (category: BusinessCategory) => {
     switch (category) {
         case BusinessCategory.RESTAURANT: 
@@ -30,9 +30,26 @@ const getCategoryStyles = (category: BusinessCategory) => {
             return { icon: 'fa-bed', color: 'bg-[#2A4D69]', text: 'text-white', ring: 'ring-blue-200' };
         case BusinessCategory.TOURIST_SPOT: 
             return { icon: 'fa-mountain-sun', color: 'bg-emerald-600', text: 'text-white', ring: 'ring-emerald-200' };
+        case BusinessCategory.CHOCOLATERIA:
+            return { icon: 'fa-mug-hot', color: 'bg-[#7B3F00]', text: 'text-white', ring: 'ring-[#D2691E]/40' };
         default: 
             return { icon: 'fa-location-dot', color: 'bg-slate-600', text: 'text-white', ring: 'ring-slate-200' };
     }
+};
+
+// Traductor de Categorías para la Tarjeta (¡NUEVO!)
+const translateCategory = (category: BusinessCategory) => {
+    const translations: Record<string, string> = {
+        [BusinessCategory.RESTAURANT]: 'Restaurante',
+        [BusinessCategory.POLLERIA]: 'Pollería',
+        [BusinessCategory.HOTEL]: 'Hotel',
+        [BusinessCategory.TOURIST_SPOT]: 'Punto Turístico',
+        [BusinessCategory.CHOCOLATERIA]: 'Chocolatería',
+        [BusinessCategory.EXCHANGE]: 'Casa de Cambio',
+        [BusinessCategory.HEALTH]: 'Salud',
+        [BusinessCategory.EDUCATION]: 'Educación'
+    };
+    return translations[category] || 'Negocio Local';
 };
 
 export default function StaticMap({ 
@@ -65,7 +82,6 @@ export default function StaticMap({
         return { lat, lng };
     };
 
-    // Función de zoom mejorada: Zoom hacia el centro del contenedor
     const handleZoom = useCallback((delta: number) => {
         if (!mapRef.current) return;
         
@@ -75,8 +91,6 @@ export default function StaticMap({
 
         setTransform(prev => {
             const newScale = Math.min(Math.max(0.2, prev.scale * delta), 8);
-            
-            // Calculamos cuánto se desplaza el punto central bajo el nuevo zoom
             const ratio = newScale / prev.scale;
             const newX = centerX - (centerX - prev.x) * ratio;
             const newY = centerY - (centerY - prev.y) * ratio;
@@ -102,7 +116,6 @@ export default function StaticMap({
         const container = mapRef.current.getBoundingClientRect();
         if (container.width === 0 || container.height === 0) return;
 
-        // Vista inicial balanceada
         const initialScale = Math.min(container.width, container.height) / 1000;
         const initialX = (container.width - VIRTUAL_WIDTH * initialScale) / 2;
         const initialY = (container.height - VIRTUAL_HEIGHT * initialScale) / 2;
@@ -125,7 +138,6 @@ export default function StaticMap({
         const clientX = isTouch ? e.touches[0].clientX : e.clientX;
         const clientY = isTouch ? e.touches[0].clientY : e.clientY;
 
-        // Manejo de Pinch-to-zoom (dos dedos)
         if (isTouch && e.touches.length === 2) {
             const t1 = e.touches[0];
             const t2 = e.touches[1];
@@ -139,7 +151,6 @@ export default function StaticMap({
             return;
         }
 
-        // Mover negocio en modo edición
         if (draggedBusinessId && isEditable && onBusinessMove && mapRef.current) {
             const rect = mapRef.current.getBoundingClientRect();
             const contentX = (clientX - rect.left - transform.x) / transform.scale;
@@ -149,7 +160,6 @@ export default function StaticMap({
             return;
         }
 
-        // Desplazamiento manual (Panning)
         if (isPanning.current) {
             const dx = clientX - lastPos.current.x;
             const dy = clientY - lastPos.current.y;
@@ -252,7 +262,6 @@ export default function StaticMap({
                     onLoad={setInitialView}
                 />
 
-                {/* Marcador de Usuario */}
                 {userPos && (
                     <div className="absolute z-50" style={{ 
                         left: `${latLngToPixels(userPos.lat, userPos.lng).x}px`, 
@@ -301,7 +310,6 @@ export default function StaticMap({
                 })}
             </div>
 
-            {/* Info Card */}
             {activeBusiness && (
                 <div className="absolute bottom-10 left-6 right-6 md:left-10 md:w-[420px] z-[100] animate-fadeIn">
                     <div className="bg-white rounded-[3rem] shadow-[0_30px_90px_rgba(0,0,0,0.25)] overflow-hidden border border-slate-100">
@@ -317,8 +325,9 @@ export default function StaticMap({
                         </div>
                         <div className="p-10 pt-0 -mt-10 relative z-10">
                             <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-50">
+                                {/* ¡AQUÍ ESTÁ LA MAGIA DEL TRADUCTOR! */}
                                 <span className="bg-[#2A4D69]/10 text-[#2A4D69] px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest mb-3 inline-block">
-                                    {activeBusiness.category}
+                                    {translateCategory(activeBusiness.category)}
                                 </span>
                                 <h4 className="text-3xl font-black text-slate-900 uppercase italic tracking-tighter leading-none">
                                     {activeBusiness.name}
@@ -338,7 +347,6 @@ export default function StaticMap({
                 </div>
             )}
 
-            {/* Controls */}
             <div className="absolute top-10 right-6 flex flex-col gap-4 z-50">
                 <div className="flex flex-col bg-white/90 backdrop-blur-2xl rounded-[2rem] shadow-2xl border border-white/20 p-2 gap-2">
                     <button 
