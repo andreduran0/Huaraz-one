@@ -443,12 +443,17 @@ export const premiumBusinesses: Business[] = [
       'https://i.imgur.com/x5CEghT.jpeg'
     ],
     menuImages: [ // Se mantiene como menuImages para que tu web no colapse
-      'https://i.imgur.com/eN2vFdo.jpeg',
-      'https://i.imgur.com/h5EypaQ.jpeg',
-      'https://i.imgur.com/zNkEYyJ.jpeg',
-      'https://i.imgur.com/gn61G95.jpeg',
-      'https://i.imgur.com/oyEEgFB.jpeg',
-      'https://i.imgur.com/ecH3o8I.jpeg'
+      'https://i.imgur.com/FoXdOM3.jpeg',
+      'https://i.imgur.com/V4nm99h.jpeg',
+      'https://i.imgur.com/aA1PUcL.jpeg',
+      'https://i.imgur.com/FlCwQLH.jpeg',
+      'https://i.imgur.com/7Z6REY9.jpeg',
+      'https://i.imgur.com/gGWIygP.jpeg',
+      'https://i.imgur.com/gTIOvzr.jpeg',
+      'https://i.imgur.com/E4Ko3qe.jpeg',
+      'https://i.imgur.com/Nxzyqdy.jpeg',
+      'https://i.imgur.com/osq5QaU.jpeg',
+      'https://i.imgur.com/JkANycf.jpeg'
     ],
     schedule: { 
       'Lunes - Domingo': '8:00 AM - 8:00 PM'
