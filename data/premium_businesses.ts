@@ -464,4 +464,41 @@ export const premiumBusinesses: Business[] = [
     ownerUserId: 'u12',
     googleMapsQuery: 'Jr. Damaso Antunez 726 Huaraz',
   },
+  {
+    id: 'chilli-heaven',
+    name: 'Chilli Heaven',
+    category: BusinessCategory.RESTAURANT,
+    description: 'Lo mejor de la comida de la India, Tailandia y México en el corazón de Huaraz. Sabores auténticos, especias seleccionadas y una experiencia gastronómica internacional única que solo podrás encontrar en Chilli Heaven.',
+    address: 'Parque Ginebra, Huaraz, Perú',
+    lat: -9.5920, lng: -77.4935,
+    phone: '+51 923665019', 
+    whatsapp: '51923665019',
+    photos: [
+      'https://i.imgur.com/6410rSL.jpeg',
+      'https://i.imgur.com/t97TtnM.jpeg',
+      'https://i.imgur.com/1FRetTe.jpeg',
+      'https://i.imgur.com/ZygAfZP.jpeg',
+      'https://i.imgur.com/IgZtXrW.jpeg',
+      'https://i.imgur.com/HCa8JV5.jpeg',
+      'https://i.imgur.com/i4V9THE.jpeg',
+      'https://i.imgur.com/KLegv01.jpeg',
+      'https://i.imgur.com/X7D3n07.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/ZygAfZP.jpeg',
+      'https://i.imgur.com/IgZtXrW.jpeg',
+      'https://i.imgur.com/ZJbEYMq.jpeg',
+      'https://i.imgur.com/HCa8JV5.jpeg',
+      'https://i.imgur.com/yyT3O8l.jpeg',
+      'https://i.imgur.com/KLegv01.jpeg'
+    ],
+    schedule: { 
+      'Lunes - Sábado': '5:00 PM - 10:30 PM', // Nota: Ajusté a PM, asumiendo que es cena.
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-chilli-heaven',
+    status: 'approved', 
+    ownerUserId: 'u13',
+    googleMapsQuery: 'Chilli Heaven Parque Ginebra Huaraz',
+  },
 ];
