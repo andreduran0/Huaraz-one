@@ -427,8 +427,15 @@ export const premiumBusinesses: Business[] = [
     whatsapp: '51997023217',
     photos: [
       'https://i.imgur.com/qrKg8w8.jpeg',
+       'https://i.imgur.com/qWamu9d.jpeg',
+       'https://i.imgur.com/9KBlyuH.jpeg',
+       'https://i.imgur.com/voxuxnE.jpeg',
+       'https://i.imgur.com/ZYnPe8v.jpeg',
+       'https://i.imgur.com/T834wXj.jpeg',
+       'https://i.imgur.com/7SkQ4K0.jpeg',
+       'https://i.imgur.com/T834wXj.jpeg',
       'https://i.imgur.com/FoXdOM3.jpeg',
-      'https://i.imgur.com/V4nm99h.jpeg',
+      'https://i.imgur.com/qrKg8w8.jpeg',
       'https://i.imgur.com/aA1PUcL.jpeg',
       'https://i.imgur.com/LSUqLd0.jpeg',
       'https://i.imgur.com/FlCwQLH.jpeg',
@@ -443,7 +450,7 @@ export const premiumBusinesses: Business[] = [
       'https://i.imgur.com/x5CEghT.jpeg'
     ],
     menuImages: [ // Se mantiene como menuImages para que tu web no colapse
-      'https://i.imgur.com/FoXdOM3.jpeg',
+      'https://i.imgur.com/qwAUdVM.jpeg',
       'https://i.imgur.com/V4nm99h.jpeg',
       'https://i.imgur.com/aA1PUcL.jpeg',
       'https://i.imgur.com/FlCwQLH.jpeg',
