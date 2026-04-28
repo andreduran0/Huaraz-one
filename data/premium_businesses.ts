@@ -514,7 +514,7 @@ export const premiumBusinesses: Business[] = [
     phone: '+51 943 691 598 / +51 968 945 835',
     whatsapp: '51968945835',
     photos: [
-      'https://i.imgur.com/1RRmIAn.jpeg',
+      'https://i.imgur.com/yVfvvAK.jpeg',
       'https://i.imgur.com/1D6QHY6.jpeg',
       'https://i.imgur.com/xe828vR.jpeg',
       'https://i.imgur.com/i2enMGM.jpeg',
