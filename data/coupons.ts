@@ -57,4 +57,12 @@ export const coupons: Coupon[] = [
     code: 'RONNINMIERCOLES',
     expiryDate: '2026-06-30',
   },
+  {
+    id: 'c12',
+    businessId: 'tortas-camucha',
+    title: 'Cualquier Combo de Desayuno a S/ 10.00',
+    description: '¡Empieza tu día de la mejor manera con el toque casero de Camucha! Elige cualquiera de nuestros 8 súper combos (Tamal, Empanada, Sándwich de pollo, Papa rellena, Salchicha huachana y más) que incluyen jugo, café o infusión y pan por solo S/ 10.00. Válido presentando este cupón digital en el local.',
+    code: 'CAMUCHA10',
+    expiryDate: '2026-06-30', 
+  },
 ];
