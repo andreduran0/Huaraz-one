@@ -58,6 +58,14 @@ export const coupons: Coupon[] = [
     expiryDate: '2026-06-30',
   },
   {
+    id: 'c13',
+    businessId: 'qorianka-chocolateria',
+    title: '¡10% de Descuento por el Día de la Madre!',
+    description: 'Engríe a mamá en su día con los detalles más dulces. Obtén un 10% de descuento exclusivo en nuestras cajas de chocolates y productos seleccionados por el Día de la Madre. Válido presentando este cupón digital en nuestro local.',
+    code: 'MAMAQORIANKA10',
+    expiryDate: '2026-05-31', 
+  },
+  {
     id: 'c12',
     businessId: 'tortas-camucha',
     title: 'Cualquier Combo de Desayuno a S/ 10.00',
