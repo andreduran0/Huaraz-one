@@ -65,11 +65,11 @@ export const coupons: Coupon[] = [
     code: 'MAMAQORIANKA10',
     expiryDate: '2026-05-31', 
   },
-  {
+ {
     id: 'c12',
     businessId: 'tortas-camucha',
-    title: 'Cualquier Combo de Desayuno a S/ 10.00',
-    description: '¡Empieza tu día de la mejor manera con el toque casero de Camucha! Elige cualquiera de nuestros 8 súper combos (Tamal, Empanada, Sándwich de pollo, Papa rellena, Salchicha huachana y más) que incluyen jugo, café o infusión y pan por solo S/ 10.00. Válido presentando este cupón digital en el local.',
+    title: 'Cualquier Combo a S/ 10.00 (Mañana y Noche)',
+    description: '¡Disfruta del toque casero de Camucha en cualquier momento del día! Elige cualquiera de nuestros 8 súper combos (Tamal, Empanada, Sándwich de pollo, Papa rellena, Salchicha huachana y más) que incluyen jugo, café o infusión y pan por solo S/ 10.00. Disponibles para empezar tu mañana con energía o para darte tu gustito por las noches. Válido presentando este cupón digital en el local.',
     code: 'CAMUCHA10',
     expiryDate: '2026-06-30', 
   },
