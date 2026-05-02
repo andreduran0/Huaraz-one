@@ -1,4 +1,3 @@
-
 export interface Event {
   date: string; // Format YYYY-MM-DD
   title: string;
@@ -91,7 +90,7 @@ export const events: Event[] = [
     location: 'Río Quillcay (Puente Comercio)'
   },
 
-  // --- OTRAS FESTIVIDADES ---
+  // --- SEMANA SANTA ---
   {
     date: '2026-03-29',
     title: 'Domingo de Ramos',
@@ -104,17 +103,70 @@ export const events: Event[] = [
     description: 'Solemne procesión del Cristo Yacente y la Virgen Dolorosa.',
     type: 'religious',
   },
+
+  // --- FESTIVIDAD SEÑOR DE LA SOLEDAD (MAYO 2026) ---
   {
     date: '2026-05-01',
-    title: 'Fiesta del Señor de la Soledad',
-    description: 'Festividad del Patrón de Huaraz. Danzas típicas y ferias gastronómicas.',
+    title: 'Inicio de Recorridos Procesionales',
+    description: 'Primer día de recorridos procesionales en honor al Señor de la Soledad, Patrón de Huaraz.',
+    type: 'religious',
+    location: 'Santuario de la Soledad / Calles de Huaraz'
+  },
+  {
+    date: '2026-05-02',
+    title: 'Recorridos Procesionales',
+    description: 'Continuación de los recorridos procesionales de la sagrada imagen por la ciudad.',
+    type: 'religious',
+    location: 'Calles de Huaraz'
+  },
+  {
+    date: '2026-05-03',
+    title: 'Día Central - Señor de la Soledad',
+    description: 'Día principal de la festividad con solemne Misa central y la procesión principal.',
     type: 'religious',
     location: 'Santuario de la Soledad'
   },
+  {
+    date: '2026-05-08',
+    title: 'Ingreso de Danzantes y Misa',
+    description: 'Tradicional ingreso de las agrupaciones de danzantes rindiendo homenaje, seguido de la misa.',
+    type: 'cultural',
+    location: 'Santuario de la Soledad'
+  },
+  {
+    date: '2026-05-09',
+    title: 'Víspera de Octava',
+    description: 'Celebración eucarística de víspera en honor al patrón de la ciudad.',
+    type: 'religious',
+    location: 'Santuario de la Soledad'
+  },
+  {
+    date: '2026-05-10',
+    title: 'Octava del Señor de la Soledad',
+    description: 'Tradicional Misa de Octava y procesión de la imagen por las principales calles de Huaraz.',
+    type: 'religious',
+    location: 'Calles de Huaraz'
+  },
+  {
+    date: '2026-05-11',
+    title: 'Celebración Eucarística',
+    description: 'Continuación de los actos litúrgicos de la festividad.',
+    type: 'religious',
+    location: 'Santuario de la Soledad'
+  },
+  {
+    date: '2026-05-12',
+    title: 'Colocación y Despedida',
+    description: 'Misa y procesión final de despedida que marca el cierre de las festividades del Señor de la Soledad.',
+    type: 'religious',
+    location: 'Santuario de la Soledad'
+  },
+
+  // --- OTRAS FESTIVIDADES ---
   {
     date: '2026-07-25',
     title: 'Aniversario de Huaraz',
     description: 'Celebración por la creación política de la provincia con desfiles y serenata.',
     type: 'civic',
-  },
+  }
 ];
