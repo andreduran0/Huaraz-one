@@ -416,56 +416,38 @@ export const premiumBusinesses: Business[] = [
     ownerUserId: 'u11', // Corregido el 'u1'1 que tenías
     googleMapsQuery: '47 RONNIN Sushi Bar Huaraz',
   },
-  {
-    id: 'qorianka-chocolateria', // ID optimizado para una URL profesional
-    name: 'Qorianka - Chocolatería',
-    category: 'chocolateria' as BusinessCategory, // ⚠️ Asegúrate de tener SHOP, CAFE o RESTAURANT en tu archivo types.ts
-    description: 'Descubre la magia del auténtico cacao peruano en Qorianka. Te ofrecemos los más exquisitos chocolates artesanales, bombones, chocotejas y postres elaborados con insumos de primera calidad. Ya sea para recargar energías tras una ruta por la Cordillera Blanca, disfrutar de una bebida caliente o llevar el mejor recuerdo de Huaraz, cada bocado es una experiencia de altura.',
-    address: 'Jr. Damaso Antunez 726 - Belén, Huaraz',
-    lat: -9.5720, lng: -77.4954,
-    phone: '+51 997 023 217', 
-    whatsapp: '51997023217',
+ {
+    id: 'vermiel-emolienteria',
+    name: 'Vermiel - Emolientería',
+    category: 'emolienteria' as BusinessCategory,
+    description: 'Descubre la evolución de una tradición peruana en Vermiel. El refugio perfecto para abrigarte del clima andino con nuestras exclusivas fusiones de emoliente, hierbas medicinales e infusiones naturales. Acompaña tus bebidas calientes con deliciosos complementos en un ambiente cálido y acogedor. El lugar ideal para recargar energías y compartir una buena charla al caer la tarde.',
+    address: 'Jr. Leonisa Lescano #635, Huaraz',
+    lat: -9.7020, 
+    lng: -77.4925,
+    phone: '+51 990 312 326', 
+    whatsapp: '51990312326',
     photos: [
-      'https://i.imgur.com/1pUiYY9.jpeg',
-       'https://i.imgur.com/qWamu9d.jpeg',
-       'https://i.imgur.com/9KBlyuH.jpeg',
-       'https://i.imgur.com/voxuxnE.jpeg',
-       'https://i.imgur.com/ZYnPe8v.jpeg',
-       'https://i.imgur.com/T834wXj.jpeg',
-       'https://i.imgur.com/7SkQ4K0.jpeg',
-      'https://i.imgur.com/LSUqLd0.jpeg',
-      'https://i.imgur.com/FlCwQLH.jpeg',
-      'https://i.imgur.com/gGWIygP.jpeg',
-      'https://i.imgur.com/gTIOvzr.jpeg',
-      'https://i.imgur.com/E4Ko3qe.jpeg',
-      'https://i.imgur.com/osq5QaU.jpeg',
-      'https://i.imgur.com/rvvqBdo.jpeg',
-      'https://i.imgur.com/FnXosrZ.jpeg',
-      'https://i.imgur.com/1tNVhg2.jpeg',
-      'https://i.imgur.com/EVJD215.jpeg',
-      'https://i.imgur.com/x5CEghT.jpeg'
+      'https://i.imgur.com/Dk35w9S.jpeg',
+      'https://i.imgur.com/eMZsflh.jpeg',
+      'https://i.imgur.com/fpU0u9t.jpeg',
+      'https://i.imgur.com/hMVHC73.jpeg'
     ],
-    menuImages: [ // Se mantiene como menuImages para que tu web no colapse
-      'https://i.imgur.com/qwAUdVM.jpeg',
-      'https://i.imgur.com/V4nm99h.jpeg',
-      'https://i.imgur.com/aA1PUcL.jpeg',
-      'https://i.imgur.com/FlCwQLH.jpeg',
-      'https://i.imgur.com/7Z6REY9.jpeg',
-      'https://i.imgur.com/gGWIygP.jpeg',
-      'https://i.imgur.com/gTIOvzr.jpeg',
-      'https://i.imgur.com/E4Ko3qe.jpeg',
-      'https://i.imgur.com/Nxzyqdy.jpeg',
-      'https://i.imgur.com/osq5QaU.jpeg',
-      'https://i.imgur.com/JkANycf.jpeg'
+    menuImages: [
+      'https://i.imgur.com/4ohWXx9.jpeg',
+      'https://i.imgur.com/wdzSszI.jpeg',
+      'https://i.imgur.com/EdY4qCb.jpeg',
+      'https://i.imgur.com/unpLF75.jpeg',
+      'https://i.imgur.com/3qod57b.jpeg'
     ],
     schedule: { 
-      'Lunes - Domingo': '8:00 AM - 8:00 PM'
+      'Lunes - Sábado': '9:00 AM - 11:00 PM',
+      'Domingo': '4:00 PM - 11:00 PM'
     },
     adLevel: AdLevel.PREMIUM,
-    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-qorianka',
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-vermiel',
     status: 'approved', 
     ownerUserId: 'u12',
-    googleMapsQuery: 'Jr. Damaso Antunez 726 Huaraz',
+    googleMapsQuery: 'Jr. Leonisa Lescano 635 Huaraz',
   },
   {
     id: 'chilli-heaven',
@@ -560,5 +542,56 @@ export const premiumBusinesses: Business[] = [
     status: 'approved', 
     ownerUserId: 'u14',
     googleMapsQuery: 'Tortas Camucha Jr Gabino Uribe 638 Huaraz',
+  },
+  {
+    id: 'qorianka-chocolateria', // ID optimizado para una URL profesional
+    name: 'Qorianka - Chocolatería',
+    category: 'chocolateria' as BusinessCategory, // ⚠️ Asegúrate de tener SHOP, CAFE o RESTAURANT en tu archivo types.ts
+    description: 'Descubre la magia del auténtico cacao peruano en Qorianka. Te ofrecemos los más exquisitos chocolates artesanales, bombones, chocotejas y postres elaborados con insumos de primera calidad. Ya sea para recargar energías tras una ruta por la Cordillera Blanca, disfrutar de una bebida caliente o llevar el mejor recuerdo de Huaraz, cada bocado es una experiencia de altura.',
+    address: 'Jr. Damaso Antunez 726 - Belén, Huaraz',
+    lat: -9.5720, lng: -77.4954,
+    phone: '+51 997 023 217', 
+    whatsapp: '51997023217',
+    photos: [
+      'https://i.imgur.com/1pUiYY9.jpeg',
+       'https://i.imgur.com/qWamu9d.jpeg',
+       'https://i.imgur.com/9KBlyuH.jpeg',
+       'https://i.imgur.com/voxuxnE.jpeg',
+       'https://i.imgur.com/ZYnPe8v.jpeg',
+       'https://i.imgur.com/T834wXj.jpeg',
+       'https://i.imgur.com/7SkQ4K0.jpeg',
+      'https://i.imgur.com/LSUqLd0.jpeg',
+      'https://i.imgur.com/FlCwQLH.jpeg',
+      'https://i.imgur.com/gGWIygP.jpeg',
+      'https://i.imgur.com/gTIOvzr.jpeg',
+      'https://i.imgur.com/E4Ko3qe.jpeg',
+      'https://i.imgur.com/osq5QaU.jpeg',
+      'https://i.imgur.com/rvvqBdo.jpeg',
+      'https://i.imgur.com/FnXosrZ.jpeg',
+      'https://i.imgur.com/1tNVhg2.jpeg',
+      'https://i.imgur.com/EVJD215.jpeg',
+      'https://i.imgur.com/x5CEghT.jpeg'
+    ],
+    menuImages: [ // Se mantiene como menuImages para que tu web no colapse
+      'https://i.imgur.com/qwAUdVM.jpeg',
+      'https://i.imgur.com/V4nm99h.jpeg',
+      'https://i.imgur.com/aA1PUcL.jpeg',
+      'https://i.imgur.com/FlCwQLH.jpeg',
+      'https://i.imgur.com/7Z6REY9.jpeg',
+      'https://i.imgur.com/gGWIygP.jpeg',
+      'https://i.imgur.com/gTIOvzr.jpeg',
+      'https://i.imgur.com/E4Ko3qe.jpeg',
+      'https://i.imgur.com/Nxzyqdy.jpeg',
+      'https://i.imgur.com/osq5QaU.jpeg',
+      'https://i.imgur.com/JkANycf.jpeg'
+    ],
+    schedule: { 
+      'Lunes - Domingo': '8:00 AM - 8:00 PM'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-qorianka',
+    status: 'approved', 
+    ownerUserId: 'u15',
+    googleMapsQuery: 'Jr. Damaso Antunez 726 Huaraz',
   },
 ];
