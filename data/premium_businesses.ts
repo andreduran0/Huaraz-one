@@ -595,4 +595,43 @@ export const premiumBusinesses: Business[] = [
     ownerUserId: 'u15',
     googleMapsQuery: 'Jr. Damaso Antunez 726 Huaraz',
   },
+  {
+    id: 'fusion-delicius', // Nuevo negocio en la posición 15
+    name: 'Fusión Delicius',
+    category: BusinessCategory.RESTAURANT,
+    description: 'Fusión Delicius es una destacada opción gastronómica en el corazón de Huaraz, reconocida por su excelente combinación de comida criolla, pastas, hamburguesas y parrillas de primera. Nos diferenciamos por ofrecer una propuesta diseñada para todos los gustos, con una atención cercana, amable y una cuidadosa selección de insumos frescos. Aquí no se sirven platos por cantidad, sino experiencias construidas con dedicación, sazón y total respeto por quienes nos visitan.',
+    address: 'Jr. 28 de Julio N° 487 (Frente a Dollarcity), Huaraz',
+    lat: -9.5040, 
+    lng: -77.1955,
+    phone: '+51 932 287 593', 
+    whatsapp: '51932287593',
+    photos: [
+      'https://i.imgur.com/g1hZAD2.jpeg',
+      'https://i.imgur.com/oyOWKx2.jpeg',
+      'https://i.imgur.com/ckzLXCA.jpeg',
+      'https://i.imgur.com/DfqqECL.jpeg',
+      'https://i.imgur.com/8jCSU0m.jpeg',
+      'https://i.imgur.com/L6ItpjF.jpeg',
+      'https://i.imgur.com/xFrYwDJ.jpeg',
+      'https://i.imgur.com/OLDT4Ou.jpeg',
+      'https://i.imgur.com/KZbfqLJ.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/pevfPOE.jpeg',
+      'https://i.imgur.com/oVhHHhf.jpeg',
+      'https://i.imgur.com/QkorRhD.jpeg',
+      'https://i.imgur.com/fjiaNEO.jpeg',
+      'https://i.imgur.com/sVXKINv.jpeg', // Se removió el duplicado de esta línea
+      'https://i.imgur.com/nvZJKVD.jpeg'
+    ],
+    schedule: { 
+      'Lunes - Sábado': '10:00 AM - 11:00 PM',
+      'Domingo': '4:00 PM - 11:00 PM'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-fusion-delicius',
+    status: 'approved', 
+    ownerUserId: 'u16',
+    googleMapsQuery: 'Jr 28 de Julio 487 Huaraz',
+  },
 ];
