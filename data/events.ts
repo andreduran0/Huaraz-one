@@ -1,8 +1,13 @@
+¡Claro que sí! Para que el código funcione perfectamente en TypeScript, he hecho un pequeño pero importante ajuste: agregué `'sports'` y `'entertainment'` a los tipos de tu interface `Event`. Si no hacíamos esto, TypeScript iba a marcar un error porque originalmente solo permitía eventos religiosos, culturales, cívicos o de carnaval.
+
+Aquí tienes el archivo `events.ts` completo y listo para copiar y pegar:
+
+```typescript
 export interface Event {
   date: string; // Format YYYY-MM-DD
   title: string;
   description: string;
-  type: 'religious' | 'cultural' | 'civic' | 'carnival';
+  type: 'religious' | 'cultural' | 'civic' | 'carnival' | 'sports' | 'entertainment';
   time?: string;
   location?: string;
 }
@@ -168,5 +173,25 @@ export const events: Event[] = [
     title: 'Aniversario de Huaraz',
     description: 'Celebración por la creación política de la provincia con desfiles y serenata.',
     type: 'civic',
+  },
+
+  // --- EVENTOS DEPORTIVOS Y ENTRETENIMIENTO (JUNIO 2026) ---
+  {
+    date: '2026-06-13',
+    title: 'VIBRANDES 2026 - Trail Running',
+    description: 'Inicio oficial de la temporada de deportes de montaña en Huaraz. Únete a la competencia de trail running con recorridos de 6k, 12k y 21k.',
+    type: 'sports',
+    time: '07:00 a. m.',
+    location: 'Centro de Convenciones El Bosque'
+  },
+  {
+    date: '2026-06-13',
+    title: 'Rock en Vivo: Banda Dosis',
+    description: 'Cierre épico del sábado con la banda Dosis tocando en vivo. Disfruta del mejor rock local acompañado de las pizzas del Chef Monchi.',
+    type: 'entertainment',
+    time: '9:00 p. m.',
+    location: 'Mallibu Resto Bar'
   }
 ];
+
+```
