@@ -634,4 +634,34 @@ export const premiumBusinesses: Business[] = [
     ownerUserId: 'u16',
     googleMapsQuery: 'Jr 28 de Julio 487 Huaraz',
   },
+  {
+    id: '18',
+    name: 'Taramo - Grill & Bar',
+    category: BusinessCategory.RESTAURANT,
+    description: 'Descubre el auténtico sabor de las brasas en Taramo - Grill & Bar. Somos especialistas en parrillas, ofreciendo cortes de carne seleccionados y cocinados a la perfección para resaltar su máxima jugosidad. Acompaña tu cena con nuestra excelente selección de bebidas y piqueos en un ambiente moderno, cálido y perfecto para compartir momentos inolvidables con amigos o familia.',
+    address: 'Jr. Daniel Villazan N· 162',
+    lat: -9.5020, 
+    lng: -77.4985,
+    phone: '+51 910562501', 
+    whatsapp: '51910562501',
+    photos: [
+      'https://i.imgur.com/4xeEhwm.jpeg',
+      'https://i.imgur.com/JjCUUOW.jpeg',
+      'https://i.imgur.com/LE0pARp.jpeg',
+      'https://i.imgur.com/x6Hr0WV.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/VamtQix.jpeg',
+      'https://i.imgur.com/iJaJxB3.jpeg'
+    ],
+    schedule: { 
+      'Lunes - Sábado': '6:00 PM - 11:00 PM',
+      'Domingo': '6:00 AM - 11:00 PM'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-17',
+    status: 'approved', 
+    ownerUserId: 'u1',
+    googleMapsQuery: 'Jr. Daniel Villazan 162 Huaraz',
+  },
 ];
