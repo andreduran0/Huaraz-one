@@ -186,5 +186,22 @@ export const events: Event[] = [
     type: 'entertainment',
     time: '08:00 p. m.',
     location: 'Mallibu Resto Bar'
+  },
+  // --- EVENTOS PARA HOY 20 DE JUNIO 2026 ---
+  {
+    date: '2026-06-20',
+    title: 'Chela Fest - 2da Edición',
+    description: 'Festival con más de 9 cervezas invitadas, 7 bandas en vivo incluyendo a Órbita, Alba, Los Renegados, Reina Bastarda, Revolt, Coky Kaya y Dosis. Incluye juegos, actividades y parrilla.',
+    type: 'entertainment',
+    time: 'Desde el mediodía',
+    location: 'Táramo Grill & Bar'
+  },
+  {
+    date: '2026-06-20',
+    title: '3 Aniversario Vermiel',
+    description: 'Celebración por el tercer aniversario con la presentación en vivo de Nicole Villanueva y Chesberry (banda completa).',
+    type: 'entertainment',
+    time: '09:00 p. m.',
+    location: 'Jr. Julián de Morales #632, frente al parque del Periodista'
   }
 ];
