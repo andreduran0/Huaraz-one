@@ -664,4 +664,104 @@ export const premiumBusinesses: Business[] = [
     ownerUserId: 'u1',
     googleMapsQuery: 'Jr. Daniel Villazan 162 Huaraz',
   },
+  {
+    id: '19',
+    name: 'Catamares - Cevicheria & Restaurante',
+    category: BusinessCategory.Cevicheria, 
+    description: `Somos una cevichería especializada en pescados y mariscos frescos, preparada con ingredientes de la más alta calidad y el auténtico sabor Chimbotano. 
+Nuestro compromiso es brindar una experiencia única, combinando frescura, sabor y excelente atención en un ambiente acogedor. Lo que nos diferencia es nuestro compromiso con la frescura, la calidad y el sabor auténtico. Seleccionamos cuidadosamente nuestros pescados y mariscos para garantizar platos preparados al momento, conservando todo su sabor natural.
+
+✅ Pescados y mariscos frescos todos los días.
+✅ Preparación al momento.
+✅ Porciones generosas.
+✅ Sazón peruana auténtica.
+✅ Atención rápida y personalizada.
+✅ Excelente relación calidad-precio.
+✅ Ambiente acogedor para familias y amigos.`,
+    address: 'Mirador de Rataquenua, Huaraz',
+    lat: -9.1020,
+    lng: -77.4055,
+    phone: '+51 998 127 329', 
+    whatsapp: '51998127329',
+    photos: [
+      'https://i.imgur.com/UYGAUFo.png',
+      'https://i.imgur.com/D71gIL8.jpeg',
+      'https://i.imgur.com/RFp35tk.jpeg',
+      'https://i.imgur.com/BjB7oO5.jpeg',
+      'https://i.imgur.com/QL9W5eh.png',
+      'https://i.imgur.com/KfueoI2.png',
+      'https://i.imgur.com/me8ec0a.png',
+      'https://i.imgur.com/yuSQkZR.jpeg',
+      'https://i.imgur.com/X7D3n07.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/ShOgyni.jpeg',
+      'https://i.imgur.com/czMNuCu.jpeg',
+      'https://i.imgur.com/fwjErEv.jpeg',
+      'https://i.imgur.com/tJesKoY.jpeg',
+      'https://i.imgur.com/7mwJlNr.jpeg',
+      'https://i.imgur.com/d3K0vND.jpeg'
+    ],
+    schedule: { 
+      'Martes - Sábado': '10:00 AM - 5:30 PM',
+      'Domingo': '10:00 AM - 5:30 PM'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-1',
+    status: 'approved', 
+    ownerUserId: 'u1',
+    googleMapsQuery: 'Mirador de Rataquenua Huaraz'
+  },
+  {
+    id: '20',
+    name: 'La ruta del taco',
+    category: BusinessCategory.RESTAURANT,
+    description: `Nuestros tacos mexicanos están preparados con tortillas suaves y calientes, rellenas con ingredientes seleccionados y sazonados al auténtico estilo mexicano. 
+Cada taco combina sabores intensos, carnes jugosas, vegetales frescos y salsas especiales que transportan a las calles de México en cada bocado. 
+Desde opciones clásicas hasta creaciones únicas de la casa, ofrecemos una experiencia llena de tradición, sabor y calidad para los verdaderos amantes de la comida mexicana.
+
+En qué nos diferenciamos: 
+Nos diferenciamos de las demás taquerías por ofrecer una combinación única de autenticidad, calidad y creatividad. Utilizamos ingredientes frescos, tortillas seleccionadas y recetas con el verdadero sabor mexicano, cuidando cada detalle desde la preparación hasta la presentación. Nuestras porciones son generosas, nuestras salsas tienen personalidad propia y cada taco está pensado para brindar una experiencia llena de sabor. Además, mantenemos una atención cercana y un ambiente acogedor que hace que nuestros clientes siempre quieran volver.
+
+🌮 Ingredientes frescos y de calidad.
+🔥 Preparación al momento.
+🌶️ Salsas artesanales exclusivas de la casa.
+🥩 Porciones abundantes y bien servidas.
+🇲🇽 Sabor auténtico inspirado en México.
+⭐ Atención rápida y personalizada.
+💯 Excelente relación calidad-precio.`,
+    address: 'Mirador de Rataquenua, Huaraz',
+    lat: -9.50208,
+    lng: -77.4945,
+    phone: '+51 998 127 329', 
+    whatsapp: '51998127329',
+    photos: [
+      'https://i.imgur.com/LaMi8MY.jpeg',
+      'https://i.imgur.com/D71gIL8.jpeg',
+      'https://i.imgur.com/RFp35tk.jpeg',
+      'https://i.imgur.com/BjB7oO5.jpeg',
+      'https://i.imgur.com/QL9W5eh.png',
+      'https://i.imgur.com/KfueoI2.png',
+      'https://i.imgur.com/me8ec0a.png',
+      'https://i.imgur.com/yuSQkZR.jpeg',
+      'https://i.imgur.com/X7D3n07.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/ShOgyni.jpeg',
+      'https://i.imgur.com/czMNuCu.jpeg',
+      'https://i.imgur.com/fwjErEv.jpeg',
+      'https://i.imgur.com/tJesKoY.jpeg',
+      'https://i.imgur.com/7mwJlNr.jpeg',
+      'https://i.imgur.com/d3K0vND.jpeg'
+    ],
+    schedule: { 
+      'Martes - Sábado': '5:00 PM - 12:00 AM',
+      'Domingo': '5:00 PM - 12:00 AM'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-20',
+    status: 'approved', 
+    ownerUserId: 'u20',
+    googleMapsQuery: 'AV. Agustín Gamarra N.º 625 ref: media cuadra de la alameda Grau'
+  },
 ];
