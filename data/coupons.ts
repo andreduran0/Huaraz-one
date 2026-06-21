@@ -2,12 +2,20 @@ import { Coupon } from '../types';
 
 export const coupons: Coupon[] = [
   {
-    id: 'c1',
-    businessId: '1', // Cumbre - Mirador Rataquenua
-    title: '10% de Descuento en toda la carta',
-    description: 'Obtén un descuento especial del 10% en todos nuestros platos de la carta. Disfruta de la mejor vista de Huaraz con este beneficio exclusivo.',
-    code: 'CUMBRE10',
-    expiryDate: '2026-06-30', 
+    id: 'c18',
+    businessId: '19', // Catamares
+    title: '10% de Descuento por el Día del Padre',
+    description: '¡Celebra a papá con los mejores sabores del mar! Obtén un 10% de descuento en todo tu consumo presentando este cupón digital. El mejor regalo para compartir en familia.',
+    code: 'CATAMARESPAPA',
+    expiryDate: '2026-06-30',
+  },
+  {
+    id: 'c19',
+    businessId: '20', // La ruta del taco
+    title: '¡Plato de tacos GRATIS por 5 shots de tequila!',
+    description: '¡Empieza la fiesta al mejor estilo mexicano! Por el consumo de 5 shots de tequila, te regalamos un delicioso plato de tacos. Válido presentando este cupón digital en nuestro local.',
+    code: 'RUTATACOTEQUILA',
+    expiryDate: '2026-06-30',
   },
   {
     id: 'c2',
@@ -105,4 +113,12 @@ export const coupons: Coupon[] = [
     code: 'VERMIEL15',
     expiryDate: '2026-06-30',
   },
+  {
+    id: 'c1',
+    businessId: '1', // Cumbre - Mirador Rataquenua
+    title: '10% de Descuento en toda la carta',
+    description: 'Obtén un descuento especial del 10% en todos nuestros platos de la carta. Disfruta de la mejor vista de Huaraz con este beneficio exclusivo.',
+    code: 'CUMBRE10',
+    expiryDate: '2026-06-30', 
+  }
 ];
