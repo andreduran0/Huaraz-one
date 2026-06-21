@@ -678,13 +678,13 @@ Nuestro compromiso es brindar una experiencia única, combinando frescura, sabor
 ✅ Atención rápida y personalizada.
 ✅ Excelente relación calidad-precio.
 ✅ Ambiente acogedor para familias y amigos.`,
-    address: 'Mirador de Rataquenua, Huaraz',
+    address: 'AV. Agustín Gamarra N.º 625 ref: media cuadra de la alameda Grau ',
     lat: -9.1020,
     lng: -77.4055,
     phone: '+51 998 127 329', 
     whatsapp: '51998127329',
     photos: [
-      'https://i.imgur.com/UYGAUFo.png',
+      'https://i.imgur.com/2kNzfRP.jpeg',
       'https://i.imgur.com/D71gIL8.jpeg',
       'https://i.imgur.com/RFp35tk.jpeg',
       'https://i.imgur.com/BjB7oO5.jpeg',
@@ -709,8 +709,8 @@ Nuestro compromiso es brindar una experiencia única, combinando frescura, sabor
     adLevel: AdLevel.PREMIUM,
     qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-1',
     status: 'approved', 
-    ownerUserId: 'u1',
-    googleMapsQuery: 'Mirador de Rataquenua Huaraz'
+    ownerUserId: 'u19',
+    googleMapsQuery: 'AV. Agustín Gamarra N.º 625 ref: media cuadra de la alameda Grau '
   },
   {
     id: '20',
@@ -730,7 +730,7 @@ Nos diferenciamos de las demás taquerías por ofrecer una combinación única d
 🇲🇽 Sabor auténtico inspirado en México.
 ⭐ Atención rápida y personalizada.
 💯 Excelente relación calidad-precio.`,
-    address: 'Mirador de Rataquenua, Huaraz',
+    address: 'AV. Agustín Gamarra N.º 625 ref: media cuadra de la alameda Grau ',
     lat: -9.50208,
     lng: -77.4945,
     phone: '+51 998 127 329', 
