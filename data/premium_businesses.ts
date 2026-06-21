@@ -667,7 +667,7 @@ export const premiumBusinesses: Business[] = [
   {
     id: '19',
     name: 'Catamares - Cevicheria & Restaurante',
-    category: BusinessCategory.Cevicheria, 
+    category: BusinessCategory.RESTAURANT, 
     description: `Somos una cevichería especializada en pescados y mariscos frescos, preparada con ingredientes de la más alta calidad y el auténtico sabor Chimbotano. 
 Nuestro compromiso es brindar una experiencia única, combinando frescura, sabor y excelente atención en un ambiente acogedor. Lo que nos diferencia es nuestro compromiso con la frescura, la calidad y el sabor auténtico. Seleccionamos cuidadosamente nuestros pescados y mariscos para garantizar platos preparados al momento, conservando todo su sabor natural.
 
