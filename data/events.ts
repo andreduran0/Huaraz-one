@@ -187,7 +187,8 @@ export const events: Event[] = [
     time: '08:00 p. m.',
     location: 'Mallibu Resto Bar'
   },
-  // --- EVENTOS PARA HOY 20 DE JUNIO 2026 ---
+  
+  // --- EVENTOS PARA HOY Y MAÑANA (JUNIO 2026) ---
   {
     date: '2026-06-20',
     title: 'Chela Fest - 2da Edición',
@@ -203,5 +204,13 @@ export const events: Event[] = [
     type: 'entertainment',
     time: '09:00 p. m.',
     location: 'Jr. Julián de Morales #632, frente al parque del Periodista'
+  },
+  {
+    date: '2026-06-21',
+    title: 'Día del Padre en Catamares',
+    description: '¡Celebra a papá con los mejores sabores del mar! Disfruta de una experiencia única con deliciosos platos marinos, el auténtico sabor chimbotano, promociones especiales y un ambiente espectacular para compartir en familia.',
+    type: 'entertainment',
+    time: '10:00 a. m. - 05:30 p. m.',
+    location: 'Catamares - Mirador de Rataquenua, Huaraz'
   }
 ];
