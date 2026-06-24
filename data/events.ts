@@ -212,7 +212,7 @@ export const events: Event[] = [
     type: 'entertainment',
     time: '10:00 a. m. - 05:30 p. m.',
     location: 'Catamares - Mirador de Rataquenua, Huaraz'
-  }
+  },
   {
     date: '2026-06-27',
     title: 'Degustación Gratuita de Café Filtrado',
