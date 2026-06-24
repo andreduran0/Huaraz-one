@@ -213,4 +213,12 @@ export const events: Event[] = [
     time: '10:00 a. m. - 05:30 p. m.',
     location: 'Catamares - Mirador de Rataquenua, Huaraz'
   }
+  {
+    date: '2026-06-27',
+    title: 'Degustación Gratuita de Café Filtrado',
+    description: 'Descubre nuevos aromas y sabores en una experiencia única. Ven y disfruta de nuestra degustación gratuita de café de especialidad preparado en filtrado.',
+    type: 'entertainment',
+    time: '10:00 a. m. - 05:00 p. m.',
+    location: 'Muruwa Café, Huaraz'
+  }
 ];
