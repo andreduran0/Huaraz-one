@@ -32,13 +32,13 @@ interface AppContextType {
 }
 
 const DEFAULT_HERO_IMAGES = [
-   "https://i.imgur.com/xkGFioX.jpeg", 
-    "https://i.imgur.com/ScqpbHr.jpeg",
+   "https://i.imgur.com/j92MFOS.jpeg", 
+    "https://i.imgur.com/atYSlat.jpeg",
   "https://i.imgur.com/Ub8hD9l.jpeg", 
   "https://i.imgur.com/cnfE46t.jpeg", 
-  "https://bananomeridiano.com/wp-content/uploads/2022/03/laguna-paron-huaraz.jpg", 
-  "https://pamelatours.com/wp-content/uploads/2019/10/laguna69.jpg",
-  "https://www.antamina.com/wp-content/uploads/2020/02/carnaval-huaraz-rompecalle-9.jpg"
+  "https://i.imgur.com/M1m2fRS.jpeg", 
+  "https://i.imgur.com/HDLq4qK.jpeg",
+  "https://i.imgur.com/8Q4f1qU.jpeg"
 ];
 
 const DEFAULT_SOCIAL_LINKS: SocialLinks = {
