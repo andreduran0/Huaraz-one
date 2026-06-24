@@ -144,7 +144,7 @@ export const coupons: Coupon[] = [
     description: 'Obtén un descuento especial del 10% en todos nuestros platos de la carta. Disfruta de la mejor vista de Huaraz con este beneficio exclusivo.',
     code: 'CUMBRE10',
     expiryDate: '2026-06-30', 
-  }
+  },
   {
     id: 'c17',
     businessId: '17', 
