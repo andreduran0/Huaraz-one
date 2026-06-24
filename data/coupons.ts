@@ -115,7 +115,7 @@ export const coupons: Coupon[] = [
   },
   {
     id: '18',
-    businessId: 'taramo', // Táramo
+    businessId: '18', // Táramo
     title: 'Triple Junio 1: Alitas para Todos',
     description: '¡Para compartir, disfrutar y repetir! Pagan 2 platos de alitas y el tercer plato te sale a menos del 50% de descuento (a solo S/ 9). Válido presentando este cupón digital en Táramo.',
     code: 'TARAMOALITAS',
@@ -123,7 +123,7 @@ export const coupons: Coupon[] = [
   },
   {
     id: '18',
-    businessId: 'taramo', // Táramo
+    businessId: '18', // Táramo
     title: 'Triple Junio 2: Churrísimo a S/ 15',
     description: 'Sabor que se siente como en casa. Disfruta de 250 gr de churrasco + papas fritas a solo S/ 15. Válido presentando este cupón digital en Táramo.',
     code: 'TARAMOCHURRASCO',
