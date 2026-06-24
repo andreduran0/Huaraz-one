@@ -145,4 +145,20 @@ export const coupons: Coupon[] = [
     code: 'CUMBRE10',
     expiryDate: '2026-06-30', 
   }
+  {
+    id: 'c17',
+    businessId: '17', 
+    title: 'Temporada de Caldo de Gallina de Corral',
+    description: 'Disfruta de nuestro delicioso Caldo de Gallina de Corral, servido con el sabor auténtico y tradicional. ¡Pruébalo a solo S/ 18!',
+    code: 'FUSIONCALDO',
+    expiryDate: '2026-06-30',
+  },
+  {
+    id: 'c17',
+    businessId: '17',
+    title: 'Lunes de Cilindro: Chancho y Pollo',
+    description: '¡Todos los lunes son de cilindro en Fusion Delicious! Ven y disfruta de nuestras carnes recién salidas del cilindro, desde S/ 17 soles.',
+    code: 'FUSIONCILINDRO',
+    expiryDate: '2026-06-30',
+  }
 ];
