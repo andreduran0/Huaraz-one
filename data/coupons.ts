@@ -2,19 +2,19 @@ import { Coupon } from '../types';
 
 export const coupons: Coupon[] = [
   {
-    id: 'c18',
-    businessId: '19', // Catamares
-    title: '10% de Descuento por el Día del Padre',
-    description: '¡Celebra a papá con los mejores sabores del mar! Obtén un 10% de descuento en todo tu consumo presentando este cupón digital. El mejor regalo para compartir en familia.',
-    code: 'CATAMARESPAPA',
-    expiryDate: '2026-06-30',
-  },
-  {
     id: 'c19',
     businessId: '20', // La ruta del taco
     title: '¡Plato de tacos GRATIS por 5 shots de tequila!',
     description: '¡Empieza la fiesta al mejor estilo mexicano! Por el consumo de 5 shots de tequila, te regalamos un delicioso plato de tacos. Válido presentando este cupón digital en nuestro local.',
     code: 'RUTATACOTEQUILA',
+    expiryDate: '2026-06-30',
+  },
+  {
+    id: 'c18',
+    businessId: '19', // Catamares
+    title: '10% de Descuento por el Día del Padre',
+    description: '¡Celebra a papá con los mejores sabores del mar! Obtén un 10% de descuento en todo tu consumo presentando este cupón digital. El mejor regalo para compartir en familia.',
+    code: 'CATAMARESPAPA',
     expiryDate: '2026-06-30',
   },
   {
@@ -73,7 +73,7 @@ export const coupons: Coupon[] = [
     code: 'MAMAQORIANKA10',
     expiryDate: '2026-05-31', 
   },
- {
+  {
     id: 'c12',
     businessId: 'tortas-camucha',
     title: 'Cualquier Combo a S/ 10.00 (Mañana y Noche)',
@@ -85,7 +85,7 @@ export const coupons: Coupon[] = [
     id: 'c14',
     businessId: 'vermiel-emolienteria',
     title: 'Match Fresh: Choco Fruit de Fresa con Roll de Zapallo',
-    description: 'Disfruta de nuestra combinación preferida: un refrescante Choco Fruit de fresa acompañado de un delicioso roll de zapallo por solo S/ 21.00. (Válido en vaso alto).',
+    description: 'Disfruta de nuestra combination preferida: un refrescante Choco Fruit de fresa acompañado de un delicioso roll de zapallo por solo S/ 21.00. (Válido en vaso alto).',
     code: 'VERMIEL21',
     expiryDate: '2026-06-30',
   },
@@ -111,6 +111,30 @@ export const coupons: Coupon[] = [
     title: 'Duo Delizia: Frutado con Croissant de Pollo',
     description: 'Un dúo irresistible: elige un frutado de maracuyá o fresa acompañado de un croissant de pollo por solo S/ 15.00.',
     code: 'VERMIEL15',
+    expiryDate: '2026-06-30',
+  },
+  {
+    id: 'c20',
+    businessId: 'taramo', // Táramo
+    title: 'Triple Junio 1: Alitas para Todos',
+    description: '¡Para compartir, disfrutar y repetir! Pagan 2 platos de alitas y el tercer plato te sale a menos del 50% de descuento (a solo S/ 9). Válido presentando este cupón digital en Táramo.',
+    code: 'TARAMOALITAS',
+    expiryDate: '2026-06-30',
+  },
+  {
+    id: 'c21',
+    businessId: 'taramo', // Táramo
+    title: 'Triple Junio 2: Churrísimo a S/ 15',
+    description: 'Sabor que se siente como en casa. Disfruta de 250 gr de churrasco + papas fritas a solo S/ 15. Válido presentando este cupón digital en Táramo.',
+    code: 'TARAMOCHURRASCO',
+    expiryDate: '2026-06-30',
+  },
+  {
+    id: 'c22',
+    businessId: 'taramo', // Táramo
+    title: 'Triple Junio 3: Combatiendo el Frío',
+    description: 'Calor que abraza y sabores que alegran. Llévate 3 calientitos con toque cítrico a solo S/ 25. Válido presentando este cupón digital en Táramo.',
+    code: 'TARAMOCALIENTITOS',
     expiryDate: '2026-06-30',
   },
   {
