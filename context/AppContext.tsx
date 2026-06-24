@@ -34,7 +34,7 @@ interface AppContextType {
 const DEFAULT_HERO_IMAGES = [
    "https://i.imgur.com/j92MFOS.jpeg", 
     "https://i.imgur.com/atYSlat.jpeg",
-  "https://i.imgur.com/Ub8hD9l.jpeg", 
+  "https://i.imgur.com/Prryi6n.jpeg", 
   "https://i.imgur.com/cnfE46t.jpeg", 
   "https://i.imgur.com/M1m2fRS.jpeg", 
   "https://i.imgur.com/HDLq4qK.jpeg",
