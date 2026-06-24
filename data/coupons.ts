@@ -147,7 +147,7 @@ export const coupons: Coupon[] = [
   },
   {
     id: 'c17',
-    businessId: '17', 
+    businessId: 'Fusión Delicius', 
     title: 'Temporada de Caldo de Gallina de Corral',
     description: 'Disfruta de nuestro delicioso Caldo de Gallina de Corral, servido con el sabor auténtico y tradicional. ¡Pruébalo a solo S/ 18!',
     code: 'FUSIONCALDO',
@@ -155,7 +155,7 @@ export const coupons: Coupon[] = [
   },
   {
     id: 'c17',
-    businessId: '17',
+    businessId: 'Fusión Delicius',
     title: 'Lunes de Cilindro: Chancho y Pollo',
     description: '¡Todos los lunes son de cilindro en Fusion Delicious! Ven y disfruta de nuestras carnes recién salidas del cilindro, desde S/ 17 soles.',
     code: 'FUSIONCILINDRO',
