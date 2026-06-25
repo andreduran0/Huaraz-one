@@ -30,6 +30,8 @@ import BlogPage from './pages/BlogPage';
 
 import BlogPostPage from './pages/BlogPostPage';
 
+import JobBoard from './pages/JobBoard';
+
 const MetaManager: React.FC = () => {
 
   const location = useLocation();
@@ -109,6 +111,10 @@ const MetaManager: React.FC = () => {
       // pero por ahora mejoramos el genérico para estas rutas.
 
       title = "Detalle del Negocio | Huaraz Explorer";
+
+     } else if (path.includes('/jobs')) { 
+      title = "Bolsa de Trabajo en Huaraz | Huaraz Explorer";
+      desc = "Encuentra las mejores ofertas laborales y oportunidades de empleo en los negocios locales más destacados de Huaraz."; 
 
     }
 
@@ -228,6 +234,8 @@ const App: React.FC = () => {
           <Route path="/blog" element={<BlogPage />} />
 
           <Route path="/blog/:id" element={<BlogPostPage />} />
+
+          <Route path="/jobs" element={<JobBoard />} />
 
         </Routes>
 
