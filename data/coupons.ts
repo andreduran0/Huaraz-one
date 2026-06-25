@@ -41,12 +41,28 @@ export const coupons: Coupon[] = [
     code: 'ANTEPASADO2X30',
     expiryDate: '2026-04-30',
   },
+ {
+    id: 'c9',
+    businessId: 'chifa-gran-muralla-2',
+    title: '¡El 6to come GRATIS!',
+    description: '¡Disfruta de la mejor comida oriental en grupo! Trae a 5 amigos y tu consumo es totalmente GRATIS. Válido mostrando este cupón digital en el local.',
+    code: 'MURALLA6TO',
+    expiryDate: '2026-06-30', 
+  },
   {
     id: 'c9',
-    businessId: 'chifa-gran-muralla-2', // Chifa
-    title: 'Triple Promo: Cumpleañero Gratis, 6to Gratis y Menú + Gaseosa',
-    description: '¡Disfruta de la mejor comida oriental con tres promociones exclusivas! 1) Trae a 5 amigos y tu consumo es GRATIS. 2) ¡El cumpleañero no paga! (presentando DNI). 3) De lunes a viernes, todo menú incluye una gaseosa pequeña de cortesía. Válido mostrando este cupón.',
-    code: 'MURALLATRIPLET',
+    businessId: 'chifa-gran-muralla-2',
+    title: '¡Cumpleañero no paga!',
+    description: 'Celebra tu día especial con nosotros. ¡El cumpleañero come GRATIS! Válido el mismo día de tu cumpleaños presentando DNI físico y mostrando este cupón.',
+    code: 'MURALLACUMPLE',
+    expiryDate: '2026-06-30', 
+  },
+  {
+    id: 'c9',
+    businessId: 'chifa-gran-muralla-2',
+    title: 'Gaseosa de cortesía con tu Menú',
+    description: 'De lunes a viernes, por la compra de cualquier menú, llévate una gaseosa pequeña totalmente de cortesía. Válido mostrando este cupón digital al momento de pedir.',
+    code: 'MURALLAMENU',
     expiryDate: '2026-06-30', 
   },
   {
