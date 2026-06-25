@@ -104,7 +104,7 @@ export default function ArkaikoChat({
                 style={{
                     display: isOpen ? 'none' : 'flex',
                     // 👇 AQUÍ SUBIMOS EL BOTÓN (DE 24px A 90px) 👇
-                    position: 'fixed', bottom: '150px', right: '24px',
+                    position: 'fixed', bottom: '180px', right: '24px',
                     width: '64px', height: '64px', borderRadius: '50%',
                     background: `linear-gradient(135deg, ${colorPrimario}, ${DARK})`,
                     border: `2px solid ${colorDorado}`, color: 'white',
