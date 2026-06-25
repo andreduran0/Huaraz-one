@@ -632,11 +632,11 @@ export const premiumBusinesses: Business[] = [
     adLevel: AdLevel.PREMIUM,
     qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-fusion-delicius',
     status: 'approved', 
-    ownerUserId: 'u16',
+    ownerUserId: 'u17',
     googleMapsQuery: 'Jr 28 de Julio 487 Huaraz',
   },
   {
-    id: '17',
+    id: '18',
     name: 'Taramo - Grill & Bar',
     category: BusinessCategory.RESTAURANT,
     description: 'Descubre el auténtico sabor de las brasas en Taramo - Grill & Bar. Somos especialistas en parrillas, ofreciendo cortes de carne seleccionados y cocinados a la perfección para resaltar su máxima jugosidad. Acompaña tu cena con nuestra excelente selección de bebidas y piqueos en un ambiente moderno, cálido y perfecto para compartir momentos inolvidables con amigos o familia.',
@@ -663,7 +663,7 @@ export const premiumBusinesses: Business[] = [
     adLevel: AdLevel.PREMIUM,
     qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-17',
     status: 'approved', 
-    ownerUserId: 'u1',
+    ownerUserId: 'u18',
     googleMapsQuery: 'Jr. Daniel Villazan 162 Huaraz',
   },
   {
