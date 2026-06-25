@@ -635,8 +635,8 @@ export const premiumBusinesses: Business[] = [
     ownerUserId: 'u16',
     googleMapsQuery: 'Jr 28 de Julio 487 Huaraz',
   },
-  
-    id: '18',
+  {
+    id: '17',
     name: 'Taramo - Grill & Bar',
     category: BusinessCategory.RESTAURANT,
     description: 'Descubre el auténtico sabor de las brasas en Taramo - Grill & Bar. Somos especialistas en parrillas, ofreciendo cortes de carne seleccionados y cocinados a la perfección para resaltar su máxima jugosidad. Acompaña tu cena con nuestra excelente selección de bebidas y piqueos en un ambiente moderno, cálido y perfecto para compartir momentos inolvidables con amigos o familia.',
@@ -787,7 +787,7 @@ Nos diferenciamos de las demás taquerías por ofrecer una combinación única d
     ],
     schedule: {
       'Lunes - Viernes': '8:00 AM - 8:00 PM',
-      'Sabado': '8:30 AM - 9:00 PM'
+      'Sabado': '8:30 AM - 9:00 PM',
      'Domingo': ' 9:00 AM - 9:30 PM'
     },
     adLevel: AdLevel.PREMIUM,
