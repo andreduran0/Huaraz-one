@@ -596,7 +596,7 @@ export const premiumBusinesses: Business[] = [
     googleMapsQuery: 'Jr. Damaso Antunez 726 Huaraz',
   },
   {
-    id: '15', // 
+    id: '17', // 
     name: 'Fusión Delicius',
     category: BusinessCategory.RESTAURANT,
     description: 'Fusión Delicius es una destacada opción gastronómica en el corazón de Huaraz, reconocida por su excelente combinación de comida criolla, pastas, hamburguesas y parrillas de primera. Nos diferenciamos por ofrecer una propuesta diseñada para todos los gustos, con una atención cercana, amable y una cuidadosa selección de insumos frescos. Aquí no se sirven platos por cantidad, sino experiencias construidas con dedicación, sazón y total respeto por quienes nos visitan.',
