@@ -35,5 +35,14 @@ export const jobsData: JobOffer[] = [
     description: 'Se busca personal para recepción. Trato amable, manejo de herramientas de oficina y disponibilidad inmediata.',
     salary: 'S/ 1,100',
     whatsappContact: '51954758684'
+  }, // <--- ASEGÚRATE DE QUE ESTA COMA EXISTA
+  {
+    id: 'job-4',
+    businessId: '21',
+    businessName: 'Las Agüero',
+    title: 'Ayudante de Repostería (Turno Mañana)',
+    description: 'Se requiere ayudante de repostería para cubrir el turno de la mañana. Interesados enviar su CV actualizado al número de WhatsApp.',
+    salary: 'A tratar',
+    whatsappContact: '51983182747'
   }
 ];
