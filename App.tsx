@@ -30,7 +30,7 @@ import BlogPage from './pages/BlogPage';
 
 import BlogPostPage from './pages/BlogPostPage';
 
-import JobBoard from './pages/JobBoard';
+import JobBoard from './components/JobBoard';
 
 const MetaManager: React.FC = () => {
 
