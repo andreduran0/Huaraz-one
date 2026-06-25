@@ -596,7 +596,7 @@ export const premiumBusinesses: Business[] = [
     googleMapsQuery: 'Jr. Damaso Antunez 726 Huaraz',
   },
   {
-    id: '15', // Nuevo negocio en la posición 15
+    id: '16', // 
     name: 'Fusión Delicius',
     category: BusinessCategory.RESTAURANT,
     description: 'Fusión Delicius es una destacada opción gastronómica en el corazón de Huaraz, reconocida por su excelente combinación de comida criolla, pastas, hamburguesas y parrillas de primera. Nos diferenciamos por ofrecer una propuesta diseñada para todos los gustos, con una atención cercana, amable y una cuidadosa selección de insumos frescos. Aquí no se sirven platos por cantidad, sino experiencias construidas con dedicación, sazón y total respeto por quienes nos visitan.',
@@ -635,7 +635,7 @@ export const premiumBusinesses: Business[] = [
     ownerUserId: 'u16',
     googleMapsQuery: 'Jr 28 de Julio 487 Huaraz',
   },
-  {
+  
     id: '18',
     name: 'Taramo - Grill & Bar',
     category: BusinessCategory.RESTAURANT,
@@ -765,5 +765,35 @@ Nos diferenciamos de las demás taquerías por ofrecer una combinación única d
     status: 'approved', 
     ownerUserId: 'u20',
     googleMapsQuery: 'AV. Agustín Gamarra N.º 625 ref: media cuadra de la alameda Grau'
+  },
+  {
+    id: '21',
+    name: 'Las Agüero',
+    category: BusinessCategory.RESTAURANT,
+    description: 'Las Agüero | comer bien, vivir mejor. ¡Bienvenidos a nuestro mundo de postres saludables y comida sana! Vive el bienestar en cada bocado y aroma.',
+    address: 'Jirón Garino Uribe, Huaraz, Perú',
+    lat: -9.5050,
+    lng: -77.4255,
+    phone: '+51 983 182 747',
+    whatsapp: '51983 182 747',
+    photos: [
+      'https://i.imgur.com/n9lBIzu.jpeg',
+      'https://i.imgur.com/ItVUAHf.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/ETUxhc9.jpeg',
+      'https://i.imgur.com/ItVUAHf.jpeg',
+      'https://i.imgur.com/6k7gjHA.jpeg'
+    ],
+    schedule: {
+      'Lunes - Viernes': '8:00 AM - 8:00 PM',
+      'Sabado': '8:30 AM - 9:00 PM'
+     'Domingo': ' 9:00 AM - 9:30 PM'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=las-aguero',
+    status: 'approved',
+    ownerUserId: 'u21',
+    googleMapsQuery: 'Jirón Garino Uribe, Huaraz, Perú'
   },
 ];
