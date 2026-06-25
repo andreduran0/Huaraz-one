@@ -697,12 +697,13 @@ Nuestro compromiso es brindar una experiencia única, combinando frescura, sabor
       'https://i.imgur.com/X7D3n07.jpeg'
     ],
     menuImages: [
-      'https://i.imgur.com/ShOgyni.jpeg',
-      'https://i.imgur.com/czMNuCu.jpeg',
-      'https://i.imgur.com/fwjErEv.jpeg',
-      'https://i.imgur.com/tJesKoY.jpeg',
-      'https://i.imgur.com/7mwJlNr.jpeg',
-      'https://i.imgur.com/d3K0vND.jpeg'
+      'https://i.imgur.com/vgxt5zL.jpeg',
+      'https://i.imgur.com/y0OIWHy.jpeg',
+      'https://i.imgur.com/cn2US1E.jpeg',
+      'https://i.imgur.com/aR6Ajhl.jpeg',
+      'https://i.imgur.com/nbDtNBT.jpeg',
+      'https://i.imgur.com/45U25AE.jpeg',
+      'https://i.imgur.com/Uuc6foX.jpeg'
     ],
     schedule: { 
       'Martes - Sábado': '10:00 AM - 5:30 PM',
@@ -749,12 +750,8 @@ Nos diferenciamos de las demás taquerías por ofrecer una combinación única d
       'https://i.imgur.com/X7D3n07.jpeg'
     ],
     menuImages: [
-      'https://i.imgur.com/ShOgyni.jpeg',
-      'https://i.imgur.com/czMNuCu.jpeg',
-      'https://i.imgur.com/fwjErEv.jpeg',
-      'https://i.imgur.com/tJesKoY.jpeg',
-      'https://i.imgur.com/7mwJlNr.jpeg',
-      'https://i.imgur.com/d3K0vND.jpeg'
+      'https://i.imgur.com/6vM4z72.jpeg',
+      'https://i.imgur.com/At6o4E0.jpeg'
     ],
     schedule: { 
       'Martes - Sábado': '5:00 PM - 12:00 AM',
