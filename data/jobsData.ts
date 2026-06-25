@@ -11,38 +11,29 @@ export interface JobOffer {
 export const jobsData: JobOffer[] = [
   {
     id: 'job-1',
-    businessId: '1',
-    businessName: 'Cumbre - Mirador Rataquenua',
-    title: 'Mozo / Azafata de Tiempo Completo',
-    description: 'Buscamos personal con experiencia en atención al cliente, proactivo y con excelente presencia para nuestro restaurante de altura.',
-    salary: 'S/ 1,200 + Propinas',
-    whatsappContact: '51937511052'
-  },
-  {
-    id: 'job-2',
-    businessId: 'nobel-ingenieros',
-    businessName: 'Colegio Nobel Ingenieros',
-    title: 'Profesor de Matemáticas (Secundaria)',
-    description: 'Únete a nuestro equipo docente. Requerimos profesional titulado con pasión por la enseñanza y metodología innovadora.',
-    salary: 'A tratar según experiencia',
-    whatsappContact: '51929866812'
-  },
-  {
-    id: 'job-3',
-    businessId: 'policlinico-doctor-d',
-    businessName: 'Policlínico Doctor D',
-    title: 'Recepcionista / Atención al Paciente',
-    description: 'Se busca personal para recepción. Trato amable, manejo de herramientas de oficina y disponibilidad inmediata.',
-    salary: 'S/ 1,100',
-    whatsappContact: '51954758684'
-  }, // <--- ASEGÚRATE DE QUE ESTA COMA EXISTA
-  {
-    id: 'job-4',
     businessId: '21',
     businessName: 'Las Agüero',
     title: 'Ayudante de Repostería (Turno Mañana)',
     description: 'Se requiere ayudante de repostería para cubrir el turno de la mañana. Interesados enviar su CV actualizado al número de WhatsApp.',
     salary: 'A tratar',
     whatsappContact: '51983182747'
+  },
+  {
+    id: 'job-2',
+    businessId: 'vermiel-emolientes',
+    businessName: 'Vermiel Emolientes',
+    title: 'Caja y Atención al Cliente',
+    description: 'Buscamos personal para el área de caja y atención al cliente. Buscamos personas proactivas, amables y con vocación de servicio.',
+    salary: 'A tratar',
+    whatsappContact: '51950641540'
+  },
+  {
+    id: 'job-3',
+    businessId: 'vermiel-emolientes',
+    businessName: 'Vermiel Emolientes',
+    title: 'Producción de Postres',
+    description: 'Se busca personal para el área de producción de postres. Es indispensable contar con conocimientos básicos en repostería.',
+    salary: 'A tratar',
+    whatsappContact: '51976393160'
   }
 ];
