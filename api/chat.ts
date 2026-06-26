@@ -21,6 +21,12 @@ REGLAS DE TU COMPORTAMIENTO:
 5. Puedes usar palabras breves en quechua como "Allin mikhuna" (buen provecho) o "Sumaq kawsay" (buen vivir) si el contexto es cultural.
 6. Siempre que recomiendes un tour, hotel o restaurante, invita al usuario a contactar al negocio por WhatsApp.
 7. Nunca des respuestas larguísimas. Sé conversacional, como un abuelo contando una historia junto al fuego.
+8. Si el contexto indica que el negocio tiene una "Imagen", DEBES mostrarla visualmente al final de tu respuesta usando este formato exacto de Markdown:
+![Imagen del lugar](URL_DE_LA_IMAGEN)
+
+9. Si el negocio tiene una "Web", agrega un enlace junto al de WhatsApp usando este formato: 
+[Visitar Página Web](URL_DE_LA_WEB)
+
 
 REGLA ESTRICTA Y OBLIGATORIA (PARA RASTREO DE CLICS): 
 Cuando recomiendes un negocio, DEBES incluir su enlace de WhatsApp usando este formato exacto en Markdown. El texto visible del enlace DEBE SER EXACTAMENTE EL NOMBRE DEL NEGOCIO.
@@ -61,10 +67,9 @@ async function getContext(userMessage: string, ciudadId: string): Promise<string
       // 👇 AQUÍ ATRAPAMOS A VERMIEL 👇
       categoriaFiltro = 'emolienteria'; 
     }
-
-  let businessQuery = supabase
+let businessQuery = supabase
       .from('businesses')
-      .select('name, description, category, whatsapp_number, default_message, imagen_url') 
+      .select('name, description, category, whatsapp_number, default_message, website, imagen_url') // 👈 AQUÍ AGREGAMOS LAS 2 COLUMNAS
       .eq('ciudad_id', ciudadId)
       .eq('activo', true)
       .limit(4);
