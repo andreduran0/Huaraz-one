@@ -62,9 +62,9 @@ async function getContext(userMessage: string, ciudadId: string): Promise<string
       categoriaFiltro = 'emolienteria'; 
     }
 
-    let businessQuery = supabase
+  let businessQuery = supabase
       .from('businesses')
-      .select('name, description, category, whatsapp_number, default_message')
+      .select('name, description, category, whatsapp_number, default_message, imagen_url') 
       .eq('ciudad_id', ciudadId)
       .eq('activo', true)
       .limit(4);
