@@ -75,9 +75,9 @@ async function getContext(userMessage: string, ciudadId: string): Promise<string
 
     const { data: businesses } = await businessQuery;
 
-    if (businesses && businesses.length > 0) {
+ if (businesses && businesses.length > 0) {
       const businessText = businesses.map(b =>
-        `- ${b.name} (${b.category}): ${b.description}. WhatsApp: ${b.whatsapp_number || 'No tiene'}. Mensaje: ${b.default_message || 'No tiene'}`
+        `- ${b.name} (${b.category}): ${b.description}. WhatsApp: ${b.whatsapp_number}. Mensaje: ${b.default_message}. Web: ${b.website || 'No tiene'}. Imagen: ${b.imagen_url || 'No tiene'}`
       ).join('\n');
       contextParts.push('NEGOCIOS DISPONIBLES EN LA PLATAFORMA PARA RECOMENDAR:\n' + businessText);
     }
