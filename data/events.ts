@@ -220,7 +220,7 @@ export const events: Event[] = [
     type: 'entertainment',
     time: '10:00 a. m. - 05:00 p. m.',
     location: 'Muruwa Café, Huaraz'
-  }
+  },
   {
     date: '2026-06-27',
     title: 'Festival Un Viaje a los Andes',
