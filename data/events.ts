@@ -221,4 +221,12 @@ export const events: Event[] = [
     time: '10:00 a. m. - 05:00 p. m.',
     location: 'Muruwa Café, Huaraz'
   }
+  {
+    date: '2026-06-27',
+    title: 'Festival Un Viaje a los Andes',
+    description: 'Gran festival por feriado largo con 2 escenarios en vivo. Presentación estelar de A.CHAL, Laguna Pai, Skillbea, Hit La Rosa, Cementerio Club, Cuarteto Intercontinental, Los Ficus y Turmanye. Invitado especial: DJ HJ. Entradas a la venta en Teleticket.',
+    type: 'entertainment',
+    time: '10:00 a. m.',
+    location: 'Parque Perú- Huaraz'
+  }
 ];
