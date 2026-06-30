@@ -740,14 +740,9 @@ Nos diferenciamos de las demás taquerías por ofrecer una combinación única d
     whatsapp: '51998127329',
     photos: [
       'https://i.imgur.com/LaMi8MY.jpeg',
-      'https://i.imgur.com/D71gIL8.jpeg',
-      'https://i.imgur.com/RFp35tk.jpeg',
-      'https://i.imgur.com/BjB7oO5.jpeg',
-      'https://i.imgur.com/QL9W5eh.png',
-      'https://i.imgur.com/KfueoI2.png',
-      'https://i.imgur.com/me8ec0a.png',
-      'https://i.imgur.com/yuSQkZR.jpeg',
-      'https://i.imgur.com/X7D3n07.jpeg'
+      'https://i.imgur.com/zpgrBnO.jpeg',
+      'https://i.imgur.com/jvH3qwz.jpeg',
+      'https://i.imgur.com/CcO17cd.jpeg'
     ],
     menuImages: [
       'https://i.imgur.com/6vM4z72.jpeg',
