@@ -57,14 +57,15 @@ async function getContext(userMessage: string, ciudadId: string): Promise<string
     let categoriaFiltro = null;
     
     // Filtros ampliados para capturar la intención del turista
+    
     if (msgLower.includes('hotel') || msgLower.includes('dormir') || msgLower.includes('hospedaje')) {
       categoriaFiltro = 'hotel';
     } else if (msgLower.includes('comer') || msgLower.includes('restaurante') || msgLower.includes('almuerzo')) {
       categoriaFiltro = 'restaurant';
-    } else if (msgLower.includes('tour') || msgLower.includes('trekking') || msgLower.includes('laguna') || msgLower.includes('caminar')) {
+    } else if (msgLower.includes('tour') || msgLower.includes('paquete') || msgLower.includes('trekking') || msgLower.includes('laguna') || msgLower.includes('caminar')) {
+      // Unificado: Todo esto es un TOUR o PAQUETE
       categoriaFiltro = 'tour';
-} else if (msgLower.includes('tour') || msgLower.includes('paquete') || msgLower.includes('trekking') || msgLower.includes('laguna') || msgLower.includes('caminar')) {
-      // 👇 AQUÍ ATRAPAMOS A VERMIEL 👇
+    } else if (msgLower.includes('emoliente') || msgLower.includes('bebida') || msgLower.includes('calentar') || msgLower.includes('infusión')) {
       categoriaFiltro = 'emolienteria'; 
     }
 let businessQuery = supabase
