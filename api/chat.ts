@@ -63,7 +63,7 @@ async function getContext(userMessage: string, ciudadId: string): Promise<string
       categoriaFiltro = 'restaurant';
     } else if (msgLower.includes('tour') || msgLower.includes('trekking') || msgLower.includes('laguna') || msgLower.includes('caminar')) {
       categoriaFiltro = 'tour';
-    } else if (msgLower.includes('emoliente') || msgLower.includes('bebida') || msgLower.includes('calentar') || msgLower.includes('infusión')) {
+} else if (msgLower.includes('tour') || msgLower.includes('paquete') || msgLower.includes('trekking') || msgLower.includes('laguna') || msgLower.includes('caminar')) {
       // 👇 AQUÍ ATRAPAMOS A VERMIEL 👇
       categoriaFiltro = 'emolienteria'; 
     }
