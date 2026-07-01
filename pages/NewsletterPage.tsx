@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { useTranslations } from '../hooks/useTranslations';
 
 const NewsletterPage: React.FC = () => {
   const t = useTranslations();
-  const [name, setName] = useState('');
+  // Cambiamos 'name' por 'whatsapp'
+  const [whatsapp, setWhatsapp] = useState('');
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
@@ -13,9 +13,9 @@ const NewsletterPage: React.FC = () => {
     e.preventDefault();
     setMessage('');
 
-    if (!name.trim()) {
+    if (!whatsapp.trim()) {
       setStatus('error');
-      setMessage(t('newsletter.nameRequired'));
+      setMessage('Por favor, ingresa tu número de WhatsApp');
       return;
     }
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
@@ -31,7 +31,8 @@ const NewsletterPage: React.FC = () => {
       const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/28120126/427n29k/';
 
       const formData = new FormData();
-      formData.append('whastapp',whastapp);
+      // Aquí arreglamos el error: ahora enviará el número correctamente a Zapier
+      formData.append('whatsapp', whatsapp); 
       formData.append('email', email);
       formData.append('source', 'Huaraz Explorer PWA - Newsletter Campaign');
       formData.append('timestamp', new Date().toISOString());
@@ -43,7 +44,7 @@ const NewsletterPage: React.FC = () => {
       });
 
       setStatus('success');
-      setName('');
+      setWhatsapp('');
       setEmail('');
 
     } catch (error) {
@@ -94,10 +95,10 @@ const NewsletterPage: React.FC = () => {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder={t('newsletter.namePlaceholder')}
+                type="tel" // Cambiado a 'tel' para abrir el teclado numérico en móviles
+                value={whatsapp}
+                onChange={(e) => setWhatsapp(e.target.value)}
+                placeholder="Tu número de WhatsApp" // Tu nuevo texto
                 disabled={status === 'loading'}
                 className="w-full p-5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all font-semibold"
               />
