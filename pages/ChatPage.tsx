@@ -66,9 +66,9 @@ const ChatPage: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Inicializar chat si no existe
+  // 👇 LA SOLUCIÓN: Esperamos a que Supabase llene "businesses" antes de crear el chat
   useEffect(() => {
-    if (!chatSessionRef.current) {
+    if (businesses && businesses.length > 0) {
       try {
         chatSessionRef.current = createTouristChat(businesses, coupons, language);
       } catch (e) {
