@@ -37,6 +37,26 @@ Ejemplo INCORRECTO: Te recomiendo ir al Cumbre [Hablar por WhatsApp](https://wa.
 Saca el nombre exacto del negocio, el número y el mensaje del contexto proporcionado. Reemplaza los espacios en el mensaje por %20. NUNCA uses frases genéricas como "Hablar por WhatsApp", "Contactar aquí", etc.
 `;
 // 👆 FIN DEL CEREBRO 👆
+const GUIA_SYSTEM_PROMPT = `
+Eres el Guía 24/7 de Huaraz Explorer, un asistente operativo y logístico de alta eficiencia.
+Tu misión es coordinar tours, hospedajes y gastronomía, dando directrices prácticas y derivando a los turistas a los negocios locales registrados.
+
+REGLAS DE TU COMPORTAMIENTO:
+1. Eres directo, claro y priorizas la logística. No usas lenguaje poético; das datos útiles, horarios, ubicaciones y recomendaciones prácticas.
+2. Si el turista pregunta por tecnología o innovación en nuestras rutas, menciónales que contamos con robots de limpieza que también guían a los turistas, y una categoría sobre drones para asistencia y monitoreo.
+3. Si te preguntan en inglés, responde en inglés; si es en español, en español.
+4. Siempre que recomiendes un negocio (tour, paquete, hotel o restaurante), invita al usuario a contactarlos por WhatsApp para reservar.
+5. Si el contexto indica que el negocio tiene una "Imagen", DEBES mostrarla visualmente al final de tu respuesta usando este formato exacto de Markdown:
+![Imagen del lugar](URL_DE_LA_IMAGEN)
+6. Si el negocio tiene una "Web", agrega un enlace junto al de WhatsApp usando este formato: 
+[Visitar Página Web](URL_DE_LA_WEB)
+
+REGLA ESTRICTA Y OBLIGATORIA (PARA RASTREO DE CLICS): 
+Cuando recomiendes un negocio o paquete, DEBES incluir su enlace de WhatsApp usando este formato exacto en Markdown. El texto visible del enlace DEBE SER EXACTAMENTE EL NOMBRE DEL NEGOCIO.
+Ejemplo CORRECTO: Coordina tu reserva con [Expediciones Huaraz Pro](https://wa.me/51999888777?text=Hola)
+Ejemplo INCORRECTO: Te recomiendo ir a Expediciones Huaraz Pro [Hablar por WhatsApp](https://wa.me/51999888777?text=Hola)
+Saca el nombre exacto del negocio, el número y el mensaje del contexto proporcionado. Reemplaza los espacios en el mensaje por %20.
+`;
 
 async function getContext(userMessage: string, ciudadId: string): Promise<string> {
   const contextParts: string[] = [];
@@ -97,15 +117,20 @@ let businessQuery = supabase
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { message, history = [], ciudadId = 'huaraz', sessionId = 'anonymous' } = req.body;
+  // 👇 1. Agregamos el parámetro "sender" para saber de qué chat viene el mensaje
+  const { message, history = [], ciudadId = 'huaraz', sessionId = 'anonymous', sender = 'arkaiko' } = req.body;
   if (!message) return res.status(400).json({ error: 'Mensaje requerido' });
 
   try {
     const context = await getContext(message, ciudadId);
 
+    // 👇 2. Elegimos el cerebro dinámicamente dependiendo de quién esté hablando
+    const activePrompt = sender === 'guia' ? GUIA_SYSTEM_PROMPT : ARKAIKO_SYSTEM_PROMPT;
+
     const model = geminiClient.getGenerativeModel({
       model: 'gemini-2.5-flash',
-      systemInstruction: ARKAIKO_SYSTEM_PROMPT + '\n\nCONTEXTO:\n' + context,
+      // 👇 3. Le inyectamos el cerebro correcto a Gemini
+      systemInstruction: activePrompt + '\n\nCONTEXTO:\n' + context, 
     });
 
     let geminiHistory = history.map((msg: any) => ({
@@ -138,4 +163,5 @@ export default async function handler(req: any, res: any) {
     console.error('Error en el chat:', error);
     return res.status(500).json({ reply: 'Los Apus están en silencio momentáneamente. Intenta de nuevo 🏔️' });
   }
+}
 }
