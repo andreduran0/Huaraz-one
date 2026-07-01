@@ -31,7 +31,7 @@ const NewsletterPage: React.FC = () => {
       const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/28120126/427n29k/';
 
       const formData = new FormData();
-      formData.append('name', name);
+      formData.append('Numero de whastapp', Numero de whastapp);
       formData.append('email', email);
       formData.append('source', 'Huaraz Explorer PWA - Newsletter Campaign');
       formData.append('timestamp', new Date().toISOString());
