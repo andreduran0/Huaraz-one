@@ -34,7 +34,7 @@ Al final de tu itinerario, DEBES recomendar una de las "AGENCIAS DE TOURS DISPON
 
 [RESERVAR PAQUETE CON NOMBRE DE LA AGENCIA](https://wa.me/NUMERO_DE_WHATSAPP?text=Hola,%20quiero%20reservar)
 `,
-      temperature: 0.7,
+      temperature: 0.3,
     },
   });
 };
