@@ -187,8 +187,7 @@ export const events: Event[] = [
     time: '08:00 p. m.',
     location: 'Mallibu Resto Bar'
   },
-  
-  // --- EVENTOS PARA HOY Y MAÑANA (JUNIO 2026) ---
+    // --- EVENTOS PARA HOY Y MAÑANA (JUNIO 2026) ---
   {
     date: '2026-06-20',
     title: 'Chela Fest - 2da Edición',
@@ -228,5 +227,22 @@ export const events: Event[] = [
     type: 'entertainment',
     time: '10:00 a. m.',
     location: 'Parque Perú- Huaraz'
+  }
+  // --- EVENTOS JULIO 2026 ---
+  {
+    date: '2026-07-02',
+    title: 'Ponencia: Glaciares y Deportes',
+    description: 'En el marco del Festival de los Glaciares y el Ultra Trail Cordillera Blanca. Ponencia a cargo de Pascal Egli: "Glaciares y deportes: entre riesgos y sostenibilidad". Un espacio para despertar, reflexionar y actuar sobre el impacto del deporte en nuestros glaciares. Ingreso libre.',
+    type: 'cultural',
+    time: '03:00 p. m. - 06:00 p. m.',
+    location: 'CCA Sala Alpamayo - Huaraz'
+  },
+  {
+    date: '2026-07-02',
+    title: 'Inka Frut Presenta: Coky Kaya',
+    description: '¡Mucho más que música! Celebra el Día Internacional del Reggae con la presentación en vivo de Coky Kaya. Una noche para disfrutar de las raíces, historia y buenas vibras de este género musical.',
+    type: 'entertainment',
+    time: '07:00 p. m.',
+    location: 'Inka Frut (Parque Ginebra - Huaraz)'
   }
 ];
