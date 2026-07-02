@@ -227,7 +227,7 @@ export const events: Event[] = [
     type: 'entertainment',
     time: '10:00 a. m.',
     location: 'Parque Perú- Huaraz'
-  }
+  },
   // --- EVENTOS JULIO 2026 ---
   {
     date: '2026-07-02',
