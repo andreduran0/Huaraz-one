@@ -72,7 +72,7 @@ export const premiumBusinesses: Business[] = [
     status: 'approved', 
     ownerUserId: 'u22',
     googleMapsQuery: 'Jr. Federico Sal y Rosas 305 - Huaraz',
-  }
+  },
   {
     id: '1',
     name: 'Cumbre - Mirador Rataquenua',
