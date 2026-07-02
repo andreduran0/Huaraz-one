@@ -2,6 +2,39 @@ import { Coupon } from '../types';
 
 export const coupons: Coupon[] = [
   {
+    id: '18',
+    businessId: '18', // Táramo
+    title: 'Los Famosos 10 Soles: 3er plato de Alitas',
+    description: '¡Julio se celebra así! Paga 2 platos de alitas y llévate el tercer plato por solo S/ 10. Válido presentando este cupón digital en Táramo Bar x Parrilla.',
+    code: 'TARAMOALITASJULIO',
+    expiryDate: '2026-07-31',
+  },
+  {
+    id: '18',
+    businessId: '18', // Táramo
+    title: '¡Salud, Perú!: 3 Calientitos a S/ 28',
+    description: '¡Brindemos con Pisco en estas Fiestas Patrias! Disfruta de 3 calientitos por solo S/ 28. Válido presentando este cupón digital en Táramo.',
+    code: 'TARAMOCALIENTITOS',
+    expiryDate: '2026-07-31',
+  },
+  {
+    id: '18',
+    businessId: '18', // Táramo
+    title: 'La Tercera es la Vencida: Parrilla a S/ 15',
+    description: '¡Viva el Perú! Paga 2 platos de parrilla y llévate el tercer plato por solo S/ 15. Válido presentando este cupón digital en Táramo.',
+    code: 'TARAMOPARRILLA',
+    expiryDate: '2026-07-31',
+  },
+  {
+    id: 'c18_4',
+    businessId: '18', // Táramo
+    title: 'Sabe a Perú: Mixtura a S/ 35',
+    description: '¡Orgullosos de ser peruanos! Disfruta de 2 anticuchos de corazón + mollejitas + rachi por solo S/ 35. Válido presentando este cupón digital en Táramo.',
+    code: 'TARAMOSABEAPERU',
+    expiryDate: '2026-07-31',
+  }
+  
+  {
     id: 'c19',
     businessId: '20', // La ruta del taco
     title: '¡Plato de tacos GRATIS por 5 shots de tequila!',
@@ -127,30 +160,6 @@ export const coupons: Coupon[] = [
     title: 'Duo Delizia: Frutado con Croissant de Pollo',
     description: 'Un dúo irresistible: elige un frutado de maracuyá o fresa acompañado de un croissant de pollo por solo S/ 15.00.',
     code: 'VERMIEL15',
-    expiryDate: '2026-06-30',
-  },
-  {
-    id: '18',
-    businessId: '18', // Táramo
-    title: 'Triple Junio 1: Alitas para Todos',
-    description: '¡Para compartir, disfrutar y repetir! Pagan 2 platos de alitas y el tercer plato te sale a menos del 50% de descuento (a solo S/ 9). Válido presentando este cupón digital en Táramo.',
-    code: 'TARAMOALITAS',
-    expiryDate: '2026-06-30',
-  },
-  {
-    id: '18',
-    businessId: '18', // Táramo
-    title: 'Triple Junio 2: Churrísimo a S/ 15',
-    description: 'Sabor que se siente como en casa. Disfruta de 250 gr de churrasco + papas fritas a solo S/ 15. Válido presentando este cupón digital en Táramo.',
-    code: 'TARAMOCHURRASCO',
-    expiryDate: '2026-06-30',
-  },
-  {
-    id: 'c18',
-    businessId: '18', // Táramo
-    title: 'Triple Junio 3: Combatiendo el Frío',
-    description: 'Calor que abraza y sabores que alegran. Llévate 3 calientitos con toque cítrico a solo S/ 25. Válido presentando este cupón digital en Táramo.',
-    code: 'TARAMOCALIENTITOS',
     expiryDate: '2026-06-30',
   },
   {
