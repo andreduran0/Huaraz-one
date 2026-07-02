@@ -26,14 +26,13 @@ export const coupons: Coupon[] = [
     expiryDate: '2026-07-31',
   },
   {
-    id: 'c18_4',
+    id: 'c18',
     businessId: '18', // Táramo
     title: 'Sabe a Perú: Mixtura a S/ 35',
     description: '¡Orgullosos de ser peruanos! Disfruta de 2 anticuchos de corazón + mollejitas + rachi por solo S/ 35. Válido presentando este cupón digital en Táramo.',
     code: 'TARAMOSABEAPERU',
     expiryDate: '2026-07-31',
-  }
-  
+  },
   {
     id: 'c19',
     businessId: '20', // La ruta del taco
