@@ -100,7 +100,7 @@ const HomePage: React.FC = () => {
           
           <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 mb-10">
               <div className="flex justify-between items-center mb-6">
-                  <p className="text-[10px] font-black text-white/50 uppercase tracking-widest">Live Performance (24h)</p>
+                  <p className="text-[5px] font-black text-white/50 uppercase tracking-widest">Live Performance (24h)</p>
                   <p className="text-2xl font-black text-white italic">$0.00142 <i className="fas fa-caret-up text-[#39FF14] ml-2"></i></p>
               </div>
               <div className="h-32 w-full flex items-end">
