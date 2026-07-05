@@ -71,7 +71,7 @@ const HomePage: React.FC = () => {
         {/* Capa 1: Imagen de la estación de carga */}
         <div 
           className="absolute inset-0 z-0 bg-cover bg-center opacity-40 mix-blend-screen"
-          style={{ backgroundImage: "url('URL_DE_TU_IMAGEN_VERTICAL_AQUI')" }}
+          style={{ backgroundImage: "url('https://i.imgur.com/YelHKTw.jpeg')" }}
         ></div>
         
         {/* Capa 2: Degradado oscuro para garantizar lectura del texto */}
