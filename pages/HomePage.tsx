@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import BusinessCard from '../components/BusinessCard';
@@ -65,44 +64,63 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* TOKEN $HUARAZ */}
+      {/* TOKEN $HUARAZ - ACTUALIZADO CON IMAGEN DE FONDO */}
       <section className="bg-[#0A0A0A] rounded-[3.5rem] p-10 shadow-2xl text-white overflow-hidden relative border border-[#39FF14]/30 animate-fadeIn">
-        <div className="absolute -top-20 -right-20 w-80 h-80 bg-[#39FF14]/10 rounded-full blur-[120px] pointer-events-none"></div>
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10 relative z-10">
-          <div className="flex items-center gap-5">
-            <div className="w-20 h-20 bg-[#39FF14] rounded-3xl flex items-center justify-center text-black font-black text-3xl shadow-[0_0_30px_rgba(57,255,20,0.6)]">HZ</div>
-            <div>
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-xl inline-flex items-center gap-2 mb-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#39FF14] animate-pulse"></span>
-                <p className="text-[10px] font-black tracking-[0.2em] text-white/80 uppercase">PUMP.FUN LIVE</p>
+        
+        {/* --- INICIO DE MODIFICACIÓN DE FONDO --- */}
+        {/* Capa 1: Imagen de la estación de carga */}
+        <div 
+          className="absolute inset-0 z-0 bg-cover bg-center opacity-40 mix-blend-screen"
+          style={{ backgroundImage: "url('URL_DE_TU_IMAGEN_VERTICAL_AQUI')" }}
+        ></div>
+        
+        {/* Capa 2: Degradado oscuro para garantizar lectura del texto */}
+        <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/70 to-transparent"></div>
+        
+        {/* Capa 3: Tu resplandor original */}
+        <div className="absolute -top-20 -right-20 w-80 h-80 bg-[#39FF14]/15 rounded-full blur-[120px] pointer-events-none z-0"></div>
+        {/* --- FIN DE MODIFICACIÓN DE FONDO --- */}
+
+        {/* CONTENIDO PRINCIPAL (Enviado al frente con relative z-10) */}
+        <div className="relative z-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10">
+            <div className="flex items-center gap-5">
+              <div className="w-20 h-20 bg-[#39FF14] rounded-3xl flex items-center justify-center text-black font-black text-3xl shadow-[0_0_30px_rgba(57,255,20,0.6)]">HZ</div>
+              <div>
+                <div className="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-xl inline-flex items-center gap-2 mb-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#39FF14] animate-pulse"></span>
+                  <p className="text-[10px] font-black tracking-[0.2em] text-white/80 uppercase">PUMP.FUN LIVE</p>
+                </div>
+                <h3 className="text-4xl font-black tracking-tighter italic uppercase">$HUARAZ</h3>
               </div>
-              <h3 className="text-4xl font-black tracking-tighter italic uppercase">$HUARAZ</h3>
+            </div>
+            <div className="text-right">
+               <p className="text-[10px] text-white/40 uppercase font-black tracking-[0.3em] mb-2">Market Cap Est.</p>
+               <p className="text-5xl font-black tracking-tighter italic text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">$124.8K</p>
             </div>
           </div>
-          <div className="text-right">
-             <p className="text-[10px] text-white/40 uppercase font-black tracking-[0.3em] mb-2">Market Cap Est.</p>
-             <p className="text-5xl font-black tracking-tighter italic text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">$124.8K</p>
+          
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 mb-10">
+              <div className="flex justify-between items-center mb-6">
+                  <p className="text-[10px] font-black text-white/50 uppercase tracking-widest">Live Performance (24h)</p>
+                  <p className="text-2xl font-black text-white italic">$0.00142 <i className="fas fa-caret-up text-[#39FF14] ml-2"></i></p>
+              </div>
+              <div className="h-32 w-full flex items-end">
+                  <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible" preserveAspectRatio="none">
+                      <path d="M0,35 Q10,32 20,25 T40,28 T60,15 T80,18 T100,5" fill="none" stroke="#39FF14" strokeWidth="3" strokeLinecap="round" className="drop-shadow-[0_0_10px_rgba(57,255,20,0.8)]" />
+                      <path d="M0,35 Q10,32 20,25 T40,28 T60,15 T80,18 T100,5 L100,40 L0,40 Z" fill="url(#neonGradient)" opacity="0.3" />
+                      <defs><linearGradient id="neonGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#39FF14" /><stop offset="100%" stopColor="transparent" /></linearGradient></defs>
+                  </svg>
+              </div>
           </div>
+          
+          <a href="https://pump.fun/" target="_blank" rel="noreferrer" className="w-full bg-[#39FF14] text-black py-6 rounded-[2rem] font-black uppercase text-xs tracking-[0.3em] flex items-center justify-center gap-4 hover:bg-white transition-all shadow-[0_15px_40px_rgba(57,255,20,0.3)]">
+              Comprar ahora <i className="fas fa-bolt"></i>
+          </a>
         </div>
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 mb-10">
-            <div className="flex justify-between items-center mb-6">
-                <p className="text-[10px] font-black text-white/50 uppercase tracking-widest">Live Performance (24h)</p>
-                <p className="text-2xl font-black text-white italic">$0.00142 <i className="fas fa-caret-up text-[#39FF14] ml-2"></i></p>
-            </div>
-            <div className="h-32 w-full flex items-end">
-                <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible" preserveAspectRatio="none">
-                    <path d="M0,35 Q10,32 20,25 T40,28 T60,15 T80,18 T100,5" fill="none" stroke="#39FF14" strokeWidth="3" strokeLinecap="round" className="drop-shadow-[0_0_10px_rgba(57,255,20,0.8)]" />
-                    <path d="M0,35 Q10,32 20,25 T40,28 T60,15 T80,18 T100,5 L100,40 L0,40 Z" fill="url(#neonGradient)" opacity="0.3" />
-                    <defs><linearGradient id="neonGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#39FF14" /><stop offset="100%" stopColor="transparent" /></linearGradient></defs>
-                </svg>
-            </div>
-        </div>
-        <a href="https://pump.fun/" target="_blank" rel="noreferrer" className="w-full bg-[#39FF14] text-black py-6 rounded-[2rem] font-black uppercase text-xs tracking-[0.3em] flex items-center justify-center gap-4 hover:bg-white transition-all shadow-[0_15px_40px_rgba(57,255,20,0.3)]">
-            Comprar ahora <i className="fas fa-bolt"></i>
-        </a>
       </section>
 
-      {/* NEWSLETTER - ACTUALIZADA CON MÁS INFORMACIÓN */}
+      {/* NEWSLETTER */}
       <section className="bg-[#000000] rounded-[3.5rem] p-12 text-center relative overflow-hidden shadow-2xl border border-white/10 animate-fadeIn group">
         {/* Cyber Pattern Background */}
         <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#39FF14 0.8px, transparent 0.8px)', backgroundSize: '24px 24px' }}></div>
