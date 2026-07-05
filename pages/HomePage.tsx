@@ -70,7 +70,7 @@ const HomePage: React.FC = () => {
         {/* --- CAMBIO DE POSICIÓN --- */}
         {/* Usamos bg-bottom para que la estación de carga quede más abajo y visible */}
         <div 
-          className="absolute inset-0 z-0 bg-cover bg-bottom opacity-30"
+          className="absolute inset-0 z-0 bg-cover bg-bottom opacity-80"
           style={{ backgroundImage: "url('https://i.imgur.com/YelHKTw.jpeg')" }}
         ></div>
         
@@ -94,7 +94,7 @@ const HomePage: React.FC = () => {
             </div>
             <div className="text-right">
                <p className="text-[10px] text-white/40 uppercase font-black tracking-[0.3em] mb-2">Market Cap Est.</p>
-               <p className="text-5xl font-black tracking-tighter italic text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">$124.8K</p>
+               <p className="text-5xl font-black tracking-tighter italic text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">$224.8K</p>
             </div>
           </div>
           
