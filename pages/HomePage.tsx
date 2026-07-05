@@ -64,24 +64,22 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* TOKEN $HUARAZ - ACTUALIZADO CON IMAGEN DE FONDO */}
+      {/* TOKEN $HUARAZ - FONDO AJUSTADO */}
       <section className="bg-[#0A0A0A] rounded-[3.5rem] p-10 shadow-2xl text-white overflow-hidden relative border border-[#39FF14]/30 animate-fadeIn">
         
-        {/* --- INICIO DE MODIFICACIÓN DE FONDO --- */}
-        {/* Capa 1: Imagen de la estación de carga */}
+        {/* --- CAMBIO DE POSICIÓN --- */}
+        {/* Usamos bg-bottom para que la estación de carga quede más abajo y visible */}
         <div 
-          className="absolute inset-0 z-0 bg-cover bg-center opacity-40 mix-blend-screen"
+          className="absolute inset-0 z-0 bg-cover bg-bottom opacity-50"
           style={{ backgroundImage: "url('https://i.imgur.com/YelHKTw.jpeg')" }}
         ></div>
         
-        {/* Capa 2: Degradado oscuro para garantizar lectura del texto */}
-        <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/70 to-transparent"></div>
+        {/* Degradado oscuro para que los textos sigan resaltando */}
+        <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/80 to-[#0A0A0A]/40"></div>
         
-        {/* Capa 3: Tu resplandor original */}
-        <div className="absolute -top-20 -right-20 w-80 h-80 bg-[#39FF14]/15 rounded-full blur-[120px] pointer-events-none z-0"></div>
-        {/* --- FIN DE MODIFICACIÓN DE FONDO --- */}
+        {/* --- FIN DEL CAMBIO --- */}
 
-        {/* CONTENIDO PRINCIPAL (Enviado al frente con relative z-10) */}
+        {/* CONTENIDO PRINCIPAL */}
         <div className="relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10">
             <div className="flex items-center gap-5">
