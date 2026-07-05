@@ -79,6 +79,49 @@ export const premiumBusinesses: Business[] = [
     googleMapsQuery: 'Jr. Federico Sal y Rosas 305 - Huaraz',
   },
   {
+    id: '23',
+    name: 'EITZA - Pasta-Grill',
+    category: BusinessCategory.RESTAURANT,
+    // Usamos comillas invertidas (`) para permitir saltos de línea en la descripción
+    description: `Eitza es una palabra de origen quechua que significa carne.
+Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una experiencia gastronómica alrededor de los mejores cortes de carne de la ciudad. Nuestra propuesta combina parrilla, pastas, coctelería y una cuidada selección de vinos, todo en un ambiente cálido y elegante. Recibimos a viajeros, montañistas y amantes de la buena mesa que buscan calidad, excelente atención y sabores memorables. En Eitza, cada visita es una invitación a disfrutar la esencia de los Andes a través de una cocina que celebra el buen comer.`,
+    address: 'Jirón Pedro Campos, Huaraz, Perú', // Ojo: en tu borrador decía Ramón Castilla en la dirección pero Pedro Campos en Google Maps. Lo unifiqué a Pedro Campos para que no haya errores de navegación.
+    lat: -9.5070, 
+    lng: -77.4645,
+    phone: '+51 965 260 764', 
+    whatsapp: '51965260764',
+    photos: [
+      'https://i.imgur.com/RHc9N2T.jpeg',
+      'https://i.imgur.com/QR3WjrA.jpeg',
+      'https://i.imgur.com/LJBl7UF.jpeg',
+      'https://i.imgur.com/eYS42vB.jpeg',
+      'https://i.imgur.com/psC6dPP.jpeg',
+      'https://i.imgur.com/pHuVDF6.jpeg',
+      'https://i.imgur.com/Q1Ds5Ci.jpeg',
+      'https://i.imgur.com/cTz0sSK.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/E8JlBTE.jpeg',
+      'https://i.imgur.com/oE9erns.jpeg',
+      'https://i.imgur.com/vbbl5Fs.jpeg',
+      'https://i.imgur.com/wjwiMvf.jpeg',
+      'https://i.imgur.com/MUQWkSL.jpeg',
+      'https://i.imgur.com/W26W8Zy.jpeg',
+      'https://i.imgur.com/IFvt4w5.jpeg',
+      'https://i.imgur.com/DYszvOh.jpeg',
+      'https://i.imgur.com/RoCE5DY.jpeg'
+    ],
+    schedule: { 
+      'Lunes - Sábado': '12:00 PM - 11:00 PM',
+      'Domingo': '1:00 PM - 10:00 PM'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-23',
+    status: 'approved', 
+    ownerUserId: 'u23',
+    googleMapsQuery: 'Jirón Pedro Campos, Huaraz, Perú'
+  },
+  {
     id: '1',
     name: 'Cumbre - Mirador Rataquenua',
     category: BusinessCategory.RESTAURANT,
