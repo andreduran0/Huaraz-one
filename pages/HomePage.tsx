@@ -70,7 +70,7 @@ const HomePage: React.FC = () => {
         {/* --- CAMBIO DE POSICIÓN --- */}
         {/* Usamos bg-bottom para que la estación de carga quede más abajo y visible */}
         <div 
-          className="absolute inset-0 z-0 bg-cover bg-bottom opacity-80"
+          className="absolute inset-0 z-0 bg-cover bg-bottom opacity-100"
           style={{ backgroundImage: "url('https://i.imgur.com/YelHKTw.jpeg')" }}
         ></div>
         
