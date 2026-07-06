@@ -173,8 +173,24 @@ const HomePage: React.FC = () => {
           }
         `}</style>
       </section>
-
-  {/* --- LÓGICA DE VISUALIZACIÓN DEL DIRECTORIO --- */}
+{/* 5. DIRECTORIO - ACTUALIZADO CON GRID RESPONSIVO Y ESTADO VACÍO */}
+      <section className="pt-8 space-y-8 animate-fadeIn relative z-10">
+        <div className="flex items-center justify-between px-2">
+            <h2 className="text-2xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter">Directorio <span className="text-[#2A4D69]">Explora</span></h2>
+            <div className="h-px flex-grow bg-slate-200 dark:bg-slate-800 ml-6"></div>
+        </div>
+        <div className="relative group px-2">
+          <i className="fas fa-search absolute left-8 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input 
+            type="text" 
+            placeholder="Buscar pollerías, hoteles, tours..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-white dark:bg-slate-900 border-none rounded-[2rem] py-6 pl-16 pr-8 shadow-sm focus:ring-4 focus:ring-[#2A4D69]/5 dark:text-white font-semibold outline-none"
+          />
+        </div>
+        
+        {/* --- LÓGICA DE VISUALIZACIÓN DEL DIRECTORIO --- */}
         {filteredBusinesses.length === 0 ? (
           /* Muestra el estado vacío si no hay resultados */
           <EmptySearchState query={searchQuery} />
