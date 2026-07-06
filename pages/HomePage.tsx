@@ -124,7 +124,7 @@ const HomePage: React.FC = () => {
         {/* --- INICIO DE FONDOS --- */}
         {/* Capa 1: Imagen de fondo (Recuerda poner tu URL aquí) */}
         <div 
-          className="absolute inset-0 z-0 bg-cover bg-center opacity-110 mix-blend-luminosity"
+          className="absolute inset-0 z-0 bg-cover bg-center opacity-130 mix-blend-luminosity"
           style={{ backgroundImage: "url('https://i.imgur.com/vG4DFPe.jpeg')" }}
         ></div>
 
@@ -132,7 +132,7 @@ const HomePage: React.FC = () => {
         <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/85 to-[#0A0A0A]/40"></div>
 
         {/* Capa 3: Cyber Pattern original */}
-        <div className="absolute inset-0 z-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#39FF14 0.8px, transparent 0.8px)', backgroundSize: '24px 24px' }}></div>
+        <div className="absolute inset-0 z-0 opacity-40 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#39FF14 0.8px, transparent 0.8px)', backgroundSize: '24px 24px' }}></div>
         <div className="absolute top-0 left-0 w-full h-full z-0 bg-gradient-to-b from-[#39FF14]/5 to-transparent"></div>
         {/* --- FIN DE FONDOS --- --- */}
 
