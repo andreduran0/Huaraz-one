@@ -2,6 +2,14 @@ import { Coupon } from '../types';
 
 export const coupons: Coupon[] = [
   {
+    id: 'c23',
+    businessId: '23', // EITZA - Pasta-Grill
+    title: 'Cortesía: Pan al ajo GRATIS',
+    description: '¡Disfruta de la mejor experiencia gastronómica! Exclusivo para la comunidad de Huaraz Explorer: presenta este cupón digital al momento de tu visita y recibe una deliciosa porción de pan al ajo totalmente de cortesía.',
+    code: 'EITZAEXPLORER',
+    expiryDate: '2026-08-31', // Le puse fecha hasta fines de agosto, puedes ajustarla si deseas
+  }
+  {
     id: '18',
     businessId: '18', // Táramo
     title: 'Los Famosos 10 Soles: 3er plato de Alitas',
