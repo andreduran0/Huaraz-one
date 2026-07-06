@@ -118,36 +118,52 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* NEWSLETTER */}
-      <section className="bg-[#000000] rounded-[3.5rem] p-12 text-center relative overflow-hidden shadow-2xl border border-white/10 animate-fadeIn group">
-        {/* Cyber Pattern Background */}
-        <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#39FF14 0.8px, transparent 0.8px)', backgroundSize: '24px 24px' }}></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[#39FF14]/5 to-transparent"></div>
+    {/* COMUNIDAD Y NEWSLETTER - ACTUALIZADA CON IMAGEN, WHATSAPP Y PROMOCIONES */}
+      <section className="bg-[#0A0A0A] rounded-[3.5rem] p-12 text-center relative overflow-hidden shadow-2xl border border-white/10 animate-fadeIn group">
+        
+        {/* --- INICIO DE FONDOS --- */}
+        {/* Capa 1: Imagen de fondo (Recuerda poner tu URL aquí) */}
+        <div 
+          className="absolute inset-0 z-0 bg-cover bg-center opacity-30 mix-blend-luminosity"
+          style={{ backgroundImage: "url('https://i.imgur.com/vG4DFPe.jpeg')" }}
+        ></div>
+
+        {/* Capa 2: Degradado oscuro para lectura perfecta */}
+        <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/85 to-[#0A0A0A]/40"></div>
+
+        {/* Capa 3: Cyber Pattern original */}
+        <div className="absolute inset-0 z-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#39FF14 0.8px, transparent 0.8px)', backgroundSize: '24px 24px' }}></div>
+        <div className="absolute top-0 left-0 w-full h-full z-0 bg-gradient-to-b from-[#39FF14]/5 to-transparent"></div>
+        {/* --- FIN DE FONDOS --- --- */}
 
         <div className="relative z-10 space-y-10">
-            <div className="w-24 h-24 bg-white/5 backdrop-blur-xl rounded-[2.5rem] flex items-center justify-center mx-auto border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.5)] transition-transform group-hover:scale-105">
-                <i className="fas fa-envelope-open-text text-4xl text-[#39FF14]"></i>
+            {/* Contenedor de íconos */}
+            <div className="w-28 h-16 bg-white/5 backdrop-blur-xl rounded-[2rem] flex items-center justify-center mx-auto border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.5)] transition-transform group-hover:scale-105 gap-4 px-6">
+                <i className="fab fa-whatsapp text-3xl text-[#39FF14] drop-shadow-[0_0_10px_rgba(57,255,20,0.6)]"></i>
+                <div className="w-px h-6 bg-white/20"></div>
+                <i className="fas fa-envelope-open-text text-2xl text-white/60"></i>
             </div>
             
             <div className="space-y-4">
-                <h3 className="text-5xl font-black text-white uppercase italic tracking-tighter leading-none">
-                    ¡MANTENTE <br/><span className="text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">INFORMADO!</span>
+                <h3 className="text-4xl md:text-5xl font-black text-white uppercase italic tracking-tighter leading-none">
+                    ÚNETE A LA <br/><span className="text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">COMUNIDAD</span>
                 </h3>
-                <p className="text-white/60 text-base font-bold max-w-sm mx-auto leading-relaxed italic">
-                    Recibe información cada semana sobre <span className="text-white">Ciencia, tecnología, turismo y emprendimiento.</span>
+                {/* --- TEXTO DESCRIPTIVO ACTUALIZADO --- */}
+                <p className="text-white/70 text-base font-bold max-w-sm mx-auto leading-relaxed italic">
+                    Ingresa a nuestro <span className="text-white">grupo VIP de WhatsApp</span>. Recibe <span className="text-[#39FF14]">promociones exclusivas</span>, debate sobre tecnología y sé el primero en enterarte de las novedades en Huaraz.
                 </p>
             </div>
 
             <button 
                 onClick={() => navigate('/newsletter')} 
-                className="w-full bg-[#39FF14] text-black py-7 rounded-[2.2rem] font-black uppercase text-xs tracking-[0.4em] shadow-[0_20px_50px_rgba(57,255,20,0.3)] hover:bg-white hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-5 overflow-hidden relative"
+                className="w-full bg-[#39FF14] text-black py-7 rounded-[2.2rem] font-black uppercase text-xs tracking-[0.4em] shadow-[0_20px_50px_rgba(57,255,20,0.3)] hover:bg-white hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-4 overflow-hidden relative"
             >
                 {/* Sweep effect on button */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]"></div>
-                SUSCRIBIRME AHORA <i className="fas fa-arrow-right text-[10px]"></i>
+                UNIRME AHORA <i className="fas fa-arrow-right text-[10px]"></i>
             </button>
 
-            <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.6em]">HUARAZ EXPLORER • NEWS PROTOCOL</p>
+            <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.6em]">HUARAZ EXPLORER • RED DE INNOVADORES</p>
         </div>
 
         <style>{`
