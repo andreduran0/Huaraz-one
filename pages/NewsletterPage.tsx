@@ -52,25 +52,32 @@ const NewsletterPage: React.FC = () => {
   };
 
   const handleDownload = () => {
-    alert("Iniciando descarga de tu Guía PDF Exclusiva de Huaraz Explorer...");
-    // window.open('https://tu-enlace-al-pdf.com/guia.pdf', '_blank');
+    // Enlace de descarga directa desde tu Google Drive
+    const pdfUrl = 'https://drive.google.com/uc?export=download&id=1VoYFHKi9P3TSZP_iv5JShqp03rkN-vZU';
+    
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.setAttribute('download', 'Guia_Huaraz_Explorer.pdf');
+    link.setAttribute('target', '_blank');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 font-['Plus_Jakarta_Sans'] py-6">
-      {/* Redujimos el padding de p-10 a p-8 y space-y-8 a space-y-6 para compactar todo */}
       <div className="max-w-2xl w-full bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl p-8 md:p-12 border border-slate-100 dark:border-slate-800 text-center space-y-6 animate-fadeIn relative overflow-hidden">
 
         {/* Decoración de fondo sutil */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#39FF14]/5 rounded-full blur-[80px] pointer-events-none"></div>
 
-        {/* Icono Principal (Reducido de w-24 h-24 a w-20 h-20) */}
+        {/* Icono Principal */}
         <div className={`relative z-10 w-20 h-20 mx-auto rounded-3xl flex items-center justify-center text-3xl transition-all duration-500 ${status === 'success' ? 'bg-[#39FF14] text-black shadow-[0_0_30px_rgba(57,255,20,0.4)] rotate-12' : 'bg-slate-100 dark:bg-slate-800 text-[#39FF14] shadow-inner'}`}>
           <i className={`fas ${status === 'success' ? 'fa-file-arrow-down' : 'fa-envelope-open-text'}`}></i>
         </div>
 
         {status === 'success' ? (
-          /* --- ESTADO DE ÉXITO OPTIMIZADO --- */
+          /* --- ESTADO DE ÉXITO --- */
           <div className="space-y-5 relative z-10">
             <h1 className="text-3xl md:text-4xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter leading-none">
               ¡Registro exitoso! <br/>Descarga tu guía
@@ -94,21 +101,20 @@ const NewsletterPage: React.FC = () => {
             </button>
           </div>
         ) : (
-          /* --- ESTADO DE FORMULARIO COMPACTADO --- */
+          /* --- ESTADO DE FORMULARIO --- */
           <div className="space-y-6 relative z-10">
             <div className="space-y-3">
               <h1 className="text-2xl md:text-3xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter leading-tight">
                 ¡Descarga tu Guía PDF Exclusiva y Únete a la Red!
               </h1>
               <p className="text-slate-500 dark:text-slate-400 font-medium text-sm md:text-base leading-relaxed max-w-md mx-auto">
-                Únete y accede a <span className="font-bold text-slate-700 dark:text-slate-300">promociones exclusivas, estrategias de finanzas e importación sostenible en los Andes, y descuentos en nuestro merch oficial</span>. ¡Y obtén tu guía de regalo!
+                Únete y accede a <span className="font-bold text-slate-700 dark:text-slate-300">promociones en negocios y eventos, estrategias de finanzas e importación sostenible</span>. ¡Y sé el primero en probar nuestros <span className="text-green-600 dark:text-[#39FF14] font-bold">juegos de montaña inmersiva</span>!
               </p>
             </div>
 
-            {/* Redujimos el space-y-5 a space-y-4 entre los inputs */}
             <form onSubmit={handleSubmit} className="space-y-4">
               
-              {/* Input WhatsApp con justificación */}
+              {/* Input WhatsApp */}
               <div className="space-y-1.5 text-left">
                 <input
                   type="tel"
@@ -119,7 +125,7 @@ const NewsletterPage: React.FC = () => {
                   className="w-full p-4 md:p-5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-[#39FF14] focus:border-transparent outline-none transition-all font-semibold dark:text-white"
                 />
                 <p className="text-[10px] md:text-[11px] text-slate-400 dark:text-slate-500 font-medium pl-2 flex items-center gap-1.5 leading-tight">
-                  <i className="fas fa-info-circle"></i> También enviamos el boletín y alertas rápidas por aquí para tu comodidad.
+                  <i className="fas fa-info-circle"></i> También enviamos alertas rápidas y beneficios por aquí.
                 </p>
               </div>
 
@@ -142,11 +148,11 @@ const NewsletterPage: React.FC = () => {
 
               <div className="pt-1">
                 {/* Privacidad */}
-                <p className="text-[8px] md:text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] mb-3">
+                <p className="text-[8px] md:text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] mb-3 mt-2">
                   <i className="fas fa-shield-alt mr-1"></i> HUARAZ EXPLORER • TU PRIVACIDAD ES IMPORTANTE
                 </p>
 
-                {/* CTA Agresivo y claro */}
+                {/* CTA Agresivo */}
                 <button
                   type="submit"
                   disabled={status === 'loading'}
@@ -162,6 +168,29 @@ const NewsletterPage: React.FC = () => {
                 </button>
               </div>
             </form>
+
+            {/* SECCIÓN DE VALOR AÑADIDO (Mejora de conversión) */}
+            <div className="mt-8 p-6 bg-slate-50 dark:bg-slate-800/50 rounded-[2rem] border border-slate-100 dark:border-white/5 text-left space-y-5">
+              <h4 className="text-xs font-black text-slate-700 dark:text-white uppercase tracking-[0.15em] flex items-center gap-2">
+                <i className="fas fa-lock text-green-600 dark:text-[#39FF14]"></i> Lo que obtienes al instante:
+              </h4>
+              
+              <ul className="space-y-3">
+                <li className="flex gap-3 text-slate-600 dark:text-slate-300 text-xs md:text-sm font-medium leading-relaxed">
+                  <span className="text-green-600 dark:text-[#39FF14] mt-0.5"><i className="fas fa-check-circle"></i></span>
+                  <span><strong>Acceso VIP:</strong> Cupones flash para los mejores restaurantes y eventos en Huaraz.</span>
+                </li>
+                <li className="flex gap-3 text-slate-600 dark:text-slate-300 text-xs md:text-sm font-medium leading-relaxed">
+                  <span className="text-green-600 dark:text-[#39FF14] mt-0.5"><i className="fas fa-check-circle"></i></span>
+                  <span><strong>Laboratorio Tech:</strong> Sé de los primeros en probar nuestros juegos de montaña inmersiva.</span>
+                </li>
+                <li className="flex gap-3 text-slate-600 dark:text-slate-300 text-xs md:text-sm font-medium leading-relaxed">
+                  <span className="text-green-600 dark:text-[#39FF14] mt-0.5"><i className="fas fa-check-circle"></i></span>
+                  <span><strong>Estrategias Pro:</strong> Guías de finanzas e importación sostenible en los Andes.</span>
+                </li>
+              </ul>
+            </div>
+
           </div>
         )}
       </div>
