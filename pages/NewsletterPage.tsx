@@ -3,7 +3,6 @@ import { useTranslations } from '../hooks/useTranslations';
 
 const NewsletterPage: React.FC = () => {
   const t = useTranslations();
-  // Cambiamos 'name' por 'whatsapp'
   const [whatsapp, setWhatsapp] = useState('');
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -20,18 +19,16 @@ const NewsletterPage: React.FC = () => {
     }
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
       setStatus('error');
-      setMessage(t('newsletter.emailInvalid'));
+      setMessage('Por favor, ingresa un correo electrónico válido');
       return;
     }
 
     setStatus('loading');
 
     try {
-      // Nuevo Webhook de Zapier actualizado
       const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/28120126/427n29k/';
 
       const formData = new FormData();
-      // Aquí arreglamos el error: ahora enviará el número correctamente a Zapier
       formData.append('whatsapp', whatsapp); 
       formData.append('email', email);
       formData.append('source', 'Huaraz Explorer PWA - Newsletter Campaign');
@@ -50,7 +47,7 @@ const NewsletterPage: React.FC = () => {
     } catch (error) {
       console.error("[Newsletter] Error:", error);
       setStatus('error');
-      setMessage(t('newsletter.error'));
+      setMessage('Hubo un error al procesar tu solicitud. Inténtalo de nuevo.');
     }
   };
 
@@ -60,75 +57,112 @@ const NewsletterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 font-['Plus_Jakarta_Sans']">
-      <div className="max-w-2xl w-full bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl p-10 md:p-16 border border-slate-100 dark:border-slate-800 text-center space-y-8 animate-fadeIn">
+    <div className="min-h-[80vh] flex items-center justify-center px-4 font-['Plus_Jakarta_Sans'] py-10">
+      <div className="max-w-2xl w-full bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl p-10 md:p-14 border border-slate-100 dark:border-slate-800 text-center space-y-8 animate-fadeIn relative overflow-hidden">
 
-        <div className={`w-24 h-24 mx-auto rounded-3xl flex items-center justify-center text-3xl transition-all duration-500 ${status === 'success' ? 'bg-green-500 text-white shadow-xl rotate-12' : 'bg-brand-blue/10 text-brand-blue'}`}>
+        {/* Decoración de fondo sutil */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#39FF14]/5 rounded-full blur-[80px] pointer-events-none"></div>
+
+        {/* Icono Principal */}
+        <div className={`relative z-10 w-24 h-24 mx-auto rounded-3xl flex items-center justify-center text-4xl transition-all duration-500 ${status === 'success' ? 'bg-[#39FF14] text-black shadow-[0_0_30px_rgba(57,255,20,0.4)] rotate-12' : 'bg-slate-100 dark:bg-slate-800 text-[#39FF14] shadow-inner'}`}>
           <i className={`fas ${status === 'success' ? 'fa-file-arrow-down' : 'fa-envelope-open-text'}`}></i>
         </div>
 
         {status === 'success' ? (
-          <div className="space-y-6">
-            <h1 className="text-4xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter leading-none">{t('newsletter.successTitle')}</h1>
-            <p className="text-slate-500 dark:text-slate-400 font-medium">{t('newsletter.successMsg')}</p>
+          /* --- ESTADO DE ÉXITO OPTIMIZADO --- */
+          <div className="space-y-6 relative z-10">
+            <h1 className="text-3xl md:text-4xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter leading-none">
+              ¡Registro exitoso! <br/>Descarga tu guía
+            </h1>
+            <p className="text-slate-500 dark:text-slate-400 font-medium text-lg max-w-md mx-auto">
+              Revisa tu WhatsApp o correo electrónico para acceder al material. O haz clic abajo para descargarla de inmediato.
+            </p>
 
             <button
               onClick={handleDownload}
-              className="w-full bg-brand-blue text-white py-6 rounded-2xl font-black uppercase text-sm tracking-widest shadow-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-3 active:scale-95"
+              className="w-full bg-[#39FF14] text-black py-6 rounded-2xl font-black uppercase text-sm tracking-widest shadow-[0_15px_30px_rgba(57,255,20,0.3)] hover:bg-white hover:-translate-y-1 transition-all flex items-center justify-center gap-3 active:scale-95 mt-4"
             >
-              <i className="fas fa-download"></i> Descargar PDF Ahora
+              <i className="fas fa-download text-lg"></i> DESCARGAR PDF AHORA
             </button>
 
             <button
               onClick={() => setStatus('idle')}
-              className="text-slate-400 text-xs font-bold hover:underline"
+              className="text-slate-400 text-xs font-bold hover:underline mt-4 inline-block"
             >
-              {t('newsletter.reset')}
+              Volver al formulario
             </button>
           </div>
         ) : (
-          <div className="space-y-6">
-            <h1 className="text-4xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter leading-none">{t('newsletter.greeting')}</h1>
-            <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
-              Suscríbete a nuestro boletín semanal y recibe información sobre <strong>ciencia, tecnología, turismo y emprendimiento</strong>. ¡Y obtén tu guía PDF de regalo!
-            </p>
+          /* --- ESTADO DE FORMULARIO OPTIMIZADO --- */
+          <div className="space-y-8 relative z-10">
+            <div className="space-y-4">
+              <h1 className="text-3xl md:text-4xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter leading-tight">
+                ¡Descarga tu Guía PDF Exclusiva y Únete a la Red!
+              </h1>
+              {/* --- AQUÍ ESTÁ EL CAMBIO DE REDACCIÓN --- */}
+              <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed max-w-md mx-auto">
+                Únete y accede a <span className="font-bold text-slate-700 dark:text-slate-300">promociones exclusivas, estrategias de finanzas e importación sostenible en los Andes, y descuentos en nuestro merch oficial</span>. ¡Y obtén tu guía de regalo!
+              </p>
+            </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <input
-                type="tel" // Cambiado a 'tel' para abrir el teclado numérico en móviles
-                value={whatsapp}
-                onChange={(e) => setWhatsapp(e.target.value)}
-                placeholder="Tu número de WhatsApp" // Tu nuevo texto
-                disabled={status === 'loading'}
-                className="w-full p-5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all font-semibold"
-              />
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={t('newsletter.emailPlaceholder')}
-                disabled={status === 'loading'}
-                className="w-full p-5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all font-semibold"
-              />
+            <form onSubmit={handleSubmit} className="space-y-5">
+              
+              {/* Input WhatsApp con justificación */}
+              <div className="space-y-2 text-left">
+                <input
+                  type="tel"
+                  value={whatsapp}
+                  onChange={(e) => setWhatsapp(e.target.value)}
+                  placeholder="Tu número de WhatsApp"
+                  disabled={status === 'loading'}
+                  className="w-full p-5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-[#39FF14] focus:border-transparent outline-none transition-all font-semibold dark:text-white"
+                />
+                <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium pl-2 flex items-center gap-1.5">
+                  <i className="fas fa-info-circle"></i> También enviamos el boletín y alertas rápidas por aquí para tu comodidad.
+                </p>
+              </div>
 
+              {/* Input Email */}
+              <div className="text-left">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Tu Correo Electrónico"
+                  disabled={status === 'loading'}
+                  className="w-full p-5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-[#39FF14] focus:border-transparent outline-none transition-all font-semibold dark:text-white"
+                />
+              </div>
+
+              {/* Mensaje de error */}
               {message && status === 'error' && (
-                <p className="text-red-500 text-xs font-black uppercase tracking-widest">{message}</p>
+                <p className="text-red-500 text-xs font-black uppercase tracking-widest animate-fadeIn">{message}</p>
               )}
 
-              <button
-                type="submit"
-                disabled={status === 'loading'}
-                className="w-full bg-brand-blue text-white py-6 rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-3 active:scale-95"
-              >
-                {status === 'loading' ? <i className="fas fa-spinner fa-spin"></i> : <><i className="fas fa-bolt"></i> {t('newsletter.button')}</>}
-              </button>
+              <div className="pt-2">
+                {/* Privacidad movida arriba del botón para dar confianza justo antes del clic */}
+                <p className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] mb-4">
+                  <i className="fas fa-shield-alt mr-1"></i> HUARAZ EXPLORER • TU PRIVACIDAD ES IMPORTANTE
+                </p>
+
+                {/* CTA Agresivo y claro */}
+                <button
+                  type="submit"
+                  disabled={status === 'loading'}
+                  className="w-full bg-[#39FF14] text-black py-6 rounded-2xl font-black uppercase text-sm tracking-[0.1em] shadow-[0_15px_30px_rgba(57,255,20,0.2)] hover:bg-[#32e612] hover:-translate-y-1 transition-all flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {status === 'loading' ? (
+                    <i className="fas fa-spinner fa-spin text-xl"></i>
+                  ) : (
+                    <>
+                      <i className="fas fa-bolt text-lg"></i> ¡ENVIAR Y DESCARGAR MI GUÍA!
+                    </>
+                  )}
+                </button>
+              </div>
             </form>
           </div>
         )}
-
-        <div className="pt-6 border-t border-slate-50 dark:border-slate-800">
-          <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.5em]">{t('newsletter.privacy')}</p>
-        </div>
       </div>
     </div>
   );
