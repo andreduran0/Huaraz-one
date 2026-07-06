@@ -174,28 +174,19 @@ const HomePage: React.FC = () => {
         `}</style>
       </section>
 
-      {/* DIRECTORIO */}
-      <section className="pt-8 space-y-8 animate-fadeIn">
-        <div className="flex items-center justify-between px-2">
-            <h2 className="text-2xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter">Directorio <span className="text-[#2A4D69]">Explora</span></h2>
-            <div className="h-px flex-grow bg-slate-200 dark:bg-slate-800 ml-6"></div>
-        </div>
-        <div className="relative group px-2">
-          <i className="fas fa-search absolute left-8 top-1/2 -translate-y-1/2 text-slate-400"></i>
-          <input 
-            type="text" 
-            placeholder="Buscar pollerías, hoteles, tours..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-white dark:bg-slate-900 border-none rounded-[2rem] py-6 pl-16 pr-8 shadow-sm focus:ring-4 focus:ring-[#2A4D69]/5 dark:text-white font-semibold outline-none"
-          />
-        </div>
-        <div className="grid grid-cols-1 gap-10 px-2">
-          {filteredBusinesses.map(business => <BusinessCard key={business.id} business={business} />)}
-        </div>
+  {/* --- LÓGICA DE VISUALIZACIÓN DEL DIRECTORIO --- */}
+        {filteredBusinesses.length === 0 ? (
+          /* Muestra el estado vacío si no hay resultados */
+          <EmptySearchState query={searchQuery} />
+        ) : (
+          /* Muestra el grid responsivo (cols-1, md:cols-2, lg:cols-3) */
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-2">
+            {filteredBusinesses.map(business => <BusinessCard key={business.id} business={business} />)}
+          </div>
+        )}
       </section>
       
-      {/* FAB MAPA */}
+      {/* 6. FAB MAPA */}
       <div className="fixed bottom-32 right-8 z-[100]">
         <button onClick={() => navigate('/map')} className="w-24 h-24 bg-[#2A4D69] text-white rounded-[2.5rem] flex flex-col items-center justify-center shadow-[0_20px_50px_rgba(42,77,105,0.4)] hover:scale-110 active:scale-90 transition-all border-2 border-white/10">
           <i className="fas fa-map-location-dot text-4xl mb-1"></i>
