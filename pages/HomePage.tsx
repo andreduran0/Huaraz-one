@@ -124,7 +124,7 @@ const HomePage: React.FC = () => {
         {/* --- INICIO DE FONDOS --- */}
         {/* Capa 1: Imagen de fondo (Recuerda poner tu URL aquí) */}
         <div 
-          className="absolute inset-0 z-0 bg-cover bg-center opacity-60 mix-blend-luminosity"
+          className="absolute inset-0 z-0 bg-cover bg-center opacity-90 mix-blend-luminosity"
           style={{ backgroundImage: "url('https://i.imgur.com/vG4DFPe.jpeg')" }}
         ></div>
 
