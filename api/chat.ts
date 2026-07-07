@@ -16,7 +16,7 @@ Tu misión es conectar a los turistas con experiencias auténticas y derivarlos 
 REGLAS DE TU COMPORTAMIENTO:
 1. Eres sabio, cálido y poético. Eres el guardián de la cultura viva de los Andes.
 2. Si tienes información sobre los dueños, artesanos o fundadores de un negocio, CUÉNTASELA al usuario. Habla del esfuerzo humano, las raíces y la tradición familiar detrás del emprendimiento.
-3. Teje leyendas locales, costumbres y la cosmovisión andina en tus respuestas para que el turista sienta el alma de Huaraz.
+3. Teje leyendas locales, costumbres y la cosmovisión andina en tus respuestas para que el turista sientas el alma de Huaraz.
 4. Si te preguntan en inglés, responde en inglés; si es en español, en español.
 5. Puedes usar palabras breves en quechua como "Allin mikhuna" (buen provecho) o "Sumaq kawsay" (buen vivir) si el contexto es cultural.
 6. Nunca des respuestas larguísimas. Sé conversacional, como un abuelo contando una historia junto al fuego.
@@ -24,6 +24,7 @@ REGLAS DE TU COMPORTAMIENTO:
 ![Imagen del lugar](URL_DE_LA_IMAGEN)
 8. Si el negocio tiene una "Web", agrega un enlace junto al de WhatsApp usando este formato: 
 [Visitar Página Web](URL_DE_LA_WEB)
+9. REGLA DE SUCESIÓN Y EQUIDAD: No te limites a mencionar siempre los mismos negocios en el chat. Debes ser justo y dar exposición a diferentes afiliados. Revisa los mensajes anteriores en la conversación (el historial); si notas que ya le recomendaste un negocio específico al turista en esta sesión, tienes estrictamente prohibido volver a sugerir el mismo lugar. Elige otro negocio de la lista provista en el CONTEXTO que cumpla con la categoría solicitada para garantizar que todos los emprendedores tengan la oportunidad de recibir leads.
 
 REGLA ESTRICTA Y OBLIGATORIA DE CONVERSIÓN Y ENTREGAS DE LINKS:
 Nunca entregues un enlace de WhatsApp, página web o contacto de un negocio de inmediato. Sigue OBLIGATORIAMENTE este flujo de 2 pasos:
@@ -57,10 +58,9 @@ async function getContext(userMessage: string, ciudadId: string): Promise<string
       contextParts.push('CONOCIMIENTO GENERAL:\n' + knowledgeText);
     }
 
-   const msgLower = userMessage.toLowerCase();
+    const msgLower = userMessage.toLowerCase();
     let categoriaFiltro = null;
     
-    // Filtros ampliados para capturar la intención del turista
     if (msgLower.includes('hotel') || msgLower.includes('dormir') || msgLower.includes('hospedaje')) {
       categoriaFiltro = 'hotel';
     } else if (msgLower.includes('comer') || msgLower.includes('restaurante') || msgLower.includes('almuerzo')) {
@@ -68,24 +68,29 @@ async function getContext(userMessage: string, ciudadId: string): Promise<string
     } else if (msgLower.includes('tour') || msgLower.includes('trekking') || msgLower.includes('laguna') || msgLower.includes('caminar')) {
       categoriaFiltro = 'tour';
     } else if (msgLower.includes('emoliente') || msgLower.includes('bebida') || msgLower.includes('calentar') || msgLower.includes('infusión')) {
-      // 👇 AQUÍ ATRAPAMOS A VERMIEL 👇
       categoriaFiltro = 'emolienteria'; 
     }
-let businessQuery = supabase
+
+    let businessQuery = supabase
       .from('businesses')
-      .select('name, description, category, whatsapp_number, default_message, website, imagen_url') // 👈 AQUÍ AGREGAMOS LAS 2 COLUMNAS
+      .select('name, description, category, whatsapp_number, default_message, website, imagen_url')
       .eq('ciudad_id', ciudadId)
-      .eq('activo', true)
-      .limit(4);
+      .eq('activo', true);
 
     if (categoriaFiltro) {
       businessQuery = businessQuery.ilike('category', `%${categoriaFiltro}%`);
     }
 
+    businessQuery = businessQuery.limit(12); 
+
     const { data: businesses } = await businessQuery;
 
- if (businesses && businesses.length > 0) {
-      const businessText = businesses.map(b =>
+    const shuffledBusinesses = businesses && businesses.length > 0 
+      ? businesses.sort(() => 0.5 - Math.random()) 
+      : [];
+
+    if (shuffledBusinesses.length > 0) {
+      const businessText = shuffledBusinesses.map(b =>
         `- ${b.name} (${b.category}): ${b.description}. WhatsApp: ${b.whatsapp_number}. Mensaje: ${b.default_message}. Web: ${b.website || 'No tiene'}. Imagen: ${b.imagen_url || 'No tiene'}`
       ).join('\n');
       contextParts.push('NEGOCIOS DISPONIBLES EN LA PLATAFORMA PARA RECOMENDAR:\n' + businessText);
@@ -104,17 +109,14 @@ export default async function handler(req: any, res: any) {
   if (!message) return res.status(400).json({ error: 'Mensaje requerido' });
 
   try {
-    // 👇 EL CAMBIO PARA CURAR LA AMNESIA DE ARKÁIKO 👇
-    // Juntamos los últimos mensajes para que no olvide qué negocio te estaba ofreciendo
     const ultimosMensajes = history.slice(-3).map((msg: any) => msg.content).join(' ');
     const textoParaBuscar = ultimosMensajes + ' ' + message;
     
     const context = await getContext(textoParaBuscar, ciudadId);
-    // 👆 FIN DEL CAMBIO 👆
 
+    // 🔥 CORREGIDO AQUÍ: Eliminamos las líneas rotas que causaban el SyntaxError
     const model = geminiClient.getGenerativeModel({
       model: 'gemini-2.5-flash',
-// ... (el resto del código sigue exactamente igual)
       systemInstruction: ARKAIKO_SYSTEM_PROMPT + '\n\nCONTEXTO:\n' + context,
     });
 
