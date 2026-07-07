@@ -86,21 +86,13 @@ const CouponCard: React.FC<{ coupon: any, business: any }> = ({ coupon, business
                     </div>
                     
                     {/* Botón que dispara la apertura del chat */}
-                    <button 
-                        onClick={() => {
-                            // Este evento abrirá el chat. Asegúrate de que el id del botón del chat sea 'arkaiko-chat-trigger'
-                            const chatButton = document.getElementById('arkaiko-chat-trigger') as HTMLButtonElement;
-                            if (chatButton) {
-                                chatButton.click();
-                            } else {
-                                console.error("No se encontró el botón del chat con id 'arkaiko-chat-trigger'");
-                            }
-                        }}
-                        className="w-full py-5 rounded-3xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3 relative overflow-hidden group/btn bg-[#00D4FF] text-white shadow-[0_10px_30px_rgba(0,212,255,0.3)] hover:scale-105"
-                    >
-                        <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000"></div>
-                        <i className="fas fa-comment-dots text-lg"></i> Canjear Cupón
-                    </button>
+                 <button 
+  onClick={() => (window as any).abrirChatArkaiko?.()}
+    className="w-full py-5 rounded-3xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3 relative overflow-hidden group/btn bg-[#00D4FF] text-white shadow-[0_10px_30px_rgba(0,212,255,0.3)] hover:scale-105"
+>
+    <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000"></div>
+    <i className="fas fa-comment-dots text-lg"></i> Canjear Cupón
+</button>
                     
                     <div className="mt-5">
                         <p className="text-[8px] text-slate-400 font-black uppercase tracking-[0.3em]">
