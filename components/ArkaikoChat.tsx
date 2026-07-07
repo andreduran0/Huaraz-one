@@ -75,12 +75,14 @@ export default function ArkaikoChat({
     const [sessionId] = useState(() => `session_${Date.now()}`);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
+useEffect(() => {
+    window.abrirChatArkaiko = () => {
+        setIsOpen(true);
+        setMin(false);
+    };
+    // Limpieza al desmontar
+    return () => { window.abrirChatArkaiko = undefined; };
+}, []);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
