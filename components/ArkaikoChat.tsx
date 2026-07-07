@@ -75,13 +75,22 @@ export default function ArkaikoChat({
     const [sessionId] = useState(() => `session_${Date.now()}`);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
+// Pega esto dentro de tu componente ArkaikoChat, cerca de los otros useEffects
 useEffect(() => {
-    window.abrirChatArkaiko = () => {
+    // Usamos (window as any) para evitar errores de tipo en TypeScript
+    const abrirChat = () => {
         setIsOpen(true);
         setMin(false);
     };
-    // Limpieza al desmontar
-    return () => { window.abrirChatArkaiko = undefined; };
+
+    (window as any).abrirChatArkaiko = abrirChat;
+
+    return () => {
+        // Al desmontar, limpiamos la referencia
+        if ((window as any).abrirChatArkaiko === abrirChat) {
+            delete (window as any).abrirChatArkaiko;
+        }
+    };
 }, []);
 
     useEffect(() => {
