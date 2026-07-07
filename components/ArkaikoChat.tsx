@@ -2,10 +2,10 @@ import ReactMarkdown from 'react-markdown';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-// --- EL ESPÍA DEFINITIVO PARA ARKAIKO ---
-const logClick = async (businessName: string) => {
+// --- CONFIGURACIÓN GLOBAL DE SUPABASE ---
+// Lo sacamos fuera para que el espía de clics y el capturador de leads usen la misma conexión
+const getSupabaseClient = () => {
     try {
-        // Truco: Silenciamos a TypeScript para leer las llaves reales de Vite sin errores
         // @ts-ignore
         const viteUrl = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_URL : null;
         // @ts-ignore
@@ -18,11 +18,24 @@ const logClick = async (businessName: string) => {
         const key = viteKey || nextKey;
 
         if (url && key && url !== 'https://placeholder.supabase.co') {
-            const supabase = createClient(url, key);
-            await supabase.from('clicks_log').insert([{ business_name: businessName }]);
+            return createClient(url, key);
         }
     } catch (err) {
-        console.error("Error silencioso del espía:", err);
+        console.error("Error inicializando Supabase:", err);
+    }
+    return null;
+};
+
+const supabase = getSupabaseClient();
+
+// --- EL ESPÍA DEFINITIVO PARA ARKAIKO ---
+const logClick = async (businessName: string) => {
+    if (supabase) {
+        try {
+            await supabase.from('clicks_log').insert([{ business_name: businessName }]);
+        } catch (err) {
+            console.error("Error silencioso del espía:", err);
+        }
     }
 };
 
@@ -82,6 +95,39 @@ export default function ArkaikoChat({
         const updatedHistory = [...messages, { role: 'user', content: userText, timestamp: new Date() }];
         setMessages(updatedHistory as Message[]);
 
+        // ---------------------------------------------------------
+        // 🚀 LA TRAMPA DE CAPTURA DE LEADS (NÚMERO O CORREO) 🚀
+        // ---------------------------------------------------------
+        // 1. Verificamos si lo que escribió el turista parece un número o un correo
+        const isPhoneNumber = /^[0-9+ \-]{8,15}$/.test(userText);
+        const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userText);
+        const isContactInfo = isPhoneNumber || isEmail;
+        
+        // 2. Revisamos si el mensaje anterior de Arkáiko contenía la palabra "número" o "correo"
+        const lastBotMessage = messages[messages.length - 1];
+        const botJustAskedForContact = lastBotMessage && 
+                                      lastBotMessage.role === 'assistant' && 
+                                      (lastBotMessage.content.toLowerCase().includes('número') || 
+                                       lastBotMessage.content.toLowerCase().includes('correo'));
+
+        // 3. Si dio su contacto y Arkáiko se lo pidió, lo guardamos en secreto en Supabase
+        if (isContactInfo && botJustAskedForContact && supabase) {
+            try {
+                const codigoGenerado = 'HEXP-' + Math.floor(1000 + Math.random() * 9000);
+                const insertData = {
+                    voucher_code: codigoGenerado,
+                    customer_whatsapp: isPhoneNumber ? userText : null,
+                    customer_email: isEmail ? userText : null
+                };
+                
+                await supabase.from('vouchers_issued').insert([insertData]);
+                console.log('✅ Turista capturado con éxito:', userText);
+            } catch (error) {
+                console.error('Error al guardar el lead en Supabase:', error);
+            }
+        }
+        // ---------------------------------------------------------
+
         try {
             const response = await fetch('/api/chat', {
                 method: 'POST',
@@ -103,7 +149,6 @@ export default function ArkaikoChat({
                 onClick={() => { setIsOpen(true); setMin(false); }}
                 style={{
                     display: isOpen ? 'none' : 'flex',
-                    // 👇 AQUÍ SUBIMOS EL BOTÓN (DE 24px A 90px) 👇
                     position: 'fixed', bottom: '190px', right: '24px',
                     width: '64px', height: '64px', borderRadius: '50%',
                     background: `linear-gradient(135deg, ${colorPrimario}, ${DARK})`,
@@ -117,7 +162,6 @@ export default function ArkaikoChat({
 
             {isOpen && (
                 <div style={{
-                    // 👇 AQUÍ SUBIMOS LA VENTANA DEL CHAT EN MÓVIL (DE 0 A 70px) PARA QUE NO TAPE EL MENÚ 👇
                     position: 'fixed', bottom: isMobile ? '70px' : '90px', right: isMobile ? '0' : '24px',
                     width: isMobile ? '100%' : '380px', height: isMinimized ? 'auto' : (isMobile ? 'calc(100% - 70px)' : '560px'),
                     background: '#FFF', borderRadius: isMobile && !isMinimized ? '20px 20px 0 0' : '20px', zIndex: 9998,
