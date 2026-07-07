@@ -104,10 +104,17 @@ export default async function handler(req: any, res: any) {
   if (!message) return res.status(400).json({ error: 'Mensaje requerido' });
 
   try {
-    const context = await getContext(message, ciudadId);
+    // 👇 EL CAMBIO PARA CURAR LA AMNESIA DE ARKÁIKO 👇
+    // Juntamos los últimos mensajes para que no olvide qué negocio te estaba ofreciendo
+    const ultimosMensajes = history.slice(-3).map((msg: any) => msg.content).join(' ');
+    const textoParaBuscar = ultimosMensajes + ' ' + message;
+    
+    const context = await getContext(textoParaBuscar, ciudadId);
+    // 👆 FIN DEL CAMBIO 👆
 
     const model = geminiClient.getGenerativeModel({
       model: 'gemini-2.5-flash',
+// ... (el resto del código sigue exactamente igual)
       systemInstruction: ARKAIKO_SYSTEM_PROMPT + '\n\nCONTEXTO:\n' + context,
     });
 
