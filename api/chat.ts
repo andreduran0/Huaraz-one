@@ -148,4 +148,4 @@ export default async function handler(req: any, res: any) {
     console.error('Error en el chat:', error);
     return res.status(500).json({ reply: 'Los Apus están en silencio momentáneamente. Intenta de nuevo 🏔️' });
   }
-} asi esta ahora pero sigue sin conectar ¿ que hago si antes funcionaba con esto ?
+} 
