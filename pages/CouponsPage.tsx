@@ -70,37 +70,41 @@ const CouponCard: React.FC<{ coupon: any, business: any }> = ({ coupon, business
                     <div className="w-6 h-6 bg-[#F8FAFC] rounded-full -mr-9 border border-slate-100"></div>
                 </div>
 
-                {/* Right Section - Claim Code - Blue Style */}
+                {/* Right Section - Claim Code - Blue Style (Actualizado para Arkáiko) */}
                 <div className="w-full md:w-1/3 bg-slate-50 p-10 flex flex-col items-center justify-center text-center relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-[#00D4FF]/5 blur-[60px] pointer-events-none"></div>
                     
                     <div className="w-full mb-6">
-                        <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3">Código de Desbloqueo</p>
-                        <div className="bg-white border-2 border-dashed border-[#00D4FF]/40 p-5 rounded-2xl text-[#00D4FF] font-black text-3xl tracking-[0.3em] shadow-sm relative overflow-hidden group/code">
-                            <span className="relative z-10 drop-shadow-[0_0_8px_rgba(0,212,255,0.3)]">{coupon.code}</span>
-                            <div className="absolute inset-0 bg-[#00D4FF]/5 translate-y-full group-hover/code:translate-y-0 transition-transform duration-500"></div>
+                        <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3">Beneficio Bloqueado</p>
+                        {/* Código oculto, solo muestra un mensaje de invitación */}
+                        <div className="bg-white border-2 border-dashed border-[#00D4FF]/40 p-5 rounded-2xl text-slate-400 font-bold text-sm shadow-sm relative overflow-hidden">
+                            <span className="relative z-10 flex items-center justify-center gap-2">
+                                <i className="fas fa-lock text-[#00D4FF]"></i> Desbloquea con Arkáiko
+                            </span>
+                            <div className="absolute inset-0 bg-[#00D4FF]/5"></div>
                         </div>
                     </div>
                     
+                    {/* Botón que dispara la apertura del chat */}
                     <button 
-                        onClick={copyToClipboard}
-                        className={`w-full py-5 rounded-3xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3 relative overflow-hidden group/btn ${
-                            copied 
-                            ? 'bg-slate-900 text-white' 
-                            : 'bg-[#00D4FF] text-white shadow-[0_10px_30px_rgba(0,212,255,0.3)] hover:scale-105'
-                        }`}
+                        onClick={() => {
+                            // Este evento abrirá el chat. Asegúrate de que el id del botón del chat sea 'arkaiko-chat-trigger'
+                            const chatButton = document.getElementById('arkaiko-chat-trigger') as HTMLButtonElement;
+                            if (chatButton) {
+                                chatButton.click();
+                            } else {
+                                console.error("No se encontró el botón del chat con id 'arkaiko-chat-trigger'");
+                            }
+                        }}
+                        className="w-full py-5 rounded-3xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3 relative overflow-hidden group/btn bg-[#00D4FF] text-white shadow-[0_10px_30px_rgba(0,212,255,0.3)] hover:scale-105"
                     >
                         <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000"></div>
-                        {copied ? (
-                            <><i className="fas fa-check-circle text-lg"></i> Código Copiado</>
-                        ) : (
-                            <><i className="fas fa-bolt text-lg"></i> Canjear Cupón</>
-                        )}
+                        <i className="fas fa-comment-dots text-lg"></i> Canjear Cupón
                     </button>
                     
                     <div className="mt-5">
                         <p className="text-[8px] text-slate-400 font-black uppercase tracking-[0.3em]">
-                            Expira: <span className="text-slate-600">{new Date(coupon.expiryDate).toLocaleDateString()}</span>
+                            Promoción Exclusiva
                         </p>
                     </div>
                 </div>
