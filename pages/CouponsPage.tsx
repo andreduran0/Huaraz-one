@@ -89,7 +89,7 @@ const CouponCard: React.FC<{ coupon: any, business: any }> = ({ coupon, business
 <button 
     onClick={() => {
         // 1. Tu número de WhatsApp Business
-        const numeroWhatsApp = "51944841599"; 
+        const numeroWhatsApp = "51944841455"; 
         
         // 2. Mensaje predeterminado dinámico (incluye el nombre del cupón)
         const mensaje = encodeURIComponent(`Hola Arkaiko, quiero canjear el cupón: ${coupon.title} en Huaraz Explorer.`);
