@@ -25,6 +25,7 @@ REGLAS DE TU COMPORTAMIENTO:
 8. Si el negocio tiene una "Web", agrega un enlace junto al de WhatsApp usando este formato: 
 [Visitar Página Web](URL_DE_LA_WEB)
 
+REGLA ESTRICTA Y OBLIGATORIA DE CONVERSIÓN Y ENTREGAS DE LINKS:
 Nunca entregues un enlace de WhatsApp, página web o contacto de un negocio de inmediato. Sigue OBLIGATORIAMENTE este flujo de 2 pasos:
 PASO 1 (Captura): Cuando el usuario pida recomendaciones, PRIMERO cuéntale la historia cultural del negocio y sus dueños para enamorarlo del lugar. 
 Luego, si el contexto indica que el negocio tiene una "Imagen", MUÉSTRALA OBLIGATORIAMENTE debajo de la historia usando el formato ![Imagen del lugar](URL_DE_LA_IMAGEN).
@@ -56,7 +57,7 @@ async function getContext(userMessage: string, ciudadId: string): Promise<string
       contextParts.push('CONOCIMIENTO GENERAL:\n' + knowledgeText);
     }
 
-    const msgLower = userMessage.toLowerCase();
+   const msgLower = userMessage.toLowerCase();
     let categoriaFiltro = null;
     
     // Filtros ampliados para capturar la intención del turista
@@ -67,31 +68,24 @@ async function getContext(userMessage: string, ciudadId: string): Promise<string
     } else if (msgLower.includes('tour') || msgLower.includes('trekking') || msgLower.includes('laguna') || msgLower.includes('caminar')) {
       categoriaFiltro = 'tour';
     } else if (msgLower.includes('emoliente') || msgLower.includes('bebida') || msgLower.includes('calentar') || msgLower.includes('infusión')) {
+      // 👇 AQUÍ ATRAPAMOS A VERMIEL 👇
       categoriaFiltro = 'emolienteria'; 
     }
-
-    let businessQuery = supabase
+let businessQuery = supabase
       .from('businesses')
-      .select('name, description, category, whatsapp_number, default_message, website, imagen_url')
+      .select('name, description, category, whatsapp_number, default_message, website, imagen_url') // 👈 AQUÍ AGREGAMOS LAS 2 COLUMNAS
       .eq('ciudad_id', ciudadId)
-      .eq('activo', true);
+      .eq('activo', true)
+      .limit(4);
 
     if (categoriaFiltro) {
       businessQuery = businessQuery.ilike('category', `%${categoriaFiltro}%`);
     }
 
-    // Traemos 12 para que haya variedad y rotación
-    businessQuery = businessQuery.limit(12); 
-
     const { data: businesses } = await businessQuery;
 
-    // Mezclamos el orden para que la IA siempre tenga opciones frescas primero
-    const shuffledBusinesses = businesses && businesses.length > 0 
-      ? businesses.sort(() => 0.5 - Math.random()) 
-      : [];
-
-    if (shuffledBusinesses.length > 0) {
-      const businessText = shuffledBusinesses.map(b =>
+ if (businesses && businesses.length > 0) {
+      const businessText = businesses.map(b =>
         `- ${b.name} (${b.category}): ${b.description}. WhatsApp: ${b.whatsapp_number}. Mensaje: ${b.default_message}. Web: ${b.website || 'No tiene'}. Imagen: ${b.imagen_url || 'No tiene'}`
       ).join('\n');
       contextParts.push('NEGOCIOS DISPONIBLES EN LA PLATAFORMA PARA RECOMENDAR:\n' + businessText);
@@ -110,13 +104,17 @@ export default async function handler(req: any, res: any) {
   if (!message) return res.status(400).json({ error: 'Mensaje requerido' });
 
   try {
+    // 👇 EL CAMBIO PARA CURAR LA AMNESIA DE ARKÁIKO 👇
+    // Juntamos los últimos mensajes para que no olvide qué negocio te estaba ofreciendo
     const ultimosMensajes = history.slice(-3).map((msg: any) => msg.content).join(' ');
     const textoParaBuscar = ultimosMensajes + ' ' + message;
     
     const context = await getContext(textoParaBuscar, ciudadId);
+    // 👆 FIN DEL CAMBIO 👆
 
     const model = geminiClient.getGenerativeModel({
       model: 'gemini-2.5-flash',
+// ... (el resto del código sigue exactamente igual)
       systemInstruction: ARKAIKO_SYSTEM_PROMPT + '\n\nCONTEXTO:\n' + context,
     });
 
@@ -135,16 +133,7 @@ export default async function handler(req: any, res: any) {
 
     const chat = model.startChat({ history: geminiHistory });
     const result = await chat.sendMessage(message);
-    
-    // 👇 EXTRACCIÓN DEL NOMBRE DEL NEGOCIO 👇
-    let reply = result.response.text();
-    let detectedBusinessName = null;
-
-    const nameMatch = reply.match(/\|\|(.*?)\|\|/);
-    if (nameMatch) {
-      detectedBusinessName = nameMatch[1].trim(); 
-      reply = reply.replace(nameMatch[0], '').trim(); // Ocultamos el código para el turista
-    }
+    const reply = result.response.text();
 
     await supabase.from('conversations').insert({
       ciudad_id: ciudadId,
@@ -153,11 +142,7 @@ export default async function handler(req: any, res: any) {
       agent_reply: reply,
     });
 
-    // 👇 DEVOLVEMOS EL NOMBRE PARA QUE EL FRONTEND LO GUARDE 👇
-    return res.status(200).json({ 
-      reply: reply, 
-      businessName: detectedBusinessName 
-    });
+    return res.status(200).json({ reply });
 
   } catch (error: any) {
     console.error('Error en el chat:', error);
