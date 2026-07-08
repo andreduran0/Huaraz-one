@@ -113,7 +113,7 @@ export default async function handler(req: any, res: any) {
     // 👆 FIN DEL CAMBIO 👆
 
     const model = geminiClient.getGenerativeModel({
-      model: 'gemini-3.5-flash',
+      model: 'gemini-1.5-flash',
 // ... (el resto del código sigue exactamente igual)
       systemInstruction: ARKAIKO_SYSTEM_PROMPT + '\n\nCONTEXTO:\n' + context,
     });
