@@ -149,8 +149,8 @@ const HomePage: React.FC = () => {
                     ÚNETE A LA <br/><span className="text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">COMUNIDAD</span>
                 </h3>
                 {/* --- TEXTO DESCRIPTIVO ACTUALIZADO --- */}
-               <p className="text-white/70 text-base font-bold max-w-sm mx-auto leading-relaxed italic">
-    Únete a nuestro <span className="text-white">grupo VIP de WhatsApp</span>. Recibe <span className="text-[#39FF14]">promociones exclusivas</span>, sé parte de nuestro ecosistema para importar tecnología sostenible a los Andes mientras inviertes , obtén merch oficial, beneficios en aerolínea, en eventos musicales y aprende sobre finanzas mientras pruebas antes que nadie nuestros juegos de montaña y experiencias inmersivas que lanzaremos en Huaraz Explorer.
+      <p className="text-white/70 text-base font-bold max-w-sm mx-auto leading-relaxed italic">
+    Únete a nuestro <span className="text-white">grupo VIP de WhatsApp</span>. Recibe <span className="text-[#39FF14]">promociones exclusivas</span>, sé parte de nuestro ecosistema para importar tecnología sostenible, obtén merch oficial, beneficios en aerolínea y eventos, mientras aprendes finanzas y pruebas antes que nadie nuestras experiencias inmersivas y juegos de montaña en Huaraz Explorer.
 </p>
             </div>
 
