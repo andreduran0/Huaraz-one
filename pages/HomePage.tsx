@@ -59,7 +59,7 @@ const HomePage: React.FC = () => {
             <FeatureItem icon="fa-robot" color="bg-slate-100 text-slate-600" label="Guía turístico IA 24/7" />
             <FeatureItem icon="fa-ticket" color="bg-orange-50 text-orange-500" label="Cupones y beneficios" />
             <FeatureItem icon="fa-newspaper" color="bg-gray-50 text-gray-500" label="Newsletter & Token Huaraz" />
-          <FeatureItem   icon="fa-briefcase" color="bg-emerald-50 text-emerald-600" label="Bolsa de trabajo para empresas"  />
+          <FeatureItem   icon="fa-briefcase" color="bg-emerald-50 text-emerald-600" label="Bolsa de trabajo para personas"  />
          
         </div>
       </section>
@@ -149,9 +149,9 @@ const HomePage: React.FC = () => {
                     ÚNETE A LA <br/><span className="text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">COMUNIDAD</span>
                 </h3>
                 {/* --- TEXTO DESCRIPTIVO ACTUALIZADO --- */}
-                <p className="text-white/70 text-base font-bold max-w-sm mx-auto leading-relaxed italic">
-                    Ingresa a nuestro <span className="text-white">grupo VIP de WhatsApp</span>. Recibe <span className="text-[#39FF14]">promociones exclusivas</span>, debate sobre tecnología y sé el primero en enterarte de las novedades en Huaraz Explorer.
-                </p>
+               <p className="text-white/70 text-base font-bold max-w-sm mx-auto leading-relaxed italic">
+    Únete a nuestro <span className="text-white">grupo VIP de WhatsApp</span>. Recibe <span className="text-[#39FF14]">promociones exclusivas</span>, sé parte de nuestro ecosistema para importar tecnología sostenible a los Andes mientras inviertes , obtén merch oficial, beneficios en aerolínea, en eventos musicales y aprende sobre finanzas mientras pruebas antes que nadie nuestros juegos de montaña y experiencias inmersivas que lanzaremos en Huaraz Explorer.
+</p>
             </div>
 
             <button 
