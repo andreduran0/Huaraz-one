@@ -12,11 +12,13 @@ const NewsletterPage: React.FC = () => {
     e.preventDefault();
     setMessage('');
 
-    if (!whatsapp.trim()) {
+    // Validación estricta para asegurar el formato internacional
+    if (!whatsapp.trim() || !whatsapp.startsWith('+') || whatsapp.length < 9) {
       setStatus('error');
-      setMessage('Por favor, ingresa tu número de WhatsApp');
+      setMessage('Por favor, ingresa tu número con el código de país (ej: +51...)');
       return;
     }
+    
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
       setStatus('error');
       setMessage('Por favor, ingresa un correo electrónico válido');
@@ -108,11 +110,9 @@ const NewsletterPage: React.FC = () => {
                 ¡Descarga tu Guía PDF Exclusiva y Únete a la Red!
               </h1>
               <p className="text-slate-500 dark:text-slate-400 font-medium text-sm md:text-base leading-relaxed max-w-md mx-auto">
-                Únete a nuestro <span className="text-white">grupo VIP</span> y sé parte de nuestro ecosistema para <span className="text-[#39FF14] font-bold">importar tecnología sostenible</span>, obtén <span className="text-[#39FF14] font-bold">merch oficial</span>, beneficios en aerolínea y eventos, mientras aprendes finanzas y pruebas antes que nadie nuestras <span className="text-[#39FF14] font-bold">experiencias inmersivas y juegos de montaña</span> en Huaraz Explorer.
+                Únete a nuestro <span className="text-white">grupo VIP de WhatsApp</span>. Recibe <span className="text-[#39FF14]">promociones exclusivas</span>, sé parte de nuestro ecosistema para <span className="text-[#39FF14]">importar tecnología sostenible</span>, obtén <span className="text-[#39FF14]">merch oficial</span>, beneficios en aerolínea y eventos, mientras aprendes finanzas y pruebas antes que nadie nuestras <span className="text-[#39FF14]">experiencias inmersivas y juegos de montaña</span> en Huaraz Explorer.
               </p>
             </div>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
 
             <form onSubmit={handleSubmit} className="space-y-4">
               
@@ -122,7 +122,7 @@ const NewsletterPage: React.FC = () => {
                   type="tel"
                   value={whatsapp}
                   onChange={(e) => setWhatsapp(e.target.value)}
-                  placeholder="Tu número de WhatsApp"
+                  placeholder="Tu número de WhatsApp (Ej: +51...)"
                   disabled={status === 'loading'}
                   className="w-full p-4 md:p-5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-[#39FF14] focus:border-transparent outline-none transition-all font-semibold dark:text-white"
                 />
