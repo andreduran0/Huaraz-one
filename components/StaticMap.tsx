@@ -1,30 +1,25 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Business, BusinessCategory } from '../types';
 import { useNavigate } from 'react-router-dom';
 import { useTranslations } from '../hooks/useTranslations';
-// 1. Importamos los componentes de Mapbox
-import Map, { Marker } from 'react-map-gl';
-import 'mapbox-gl/dist/mapbox-gl.css'; // ¡Muy importante para que no se rompa visualmente!
 
 interface InteractiveMapProps {
+    imageUrl?: string;
     businesses: Business[];
     isEditable?: boolean;
     onBusinessMove?: (id: string, lat: number, lng: number) => void;
     activeCategory?: string;
 }
 
-// 2. TUS CREDENCIALES DE MAPBOX (Reemplaza estas strings con tus datos reales)
-const MAPBOX_TOKEN = "pk.eyJ1IjoiaHVhcm"+FjaXRvIiwiYSI6ImNtcmN6azJrMTA4enQyem9qZXRzajY3cmoifQ.KQ45D0-vjHfZTsVBJikVDw"; 
-const MAPBOX_STYLE = "mapbox://styles/huaracito/cmrd02j7q007o01qia3mv0i52";
-
-// Centro de Huaraz por defecto
-const INITIAL_VIEW_STATE = {
-    longitude: -77.5287,
-    latitude: -9.5297,
-    zoom: 14,
-    pitch: 0,
-    bearing: 0
+const MAP_BOUNDS = {
+    top: -9.4800,    
+    bottom: -9.5800, 
+    left: -77.5600,  
+    right: -77.4800, 
 };
+
+const VIRTUAL_WIDTH = 3000;
+const VIRTUAL_HEIGHT = 3000;
 
 const getCategoryStyles = (category: BusinessCategory) => {
     switch (category) {
@@ -39,6 +34,7 @@ const getCategoryStyles = (category: BusinessCategory) => {
             return { icon: 'fa-user-graduate', color: 'bg-indigo-600', text: 'text-white', ring: 'ring-indigo-200' };
         case BusinessCategory.HEALTH:
             return { icon: 'fa-stethoscope', color: 'bg-red-600', text: 'text-white', ring: 'ring-red-200' };
+        // ¡Aquí regresamos el diseño de la Chocolatería!
         case BusinessCategory.CHOCOLATERIA:
             return { icon: 'fa-mug-hot', color: 'bg-[#7B3F00]', text: 'text-white', ring: 'ring-[#D2691E]/40' };
         default: 
@@ -46,22 +42,79 @@ const getCategoryStyles = (category: BusinessCategory) => {
     }
 };
 
-export default function InteractiveMap({ 
+export default function StaticMap({ 
     businesses, 
     isEditable, 
     onBusinessMove, 
-    activeCategory = 'all'
+    activeCategory = 'all',
+    imageUrl = "https://i.imgur.com/lUvBsIS.jpeg" 
 }: InteractiveMapProps) {
     const navigate = useNavigate();
     const t = useTranslations();
-    
-    // Estado nativo de Mapbox para controlar la cámara
-    const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+    const [transform, setTransform] = useState({ scale: 1, x: 0, y: 0 });
     const [activeBusiness, setActiveBusiness] = useState<Business | null>(null);
     const [userPos, setUserPos] = useState<{lat: number, lng: number} | null>(null);
+    const [draggedBusinessId, setDraggedBusinessId] = useState<string | null>(null);
+    
+    const mapRef = useRef<HTMLDivElement>(null);
+    const isPanning = useRef(false);
+    const lastPos = useRef({ x: 0, y: 0 });
+    const lastTouchDist = useRef<number | null>(null);
 
-    // Geolocalización del usuario
+    const latLngToPixels = (lat: number, lng: number) => {
+        const x = ((lng - MAP_BOUNDS.left) / (MAP_BOUNDS.right - MAP_BOUNDS.left)) * VIRTUAL_WIDTH;
+        const y = ((lat - MAP_BOUNDS.top) / (MAP_BOUNDS.bottom - MAP_BOUNDS.top)) * VIRTUAL_HEIGHT;
+        return { x, y };
+    };
+
+    const pixelsToLatLng = (x: number, y: number) => {
+        const lng = (x / VIRTUAL_WIDTH) * (MAP_BOUNDS.right - MAP_BOUNDS.left) + MAP_BOUNDS.left;
+        const lat = (y / VIRTUAL_HEIGHT) * (MAP_BOUNDS.bottom - MAP_BOUNDS.top) + MAP_BOUNDS.top;
+        return { lat, lng };
+    };
+
+    const handleZoom = useCallback((delta: number) => {
+        if (!mapRef.current) return;
+        
+        const container = mapRef.current.getBoundingClientRect();
+        const centerX = container.width / 2;
+        const centerY = container.height / 2;
+
+        setTransform(prev => {
+            const newScale = Math.min(Math.max(0.2, prev.scale * delta), 8);
+            const ratio = newScale / prev.scale;
+            const newX = centerX - (centerX - prev.x) * ratio;
+            const newY = centerY - (centerY - prev.y) * ratio;
+
+            return { scale: newScale, x: newX, y: newY };
+        });
+    }, []);
+
+    const centerOnCoords = useCallback((lat: number, lng: number, zoom = 1.2) => {
+        if (!mapRef.current) return;
+        const container = mapRef.current.getBoundingClientRect();
+        const { x, y } = latLngToPixels(lat, lng);
+        
+        setTransform({
+            scale: zoom,
+            x: (container.width / 2) - (x * zoom),
+            y: (container.height / 2) - (y * zoom)
+        });
+    }, []);
+
+    const setInitialView = useCallback(() => {
+        if (!mapRef.current) return;
+        const container = mapRef.current.getBoundingClientRect();
+        if (container.width === 0 || container.height === 0) return;
+
+        const initialScale = Math.min(container.width, container.height) / 1000;
+        const initialX = (container.width - VIRTUAL_WIDTH * initialScale) / 2;
+        const initialY = (container.height - VIRTUAL_HEIGHT * initialScale) / 2;
+        setTransform({ scale: initialScale, x: initialX, y: initialY });
+    }, []);
+
     useEffect(() => {
+        setInitialView();
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (pos) => setUserPos({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
@@ -69,110 +122,165 @@ export default function InteractiveMap({
                 { enableHighAccuracy: true }
             );
         }
+    }, [setInitialView]);
+
+    const handleGlobalMove = useCallback((e: MouseEvent | TouchEvent) => {
+        const isTouch = 'touches' in e;
+        const clientX = isTouch ? e.touches[0].clientX : e.clientX;
+        const clientY = isTouch ? e.touches[0].clientY : e.clientY;
+
+        if (isTouch && e.touches.length === 2) {
+            const t1 = e.touches[0];
+            const t2 = e.touches[1];
+            const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+            
+            if (lastTouchDist.current !== null) {
+                const delta = dist / lastTouchDist.current;
+                handleZoom(delta);
+            }
+            lastTouchDist.current = dist;
+            return;
+        }
+
+        if (draggedBusinessId && isEditable && onBusinessMove && mapRef.current) {
+            const rect = mapRef.current.getBoundingClientRect();
+            const contentX = (clientX - rect.left - transform.x) / transform.scale;
+            const contentY = (clientY - rect.top - transform.y) / transform.scale;
+            const { lat, lng } = pixelsToLatLng(contentX, contentY);
+            onBusinessMove(draggedBusinessId, lat, lng);
+            return;
+        }
+
+        if (isPanning.current) {
+            const dx = clientX - lastPos.current.x;
+            const dy = clientY - lastPos.current.y;
+            setTransform(prev => ({ ...prev, x: prev.x + dx, y: prev.y + dy }));
+            lastPos.current = { x: clientX, y: clientY };
+        }
+    }, [draggedBusinessId, isEditable, transform, onBusinessMove, handleZoom]);
+
+    const handleGlobalUp = useCallback(() => {
+        isPanning.current = false;
+        setDraggedBusinessId(null);
+        lastTouchDist.current = null;
     }, []);
 
-    // Funciones para botones personalizados
-    const handleZoom = (delta: number) => {
-        setViewState(prev => ({
-            ...prev,
-            zoom: Math.min(Math.max(prev.zoom + delta, 2), 20)
-        }));
-    };
+    useEffect(() => {
+        window.addEventListener('mousemove', handleGlobalMove);
+        window.addEventListener('mouseup', handleGlobalUp);
+        window.addEventListener('touchmove', handleGlobalMove, { passive: false });
+        window.addEventListener('touchend', handleGlobalUp);
+        return () => {
+            window.removeEventListener('mousemove', handleGlobalMove);
+            window.removeEventListener('mouseup', handleGlobalUp);
+            window.removeEventListener('touchmove', handleGlobalMove);
+            window.removeEventListener('touchend', handleGlobalUp);
+        };
+    }, [handleGlobalMove, handleGlobalUp]);
 
-    const handleResetView = () => {
-        setViewState(INITIAL_VIEW_STATE);
-        setActiveBusiness(null);
-    };
-
-    const handleLocateUser = () => {
-        if (userPos) {
-            setViewState(prev => ({
-                ...prev,
-                longitude: userPos.lng,
-                latitude: userPos.lat,
-                zoom: 16
-            }));
+    const handleMarkerClick = (e: React.MouseEvent | React.TouchEvent, business: Business) => {
+        e.stopPropagation();
+        if (isEditable) {
+            setDraggedBusinessId(business.id);
+        } else {
+            setActiveBusiness(business);
+            centerOnCoords(business.lat, business.lng, Math.max(transform.scale, 1.5));
         }
     };
 
     return (
-        <div className="w-full h-full relative bg-[#050505] overflow-hidden">
+        <div
+            ref={mapRef}
+            className="w-full h-full overflow-hidden relative bg-[#050505] select-none touch-none"
+            onWheel={(e) => {
+                const delta = e.deltaY < 0 ? 1.1 : 0.9;
+                handleZoom(delta);
+            }}
+            onMouseDown={(e) => { 
+                isPanning.current = true; 
+                lastPos.current = { x: e.clientX, y: e.clientY }; 
+            }}
+            onTouchStart={(e) => { 
+                isPanning.current = true; 
+                lastPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }; 
+            }}
+        >
             <style>
                 {`
                 .user-pulse {
-                    width: 24px; height: 24px;
+                    width: 24px;
+                    height: 24px;
                     background: #39FF14;
-                    border: 4px solid white; border-radius: 50%;
+                    border: 4px solid white;
+                    border-radius: 50%;
                     position: relative;
                     box-shadow: 0 0 20px rgba(57, 255, 20, 0.6);
                 }
                 .user-pulse::after {
-                    content: ''; position: absolute; inset: -15px;
-                    border-radius: 50%; background: #39FF14; opacity: 0.3;
+                    content: '';
+                    position: absolute;
+                    inset: -15px;
+                    border-radius: 50%;
+                    background: #39FF14;
+                    opacity: 0.3;
                     animation: pulse-out 2.5s infinite;
                 }
                 @keyframes pulse-out {
                     0% { transform: scale(0.5); opacity: 0.8; }
                     100% { transform: scale(4); opacity: 0; }
                 }
-                .marker-label { text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+                .map-transition {
+                    transition: transform 0.1s linear;
+                }
+                .marker-label {
+                    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+                }
                 `}
             </style>
 
-            {/* --- MAPBOX CONTAINER --- */}
-            <Map
-                {...viewState}
-                onMove={evt => setViewState(evt.viewState)}
-                mapStyle={MAPBOX_STYLE}
-                mapboxAccessToken={MAPBOX_TOKEN}
-                style={{ width: '100%', height: '100%' }}
-                // Desactivar arrastre del mapa si estamos editando un marcador (opcional para UX)
-                dragPan={!isEditable} 
+            <div
+                className="relative origin-top-left will-change-transform map-transition"
+                style={{ 
+                    transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale})`,
+                    width: `${VIRTUAL_WIDTH}px`,
+                    height: `${VIRTUAL_HEIGHT}px`,
+                }}
             >
-                {/* Marcador del Usuario */}
+                <img 
+                    src={imageUrl} 
+                    className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-90" 
+                    alt="Terrain Map" 
+                    onLoad={setInitialView}
+                />
+
                 {userPos && (
-                    <Marker longitude={userPos.lng} latitude={userPos.lat} anchor="center">
+                    <div className="absolute z-50" style={{ 
+                        left: `${latLngToPixels(userPos.lat, userPos.lng).x}px`, 
+                        top: `${latLngToPixels(userPos.lat, userPos.lng).y}px`,
+                        transform: 'translate(-50%, -50%)'
+                    }}>
                         <div className="user-pulse"></div>
-                    </Marker>
+                    </div>
                 )}
 
-                {/* Marcadores de Negocios */}
                 {businesses.map((business) => {
+                    const { x, y } = latLngToPixels(business.lat, business.lng);
                     const isActive = activeBusiness?.id === business.id;
                     const style = getCategoryStyles(business.category);
                     
                     return (
-                        <Marker
+                        <div 
                             key={business.id}
-                            longitude={business.lng}
-                            latitude={business.lat}
-                            anchor="bottom"
-                            // Mapbox nos da el drag & drop gratis:
-                            draggable={isEditable}
-                            onDragEnd={(e) => {
-                                if (isEditable && onBusinessMove) {
-                                    onBusinessMove(business.id, e.lngLat.lat, e.lngLat.lng);
-                                }
-                            }}
-                            onClick={e => {
-                                e.originalEvent.stopPropagation();
-                                if (!isEditable) {
-                                    setActiveBusiness(business);
-                                    // Centramos la cámara al hacer click
-                                    setViewState(prev => ({
-                                        ...prev,
-                                        longitude: business.lng,
-                                        latitude: business.lat,
-                                        zoom: Math.max(prev.zoom, 15.5) // Hace zoom al lugar si está muy lejos
-                                    }));
-                                }
-                            }}
-                            style={{ zIndex: isActive ? 100 : 10 }}
+                            className={`absolute flex items-center justify-center ${isActive ? 'z-[100]' : 'z-10'}`}
+                            style={{ left: `${x}px`, top: `${y}px`, transform: 'translate(-50%, -100%)' }}
                         >
-                            <div className={`
-                                relative cursor-pointer transition-all duration-300 flex flex-col items-center
-                                ${isActive ? 'scale-125' : 'scale-100 hover:scale-110'}
-                            `}>
+                            <div 
+                                onClick={(e) => handleMarkerClick(e, business)}
+                                className={`
+                                    relative cursor-pointer transition-all duration-300 flex flex-col items-center
+                                    ${isActive ? 'scale-125' : 'scale-100 hover:scale-110'}
+                                `}
+                            >
                                 <div className={`
                                     w-14 h-14 rounded-2xl flex items-center justify-center border-[4px] border-white shadow-2xl
                                     ${style.color} ${style.text} ring-4 ${style.ring}
@@ -188,12 +296,11 @@ export default function InteractiveMap({
                                     </div>
                                 )}
                             </div>
-                        </Marker>
+                        </div>
                     );
                 })}
-            </Map>
+            </div>
 
-            {/* --- UI SUPERPUESTA: MODAL DE DETALLES --- */}
             {activeBusiness && (
                 <div className="absolute bottom-10 left-6 right-6 md:left-10 md:w-[420px] z-[100] animate-fadeIn">
                     <div className="bg-white rounded-[3rem] shadow-[0_30px_90px_rgba(0,0,0,0.25)] overflow-hidden border border-slate-100">
@@ -209,6 +316,7 @@ export default function InteractiveMap({
                         </div>
                         <div className="p-10 pt-0 -mt-10 relative z-10">
                             <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-50">
+                                {/* ¡El Atajo Mágico para saltarnos el traductor solo con la chocolatería! */}
                                 <span className="bg-[#2A4D69]/10 text-[#2A4D69] px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest mb-3 inline-block">
                                     {activeBusiness.category === 'chocolateria' ? 'Chocolatería' : t(`category.${activeBusiness.category}` as any)}
                                 </span>
@@ -230,31 +338,32 @@ export default function InteractiveMap({
                 </div>
             )}
 
-            {/* --- UI SUPERPUESTA: BOTONES DE CONTROL --- */}
             <div className="absolute top-10 right-6 flex flex-col gap-4 z-50">
                 <div className="flex flex-col bg-white/90 backdrop-blur-2xl rounded-[2rem] shadow-2xl border border-white/20 p-2 gap-2">
                     <button 
-                        onClick={() => handleZoom(1)} 
+                        onClick={() => handleZoom(1.4)} 
                         className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#2A4D69] hover:bg-[#39FF14] hover:text-black transition-all border border-slate-100 shadow-sm active:scale-90"
                     >
                         <i className="fas fa-plus"></i>
                     </button>
                     <button 
-                        onClick={() => handleZoom(-1)} 
+                        onClick={() => handleZoom(0.7)} 
                         className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#2A4D69] hover:bg-[#39FF14] hover:text-black transition-all border border-slate-100 shadow-sm active:scale-90"
                     >
                         <i className="fas fa-minus"></i>
                     </button>
                 </div>
                 <button 
-                    onClick={handleLocateUser} 
+                    onClick={() => {
+                        if (userPos) centerOnCoords(userPos.lat, userPos.lng, 2);
+                    }} 
                     className="w-16 h-16 bg-[#39FF14] text-black rounded-[2rem] flex items-center justify-center shadow-[0_10px_30px_rgba(57,255,20,0.3)] hover:scale-105 transition-all active:scale-90"
                     title="Mi ubicación"
                 >
                     <i className="fas fa-location-crosshairs text-xl"></i>
                 </button>
                 <button 
-                    onClick={handleResetView} 
+                    onClick={setInitialView} 
                     className="w-16 h-16 bg-[#2A4D69] text-white rounded-[2rem] flex items-center justify-center shadow-xl hover:opacity-90 transition-all active:scale-90"
                     title="Restablecer vista"
                 >
