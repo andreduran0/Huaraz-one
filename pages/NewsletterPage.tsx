@@ -101,14 +101,14 @@ const NewsletterPage: React.FC = () => {
             </button>
           </div>
         ) : (
-          /* --- ESTADO DE FORMULARIO --- */
+      /* --- ESTADO DE FORMULARIO --- */
           <div className="space-y-6 relative z-10">
             <div className="space-y-3">
               <h1 className="text-2xl md:text-3xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter leading-tight">
                 ¡Descarga tu Guía PDF Exclusiva y Únete a la Red!
               </h1>
               <p className="text-slate-500 dark:text-slate-400 font-medium text-sm md:text-base leading-relaxed max-w-md mx-auto">
-                Únete y accede a <span className="font-bold text-slate-700 dark:text-slate-300">promociones en negocios y eventos, estrategias de finanzas e importación sostenible</span>. ¡Y sé el primero en probar nuestros <span className="text-green-600 dark:text-[#39FF14] font-bold">juegos de montaña inmersiva</span>!
+                Únete al grupo VIP y accede a <span className="font-bold text-slate-700 dark:text-slate-300">promociones exclusivas, merch oficial, beneficios en aerolínea y aprende sobre finanzas e importación sostenible</span>. ¡Y sé el primero en probar nuestras <span className="text-green-600 dark:text-[#39FF14] font-bold">experiencias inmersivas y juegos de montaña</span>!
               </p>
             </div>
 
