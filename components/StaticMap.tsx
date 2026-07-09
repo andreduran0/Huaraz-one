@@ -47,7 +47,7 @@ export default function StaticMap({
     isEditable, 
     onBusinessMove, 
     activeCategory = 'all',
-    imageUrl = "https://i.imgur.com/uweRYKK.jpeg" 
+    imageUrl = "https://i.imgur.com/lUvBsIS.jpeg" 
 }: InteractiveMapProps) {
     const navigate = useNavigate();
     const t = useTranslations();
