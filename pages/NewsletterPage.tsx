@@ -101,17 +101,16 @@ const NewsletterPage: React.FC = () => {
             </button>
           </div>
         ) : (
-      /* --- ESTADO DE FORMULARIO --- */
+  /* --- ESTADO DE FORMULARIO --- */
           <div className="space-y-6 relative z-10">
             <div className="space-y-3">
               <h1 className="text-2xl md:text-3xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter leading-tight">
                 ¡Descarga tu Guía PDF Exclusiva y Únete a la Red!
               </h1>
               <p className="text-slate-500 dark:text-slate-400 font-medium text-sm md:text-base leading-relaxed max-w-md mx-auto">
-                Únete al grupo VIP y accede a <span className="font-bold text-slate-700 dark:text-slate-300">promociones exclusivas, merch oficial, beneficios en aerolínea y aprende sobre finanzas e importación sostenible</span>. ¡Y sé el primero en probar nuestras <span className="text-green-600 dark:text-[#39FF14] font-bold">experiencias inmersivas y juegos de montaña</span>!
+                Únete a nuestro <span className="font-bold text-slate-700 dark:text-white">grupo VIP</span> y sé parte de nuestro ecosistema para <span className="text-green-600 dark:text-[#39FF14] font-bold">importar tecnología sostenible</span>, obtén <span className="text-green-600 dark:text-[#39FF14] font-bold">merch oficial</span>, beneficios en aerolínea y eventos, mientras aprendes finanzas y pruebas antes que nadie nuestras <span className="text-green-600 dark:text-[#39FF14] font-bold">experiencias inmersivas y juegos de montaña</span> en Huaraz Explorer.
               </p>
             </div>
-
             <form onSubmit={handleSubmit} className="space-y-4">
               
               {/* Input WhatsApp */}
