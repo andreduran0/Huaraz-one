@@ -108,7 +108,7 @@ const NewsletterPage: React.FC = () => {
                 ¡Descarga tu Guía PDF Exclusiva y Únete a la Red!
               </h1>
               <p className="text-slate-500 dark:text-slate-400 font-medium text-sm md:text-base leading-relaxed max-w-md mx-auto">
-                Únete a nuestro <span className="font-bold text-slate-700 dark:text-white">grupo VIP</span> y sé parte de nuestro ecosistema para <span className="text-green-600 dark:text-[#39FF14] font-bold">importar tecnología sostenible</span>, obtén <span className="text-green-600 dark:text-[#39FF14] font-bold">merch oficial</span>, beneficios en aerolínea y eventos, mientras aprendes finanzas y pruebas antes que nadie nuestras <span className="text-green-600 dark:text-[#39FF14] font-bold">experiencias inmersivas y juegos de montaña</span> en Huaraz Explorer.
+                Únete a nuestro <span className="font-bold text-slate-700 dark:text-white">grupo VIP</span> y sé parte de nuestro ecosistema para <span className="text-green-600 dark:text-[#39FF14] font-bold">importar tecnología sostenible mientras inviertes</span>, obtén <span className="text-green-600 dark:text-[#39FF14] font-bold">merch oficial</span>, beneficios en aerolíneas y eventos,pruebas antes que nadie nuestras <span className="text-green-600 dark:text-[#39FF14] font-bold">experiencias inmersivas y juegos de montaña</span> en Huaraz Explorer.
               </p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
