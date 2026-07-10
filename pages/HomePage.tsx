@@ -150,7 +150,7 @@ const HomePage: React.FC = () => {
                 </h3>
                 {/* --- TEXTO DESCRIPTIVO ACTUALIZADO --- */}
      <p className="text-white/70 text-base font-bold max-w-sm mx-auto leading-relaxed italic">
-    Únete a nuestro <span className="text-white">grupo VIP de WhatsApp</span>. Recibe <span className="text-[#39FF14]">promociones exclusivas</span>, sé parte de nuestro ecosistema para <span className="text-[#39FF14]">importar tecnología sostenible</span>, obtén <span className="text-[#39FF14]">merch oficial</span>, beneficios en aerolínea y eventos, mientras aprendes finanzas y pruebas antes que nadie nuestras <span className="text-[#39FF14]">experiencias inmersivas y juegos de montaña</span> en Huaraz Explorer.
+    Únete a nuestro <span className="text-white">grupo VIP de WhatsApp</span>. Recibe <span className="text-[#39FF14]">promociones exclusivas</span>, sé parte de nuestro ecosistema para <span className="text-[#39FF14]">importar tecnología sostenible mientras inviertes</span>, obtén <span className="text-[#39FF14]">merch oficial</span>, beneficios en aerolíneas y eventos, pruebas antes que nadie nuestras <span className="text-[#39FF14]">experiencias inmersivas y juegos de montaña</span> en Huaraz Explorer.
 </p>
             </div>
 
