@@ -244,5 +244,126 @@ export const events: Event[] = [
     type: 'entertainment',
     time: '07:00 p. m.',
     location: 'Inka Frut (Parque Ginebra - Huaraz)'
+  },
+  // --- ANIVERSARIO DE HUARAZ (JULIO 2026) ---
+  {
+    date: '2026-07-09',
+    title: 'Feria de la Mujer Emprendedora Ancashina',
+    description: 'Espacio dedicado a promover los emprendimientos locales liderados por mujeres ancashinas. Disponible hasta el 10 de julio.',
+    type: 'cultural',
+    time: '12:00 m.',
+    location: 'Plaza de Armas de Huaraz'
+  },
+  {
+    date: '2026-07-11',
+    title: 'Juego de Patos Patrios',
+    description: 'Tradicional actividad recreativa en el marco de las celebraciones por el aniversario de la provincia.',
+    type: 'entertainment',
+    time: '09:00 a. m.',
+    location: 'Plaza de Armas de Huaraz'
+  },
+  {
+    date: '2026-07-11',
+    title: 'Concurso de Desfile Escolar',
+    description: 'Participación de instituciones educativas de nivel inicial, primario y secundario. Continúa el 12 de julio.',
+    type: 'civic',
+    time: '08:00 a. m.',
+    location: 'Plaza de Armas de Huaraz'
+  },
+  {
+    date: '2026-07-14',
+    title: 'Festival Artístico y Aniversario del Centro Cultural',
+    description: 'Celebración artística doble por el 169° aniversario de creación política de la provincia y el XIV aniversario del Centro Cultural de Huaraz.',
+    type: 'entertainment',
+    time: '04:00 p. m.',
+    location: 'Plaza de Armas de Huaraz'
+  },
+  {
+    date: '2026-07-14',
+    title: 'Campaña de Esterilización de Mascotas',
+    description: 'Jornada de salud animal para perros y gatos. Continúa el 15 de julio.',
+    type: 'civic',
+    time: '09:00 a. m.',
+    location: 'Clínica Veterinaria'
+  },
+  {
+    date: '2026-07-18',
+    title: 'Matrimonio Civil Comunitario',
+    description: 'Ceremonia especial "Uniendo vidas, fortaleciendo hogares" para formalizar uniones en la comunidad.',
+    type: 'civic',
+    time: '10:00 a. m.',
+    location: 'Plaza de Armas de Huaraz'
+  },
+  {
+    date: '2026-07-19',
+    title: 'Maratón 10k: Unidos todos somos Huaraz',
+    description: 'Competencia deportiva que recorrerá las calles de la ciudad fomentando el deporte y la unidad.',
+    type: 'sports',
+    time: '09:00 a. m.',
+    location: 'Puente Mullaca - Plaza de Armas de Huaraz'
+  },
+  {
+    date: '2026-07-20',
+    title: 'Pasacalle de Identidad Huaracina',
+    description: 'Colorido recorrido organizado por la MPHZ para celebrar y mostrar las costumbres y danzas tradicionales.',
+    type: 'cultural',
+    time: '02:00 p. m.',
+    location: 'Concentración: Central UNASAM / Llegada: Plazuela de Belén'
+  },
+  {
+    date: '2026-07-21',
+    title: 'Festival Gastronómico: Sabores del Ande',
+    description: 'Exhibición y venta de los mejores platos típicos de la región. Disponible hasta el 22 de julio.',
+    type: 'cultural',
+    time: '09:00 a. m.',
+    location: 'Parque de la Amistad Internacional'
+  },
+  {
+    date: '2026-07-23',
+    title: 'Festival de Talentos',
+    description: 'Presentación artística de representantes de los diferentes centros poblados y distritos de la provincia.',
+    type: 'entertainment',
+    time: '04:00 p. m.',
+    location: 'Plaza de Armas de Huaraz'
+  },
+  {
+    date: '2026-07-24',
+    title: 'Serenata a la Provincia de Huaraz',
+    description: 'Gran celebración de víspera con espectáculo en el cielo y la presentación de bandas de músicos.',
+    type: 'entertainment',
+    time: '07:00 p. m.',
+    location: 'Plaza de Armas de Huaraz'
+  },
+  {
+    date: '2026-07-25',
+    title: 'Día Central: Actos Protocolares y Desfile',
+    description: 'Misa Te Deum (Sagrario San Sebastián), Izamiento del Pabellón Nacional, Sesión Solemne y el gran desfile cívico institucional por el 169° aniversario.',
+    type: 'civic',
+    time: '08:00 a. m.',
+    location: 'Plaza de Armas de Huaraz'
+  },
+  {
+    date: '2026-07-25',
+    title: 'Festival por el Día del Rock Huaracino',
+    description: 'Cierre del día central con lo mejor de la escena rockera local en vivo.',
+    type: 'entertainment',
+    time: '02:00 p. m.',
+    location: 'Plaza de Armas de Huaraz'
+  },
+  {
+    date: '2026-07-26',
+    title: 'Feria Macroregional',
+    description: 'Importante encuentro comercial y cultural que reúne a productores y artesanos. Se extenderá hasta el 04 de agosto.',
+    type: 'cultural',
+    time: '09:00 a. m.',
+    location: 'Plaza de Armas de Huaraz'
+  },
+  {
+    date: '2026-07-26',
+    title: 'Serenata Peruana',
+    description: 'Noche de música tradicional para continuar celebrando el mes patrio y el aniversario local.',
+    type: 'entertainment',
+    time: '07:00 p. m.',
+    location: 'Plaza de Armas de Huaraz'
   }
 ];
