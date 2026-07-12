@@ -75,7 +75,7 @@ const HomePage: React.FC = () => {
             <FeatureItem icon="fa-robot" color="bg-slate-100 text-slate-600" label={t("Guía turístico IA 24/7", "24/7 AI Tourist Guide")} />
             <FeatureItem icon="fa-ticket" color="bg-orange-50 text-orange-500" label={t("Cupones y beneficios", "Coupons and benefits")} />
             <FeatureItem icon="fa-newspaper" color="bg-gray-50 text-gray-500" label={t("Newsletter & Token Huaraz", "Newsletter & Huaraz Token")} />
-            <FeatureItem icon="fa-briefcase" color="bg-emerald-50 text-emerald-600" label={t("Bolsa de trabajo para personas", "Job board for locals")} />
+            <FeatureItem icon="fa-briefcase" color="bg-emerald-50 text-emerald-600" label={t("Bolsa de trabajo de empresas huaracinas", "Job board for locals")} />
         </div>
       </section>
 
