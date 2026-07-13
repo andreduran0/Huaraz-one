@@ -73,10 +73,10 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
             <h3 className="text-2xl font-black text-[#2A4D69] leading-tight">
               {business.name}
             </h3>
-   <div className="flex items-center gap-1 text-[#F58220] font-bold text-lg shrink-0">
+ <div className="flex items-center gap-1 text-[#F58220] font-bold text-lg shrink-0">
   <i className="fas fa-star"></i> 
-  {business.rating !== null && business.rating !== undefined ? (
-    <span>{Number(business.rating).toFixed(1)}</span>
+  {(business as any).rating ? (
+    <span>{Number((business as any).rating).toFixed(1)}</span>
   ) : (
     <span>Nuevo</span>
   )}
