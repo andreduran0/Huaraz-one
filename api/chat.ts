@@ -72,7 +72,7 @@ async function getContext(userMessage: string, ciudadId: string): Promise<string
     }
 let businessQuery = supabase
       .from('businesses')
-      .select('name, description, category, whatsapp_number, default_message, website, imagen_url') // 👈 AQUÍ AGREGAMOS LAS 2 COLUMNAS
+      .select('name, description, category, whatsapp_number, default_message, website, imagen_url,rating, review_count') // 👈 AQUÍ AGREGAMOS LAS 2 COLUMNAS
       .eq('ciudad_id', ciudadId)
       .eq('activo', true)
       .limit(4);
