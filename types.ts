@@ -30,8 +30,8 @@ export interface Business {
   phone?: string;
   whatsapp?: string;
   photos: string[];
-  rating?: number;       // 👈 Solo pegas esto
-  review_count?: number; // 👈 Y esto
+rating?: number; 
+  review_count?: number;
   menuImages?: string[]; // Campo para las páginas de la carta/menú
   schedule: { [key: string]: string };
   adLevel: AdLevel;
