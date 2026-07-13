@@ -181,11 +181,11 @@ const BusinessDetailPage: React.FC = () => {
                         </a>
                         {/* Botón 2: Ver Comentarios */}
 <button 
-        onClick={() => document.getElementById('review-section')?.scrollIntoView({ behavior: 'smooth' })}
-        className="w-full bg-[#2A4D69] text-white px-10 md:px-14 py-6 md:py-8 rounded-[2rem] font-black uppercase text-[10px] md:text-xs tracking-[0.3em] shadow-2xl flex items-center justify-center gap-4 active:scale-95 transition-all"
-    >
-        {t('Ver Comentarios', 'View Comments')} <i className="fas fa-comment-dots"></i>
-    </button>
+    onClick={() => document.getElementById('review-section')?.scrollIntoView({ behavior: 'smooth' })}
+    className="w-full bg-[#2A4D69] text-white px-10 md:px-14 py-6 md:py-8 rounded-[2rem] font-black uppercase text-[10px] md:text-xs tracking-[0.3em] shadow-2xl flex items-center justify-center gap-4 active:scale-95 transition-all"
+>
+    {t('DEJAR COMENTARIO', 'LEAVE A COMMENT')} <i className="fas fa-comment-dots"></i>
+</button>
                     </div>
                 </div>
 
