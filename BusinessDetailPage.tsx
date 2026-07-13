@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useTranslations } from '../hooks/useTranslations';
 import { AdLevel, BusinessCategory } from '../types';
+import TestimonialForm from '../components/TestimonialForm'; // <-- IMPORTACIÓN NUEVA
 
 const BusinessDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -116,7 +117,7 @@ const BusinessDetailPage: React.FC = () => {
                 </h1>
                 </div>
             </div>
-        </div>
+        
 
         {/* CONTENIDO PRINCIPAL */}
         <div className="max-w-5xl mx-auto px-6 -mt-12 relative z-10 space-y-16 pb-48">
@@ -244,7 +245,7 @@ const BusinessDetailPage: React.FC = () => {
             <div className="space-y-12">
                 <div className="flex items-center justify-between px-6">
                     <h3 className="text-4xl font-black text-slate-900 dark:text-white uppercase italic tracking-tighter">Galería <span className="text-slate-300">Ambiental</span></h3>
-                    <div className="hidden md:block h-px flex-grow bg-slate-100 mx-10"></div>
+                    <div className="hidden md:block h-px flex-grow bg-slate-100 dark:bg-slate-800 mx-10"></div>
                 </div>
                 
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 px-2">
@@ -263,6 +264,19 @@ const BusinessDetailPage: React.FC = () => {
                 </div>
             </div>
             
+            {/* FORMULARIO DE TESTIMONIOS (NUEVO) */}
+            <div className="max-w-3xl mx-auto w-full pt-10">
+                <div className="flex items-center justify-center mb-8">
+                    <div className="h-px flex-grow bg-slate-200 dark:bg-slate-800"></div>
+                    <span className="px-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] text-center">
+                        {t('Comunidad Huaraz Explorer', 'Huaraz Explorer Community')}
+                    </span>
+                    <div className="h-px flex-grow bg-slate-200 dark:bg-slate-800"></div>
+                </div>
+                
+                <TestimonialForm businessId={business.id} />
+            </div>
+
         </div>
 
         {/* LIGHTBOX MODAL */}
