@@ -67,17 +67,19 @@ const MapPage: React.FC = () => {
             </div>
         </div>
 
-        {/* Botón Flotante de Cupones - z-30 para superponerse y bottom-28 para quedar sobre el menú inferior */}
+        {/* Botón Flotante de Cupones - Tamaño Reducido */}
         <div className="fixed bottom-28 right-6 z-[100]">
-            <Link to="/coupons" className="group flex items-center gap-5 bg-white p-3 pr-8 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-slate-100 transition-all hover:scale-105 active:scale-95 pointer-events-auto">
-                <div className="w-12 h-12 rounded-full bg-[#F58220] flex items-center justify-center text-white shadow-lg group-hover:rotate-12 transition-transform">
-                    <i className="fas fa-ticket-alt"></i>
+            <Link to="/coupons" className="group flex items-center gap-3 bg-white p-2 pr-5 rounded-full shadow-[0_10px_25px_rgba(0,0,0,0.1)] border border-slate-100 transition-all hover:scale-105 active:scale-95 pointer-events-auto">
+                {/* Icono más pequeño */}
+                <div className="w-10 h-10 rounded-full bg-[#F58220] flex items-center justify-center text-white shadow-md group-hover:rotate-12 transition-transform">
+                    <i className="fas fa-ticket-alt text-sm"></i>
                 </div>
+                {/* Texto ajustado */}
                 <div className="text-left">
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">
+                    <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none mb-0.5">
                         {t("Descuentos", "Discounts")}
                     </p>
-                    <p className="text-sm font-black text-[#2A4D69] uppercase italic tracking-tighter leading-none">
+                    <p className="text-xs font-black text-[#2A4D69] uppercase italic tracking-tighter leading-none">
                         {t("Ver Cupones", "View Coupons")}
                     </p>
                 </div>
