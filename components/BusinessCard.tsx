@@ -73,15 +73,11 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
             <h3 className="text-2xl font-black text-[#2A4D69] leading-tight">
               {business.name}
             </h3>
-   {/* Cambia esta parte en tu BusinessCard.tsx */}
-<div className="flex items-center gap-1 text-[#F58220] font-bold text-lg shrink-0">
-  <i className="fas fa-star"></i> 
-  {(business as any).rating ? (
-    <span>{(business as any).rating.toFixed(1)}</span>
-  ) : (
-    <span>Nuevo</span>
-  )}
-</div>
+       {/* LA ESTRELLITA DINÁMICA */}
+            <div className="flex items-center gap-1 text-[#F58220] font-bold text-lg shrink-0">
+              <i className="fas fa-star"></i> {business.rating ? business.rating.toFixed(1) : "Nuevo"}
+            </div>
+            </div> {/* 👈 ¡ESTE ES EL CIERRE QUE FALTABA! */}
 
           {/* CATEGORÍA Y DIRECCIÓN GRIS (Ahora con traductor) */}
           <p className="text-slate-500 font-bold text-sm mb-6">
