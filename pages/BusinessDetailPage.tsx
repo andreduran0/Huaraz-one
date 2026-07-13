@@ -3,8 +3,12 @@ import { useParams } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useTranslations } from '../hooks/useTranslations';
 import { AdLevel, BusinessCategory } from '../types';
-import { createClient } from '@supabase/supabase-js'; // 👈 IMPORTAMOS EL ESPÍA
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch"; // 👈 NUEVO: IMPORTAMOS LA HERRAMIENTA DE ZOOM
+import { createClient } from '@supabase/supabase-js'; // 👈 EL ESPÍA
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch"; // 👈 HERRAMIENTA DE ZOOM
+
+// 👇 NUESTROS COMPONENTES DE TESTIMONIOS (Restaurados) 👇
+import TestimonialsList from '../components/TestimonialsList';
+import TestimonialForm from '../components/TestimonialForm';
 
 // 👇 EL ESPÍA BLINDADO PARA LA PÁGINA DE DETALLES 👇
 const logClick = async (businessName: string) => {
@@ -143,6 +147,7 @@ const BusinessDetailPage: React.FC = () => {
                     </h1>
                 </div>
             </div>
+            
             {/* CONTENIDO PRINCIPAL */}
             <div className="max-w-5xl mx-auto px-6 -mt-12 relative z-10 space-y-16 pb-48">
 
@@ -176,6 +181,7 @@ const BusinessDetailPage: React.FC = () => {
                         </a>
                     </div>
                 </div>
+
                 {/* Reseña Destacada */}
                 <div className="bg-white dark:bg-slate-900 rounded-[3.5rem] p-12 md:p-20 shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-3 h-full bg-[#F58220]"></div>
@@ -184,6 +190,7 @@ const BusinessDetailPage: React.FC = () => {
                         "{business.description}"
                     </p>
                 </div>
+
                 {/* SECCIÓN: LA CARTA / SERVICIOS */}
                 {hasMenu && (
                     <div className="space-y-10 animate-fadeIn">
@@ -223,6 +230,7 @@ const BusinessDetailPage: React.FC = () => {
                         </div>
                     </div>
                 )}
+
                 {/* Horarios y Reserva */}
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
                     <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-12 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-sm space-y-10">
@@ -272,6 +280,7 @@ const BusinessDetailPage: React.FC = () => {
                         </div>
                     </div>
                 </div>
+
                 {/* GALERÍA DEL LOCAL */}
                 <div className="space-y-12">
                     <div className="flex items-center justify-between px-6">
@@ -294,6 +303,24 @@ const BusinessDetailPage: React.FC = () => {
                         ))}
                     </div>
                 </div>
+                
+                {/* 👇 SECCIÓN DE TESTIMONIOS (RESTAURADA) 👇 */}
+                <div className="pt-10">
+                    <TestimonialsList businessId={business.id} />
+                </div>
+                
+                <div className="max-w-3xl mx-auto w-full pt-10">
+                    <div className="flex items-center justify-center mb-8">
+                        <div className="h-px flex-grow bg-slate-200 dark:bg-slate-800"></div>
+                        <span className="px-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] text-center">
+                            {t('Comunidad Huaraz Explorer', 'Huaraz Explorer Community')}
+                        </span>
+                        <div className="h-px flex-grow bg-slate-200 dark:bg-slate-800"></div>
+                    </div>
+                    
+                    <TestimonialForm businessId={business.id} />
+                </div>
+                {/* 👆 FIN SECCIÓN DE TESTIMONIOS 👆 */}
 
             </div>
             
