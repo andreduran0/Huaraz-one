@@ -73,13 +73,14 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
             <h3 className="text-2xl font-black text-[#2A4D69] leading-tight">
               {business.name}
             </h3>
- <div className="flex items-center gap-1 text-[#F58220] font-bold text-lg shrink-0">
-  <i className="fas fa-star"></i> 
-  {(business as any).rating ? (
-    <span>{Number((business as any).rating).toFixed(1)}</span>
-  ) : (
-    <span>Nuevo</span>
-  )}
+<div className="flex items-center gap-1 text-[#F58220] font-bold text-lg shrink-0">
+  <i className="fas fa-star"></i>
+  {(() => {
+    console.log("Qué es business:", business);
+    if (!business) return <span>Cargando...</span>;
+    const r = (business as any).rating;
+    return r ? <span>{Number(r).toFixed(1)}</span> : <span>Nuevo</span>;
+  })()}
 </div>
           {/* CATEGORÍA Y DIRECCIÓN GRIS (Ahora con traductor) */}
           <p className="text-slate-500 font-bold text-sm mb-6">
