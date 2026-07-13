@@ -77,6 +77,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
             <div className="flex items-center gap-1 text-[#F58220] font-bold text-lg shrink-0">
               <i className="fas fa-star"></i> {business.rating ? business.rating.toFixed(1) : "Nuevo"}
             </div>
+            </div> {/* 👈 ¡ESTE ES EL CIERRE QUE FALTABA! */}
 
           {/* CATEGORÍA Y DIRECCIÓN GRIS (Ahora con traductor) */}
           <p className="text-slate-500 font-bold text-sm mb-6">
