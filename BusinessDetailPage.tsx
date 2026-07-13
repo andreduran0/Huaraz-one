@@ -1,10 +1,12 @@
-import TestimonialsList from '../components/TestimonialsList';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useTranslations } from '../hooks/useTranslations';
 import { AdLevel, BusinessCategory } from '../types';
+import TestimonialsList from '../components/TestimonialsList';
 import TestimonialForm from '../components/TestimonialForm'; // <-- IMPORTACIÓN NUEVA
+
+
 
 const BusinessDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -264,7 +266,11 @@ const BusinessDetailPage: React.FC = () => {
                     ))}
                 </div>
             </div>
-            
+            {/* AQUÍ AGREGAMOS LA LISTA DE TESTIMONIOS APROBADOS */}
+            <div className="pt-10">
+                <TestimonialsList businessId={business.id} />
+            </div>
+    
             {/* FORMULARIO DE TESTIMONIOS (NUEVO) */}
             <div className="max-w-3xl mx-auto w-full pt-10">
                 <div className="flex items-center justify-center mb-8">
