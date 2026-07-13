@@ -312,7 +312,7 @@ const BusinessDetailPage: React.FC = () => {
                 </div>
                 
                 {/* 👇 SECCIÓN DE TESTIMONIOS (RESTAURADA) 👇 */}
-                <div className="pt-10">
+                   <div id="review-section" className="pt-10">
                     <TestimonialsList businessId={business.id} />
                 </div>
                 
