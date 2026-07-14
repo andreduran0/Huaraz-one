@@ -1,3 +1,4 @@
+import BusinessRating from './BusinessRating';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { createClient } from '@supabase/supabase-js';
@@ -73,12 +74,12 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
             <h3 className="text-2xl font-black text-[#2A4D69] leading-tight">
               {business.name}
             </h3> 
-            {/* LA ESTRELLITA DINÁMICA */}
-            <div className="flex items-center gap-1 text-[#F58220] font-bold text-lg shrink-0">
-              <i className="fas fa-star"></i> {business.rating ? business.rating.toFixed(1) : "Nuevo"}
-            </div>
-            </div> {/* 👈 ¡ESTE ES EL CIERRE QUE FALTABA! */} ,
+        <h3 className="text-2xl font-black text-[#2A4D69] leading-tight">
+  {business.name}
+</h3> 
 
+{/* NUEVA ESTRELLA AUTÓNOMA */}
+<BusinessRating businessId={business.id} />
           {/* CATEGORÍA Y DIRECCIÓN GRIS (Ahora con traductor) */}
           <p className="text-slate-500 font-bold text-sm mb-6">
             {t(`category.${business.category}` as any) || business.category} • {business.address}
