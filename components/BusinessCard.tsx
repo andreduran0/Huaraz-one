@@ -2,7 +2,7 @@ import BusinessRating from './BusinessRating';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { createClient } from '@supabase/supabase-js';
-import { useTranslations } from '../hooks/useTranslations'; // 👈 Agregamos el traductor
+import { useTranslations } from '../hooks/useTranslations';
 import { Business, AdLevel } from '../types';
 
 interface BusinessCardProps {
@@ -10,9 +10,9 @@ interface BusinessCardProps {
 }
 
 const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
-  const t = useTranslations(); // 👈 Activamos el traductor
+  const t = useTranslations();
 
-  // 👇 FUNCIÓN ESPÍA BLINDADA (Tuya de hace 17 horas) 👇
+  // 👇 FUNCIÓN ESPÍA BLINDADA 👇
   const handleWhatsAppClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation(); // Evita que al darle al WhatsApp te mande a "Ver Detalles"
@@ -56,7 +56,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
         <div className="h-48 w-full relative">
           <img src={business.photos[0]} alt={business.name} className="w-full h-full object-cover" />
 
-          {/* ETIQUETA DE PATROCINADO (Ahora con traductor) */}
+          {/* ETIQUETA DE PATROCINADO */}
           {isSponsored && (
             <div className="absolute top-4 left-4 bg-[#F58220] text-black text-[10px] font-black uppercase px-4 py-1.5 rounded-full shadow-md">
               {t('business.sponsored')}
@@ -73,14 +73,12 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
           <div className="flex justify-between items-start gap-4 mb-2">
             <h3 className="text-2xl font-black text-[#2A4D69] leading-tight">
               {business.name}
-            </h3> 
-        <h3 className="text-2xl font-black text-[#2A4D69] leading-tight">
-  {business.name}
-</h3> 
+            </h3> 
+            {/* NUEVA ESTRELLA AUTÓNOMA AQUÍ AL LADO DEL NOMBRE */}
+            <BusinessRating businessId={business.id} />
+          </div>
 
-{/* NUEVA ESTRELLA AUTÓNOMA */}
-<BusinessRating businessId={business.id} />
-          {/* CATEGORÍA Y DIRECCIÓN GRIS (Ahora con traductor) */}
+          {/* CATEGORÍA Y DIRECCIÓN GRIS */}
           <p className="text-slate-500 font-bold text-sm mb-6">
             {t(`category.${business.category}` as any) || business.category} • {business.address}
           </p>
