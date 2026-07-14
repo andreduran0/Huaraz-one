@@ -105,7 +105,7 @@ const BusinessDetailPage: React.FC = () => {
     };
     const whatsappMessage = encodeURIComponent(getWhatsappMessage());
 
-    // Lógica Dinámica para los títulos (Reforzada)
+    // 👇 AQUÍ ESTÁ LA LÓGICA DINÁMICA CON HOTELES 👇
     const getMenuTitle = () => {
         if (categoryText === 'education') {
             return { prefix: 'NUESTRA PROPUESTA ', highlight: 'EDUCATIVA', subtitle: 'Conoce nuestro modelo de enseñanza y valores' };
@@ -113,6 +113,8 @@ const BusinessDetailPage: React.FC = () => {
             return { prefix: 'NUESTROS ', highlight: 'SERVICIOS', subtitle: 'Conoce nuestras tasas y opciones de cambio' };
         } else if (categoryText === 'health') {
             return { prefix: 'NUESTRAS ', highlight: 'ESPECIALIDADES', subtitle: 'Conoce nuestros servicios médicos' };
+        } else if (categoryText === 'hotel') { 
+            return { prefix: 'NUESTRAS ', highlight: 'HABITACIONES', subtitle: 'Conoce nuestras opciones de descanso y confort' };
         } else {
             return { prefix: 'Nuestra ', highlight: 'Carta', subtitle: 'Consulta nuestros platos y especialidades' };
         }
@@ -122,7 +124,7 @@ const BusinessDetailPage: React.FC = () => {
     return (
         <div className="bg-slate-50 dark:bg-slate-950 min-h-screen relative font-['Plus_Jakarta_Sans']">
 
-            {/* HERO SECTION */}
+            {/* HERO SECTION ORIGINAL */}
             <div className="w-full h-[60vh] md:h-[70vh] relative overflow-hidden bg-black">
                 <img
                     src={business.photos[0]}
@@ -170,7 +172,7 @@ const BusinessDetailPage: React.FC = () => {
                                 href={`https://wa.me/${business.whatsapp}?text=${whatsappMessage}`}
                                 target="_blank"
                                 rel="noreferrer"
-                                onClick={() => logClick(`Detalle - ${business.name}`)} // 👈 AQUÍ VIGILAMOS EL CLIC
+                                onClick={() => logClick(`Detalle - ${business.name}`)}
                                 className="w-16 h-16 md:w-20 md:h-20 bg-green-50 dark:bg-green-900/20 rounded-[2rem] flex items-center justify-center text-green-500 border border-green-100 dark:border-green-900/40 active:scale-95 transition-all shadow-sm"
                             >
                                 <i className="fab fa-whatsapp text-3xl md:text-4xl"></i>
@@ -179,13 +181,12 @@ const BusinessDetailPage: React.FC = () => {
                         <a href={mapUrl} target="_blank" rel="noreferrer" className="bg-[#2A4D69] text-white px-10 md:px-14 py-6 md:py-8 rounded-[2rem] font-black uppercase text-[10px] md:text-xs tracking-[0.3em] shadow-2xl flex items-center gap-4 active:scale-95 transition-all">
                             Ver Mapa <i className="fas fa-location-arrow"></i>
                         </a>
-                        {/* Botón 2: Ver Comentarios */}
-<button 
-    onClick={() => document.getElementById('review-section')?.scrollIntoView({ behavior: 'smooth' })}
-    className="w-full bg-[#2A4D69] text-white px-10 md:px-14 py-6 md:py-8 rounded-[2rem] font-black uppercase text-[10px] md:text-xs tracking-[0.3em] shadow-2xl flex items-center justify-center gap-4 active:scale-95 transition-all"
->
-    {t('DEJAR COMENTARIO', 'LEAVE A COMMENT')} <i className="fas fa-comment-dots"></i>
-</button>
+                        <button 
+                            onClick={() => document.getElementById('review-section')?.scrollIntoView({ behavior: 'smooth' })}
+                            className="w-full bg-[#2A4D69] text-white px-10 md:px-14 py-6 md:py-8 rounded-[2rem] font-black uppercase text-[10px] md:text-xs tracking-[0.3em] shadow-2xl flex items-center justify-center gap-4 active:scale-95 transition-all"
+                        >
+                            {t('DEJAR COMENTARIO', 'LEAVE A COMMENT')} <i className="fas fa-comment-dots"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -213,7 +214,12 @@ const BusinessDetailPage: React.FC = () => {
                             </div>
                             <div className="bg-slate-100 dark:bg-slate-800 px-8 py-3 rounded-full border border-slate-200 shadow-inner flex items-center gap-3">
                                 <i className="fas fa-book-open text-[#F58220] text-xs"></i>
-                                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{business.menuImages?.length} páginas</span>
+                                {/* 👇 CAMBIO PARA DECIR OPCIONES O PÁGINAS SEGÚN CATEGORÍA 👇 */}
+                                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                                    {categoryText === 'hotel' 
+                                        ? `${business.menuImages?.length} opciones` 
+                                        : `${business.menuImages?.length} páginas`}
+                                </span>
                             </div>
                         </div>
                         <div className="flex gap-8 overflow-x-auto no-scrollbar pb-12 px-4 snap-x">
@@ -278,7 +284,7 @@ const BusinessDetailPage: React.FC = () => {
                                 href={`https://wa.me/${business.whatsapp}?text=${whatsappMessage}`}
                                 target="_blank"
                                 rel="noreferrer"
-                                onClick={() => logClick(`Detalle - ${business.name}`)} // 👈 AQUÍ VIGILAMOS EL CLIC
+                                onClick={() => logClick(`Detalle - ${business.name}`)}
                                 className="inline-flex bg-white text-[#2A4D69] px-12 py-7 rounded-[2rem] font-black uppercase text-xs tracking-[0.4em] items-center gap-5 shadow-2xl hover:bg-slate-50 transition-all active:scale-95 group/btn"
                             >
                                 {categoryText === 'education' ? 'SOLICITAR ENTREVISTA' : categoryText === 'exchange' ? 'Cotizar Cambio' : 'Reservar Ahora'}
@@ -384,3 +390,5 @@ const BusinessDetailPage: React.FC = () => {
     );
 };
 export default BusinessDetailPage;
+            
+
