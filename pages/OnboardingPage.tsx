@@ -11,7 +11,6 @@ const PlanCard: React.FC<{
   const t = useTranslations();
   
   const handleSelectPlan = () => {
-    // Aquí puedes enlazar al formulario de recolección de datos (País, Rubro, etc.)
     alert(`Iniciando registro para el ${title}`);
   };
 
@@ -74,10 +73,9 @@ const OnboardingPage: React.FC = () => {
           </p>
         </div>
         
-        {/* TARJETAS DE PLANES */}
+        {/* TARJETAS DE PLANES (Limpias, sin mencionar Octorate) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mt-12 text-left items-center">
           
-          {/* PLAN FLEX MENSUAL */}
           <PlanCard
             title="Plan Flex"
             price="S/ 80"
@@ -85,13 +83,11 @@ const OnboardingPage: React.FC = () => {
             features={[
               "7 días de prueba gratuita sin compromiso.",
               "Vitrina Digital completa: Mapa interactivo, Calendario y Cuponera.",
-              "Guía 24/7 incluido para soporte.",
-              "IA Arkaiko: Modelo transaccional por comisiones.",
-              "Gestión Octorate (Airbnb/Booking) disponible como servicio extra."
+              "Guía 24/7 incluido para soporte constante.",
+              "IA Arkaiko: Modelo transaccional por comisiones de venta."
             ]}
           />
 
-          {/* PLAN FUNDADOR ANUAL */}
           <PlanCard
             title="Plan Fundador"
             price="S/ 400"
@@ -100,8 +96,7 @@ const OnboardingPage: React.FC = () => {
               "Presencia física en 600 mapas A1 (Distribución estratégica en la región).",
               "Vitrina Digital Pro: Mapa interactivo, Calendario y Cuponera.",
               "Guía 24/7 y acceso prioritario a la Bolsa de Trabajo.",
-              "IA Arkaiko: Modelo híbrido (Pago fijo anual + comisión por venta).",
-              "Gestión Octorate (Airbnb/Booking) disponible como servicio extra."
+              "IA Arkaiko: Modelo híbrido (Pago fijo anual + comisión por venta)."
             ]}
             isPremium
           />
@@ -109,11 +104,31 @@ const OnboardingPage: React.FC = () => {
         </div>
         
         {/* NOTA DE COMISIONES (TRANSPARENCIA) */}
-        <div className="mt-16 bg-slate-50 p-6 rounded-2xl border border-slate-100 max-w-3xl mx-auto">
-          <p className="text-slate-500 text-xs md:text-sm font-bold leading-relaxed">
-            <i className="fas fa-info-circle text-[#2A4D69] mr-2"></i>
-            <span className="text-[#2A4D69] font-black uppercase">Transparencia de Comisiones:</span> Todos nuestros modelos incluyen nuestro ecosistema de IA generadora de ventas. Solo cobramos una comisión por venta concretada a través de la plataforma: <strong className="text-[#F58220]">5% (Restaurantes) • 10% (Hoteles) • 15% (Agencias de Tour)</strong>. Tú conservas el control total.
+        <div className="mt-12 mb-16 max-w-3xl mx-auto text-center">
+          <p className="text-slate-500 text-xs font-bold leading-relaxed">
+            <span className="text-[#2A4D69] uppercase">Transparencia:</span> Todos nuestros modelos incluyen nuestro ecosistema de IA generadora de ventas. Solo cobramos una comisión si concretamos una reserva a través de la plataforma: <strong className="text-[#F58220]">5% (Restaurantes) • 10% (Hoteles) • 15% (Agencias de Tour)</strong>.
           </p>
+        </div>
+
+        {/* MÓDULO SEPARADO: OCTORATE (Exclusivo Hoteles) */}
+        <div className="bg-[#2A4D69] rounded-[3rem] p-10 md:p-12 text-left shadow-2xl max-w-4xl mx-auto relative overflow-hidden">
+            {/* Elemento decorativo de fondo */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl -mr-20 -mt-20"></div>
+            
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+                <div className="md:w-2/3 space-y-4">
+                    <span className="bg-[#F58220] text-black text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full">Servicio Adicional</span>
+                    <h3 className="text-3xl font-black text-white italic tracking-tighter">¿Tienes un Hotel o Alojamiento?</h3>
+                    <p className="text-white/80 leading-relaxed font-medium text-sm">
+                        Evita el overbooking y el estrés operativo. Además de Huaraz Explorer, te ofrecemos la <strong>gestión e integración completa con Octorate (Channel Manager)</strong> para que sincronices tus reservas de Airbnb, Booking y Expedia en una sola pantalla.
+                    </p>
+                </div>
+                <div className="md:w-1/3 w-full text-center md:text-right">
+                    <button className="w-full md:w-auto bg-white text-[#2A4D69] font-black uppercase tracking-[0.2em] text-xs px-8 py-5 rounded-[2rem] hover:bg-slate-100 transition-all shadow-lg hover:scale-105">
+                        COTIZAR INTEGRACIÓN
+                    </button>
+                </div>
+            </div>
         </div>
 
       </div>
