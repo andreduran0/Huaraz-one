@@ -105,7 +105,7 @@ const BusinessDetailPage: React.FC = () => {
     };
     const whatsappMessage = encodeURIComponent(getWhatsappMessage());
 
-    // Lógica Dinámica para los títulos (Reforzada)
+    // 👇 AQUÍ ESTÁ EL ÚNICO CAMBIO: Lógica Dinámica para los títulos 👇
     const getMenuTitle = () => {
         if (categoryText === 'education') {
             return { prefix: 'NUESTRA PROPUESTA ', highlight: 'EDUCATIVA', subtitle: 'Conoce nuestro modelo de enseñanza y valores' };
@@ -113,16 +113,19 @@ const BusinessDetailPage: React.FC = () => {
             return { prefix: 'NUESTROS ', highlight: 'SERVICIOS', subtitle: 'Conoce nuestras tasas y opciones de cambio' };
         } else if (categoryText === 'health') {
             return { prefix: 'NUESTRAS ', highlight: 'ESPECIALIDADES', subtitle: 'Conoce nuestros servicios médicos' };
+        } else if (categoryText === 'hotel') { // 👈 EL CAMBIO PARA HOTELES
+            return { prefix: 'NUESTRAS ', highlight: 'HABITACIONES', subtitle: 'Conoce nuestras opciones de descanso y confort' };
         } else {
             return { prefix: 'Nuestra ', highlight: 'Carta', subtitle: 'Consulta nuestros platos y especialidades' };
         }
     };
     const menuTitle = getMenuTitle();
+    // 👆 FIN DEL CAMBIO 👆
 
     return (
         <div className="bg-slate-50 dark:bg-slate-950 min-h-screen relative font-['Plus_Jakarta_Sans']">
 
-            {/* HERO SECTION */}
+            {/* HERO SECTION ORIGINAL */}
             <div className="w-full h-[60vh] md:h-[70vh] relative overflow-hidden bg-black">
                 <img
                     src={business.photos[0]}
@@ -180,12 +183,12 @@ const BusinessDetailPage: React.FC = () => {
                             Ver Mapa <i className="fas fa-location-arrow"></i>
                         </a>
                         {/* Botón 2: Ver Comentarios */}
-<button 
-    onClick={() => document.getElementById('review-section')?.scrollIntoView({ behavior: 'smooth' })}
-    className="w-full bg-[#2A4D69] text-white px-10 md:px-14 py-6 md:py-8 rounded-[2rem] font-black uppercase text-[10px] md:text-xs tracking-[0.3em] shadow-2xl flex items-center justify-center gap-4 active:scale-95 transition-all"
->
-    {t('DEJAR COMENTARIO', 'LEAVE A COMMENT')} <i className="fas fa-comment-dots"></i>
-</button>
+                        <button 
+                            onClick={() => document.getElementById('review-section')?.scrollIntoView({ behavior: 'smooth' })}
+                            className="w-full bg-[#2A4D69] text-white px-10 md:px-14 py-6 md:py-8 rounded-[2rem] font-black uppercase text-[10px] md:text-xs tracking-[0.3em] shadow-2xl flex items-center justify-center gap-4 active:scale-95 transition-all"
+                        >
+                            {t('DEJAR COMENTARIO', 'LEAVE A COMMENT')} <i className="fas fa-comment-dots"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -213,7 +216,12 @@ const BusinessDetailPage: React.FC = () => {
                             </div>
                             <div className="bg-slate-100 dark:bg-slate-800 px-8 py-3 rounded-full border border-slate-200 shadow-inner flex items-center gap-3">
                                 <i className="fas fa-book-open text-[#F58220] text-xs"></i>
-                                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{business.menuImages?.length} páginas</span>
+                                {/* 👇 CAMBIO PARA DECIR OPCIONES O PÁGINAS SEGÚN CATEGORÍA 👇 */}
+                                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                                    {categoryText === 'hotel' 
+                                        ? `${business.menuImages?.length} opciones` 
+                                        : `${business.menuImages?.length} páginas`}
+                                </span>
                             </div>
                         </div>
                         <div className="flex gap-8 overflow-x-auto no-scrollbar pb-12 px-4 snap-x">
