@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-// Asegúrate de tener tus variables de entorno configuradas
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -17,42 +16,39 @@ const BusinessRating: React.FC<BusinessRatingProps> = ({ businessId }) => {
   useEffect(() => {
     const fetchAndCalculateRating = async () => {
       try {
-        // 1. Buscamos en la tabla de reseñas ('reviews')
-        // Filtramos por el ID del negocio y SOLO las que tengan status 'approved'
+        // 👇 AQUÍ ESTÁ LA MAGIA: APUNTAMOS A LA TABLA CORRECTA 👇
         const { data, error } = await supabase
-          .from('reviews') // Cambia 'reviews' si tu tabla se llama distinto (ej. 'comentarios')
+          .from('testimonials') 
           .select('rating')
           .eq('business_id', businessId)
           .eq('status', 'approved');
 
-        if (error) {
-          throw error;
-        }
+        // Espía para la consola
+        console.log(`🔍 Buscando estrellas para: ${businessId}`, data);
+        if (error) console.error(`❌ Error al leer Supabase:`, error);
 
-        // 2. Lógica Matemática: Promediamos si hay reseñas
+        // Lógica matemática
         if (data && data.length > 0) {
           const totalScore = data.reduce((suma, review) => suma + review.rating, 0);
           const averageScore = totalScore / data.length;
-          
-          // Redondeamos a un decimal (ej. 4.5, 4.8)
-          setRating(Number(averageScore.toFixed(1)));
+          setRating(Number(averageScore.toFixed(1))); // Redondea a 1 decimal
         } else {
-          // Si no hay datos, o la longitud es 0, lo dejamos en null para que diga "Nuevo"
-          setRating(null);
+          setRating(null); // Si no hay, muestra "Nuevo"
         }
 
       } catch (error) {
-        console.error("Error al calcular el rating:", error);
+        console.error("Error crítico en el componente:", error);
         setRating(null);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAndCalculateRating();
+    if (businessId) {
+      fetchAndCalculateRating();
+    }
   }, [businessId]);
 
-  // Si está cargando, mostramos una estrella en gris tenue para que no brinque la pantalla
   if (loading) {
     return (
       <div className="flex items-center text-slate-300 font-black text-lg animate-pulse">
@@ -62,11 +58,9 @@ const BusinessRating: React.FC<BusinessRatingProps> = ({ businessId }) => {
     );
   }
 
-  // EL RENDERIZADO FINAL: La inteligencia artificial decide qué mostrar
   return (
     <div className="flex items-center text-[#F58220] font-black text-lg whitespace-nowrap">
       <i className="fas fa-star mr-1"></i>
-      {/* Si rating tiene un número, lo muestra. Si es null, dice "Nuevo" */}
       <span>{rating !== null ? rating : 'Nuevo'}</span>
     </div>
   );
