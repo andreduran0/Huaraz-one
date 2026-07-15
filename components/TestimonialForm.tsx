@@ -12,6 +12,10 @@ const TestimonialForm: React.FC<TestimonialFormProps> = ({ businessId }) => {
 
   const [userName, setUserName] = useState('');
   const [comment, setComment] = useState('');
+  // 👇 NUEVOS ESTADOS PARA LAS ESTRELLAS 👇
+  const [rating, setRating] = useState(5); 
+  const [hover, setHover] = useState(0);
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -22,7 +26,6 @@ const TestimonialForm: React.FC<TestimonialFormProps> = ({ businessId }) => {
     setIsSubmitting(true);
 
     try {
-      // Inserción en la tabla de Supabase que acabas de crear
       const { error } = await supabase
         .from('testimonials')
         .insert([
@@ -30,16 +33,18 @@ const TestimonialForm: React.FC<TestimonialFormProps> = ({ businessId }) => {
             business_id: businessId, 
             user_name: userName, 
             comment: comment,
-            status: 'pending' // <--- Entra en estado de revisión oculto al público
+            rating: rating, // 👈 AQUÍ ENVIAMOS EL PUNTAJE A LA BASE DE DATOS
+            status: 'pending'
           }
         ]);
 
       if (error) throw error;
 
-      // Mostrar pantalla de éxito
+      // Mostrar pantalla de éxito y resetear formulario
       setSubmitted(true);
       setUserName('');
       setComment('');
+      setRating(5); // 👈 Volvemos a poner las 5 estrellas por defecto
     } catch (error) {
       console.error("Error al enviar testimonio:", error);
       alert(t("Hubo un error. Intenta nuevamente.", "There was an error. Please try again."));
@@ -48,7 +53,6 @@ const TestimonialForm: React.FC<TestimonialFormProps> = ({ businessId }) => {
     }
   };
 
-  // Pantalla de agradecimiento tras enviar el formulario
   if (submitted) {
     return (
       <div className="bg-emerald-50 border border-emerald-100 p-8 rounded-3xl text-center space-y-4 animate-fadeIn shadow-sm">
@@ -74,7 +78,6 @@ const TestimonialForm: React.FC<TestimonialFormProps> = ({ businessId }) => {
     );
   }
 
-  // Formulario principal
   return (
     <form onSubmit={handleSubmit} className="bg-slate-50 p-6 md:p-8 rounded-[2rem] border border-slate-100 space-y-5 shadow-sm relative overflow-hidden">
       <div className="flex items-center gap-4 mb-4 relative z-10">
@@ -96,6 +99,34 @@ const TestimonialForm: React.FC<TestimonialFormProps> = ({ businessId }) => {
             required
             disabled={isSubmitting}
           />
+
+          {/* 👇 SELECTOR DE ESTRELLAS INTERACTIVO 👇 */}
+          <div className="w-full p-4 rounded-2xl border border-slate-200 bg-white flex flex-col items-center justify-center gap-3">
+            <label className="text-xs font-black text-slate-500 uppercase tracking-widest">
+              {t("Califica tu experiencia", "Rate your experience")}
+            </label>
+            <div className="flex gap-2">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  type="button"
+                  key={star}
+                  onClick={() => setRating(star)}
+                  onMouseEnter={() => setHover(star)}
+                  onMouseLeave={() => setHover(0)}
+                  className="focus:outline-none transition-transform hover:scale-110 active:scale-95"
+                >
+                  <i 
+                    className={`fas fa-star text-3xl transition-colors ${
+                      star <= (hover || rating) 
+                        ? 'text-[#F58220] opacity-100' // Color naranja Huaraz Explorer
+                        : 'text-slate-200 opacity-50'
+                    }`}
+                  ></i>
+                </button>
+              ))}
+            </div>
+          </div>
+          {/* 👆 FIN DEL SELECTOR 👆 */}
 
           <textarea 
             placeholder={t("¿Qué te pareció este lugar? Cuéntanos tu experiencia...", "What did you think of this place? Tell us your experience...")} 
