@@ -12,7 +12,6 @@ const TestimonialForm: React.FC<TestimonialFormProps> = ({ businessId }) => {
 
   const [userName, setUserName] = useState('');
   const [comment, setComment] = useState('');
-  // 👇 NUEVOS ESTADOS PARA LAS ESTRELLAS 👇
   const [rating, setRating] = useState(5); 
   const [hover, setHover] = useState(0);
   
@@ -33,18 +32,17 @@ const TestimonialForm: React.FC<TestimonialFormProps> = ({ businessId }) => {
             business_id: businessId, 
             user_name: userName, 
             comment: comment,
-            rating: rating, // 👈 AQUÍ ENVIAMOS EL PUNTAJE A LA BASE DE DATOS
+            rating: rating,
             status: 'pending'
           }
         ]);
 
       if (error) throw error;
 
-      // Mostrar pantalla de éxito y resetear formulario
       setSubmitted(true);
       setUserName('');
       setComment('');
-      setRating(5); // 👈 Volvemos a poner las 5 estrellas por defecto
+      setRating(5); 
     } catch (error) {
       console.error("Error al enviar testimonio:", error);
       alert(t("Hubo un error. Intenta nuevamente.", "There was an error. Please try again."));
@@ -90,17 +88,8 @@ const TestimonialForm: React.FC<TestimonialFormProps> = ({ businessId }) => {
       </div>
       
       <div className="relative z-10 space-y-4">
-          <input 
-            type="text" 
-            placeholder={t("Tu nombre o apodo", "Your name or nickname")} 
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            className="w-full p-4 rounded-2xl border border-slate-200 focus:border-[#2A4D69] focus:ring-1 focus:ring-[#2A4D69] outline-none text-sm font-medium transition-all bg-white"
-            required
-            disabled={isSubmitting}
-          />
-
-          {/* 👇 SELECTOR DE ESTRELLAS INTERACTIVO 👇 */}
+          
+          {/* ⭐ 1. LAS ESTRELLAS AHORA ESTÁN ARRIBA ⭐ */}
           <div className="w-full p-4 rounded-2xl border border-slate-200 bg-white flex flex-col items-center justify-center gap-3">
             <label className="text-xs font-black text-slate-500 uppercase tracking-widest">
               {t("Califica tu experiencia", "Rate your experience")}
@@ -118,7 +107,7 @@ const TestimonialForm: React.FC<TestimonialFormProps> = ({ businessId }) => {
                   <i 
                     className={`fas fa-star text-3xl transition-colors ${
                       star <= (hover || rating) 
-                        ? 'text-[#F58220] opacity-100' // Color naranja Huaraz Explorer
+                        ? 'text-[#F58220] opacity-100' 
                         : 'text-slate-200 opacity-50'
                     }`}
                   ></i>
@@ -126,8 +115,19 @@ const TestimonialForm: React.FC<TestimonialFormProps> = ({ businessId }) => {
               ))}
             </div>
           </div>
-          {/* 👆 FIN DEL SELECTOR 👆 */}
 
+          {/* 👤 2. EL NOMBRE O APODO SE MOVIÓ AQUÍ ABAJO 👤 */}
+          <input 
+            type="text" 
+            placeholder={t("Tu nombre o apodo", "Your name or nickname")} 
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            className="w-full p-4 rounded-2xl border border-slate-200 focus:border-[#2A4D69] focus:ring-1 focus:ring-[#2A4D69] outline-none text-sm font-medium transition-all bg-white"
+            required
+            disabled={isSubmitting}
+          />
+
+          {/* 💬 3. COMENTARIO AL FINAL 💬 */}
           <textarea 
             placeholder={t("¿Qué te pareció este lugar? Cuéntanos tu experiencia...", "What did you think of this place? Tell us your experience...")} 
             value={comment}
