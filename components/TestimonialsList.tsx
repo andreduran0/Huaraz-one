@@ -59,12 +59,19 @@ const TestimonialsList: React.FC<TestimonialsListProps> = ({ businessId }) => {
                 <div key={testimonio.id} className="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-sm relative group hover:shadow-xl transition-all">
                     <i className="fas fa-quote-right absolute top-8 right-8 text-slate-100 dark:text-slate-800 text-4xl -z-10 group-hover:scale-110 transition-transform"></i>
                     
-                    {/* Estrellas Curadas (Fijas en 5 para dar la mejor imagen, ya que tú las apruebas) */}
-                    <div className="flex gap-1 mb-4">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                            <i key={star} className="fas fa-star text-yellow-400 text-sm"></i>
-                        ))}
-                    </div>
+                {/* Estrellas Dinámicas (Leen el puntaje real de la base de datos) */}
+<div className="flex gap-1 mb-4">
+    {[1, 2, 3, 4, 5].map((star) => (
+        <i 
+            key={star} 
+            className={`fas fa-star text-sm transition-colors ${
+                star <= testimonio.rating 
+                    ? 'text-yellow-400 opacity-100' 
+                    : 'text-slate-200 dark:text-slate-700 opacity-50'
+            }`}
+        ></i>
+    ))}
+</div>
 
                     <p className="text-slate-600 dark:text-slate-400 font-medium leading-relaxed italic mb-6">
                         "{testimonio.comment}"
