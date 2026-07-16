@@ -862,7 +862,17 @@ Nos diferenciamos de las demás taquerías por ofrecer una combinación única d
       'https://i.imgur.com/LaMi8MY.jpeg',
       'https://i.imgur.com/zpgrBnO.jpeg',
       'https://i.imgur.com/jvH3qwz.jpeg',
-      'https://i.imgur.com/CcO17cd.jpeg'
+      'https://i.imgur.com/CcO17cd.jpeg',
+       'https://i.imgur.com/tqFep2S.jpeg',
+      'https://i.imgur.com/OpEENZs.jpeg',
+      'https://i.imgur.com/M2aABe1.jpeg',
+      'https://i.imgur.com/3WsCu7R.jpeg',
+       'https://i.imgur.com/QrTmY92.jpeg',
+      'https://i.imgur.com/48RAsbU.jpeg',
+      'https://i.imgur.com/nlSxCOt.jpeg',
+      'https://i.imgur.com/PXtsPnT.jpeg',
+       'https://i.imgur.com/gWSgjr0.jpeg'
+  
     ],
     menuImages: [
       'https://i.imgur.com/6vM4z72.jpeg',
