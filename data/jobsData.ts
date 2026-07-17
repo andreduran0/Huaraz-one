@@ -26,7 +26,7 @@ export const jobsData: JobOffer[] = [
     description: 'Se requiere ayudante de cocina proactivo. Es indispensable contar con experiencia comprobada en el manejo de parrillas y cilindro. Trabajo dinámico y en equipo.',
     salary: 'A tratar',
     whatsappContact: '51967477268'
-  }
+  },
   {
     id: 'job-1',
     businessId: '21',
