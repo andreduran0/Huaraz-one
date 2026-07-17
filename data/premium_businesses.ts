@@ -13,7 +13,7 @@ export const premiumBusinesses: Business[] = [
     whatsapp: '51935260190',
     photos: [
       'https://i.imgur.com/QAW2TPJ.jpeg',
-      'https://i.imgur.com/pkO1HxJ.jpeg',
+      'https://i.imgur.com/YZkzYJL.jpeg',
       'https://i.imgur.com/F3TAAUa.jpeg',
       'https://i.imgur.com/PCKEWw7.jpeg',
       'https://i.imgur.com/BMWOpwY.jpeg',
@@ -77,6 +77,33 @@ export const premiumBusinesses: Business[] = [
     status: 'approved', 
     ownerUserId: 'u22',
     googleMapsQuery: 'Jr. Federico Sal y Rosas 305 - Huaraz',
+  },
+  {
+    id: '24',
+    name: 'Hakuna Matata Restobar',
+    category: BusinessCategory.Restaurante,
+    description: 'Hakuna Matata es un restobar con alma ochentera y noventera, con la mejor música y eventos que llevan el alma del rock a los huaracinos. Tomarte una cerveza o un cóctel aquí es una vitrina hacia una nueva forma de disfrutar. Un local que propone una nueva especialidad en restauración con los mejores platos de Huaraz y una carta de presentación con shows en vivo infaltables donde podrás escuchar la música de nuestra región.',
+    address: 'Pasaje Jesús Morales 977 - Huaraz - Ancash. (Referencia: a media cuadra de la Av. Gamarra con 28 de Julio, frente al CETPRO Teófilo Méndez Ramos).',
+    lat: -9.5850,
+    lng: -77.4945,
+    phone: '+51 967477268',
+    whatsapp: '51967477268',
+    photos: [
+      'https://i.imgur.com/1wmfoyB.jpeg',
+      'https://i.imgur.com/pkO1HxJ.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/6JtLoKZ.jpeg',
+      'https://i.imgur.com/YZkzYJL.jpeg'
+    ],
+    schedule: {
+      'Lunes - Sábado': '10:00 A.M - 11:00 P.M'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-24',
+    status: 'approved',
+    ownerUserId: 'u24',
+    googleMapsQuery: 'Pasaje Jesús Morales 977 - Huaraz - Ancash',
   },
   {
     id: '23',
