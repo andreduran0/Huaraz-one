@@ -366,4 +366,29 @@ export const events: Event[] = [
     time: '07:00 p. m.',
     location: 'Plaza de Armas de Huaraz'
   }
+  // --- EVENTOS HAKUNA MATATA (JULIO 2026) ---
+  {
+    date: '2026-07-19',
+    title: 'Gran Final Mundial 2026 en Pantalla Gigante',
+    description: 'Vive la transmisión en vivo de la final del Mundial (España vs Argentina) desde la ceremonia de clausura. Disfruta del partido en pantalla gigante con chanchito al cilindro y promociones en cervezas.',
+    type: 'sports',
+    time: '12:30 p. m.',
+    location: 'Hakuna Matata Restobar (Psje. Jesús Morales 977)'
+  },
+  {
+    date: '2026-07-25',
+    title: 'Una Noche Mágica: Tributo a Coldplay y Michael Bublé',
+    description: 'Espectacular noche de música en vivo con tributos a Coldplay (Marvin Kallet) y Michael Bublé (Nano Schwan). Además, un set especial de salsa y juerga para bailar toda la noche.',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: 'Hakuna Matata Restobar (Psje. Jesús Morales 977)'
+  },
+  {
+    date: '2026-07-28',
+    title: 'Noche de Pachanga: Fiestas Patrias',
+    description: '¡Celebra las Fiestas Patrias como se debe! Gran Noche de Pachanga con la presentación estelar de la banda LUHUANA completa y otras bandas invitadas.',
+    type: 'entertainment',
+    time: '09:00 p. m.', 
+    location: 'Hakuna Matata Restobar (Psje. Jesús Morales 977)'
+  }
 ];
