@@ -2,6 +2,38 @@ import { Coupon } from '../types';
 
 export const coupons: Coupon[] = [
   {
+    id: 'c24-1',
+    businessId: '24', // Hakuna Matata Restobar
+    title: 'Promo Final Mundial: Pilsen 630ml a S/ 12',
+    description: '¡Vive la Gran Final del Mundial 2026 (España vs Argentina) en pantalla gigante! Disfruta del partido desde la ceremonia de clausura con una cerveza Pilsen Callao (630ml) bien helada por solo S/ 12. Válido este domingo 19 de julio desde las 12:30 PM presentando este cupón digital.',
+    code: 'HAKUNAPILSEN',
+    expiryDate: '2026-07-19', 
+  },
+  {
+    id: 'c24-2',
+    businessId: '24', // Hakuna Matata Restobar
+    title: 'Especial Final: Chanchito al Cilindro a S/ 30',
+    description: '¡El mejor sabor para acompañar la Gran Final del Mundial 2026! Disfruta del España vs Argentina en pantalla gigante con un riquísimo chanchito al cilindro por solo S/ 30. Te esperamos este domingo 19 de julio desde las 12:30 PM. Válido presentando este cupón digital.',
+    code: 'HAKUNACHANCHO',
+    expiryDate: '2026-07-19', 
+  },
+  {
+    id: 'c24-3',
+    businessId: '24', // Hakuna Matata Restobar
+    title: 'Una Noche Mágica: Tributo a Coldplay y Michael Bublé',
+    description: '¡Disfruta de una noche inolvidable con la mejor música en vivo! Ven a disfrutar de un espectacular tributo a Coldplay por Marvin Kallet y a Michael Bublé por Nano Schwan. Además, disfruta de un set especial de salsa y juerga para bailar toda la noche. Válido este sábado 25 de julio desde las 8:00 PM presentando este cupón digital para un shot de cortesía.',
+    code: 'HAKUNAMAGICA',
+    expiryDate: '2026-07-25', 
+  },
+  {
+    id: 'c24-4',
+    businessId: '24', // Hakuna Matata Restobar
+    title: 'Noche de Pachanga: ¡Celebra Fiestas Patrias!',
+    description: '¡Ven a celebrar Fiestas Patrias como se debe! Este martes 28 de julio disfruta de una Noche de Pachanga inolvidable con la banda LUHUANA completa y bandas invitadas. Presenta este cupón digital al ingresar y recibe un shot pisquero de cortesía para brindar por el Perú.',
+    code: 'HAKUNAPACHANGA',
+    expiryDate: '2026-07-28', 
+  },
+  {
     id: 'c23',
     businessId: '23', // EITZA - Pasta-Grill
     title: 'Cortesía: Pan al ajo GRATIS',
