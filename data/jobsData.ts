@@ -10,6 +10,24 @@ export interface JobOffer {
 
 export const jobsData: JobOffer[] = [
   {
+    id: 'job-4',
+    businessId: '24',
+    businessName: 'Hakuna Matata Restobar',
+    title: 'Barman',
+    description: 'Buscamos barman con experiencia para unirse a nuestro equipo. Encargado de la preparación de bebidas y atención en barra. Disponibilidad para trabajar en horario nocturno y fines de semana.',
+    salary: 'A tratar',
+    whatsappContact: '51967477268'
+  },
+  {
+    id: 'job-5',
+    businessId: '24',
+    businessName: 'Hakuna Matata Restobar',
+    title: 'Ayudante de Cocina (Experiencia en Parrillas)',
+    description: 'Se requiere ayudante de cocina proactivo. Es indispensable contar con experiencia comprobada en el manejo de parrillas y cilindro. Trabajo dinámico y en equipo.',
+    salary: 'A tratar',
+    whatsappContact: '51967477268'
+  }
+  {
     id: 'job-1',
     businessId: '21',
     businessName: 'Las Agüero',
