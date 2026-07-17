@@ -365,7 +365,7 @@ export const events: Event[] = [
     type: 'entertainment',
     time: '07:00 p. m.',
     location: 'Plaza de Armas de Huaraz'
-  }
+  },
   // --- EVENTOS HAKUNA MATATA (JULIO 2026) ---
   {
     date: '2026-07-19',
