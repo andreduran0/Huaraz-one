@@ -81,7 +81,7 @@ export const premiumBusinesses: Business[] = [
   {
     id: '24',
     name: 'Hakuna Matata Restobar',
-    category: BusinessCategory.Restaurante,
+    category: BusinessCategory.Restobar,
     description: 'Hakuna Matata es un restobar con alma ochentera y noventera, con la mejor música y eventos que llevan el alma del rock a los huaracinos. Tomarte una cerveza o un cóctel aquí es una vitrina hacia una nueva forma de disfrutar. Un local que propone una nueva especialidad en restauración con los mejores platos de Huaraz y una carta de presentación con shows en vivo infaltables donde podrás escuchar la música de nuestra región.',
     address: 'Pasaje Jesús Morales 977 - Huaraz - Ancash. (Referencia: a media cuadra de la Av. Gamarra con 28 de Julio, frente al CETPRO Teófilo Méndez Ramos).',
     lat: -9.5850,
