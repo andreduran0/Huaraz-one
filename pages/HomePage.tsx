@@ -39,7 +39,7 @@ const HomePage: React.FC = () => {
       </h1>
 
       {/* HERO SECTION */}
-      <section className="relative h-80 rounded-[2.5rem] overflow-hidden shadow-2xl">
+      <section className="relative h-80 bg-slate-800 dark:bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl">
         <HeroSlider images={heroImages}>
           <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center p-6">
             <p className="text-3xl md:text-5xl font-extrabold text-white mb-2 drop-shadow-lg uppercase italic tracking-tighter">
