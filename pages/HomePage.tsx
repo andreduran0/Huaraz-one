@@ -38,18 +38,30 @@ const HomePage: React.FC = () => {
         {t('Plataforma de recomendaciones turísticas en Huaraz', 'Tourist recommendation platform in Huaraz')}
       </h1>
 
-     {/* HERO SECTION */}
-      <section className="relative h-80 bg-slate-800 dark:bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl">
-        <HeroSlider images={heroImages}>
-          <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center p-6">
-            <p className="text-3xl md:text-5xl font-extrabold text-white mb-2 drop-shadow-lg uppercase italic tracking-tighter">
-              Huaraz Explorer
-            </p>
-            <p className="text-xl text-white font-bold tracking-wide drop-shadow-md uppercase italic">
-              {t('La Cordillera Blanca a un clic', 'The Cordillera Blanca one click away')}
-            </p>
-          </div>
-        </HeroSlider>
+   {/* HERO SECTION */}
+      <section className="relative h-80 bg-slate-100 dark:bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl flex items-center justify-center">
+        
+        {/* Logo de espera animado (Fondo) */}
+        <img 
+          src="/logo-carga.png" 
+          alt="Cargando Huaraz Explorer..." 
+          className="absolute w-32 md:w-40 opacity-40 animate-pulse z-0" 
+        />
+
+        {/* Tu carrusel original (Tapa al logo al cargar) */}
+        <div className="absolute inset-0 z-10 w-full h-full">
+          <HeroSlider images={heroImages}>
+            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center p-6">
+              <p className="text-3xl md:text-5xl font-extrabold text-white mb-2 drop-shadow-lg uppercase italic tracking-tighter">
+                Huaraz Explorer
+              </p>
+              <p className="text-xl text-white font-bold tracking-wide drop-shadow-md uppercase italic">
+                {t('La Cordillera Blanca a un clic', 'The Cordillera Blanca one click away')}
+              </p>
+            </div>
+          </HeroSlider>
+        </div>
+        
       </section>
 
       {/* VALUE PROPOSITION */}
