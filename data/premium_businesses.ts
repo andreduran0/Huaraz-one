@@ -881,7 +881,7 @@ Nos diferenciamos de las demás taquerías por ofrecer una combinación única d
 ⭐ Atención rápida y personalizada.
 💯 Excelente relación calidad-precio.`,
     address: 'AV. Agustín Gamarra N.º 625 ref: media cuadra de la alameda Grau ',
-    lat: -9.30000,
+    lat: -9.60078,
     lng: -77.4945,
     phone: '+51 998 127 329', 
     whatsapp: '51998127329',
