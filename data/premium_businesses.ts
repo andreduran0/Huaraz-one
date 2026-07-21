@@ -283,7 +283,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     category: BusinessCategory.EXCHANGE,
     description: 'Cambio de moneda seguro y con la mejor tasa del mercado en el corazón de Huaraz. Ubicación estratégica y atención confiable para turistas y locales. ¡Cambia tus dólares o euros con total tranquilidad!',
     address: 'Pasaje Comercio (1era. Tienda costado del Banco Interbank), Jirón José de Sucre S/N, Huaraz',
-   lat: -9.5350, 
+   lat: -9.5370, 
    lng: -77.5079,
     phone: '943121714',
     whatsapp: '51943121714',
