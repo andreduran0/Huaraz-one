@@ -465,7 +465,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     description: 'En El Tío Enrique te invitamos a explorar nuevos sabores con nuestras auténticas recetas suizo-alemanas y 58 variedades de cervezas. Vivirás experiencias únicas, rodeado del espíritu de las montañas y buenos momentos. ¡Descubre la aventura en cada plato y en cada brindis!',
     address: 'Jirón Simón Bolívar 572 - 2do piso, Huaraz',
     lat: -9.5290, 
-    lng: -77.5500,
+    lng: -77.5300,
     phone: '+51 942441725', 
     whatsapp: '51942441725',
     photos: [
