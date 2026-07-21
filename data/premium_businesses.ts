@@ -230,7 +230,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     description: 'Policlínico especializado en brindar atención médica integral de alta calidad en Huaraz. Contamos con un equipo de profesionales comprometidos con tu bienestar, ofreciendo servicios de diagnóstico, consulta externa y especialidades médicas con tecnología de vanguardia y calidez humana.',
     address: 'Jr. Damaso Antúnez N.º 744, Huaraz',
    lat: -9.5399, 
-   lng: -77.5014,
+   lng: -77.5044,
     phone: '954758684',
     whatsapp: '51954758684',
     photos: [
