@@ -258,7 +258,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     category: BusinessCategory.RESTAURANT,
     description: 'Restaurante ubicado en una zona estratégica de Huaraz. Disfruta de nuestra variada propuesta gastronómica con atención en horario extendido. Explora nuestra carta y solicita tu reserva de manera rápida y segura.',
     address: 'Av. Luzuriaga N° 1004 Belén ',
-     lat: -9.5330, 
+     lat: -9.5390, 
    lng: -77.5025,
     phone: '961951453',
     whatsapp: '51961951453',
