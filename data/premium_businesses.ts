@@ -7,7 +7,7 @@ export const premiumBusinesses: Business[] = [
     category: BusinessCategory.HOTEL, // Asegúrate de que HOTEL esté en tu enum BusinessCategory
     description: 'Hotel los Inkas Huaraz ofrece alojamiento cómodo y atención personalizada en un ambiente tranquilo y seguro. Habitaciones equipadas, WiFi gratuito y excelente ubicación. Contáctanos para reservar y mayor información.',
     address: 'Jr. Federico Sal y Rosas 305 - Huaraz',
-    lat: -9.5450, 
+    lat: -9.5460, 
     lng: -77.5000,
     phone: '+51 935 260 190', 
     whatsapp: '51935260190',
