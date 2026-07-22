@@ -424,7 +424,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     category: BusinessCategory.RESTAURANT,
     description: 'Descubre la verdadera fusión peruano-china en el corazón de Huaraz. En Chifa La Gran Muralla 2 te ofrecemos platillos generosos con ese inconfundible sabor a wok: desde el clásico Arroz Chaufa y Tallarín Saltado, hasta nuestras especialidades de la casa. El ambiente ideal para compartir en familia, con amigos o recargar energías después de un intenso día de trekking por la Cordillera Blanca. ¡Tradición, rapidez y excelente sabor garantizados!',
     address: 'Jr. San Martin 746, Huaraz',
-   lat: -9.5389, 
+   lat: -9.5400, 
    lng: -77.5079,
     phone: '+51 953604939', 
     whatsapp: '51953604939',
