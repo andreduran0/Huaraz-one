@@ -793,7 +793,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     category: BusinessCategory.RESTAURANT,
     description: 'Descubre el auténtico sabor de las brasas en Taramo - Grill & Bar. Somos especialistas en parrillas, ofreciendo cortes de carne seleccionados y cocinados a la perfección para resaltar su máxima jugosidad. Acompaña tu cena con nuestra excelente selección de bebidas y piqueos en un ambiente moderno, cálido y perfecto para compartir momentos inolvidables con amigos o familia.',
     address: 'Jr. Daniel Villazan N· 162',
-      lat: -9.5377, lng: -77.5280, 
+      lat: -9.5375, lng: -77.5285, 
     phone: '+51 910562501', 
     whatsapp: '51910562501',
     photos: [
