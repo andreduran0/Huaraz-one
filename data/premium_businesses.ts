@@ -351,7 +351,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     category: BusinessCategory.RESTAURANT,
     description: 'Sumérgete en la tradición y disfruta de los auténticos sabores andinos que hemos preparado especialmente para ti.\n\n¡Una experiencia gastronómica que honra nuestras raíces!\n¡Te esperamos para compartir esta fecha especial!',
     address: 'Av. Luzuriaga N·702 (Segundo piso Serpost) - Huaraz',
-    lat: -9.3320, lng: -77.5955,
+    lat: -9.5455, 
+   lng: -77.5079,
     phone: '+51 920 784 431', 
     whatsapp: '51920784431',
     photos: [
