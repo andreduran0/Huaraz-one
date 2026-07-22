@@ -387,7 +387,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     category: BusinessCategory.RESTAURANT,
     description: '¡El verdadero sabor a la brasa en el corazón de Huaraz! En Norabuena Pollos y Parrillas te esperamos con los pollos más jugosos, doraditos y con esa sazón inconfundible que nos caracteriza. Disfruta también de nuestras contundentes parrillas, carnes seleccionadas y guarniciones generosas. Un ambiente familiar y atención de primera, justo frente al histórico monumento de Pumacayán. ¡Tu antojo de un buen pollo a la brasa se cumple aquí!',
     address: 'Jr.Ramón Castilla 1ra.Cuadra -Frente al monumento pumacayan ,Huaraz',
-   lat: -9.5399, 
+   lat: -9.5285, 
    lng: -77.5050,
     phone: '+51 930811600', 
     whatsapp: '51930811600',
