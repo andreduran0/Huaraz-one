@@ -926,8 +926,8 @@ Nos diferenciamos de las demás taquerías por ofrecer una combinación única d
     category: BusinessCategory.RESTAURANT,
     description: 'Las Agüero | comer bien, vivir mejor. ¡Bienvenidos a nuestro mundo de postres saludables y comida sana! Vive el bienestar en cada bocado y aroma.',
     address: 'Jirón Garino Uribe, Huaraz, Perú',
-    lat: -9.5050,
-    lng: -77.4255,
+ lat: -9.5379, 
+   lng: -77.5058,
     phone: '+51 983 182 747',
     whatsapp: '51983 182 747',
     photos: [
