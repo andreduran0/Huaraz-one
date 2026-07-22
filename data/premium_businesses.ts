@@ -192,7 +192,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     category: BusinessCategory.EDUCATION,
     description: 'Institución Educativa líder en Huaraz, dedicada a la formación integral de estudiantes con un enfoque en ingeniería y ciencias. Nuestra propuesta educativa combina la excelencia académica con el desarrollo de valores, preparando a los líderes del mañana en un entorno moderno y estratégico.',
     address: 'Jr. Augusto B. Leguía n.º 267, Huaraz - Independencia',
-    lat: -9.4860, lng: -77.5280, 
+    lat: -9.2860, lng: -77.5280, 
     phone: '914915067',
     whatsapp: '51929866812',
     photos: [
