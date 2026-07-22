@@ -514,7 +514,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     category: BusinessCategory.RESTAURANT,
     description: '47 RONNIN Sushi Bar es cocina japonesa con alma peruana, donde los sabores se encuentran con la tradición y la fusión cobra vida en cada plato. Una experiencia auténtica y llena de identidad.',
     address: 'Jr. Víctor Cordero 866 (Entre el Parque de las Banderas y la Av. Gamarra), Huaraz',
-    lat: -9.5080, lng: -77.4955,
+   lat: -9.5359, 
+   lng: -77.5014,
     phone: '+51 919589738', 
     whatsapp: '51919589738',
     photos: [
