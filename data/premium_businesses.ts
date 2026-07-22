@@ -154,7 +154,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     category: BusinessCategory.RESTAURANT,
     description: 'Restaurante ubicado en el mirador de Rataquenua. Disfruta de una vista panorámica inigualable de Huaraz y la Cordillera Blanca junto a una experiencia gastronómica de altura con platos regionales y fusión.',
     address: 'Mirador de Rataquenua, Huaraz',
-    lat: -9.5152, lng: -77.4920,
+    lat: -9.5152, lng: -77.4855,
     phone: '+51 937 511 052', 
     whatsapp: '51937511052',
     photos: [
