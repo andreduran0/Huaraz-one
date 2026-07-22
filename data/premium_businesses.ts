@@ -114,7 +114,7 @@ export const premiumBusinesses: Business[] = [
 Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una experiencia gastronómica alrededor de los mejores cortes de carne de la ciudad. Nuestra propuesta combina parrilla, pastas, coctelería y una cuidada selección de vinos, todo en un ambiente cálido y elegante. Recibimos a viajeros, montañistas y amantes de la buena mesa que buscan calidad, excelente atención y sabores memorables. En Eitza, cada visita es una invitación a disfrutar la esencia de los Andes a través de una cocina que celebra el buen comer.`,
     address: 'Jirón Pedro Campos, Huaraz, Perú', // Ojo: en tu borrador decía Ramón Castilla en la dirección pero Pedro Campos en Google Maps. Lo unifiqué a Pedro Campos para que no haya errores de navegación.
    lat: -9.5265, 
-   lng: -77.5050,
+   lng: -77.5053,
     phone: '+51 965 260 764', 
     whatsapp: '51965260764',
     photos: [
