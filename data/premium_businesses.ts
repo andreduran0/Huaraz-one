@@ -607,7 +607,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     description: 'Lo mejor de la comida de la India, Tailandia y México en el corazón de Huaraz. Sabores auténticos, especias seleccionadas y una experiencia gastronómica internacional única que solo podrás encontrar en Chilli Heaven.',
     address: 'Parque Ginebra, Huaraz, Perú',
   lat: -9.5360, 
-    lng: -77.5099,
+    lng: -77.5097,
     phone: '+51 923665019', 
     whatsapp: '51923665019',
     photos: [
