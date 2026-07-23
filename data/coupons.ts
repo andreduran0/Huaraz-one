@@ -2,6 +2,14 @@ import { Coupon } from '../types';
 
 export const coupons: Coupon[] = [
   {
+    id: 'c4',
+    businessId: 'el-tio-enrique',
+    title: 'Combo Suizo-Alemán: Salchicha Especial + Cerveza (500ml) a S/ 35',
+    description: '¡El verdadero sabor europeo te espera en El Tío Enrique! Elige uno de nuestros 4 deliciosos hot dogs especiales: Finas Hierbas, Ternera (Bratwurst), Suiza (Cervelat) o Artesanal (Hauswurst), y acompáñalo con medio litro de auténtica cerveza alemana. Todo por solo S/ 35. Válido presentando este cupón digital.',
+    code: 'TIOENRIQUE35',
+    expiryDate: '2026-08-31', // Puedes ajustar esta fecha según lo que coordines con el negocio
+  },
+  {
     id: 'c24-1',
     businessId: '24', // Hakuna Matata Restobar
     title: 'Promo Final Mundial: Pilsen 630ml a S/ 12',
