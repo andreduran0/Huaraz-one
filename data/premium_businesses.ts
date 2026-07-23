@@ -610,8 +610,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Parque Ginebra, Huaraz, Perú',
   lat: -9.5360, 
     lng: -77.5097,
-    phone: '+51 923665019', 
-    whatsapp: '51923665019',
+    phone: '+51 976272174', 
+    whatsapp: '51976272174',
     photos: [
       'https://i.imgur.com/6410rSL.jpeg',
       'https://i.imgur.com/t97TtnM.jpeg',
