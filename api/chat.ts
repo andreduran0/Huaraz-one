@@ -75,12 +75,15 @@ let businessQuery = supabase
       .select('name, description, category, whatsapp_number, default_message, website, imagen_url,rating, review_count') // 👈 AQUÍ AGREGAMOS LAS 2 COLUMNAS
       .eq('ciudad_id', ciudadId)
       .eq('activo', true)
-      .limit(4);
 
-    if (categoriaFiltro) {
-      businessQuery = businessQuery.ilike('category', `%${categoriaFiltro}%`);
+if (categoriaFiltro) {
+      // Si el turista busca "hotel", "comer", etc., le mandamos solo 4 para no saturar
+      businessQuery = businessQuery.ilike('category', `%${categoriaFiltro}%`).limit(4);
+    } else {
+      // Si el turista busca un nombre propio como "chilli heaven", le mandamos 50
+      // para que Arkáiko lea todo el catálogo y lo encuentre al instante.
+      businessQuery = businessQuery.limit(50);
     }
-
     const { data: businesses } = await businessQuery;
 
  if (businesses && businesses.length > 0) {
