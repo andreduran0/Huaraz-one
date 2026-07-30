@@ -1,6 +1,47 @@
 import { Business, AdLevel, BusinessCategory } from '../types';
 
 export const premiumBusinesses: Business[] = [
+  {
+    id: '25',
+    name: 'Pizzeria Mi Chef Monchi',
+    category: BusinessCategory.RESTAURANT,
+    description: '', // ¡Aquí pondremos la historia que vamos a crear!
+    address: 'Parque Ginebra - Huaraz, al costado de Casa de Guías',
+    lat: -9.5152, 
+    lng: -77.4877,
+    phone: '+51 948262095', 
+    whatsapp: '51948262095',
+    photos: [
+      'https://i.imgur.com/GKbn1FN.jpeg',
+      'https://i.imgur.com/I9lA3VW.jpeg',
+      'https://i.imgur.com/1zTReUG.jpeg',
+      'https://i.imgur.com/crz5OY9.jpeg',
+      'https://i.imgur.com/rqunHXL.jpeg',
+      'https://i.imgur.com/Y1twIfz.jpeg',
+      'https://i.imgur.com/82tdXck.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/RvgMHc8.jpeg',
+      'https://i.imgur.com/lAlie3c.jpeg',
+      'https://i.imgur.com/63qmSyU.jpeg',
+      'https://i.imgur.com/oWj1Dyx.jpeg',
+      'https://i.imgur.com/j1LtmaY.jpeg',
+      'https://i.imgur.com/yRUvV40.jpeg', // Faltaba una coma aquí
+      'https://i.imgur.com/QbRA9ay.jpeg',
+      'https://i.imgur.com/zgB1h4A.jpeg',
+      'https://i.imgur.com/ZcY1opi.jpeg',
+      'https://i.imgur.com/oVU3Xwi.jpeg'
+    ],
+    schedule: { 
+      'Martes - Sábado': '3:30 PM - 11:00 PM',
+      'Domingo': '3:30 PM - 11:00 PM'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-1',
+    status: 'approved', 
+    ownerUserId: 'u25',
+    googleMapsQuery: 'Parque ginebra al costado de casa de Guias',
+  },
    {
     id: '22',
     name: 'Hotel los Inkas',
