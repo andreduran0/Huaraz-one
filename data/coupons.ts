@@ -2,6 +2,14 @@ import { Coupon } from '../types';
 
 export const coupons: Coupon[] = [
   {
+    id: 'c25-1',
+    businessId: '25', // Pizzería Mi Chef Monchi
+    title: 'Cortesía VIP: Elige tu acompañamiento ideal',
+    description: '¡Mejora tu experiencia en Pizzería Mi Chef Monchi! Por ser usuario de Huaraz Explorer, recibe una cortesía especial a tu elección con tu consumo: un delicioso postre crepé de frutas, una porción de pan al ajo artesanal o una bebida refrescante. Válido presentando este cupón digital.',
+    code: 'MONCHIVIP',
+    expiryDate: '2026-08-31', // Puedes ajustar esta fecha de vencimiento según coordines con Monchi
+  },
+  {
     id: 'c4',
     businessId: 'el-tio-enrique',
     title: 'Combo Suizo-Alemán: Salchicha Especial + Cerveza (500ml) a S/ 35',
