@@ -11,6 +11,15 @@ export interface JobOffer {
 export const jobsData: JobOffer[] = [
   {
     id: 'job-4',
+    businessId: '25', // Usamos el ID 25 que ya le asignamos a la pizzería
+    businessName: 'Pizzería Mi Chef Monchi',
+    title: 'Ayudante de Barra',
+    description: 'Buscamos un ayudante de barra proactivo y dinámico para unirse a nuestro equipo. Ideal para personas con ganas de aprender, apoyar en la preparación de bebidas y brindar una excelente atención al cliente.',
+    salary: 'A tratar',
+    whatsappContact: '51948262095' // Este es el WhatsApp oficial de Monchi que registramos antes
+  },
+  {
+    id: 'job-4',
     businessId: '24',
     businessName: 'Hakuna Matata Restobar',
     title: 'Barman',
