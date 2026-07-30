@@ -5,7 +5,7 @@ export const premiumBusinesses: Business[] = [
     id: '25',
     name: 'Pizzeria Mi Chef Monchi',
     category: BusinessCategory.RESTAURANT,
-    description: '', // ¡Aquí pondremos la historia que vamos a crear!
+    description: 'La historia de "Mi Chef Monchi" es la historia de un sueño hecho realidad. Moisés Álvarez, conocido por todos como Monchi, inició este proyecto tras años de perfeccionar sus técnicas en restaurantes y pizzerías. Inspirado por su jefe y mentor François, de quien heredó la receta secreta de la masa perfecta, Monchi construyó con sus propias manos el horno artesanal de barro donde hoy se hornean sus famosas pizzas. No te puedes ir sin probar la Pizza de Lomo Saltado, una exquisita fusión italo-peruana, o su pizza especial con el delicioso jamón serrano regional.',
     address: 'Parque Ginebra - Huaraz, al costado de Casa de Guías',
     lat: -9.5152, 
     lng: -77.4877,
