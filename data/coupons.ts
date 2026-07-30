@@ -232,5 +232,14 @@ export const coupons: Coupon[] = [
     description: '¡Todos los lunes son de cilindro en Fusion Delicious! Ven y disfruta de nuestras carnes recién salidas del cilindro, desde S/ 17 soles.',
     code: 'FUSIONCILINDRO',
     expiryDate: '2026-06-30',
+  },
+  // --- EVENTOS JULIO 2026 (CIERRE DE FIESTAS PATRIAS) ---
+  {
+    date: '2026-07-31',
+    title: 'Festival de Parrillas: Malibú x Monchis',
+    description: 'Gran cierre de Fiestas Patrias con los mejores cortes (picaña, lomo fino, bife ancho). El Chef Monchi te enseñará los secretos de la parrilla. Disfruta de promociones exclusivas (Parrilla + Cerveza a S/ 25), música con DJ Diego Wolf en vivo y cervezas artesanales Emperador.',
+    type: 'entertainment',
+    time: 'Desde el mediodía hasta la medianoche',
+    location: 'Malibú (Pasaje Wamashraju 144, a espaldas del Parque Ginebra)'
   }
 ];
