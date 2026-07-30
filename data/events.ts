@@ -390,5 +390,14 @@ export const events: Event[] = [
     type: 'entertainment',
     time: '09:00 p. m.', 
     location: 'Hakuna Matata Restobar (Psje. Jesús Morales 977)'
+  },
+  // --- EVENTOS JULIO 2026 (CIERRE DE FIESTAS PATRIAS) ---
+  {
+    date: '2026-07-31',
+    title: 'Festival de Parrillas: Malibú x Monchis',
+    description: 'Gran cierre de Fiestas Patrias con los mejores cortes (picaña, lomo fino, bife ancho). El Chef Monchi te enseñará los secretos de la parrilla. Disfruta de promociones exclusivas (Parrilla + Cerveza a S/ 25), música con DJ Diego Wolf en vivo y cervezas artesanales Emperador.',
+    type: 'entertainment',
+    time: 'Desde el mediodía hasta la medianoche',
+    location: 'Malibú (Pasaje Wamashraju 144, a espaldas del Parque Ginebra)'
   }
 ];
