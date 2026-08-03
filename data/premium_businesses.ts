@@ -492,17 +492,24 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
       'https://i.imgur.com/2RObRKw.jpeg'
     ],
     menuImages: [
-      'https://i.imgur.com/1bgG7sf.jpeg',
-      'https://i.imgur.com/zU64hB1.jpeg',
-      'https://i.imgur.com/DklUbHd.jpeg',
-      'https://i.imgur.com/V3yIilM.jpeg',
-      'https://i.imgur.com/9EoyOiE.jpeg',
-      'https://i.imgur.com/mL2f57t.jpeg',
-      'https://i.imgur.com/9gOJ7Kq.jpeg',
-      'https://i.imgur.com/lpB1UC8.jpeg',
-      'https://i.imgur.com/47d2Jr7.jpeg',
-      'https://i.imgur.com/a5ATN6a.jpeg',
-      'https://i.imgur.com/75xjv1i.jpeg'
+      'https://i.imgur.com/WoNPiR8.jpeg',
+      'https://i.imgur.com/jBThjWw.jpeg',
+      'https://i.imgur.com/tffK8ge.jpeg',
+      'https://i.imgur.com/UyHtdXp.jpeg',
+      'https://i.imgur.com/LwpZRxk.jpeg',
+      'https://i.imgur.com/QYICcto.jpeg',
+      'https://i.imgur.com/IpcBht3.jpeg',
+      'https://i.imgur.com/Z7w5MUF.jpeg',
+      'https://i.imgur.com/IT4Lr1i.jpeg',
+      'https://i.imgur.com/mDmZFKX.jpeg',
+      'https://i.imgur.com/hawNzZX.jpeg',
+      'https://i.imgur.com/oX3ajPB.jpeg',
+      'https://i.imgur.com/UV0RtrH.jpeg',
+      'https://i.imgur.com/mPq4pzv.jpeg',
+      'https://i.imgur.com/1YP6Tfb.jpeg',
+      'https://i.imgur.com/WZBHUak.jpeg',
+      'https://i.imgur.com/kHjMwui.jpeg',
+      'https://i.imgur.com/UfuLW1C.jpeg'
     ],
     schedule: { 
       'Lunes - Domingo': '12:00 PM - 10:30 PM'
