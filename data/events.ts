@@ -399,5 +399,14 @@ export const events: Event[] = [
     type: 'entertainment',
     time: 'Desde el mediodía hasta la medianoche',
     location: 'Malibú (Pasaje Wamashraju 144, a espaldas del Parque Ginebra)'
+  },
+  // --- EVENTOS AGOSTO 2026 ---
+  {
+    date: '2026-08-22',
+    title: 'Rock vs Salsa: Adolescentes de Venezuela',
+    description: '¡Increíble duelo musical con más de 6 horas de show! Presentación estelar de los Adolescentes de Venezuela frente a la Banda "Projects", además de bandas invitadas. Preventa de entradas a S/ 50 hasta el 15 de agosto. Reservas al 967 477 268.',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: 'Hakuna Matata Restobar (Psje. Jesús Morales 977, Huaraz)'
   }
 ];
