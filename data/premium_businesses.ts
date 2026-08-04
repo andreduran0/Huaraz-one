@@ -147,6 +147,32 @@ export const premiumBusinesses: Business[] = [
     googleMapsQuery: 'Pasaje Jesús Morales 977 - Huaraz - Ancash',
   },
   {
+    id: '26',
+    name: 'Malibu Resto Bar',
+    category: BusinessCategory.RESTAURANT,
+    description: 'Malibu es un restobar con alma rockera y salsera, un mix actualizado con la mejor música y eventos que llevan el alma del rock a los huaracinos. Tomarte una cerveza o un cóctel aquí es una vitrina hacia una nueva forma de disfrutar. Un local que propone una nueva especialidad en restauración con los mejores platos de Huaraz y una carta de presentación con shows en vivo infaltables donde podrás escuchar la música de nuestra región.',
+    address: 'Parque Ginebra en la recta del Pasaje Wamashraju - Huaraz.',
+    lat: -9.5339, 
+    lng: -77.5014,
+    phone: '+51 956 278 429',
+    whatsapp: '51956278429', // Sin espacios para que funcione el link de WhatsApp
+    photos: [
+      'https://i.imgur.com/urano5B.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/9g77qWL.jpeg',
+      'https://i.imgur.com/C4Dwt5t.jpeg'
+    ],
+    schedule: {
+      'Lunes - Domingo': '4:00 P.M - 2:00 A.M'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-26',
+    status: 'approved',
+    ownerUserId: 'u26',
+    googleMapsQuery: 'Parque Ginebra en la recta del pasaje wamashraju- Huaraz',
+  },
+  {
     id: '23',
     name: 'EITZA - Pasta-Grill',
     category: BusinessCategory.RESTAURANT,
@@ -188,6 +214,32 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     status: 'approved', 
     ownerUserId: 'u23',
     googleMapsQuery: 'Jirón Pedro Campos, Huaraz, Perú'
+  },
+  {
+    id: '27',
+    name: 'Shopping Tanta - Panadería y Pastelería',
+    category: BusinessCategory.PANADERIA, // Asegúrate de que tu enum acepte PANADERIA
+    description: 'Panadería de generación en generación con el alma familiar. Venden los ricos panes artesanales como el de trigo, el de maíz, el mishty, el candado, el mollete, el cuay, el de mantequilla y sus infaltables cachitos para remojar en el café, que te harán agua la boca. Una tradición que no se encuentra a la vuelta de la esquina.',
+    address: 'Jirón Los Girasoles. Mz 163 Lt 9 - Huaraz.',
+    lat: -9.5379, // ⚠️ CUIDADO: Estas son las coordenadas de Malibú, ¡cámbialas!
+    lng: -767.5414, // ⚠️ CUIDADO: Estas son las coordenadas de Malibú, ¡cámbialas!
+    phone: '+51 995890102', // Corregido: faltaba la comilla final
+    whatsapp: '51995890102', 
+    photos: [
+      'https://i.imgur.com/0zNav3f.jpeg',
+      'https://i.imgur.com/OHZ6z3l.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/OHZ6z3l.jpeg'
+    ],
+    schedule: {
+      'Lunes - Domingo': '4:00 P.M - 10:00 P.M'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-27',
+    status: 'approved',
+    ownerUserId: 'u27',
+    googleMapsQuery: 'Jiron Los Girasoles Mz 163 Lt 9 - Huaraz',
   },
   {
     id: '1',
