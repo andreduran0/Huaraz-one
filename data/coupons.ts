@@ -2,6 +2,22 @@ import { Coupon } from '../types';
 
 export const coupons: Coupon[] = [
   {
+    id: 'chilli-heaven',
+    businessId: 'chilli-heaven', // ⚠️ IMPORTANTE: Reemplaza esto con el ID real de Chilli Heaven
+    title: 'Combo Especial: Burrito + Bebida 1/2 Litro',
+    description: '¡Calma tu hambre con el mejor sabor! Elige tu burrito favorito (Vegetarian with Tofu, Chicken o Beef) acompañado de un refrescante vaso de 1/2 litro (limonada o maracuyá) por solo S/ 28. Válido presentando este cupón digital.',
+    code: 'CHILLIBURRITO28',
+    expiryDate: '2026-08-31', 
+  },
+  {
+    id: 'chilli-heaven',
+    businessId: 'chilli-heaven', // ⚠️ IMPORTANTE: Reemplaza esto con el ID real de Chilli Heaven
+    title: '15% de Descuento en Thai & Indian Curries',
+    description: 'Viaja por los sabores de Asia sin salir de Huaraz. Obtén un 15% de descuento exclusivo en nuestra selección de auténticos Thai Curries e Indian Curries. ¡Una explosión de especias que no te puedes perder!',
+    code: 'CURRY15OFF',
+    expiryDate: '2026-08-31', 
+  },
+  {
     id: 'c25-1',
     businessId: '25', // Pizzería Mi Chef Monchi
     title: 'Cortesía VIP: Elige tu acompañamiento ideal',
