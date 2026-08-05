@@ -408,5 +408,13 @@ export const events: Event[] = [
     type: 'entertainment',
     time: '08:00 p. m.',
     location: 'Hakuna Matata Restobar (Psje. Jesús Morales 977, Huaraz)'
+  },
+  {
+    date: '2026-08-08',
+    title: 'Noche del Rock de los 2000: Tributo a PXNDX',
+    description: '¡Revive los himnos más emblemáticos de los 2000! Gran tributo a PXNDX a cargo del grupo Libélula, con la presentación de la banda invitada Loveless. Disfruta del mejor ambiente rockero de Huaraz con cervezas artesanales Emperador a solo S/ 10.00 y la deliciosa comida a cargo de Pizzería Mi Chef Monchi.',
+    type: 'entertainment',
+    time: 'Desde las 08:00 p. m.',
+    location: 'Malibú Resto Bar (Pasaje Wamashraju 144, a espaldas del Parque Ginebra)'
   }
 ];
