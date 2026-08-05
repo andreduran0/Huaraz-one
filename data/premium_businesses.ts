@@ -765,12 +765,21 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
       
     ],
     menuImages: [
-      'https://i.imgur.com/ZygAfZP.jpeg',
-      'https://i.imgur.com/IgZtXrW.jpeg',
-      'https://i.imgur.com/ZJbEYMq.jpeg',
-      'https://i.imgur.com/HCa8JV5.jpeg',
-      'https://i.imgur.com/yyT3O8l.jpeg',
-      'https://i.imgur.com/KLegv01.jpeg'
+      'https://i.imgur.com/tefswcR.jpeg',
+      'https://i.imgur.com/z31K8JK.jpeg',
+      'https://i.imgur.com/qRpHg5u.jpeg',
+      'https://i.imgur.com/WB6Snly.jpeg',
+      'https://i.imgur.com/6qo7wNj.jpeg',
+      'https://i.imgur.com/fiJ73Ew.jpeg',
+      'https://i.imgur.com/mVzeAyn.jpeg'
+      'https://i.imgur.com/EehPDb5.jpeg',
+      'https://i.imgur.com/UdlM9ii.jpeg',
+      'https://i.imgur.com/3KCccQR.jpeg',
+      'https://i.imgur.com/jZRGZvn.jpeg',
+      'https://i.imgur.com/zWBYybs.jpeg',
+      'https://i.imgur.com/Gnlpcdd.jpeg',
+      'https://i.imgur.com/MM4diSW.jpeg'
+      
     ],
     schedule: { 
       'Lunes - Sábado': '5:00 PM - 10:30 PM', // Nota: Ajusté a PM, asumiendo que es cena.
