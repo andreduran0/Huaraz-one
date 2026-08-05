@@ -771,7 +771,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
       'https://i.imgur.com/WB6Snly.jpeg',
       'https://i.imgur.com/6qo7wNj.jpeg',
       'https://i.imgur.com/fiJ73Ew.jpeg',
-      'https://i.imgur.com/mVzeAyn.jpeg'
+      'https://i.imgur.com/mVzeAyn.jpeg',
       'https://i.imgur.com/EehPDb5.jpeg',
       'https://i.imgur.com/UdlM9ii.jpeg',
       'https://i.imgur.com/3KCccQR.jpeg',
