@@ -34,6 +34,14 @@ export const coupons: Coupon[] = [
     expiryDate: '2026-08-31', // Puedes ajustar esta fecha según lo que coordines con el negocio
   },
   {
+    id: 'c-malibu-1',
+    businessId: '26', 
+    title: 'Cerveza Artesanal Emperador a S/ 10.00',
+    description: '¡Refréscate mientras disfrutas del mejor ambiente rockero de Huaraz! Presenta este cupón en Malibú Resto Bar y llévate una Cerveza Artesanal Emperador por solo S/ 10.00. Ideal para acompañar tus noches de buena música.',
+    code: 'MALIBUROCK10',
+    expiryDate: '2026-08-31', 
+  },
+  {
     id: 'c24-1',
     businessId: '24', // Hakuna Matata Restobar
     title: 'Promo Final Mundial: Pilsen 630ml a S/ 12',
