@@ -452,13 +452,19 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     id: 'encuentro-de-los-andes',
     name: 'Encuentro de los Andes',
     category: BusinessCategory.RESTAURANT,
-    description: 'Sumérgete en la tradición y disfruta de los auténticos sabores andinos que hemos preparado especialmente para ti.\n\n¡Una experiencia gastronómica que honra nuestras raíces!\n¡Te esperamos para compartir esta fecha especial!',
+    description: 'Ubicado frente a la Plaza de Armas, Encuentro de los Andes ofrece una auténtica travesía gastronómica en un ambiente cálido que rinde homenaje a la cultura andina. Disfruta de una vista privilegiada mientras saboreas platos típicos (como papa a la huancaína, quinua salteada y caldos regionales) elaborados con ingredientes frescos de pequeños productores locales. Abierto de 8:00 a. m. a 11:00 p. m. para acompañarte desde el desayuno hasta la cena.',
     address: 'Av. Luzuriaga N·702 (Segundo piso Serpost) - Huaraz',
     lat: -9.5395, 
    lng: -77.5079,
     phone: '+51 920 784 431', 
     whatsapp: '51920784431',
     photos: [
+      'https://i.imgur.com/26xWEft.jpeg',
+      'https://i.imgur.com/uu8IAM2.jpeg',
+      'https://i.imgur.com/XrUwels.jpeg',
+      'https://i.imgur.com/CImqjGx.jpeg',
+      'https://i.imgur.com/hgF7Ahl.jpeg',
+      'https://i.imgur.com/d8CNkDH.jpeg',
       'https://i.imgur.com/Uk4Hsz5.jpeg',
       'https://i.imgur.com/IWcEyPs.jpeg',
       'https://i.imgur.com/K3yMslb.jpeg',
@@ -477,7 +483,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
       'https://i.imgur.com/ECNAZ0r.jpeg'     
     ],
     schedule: { 
-      'Lunes - Domingo': '7:00 AM - 12:00 AM'
+      'Lunes - Domingo': '8:00 AM - 11:00 PM'
     },
     adLevel: AdLevel.PREMIUM,
     qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-encuentro-andes',
