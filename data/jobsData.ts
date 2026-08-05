@@ -10,6 +10,24 @@ export interface JobOffer {
 
 export const jobsData: JobOffer[] = [
   {
+    id: 'encuentro-de-los-andes',
+    businessId: 'encuentro-de-los-andes', // ⚠️ Reemplaza con el ID del restaurante
+    businessName: 'Encuentro de los Andes',
+    title: 'Mesero/a',
+    description: 'Buscamos personal para atención al cliente como mesero/a. Orientado al buen trato, proactivo y dinámico para brindar la mejor experiencia andina a nuestros visitantes.',
+    salary: 'A tratar',
+    whatsappContact: '51920784431' // ⚠️ Reemplaza con el número de contacto
+  },
+  {
+    id: 'encuentro-de-los-andes',
+    businessId: 'encuentro-de-los-andes', // ⚠️ Reemplaza con el ID del restaurante
+    businessName: 'Encuentro de los Andes',
+    title: 'Cocinero con Experiencia',
+    description: 'Se requiere cocinero con experiencia comprobada para elaboración de platos regionales y criollos. Pasión por la gastronomía local y capacidad para trabajar en equipo.',
+    salary: 'A tratar',
+    whatsappContact: '51920784431' // ⚠️ Reemplaza con el número de contacto
+  },
+  {
     id: 'job-4',
     businessId: '25', // Usamos el ID 25 que ya le asignamos a la pizzería
     businessName: 'Pizzería Mi Chef Monchi',
