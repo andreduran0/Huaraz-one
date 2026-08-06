@@ -416,5 +416,13 @@ export const events: Event[] = [
     type: 'entertainment',
     time: 'Desde las 08:00 p. m.',
     location: 'Malibú Resto Bar (Pasaje Wamashraju 144, a espaldas del Parque Ginebra)'
+  },
+  {
+    date: '2026-08-06',
+    title: 'Fin de Semana de Activación con DJ Wolf',
+    description: '¡Tu fin de semana empieza aquí! Todos los jueves, viernes y sábados disfruta de las mejores mezclas en vivo y un ambiente increíble a cargo de DJ Wolf. La mejor fiesta, tragos y música te esperan en Malibú.',
+    type: 'entertainment',
+    time: 'Noches (Jueves, Viernes y Sábados)',
+    location: 'Malibú Resto Bar (Pasaje Wamashraju 144, a espaldas del Parque Ginebra)'
   }
 ];
