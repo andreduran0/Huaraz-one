@@ -478,9 +478,14 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
       'https://i.imgur.com/d93aboS.jpeg'
     ],
     menuImages: [
-      'https://i.imgur.com/97AH2FD.jpeg',
-      'https://i.imgur.com/jsXCVce.jpeg',
-      'https://i.imgur.com/ECNAZ0r.jpeg'     
+      'https://i.imgur.com/CCugIGs.jpeg',
+      'https://i.imgur.com/VphTwhb.jpeg',
+      'https://i.imgur.com/hB1sNoR.jpeg'    
+       'https://i.imgur.com/MSJXH3J.jpeg',
+      'https://i.imgur.com/pc1DzSq.jpeg',
+      'https://i.imgur.com/jcTzdMN.jpeg' 
+      'https://i.imgur.com/HIGbBVT.jpeg' 
+      
     ],
     schedule: { 
       'Lunes - Domingo': '8:00 AM - 11:00 PM'
