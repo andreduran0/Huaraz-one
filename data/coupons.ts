@@ -34,6 +34,22 @@ export const coupons: Coupon[] = [
     expiryDate: '2026-08-31', // Puedes ajustar esta fecha según lo que coordines con el negocio
   },
   {
+    id: 'c-malibu-2',
+    businessId: '26', 
+    title: 'Happy Hour: Calientitos Frutados 2x20',
+    description: '¡La opción perfecta para abrigarte en las tardes huaracinas! Disfruta de 2 deliciosos calientitos frutados por solo S/ 20.00. Promoción válida todos los días en el horario de 4:00 p. m. a 8:00 p. m. durante todo agosto.',
+    code: 'MALIBUCALIENTITO',
+    expiryDate: '2026-08-31', 
+  },
+  {
+    id: 'c-malibu-3',
+    businessId: '26', 
+    title: 'Martes y Miércoles: Cerveza Artesanal 2x20',
+    description: '¡Tus previos a mitad de semana se viven en Malibú! Todos los martes y miércoles llévate 2 Cervezas Artesanales Emperador por solo S/ 20.00. Presenta este cupón digital al momento de pedir.',
+    code: 'MALIBUEMP2X20',
+    expiryDate: '2026-08-31', 
+  },
+  {
     id: 'c-malibu-1',
     businessId: '26', 
     title: 'Cerveza Artesanal Emperador a S/ 10.00',
