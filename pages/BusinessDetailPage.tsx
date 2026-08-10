@@ -129,7 +129,6 @@ const BusinessDetailPage: React.FC = () => {
             return { tag: 'RESERVA INMEDIATA', icon: 'fa-calendar-check', prefix: 'ASEGURA TU LUGAR EN ', highlight: 'LA CIMA', desc: 'Vive la mejor experiencia de Huaraz con nuestra atención de primera.', btn: 'Reservar Ahora' };
         }
     };
-    };
     const resData = getReservationData();
 
     return (
