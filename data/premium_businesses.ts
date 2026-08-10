@@ -2,6 +2,50 @@ import { Business, AdLevel, BusinessCategory } from '../types';
 
 export const premiumBusinesses: Business[] = [
   {
+    id: '28',
+    name: 'Inka Frut',
+    category: BusinessCategory.RESTAURANT,
+    description: 'Inka Frut Samay es un restobar conceptual que ofrece una propuesta sana, saludable y natural. En un ambiente cálido y acogedor, combinamos tradición y vanguardia a través del sincretismo y la fusión cultural. Rescatamos los sabores y la esencia de la unión inca e hispánica para brindarte una experiencia sensorial única donde percibir, sentir y degustar lo es todo.',
+    address: 'Parque Ginebra s/n Zona Comercial - Huaraz.',
+    lat: -9.5489, 
+    lng: -77.5897,
+    phone: '+51 976 510 041', 
+    whatsapp: '51976510041', // Sin espacios para que funcione el enlace
+    photos: [
+      'https://i.imgur.com/QKv15no.jpeg',
+      'https://i.imgur.com/XqPbkkY.jpeg',
+      'https://i.imgur.com/THTQL79.jpeg',
+      'https://i.imgur.com/bTC3qih.jpeg',
+      'https://i.imgur.com/npErCK1.jpeg',
+      'https://i.imgur.com/ffABTV2.jpeg',
+      'https://i.imgur.com/rurnhkI.jpeg', // Coma agregada correctamente
+      'https://i.imgur.com/cBLck65.jpeg',
+      'https://i.imgur.com/yN91wgg.jpeg',
+      'https://i.imgur.com/Ku2lQnK.jpeg',
+      'https://i.imgur.com/r1s6DZ3.jpeg',
+      'https://i.imgur.com/D4T1r7f.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/hH9ER9A.jpeg',
+      'https://i.imgur.com/gKZorUy.jpeg',
+      'https://i.imgur.com/1J00haV.jpeg',
+      'https://i.imgur.com/84ohCyg.jpeg',
+      'https://i.imgur.com/mzFu5RP.jpeg',
+      'https://i.imgur.com/6OQPZAS.jpeg', 
+      'https://i.imgur.com/KG92LLq.jpeg',
+      'https://i.imgur.com/2VxoDd7.jpeg'
+    ],
+    schedule: { 
+      'Miércoles a Lunes': '8:30 AM - 11:00 PM',
+      'Martes': 'Cerrado'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-28',
+    status: 'approved', 
+    ownerUserId: 'u28',
+    googleMapsQuery: 'Parque Ginebra s/n Zona Comercial, Huaraz Ancash',
+  },
+  {
     id: '25',
     name: 'Pizzeria Mi Chef Monchi',
     category: BusinessCategory.RESTAURANT,
