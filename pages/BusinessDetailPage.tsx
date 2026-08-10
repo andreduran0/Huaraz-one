@@ -105,7 +105,17 @@ const BusinessDetailPage: React.FC = () => {
 
     // 👇 LA NUEVA LÓGICA INTELIGENTE DE RESERVAS (OPCIÓN 1) 👇
     const getReservationData = () => {
-        if (categoryText === 'hotel') {
+        // Excepción específica y personalizada para Inka Frut
+        if (business.name.toLowerCase().includes('inka frut')) {
+            return { 
+                tag: 'RESERVA INMEDIATA', 
+                icon: 'fa-leaf', // Le ponemos una hojita por su concepto natural y opciones vegetarianas
+                prefix: 'EXPERIENCIA ', 
+                highlight: 'NOVOANDINA', 
+                desc: 'Fusión de cocina contemporánea con insumos y platos tradicionales de la Región de Áncash con opciones vegetarianas. (S/ 50 - S/ 80)', 
+                btn: 'Reservar Mesa' 
+            };
+        } else if (categoryText === 'hotel') {
             return { tag: 'RESERVA INMEDIATA', icon: 'fa-bed', prefix: 'ASEGURA TU ', highlight: 'DESCANSO', desc: 'Vive la mejor experiencia de confort y relajación en Huaraz.', btn: 'Reservar Habitación' };
         } else if (categoryText === 'restaurant' || categoryText === 'food') {
             return { tag: 'RESERVA INMEDIATA', icon: 'fa-utensils', prefix: 'ASEGURA TU ', highlight: 'MESA', desc: 'Deleita tu paladar con nuestra gastronomía y atención de primera.', btn: 'Reservar Mesa' };
@@ -118,6 +128,7 @@ const BusinessDetailPage: React.FC = () => {
         } else {
             return { tag: 'RESERVA INMEDIATA', icon: 'fa-calendar-check', prefix: 'ASEGURA TU LUGAR EN ', highlight: 'LA CIMA', desc: 'Vive la mejor experiencia de Huaraz con nuestra atención de primera.', btn: 'Reservar Ahora' };
         }
+    };
     };
     const resData = getReservationData();
 
