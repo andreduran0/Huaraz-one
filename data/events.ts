@@ -424,5 +424,13 @@ export const events: Event[] = [
     type: 'entertainment',
     time: 'Noches (Jueves, Viernes y Sábados)',
     location: 'Malibú Resto Bar (Pasaje Wamashraju 144, a espaldas del Parque Ginebra)'
+  },
+  {
+    date: '2026-08-15',
+    title: 'Rock Tonight: Over-One Rock',
+    description: '¡Noche de puro rock en Hakuna Matata! Disfruta de la mejor música en vivo a cargo de la banda Over-One. El ambiente perfecto para tu fin de semana y lo mejor de todo: ¡Entrada Libre!',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: 'Hakuna Matata Restobar (Psje. Jesús Morales 977, Huaraz)'
   }
 ];
