@@ -101,7 +101,7 @@ const HomePage: React.FC = () => {
             </div>
             <div className="text-right">
                <p className="text-[10px] text-white/40 uppercase font-black tracking-[0.3em] mb-2">{t('Market Cap Est.', 'Est. Market Cap')}</p>
-               <p className="text-5xl font-black tracking-tighter italic text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">$224.8K</p>
+               <p className="text-5xl font-black tracking-tighter italic text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">$324.8K</p>
             </div>
           </div>
           
