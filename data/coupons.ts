@@ -2,6 +2,22 @@ import { Coupon } from '../types';
 
 export const coupons: Coupon[] = [
   {
+    id: 'inka-frut-calientito',
+    businessId: '28', // Asegúrate de que coincida con el ID o slug que le pusiste en Supabase
+    title: '2 x S/ 38 en Calientitos',
+    description: '¡Entra en calor y siente la energía de la montaña! Disfruta de nuestra clásica bebida tradicional perfecta para el clima de Huaraz. Llévate 2 calientitos por solo S/ 38. Válido presentando este cupón.',
+    code: 'INKACALIENTITO38',
+    expiryDate: '2026-08-31', 
+  },
+  {
+    id: 'inka-frut-entrada',
+    businessId: '28',
+    title: 'Cortesía: Entrada de Chocho con Cushuro',
+    description: 'Vive la auténtica experiencia NovoAndina. Visítanos entre las 12:00 p.m. y las 6:00 p.m., presenta este cupón digital y recibe de cortesía nuestra tradicional entrada de chocho (tarwi) con cushuro por tu consumo.',
+    code: 'INKACHOCHO12A6',
+    expiryDate: '2026-08-31', 
+  },
+  {
     id: 'chilli-heaven',
     businessId: 'chilli-heaven', // ⚠️ IMPORTANTE: Reemplaza esto con el ID real de Chilli Heaven
     title: 'Combo Especial: Burrito + Bebida 1/2 Litro',
