@@ -4,7 +4,7 @@ export const coupons: Coupon[] = [
   {
     id: 'inka-frut-calientito',
     businessId: '28', // Asegúrate de que coincida con el ID o slug que le pusiste en Supabase
-    title: '2 x S/ 38 en Calientitos',
+    title: '2 x S/ 30 en Calientitos',
     description: '¡Entra en calor y siente la energía de la montaña! Disfruta de nuestra clásica bebida tradicional perfecta para el clima de Huaraz. Llévate 2 calientitos por solo S/ 38. Válido presentando este cupón.',
     code: 'INKACALIENTITO38',
     expiryDate: '2026-08-31', 
