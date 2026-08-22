@@ -10,6 +10,15 @@ export interface JobOffer {
 
 export const jobsData: JobOffer[] = [
   {
+    id: 'hotel-los-inkas', // ID único para este trabajo
+    businessId: 'hotel-los-inkas', // ⚠️ Reemplaza con el ID del hotel en tu base de datos si lo tienes
+    businessName: 'Hotel Los Inkas',
+    title: 'Personal de Limpieza',
+    description: 'Buscamos personal de limpieza con experiencia en habitaciones y áreas comunes. Requisitos: compromiso, responsabilidad, honestidad, actitud proactiva y capacidad para trabajar en equipo. Ofrecemos un ambiente laboral seguro, respetuoso y trato amable.',
+    salary: 'A tratar',
+    whatsappContact: '51935260190' 
+  },
+  {
     id: 'encuentro-de-los-andes',
     businessId: 'encuentro-de-los-andes', // ⚠️ Reemplaza con el ID del restaurante
     businessName: 'Encuentro de los Andes',
