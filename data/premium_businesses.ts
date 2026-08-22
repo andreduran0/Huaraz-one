@@ -583,13 +583,20 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     name: 'Norabuena pollos y parillas',
     category: BusinessCategory.RESTAURANT,
     description: '¡El verdadero sabor a la brasa en el corazón de Huaraz! En Norabuena Pollos y Parrillas te esperamos con los pollos más jugosos, doraditos y con esa sazón inconfundible que nos caracteriza. Disfruta también de nuestras contundentes parrillas, carnes seleccionadas y guarniciones generosas. Un ambiente familiar y atención de primera, justo frente al histórico monumento de Pumacayán. ¡Tu antojo de un buen pollo a la brasa se cumple aquí!',
-    address: 'Jr.Ramón Castilla 1ra.Cuadra -Frente al monumento pumacayan ,Huaraz',
+    address: 'Local 1: Jr. Ramón Castilla 1ra. Cuadra (Frente a Pumacayán) | Local 2: Av. Confraternidad Internacional Este 640, Huaraz',
    lat: -9.5185, 
    lng: -77.5050,
     phone: '+51 930811600', 
     whatsapp: '51930811600',
     photos: [
       'https://i.imgur.com/O6f4j0e.jpeg',
+      'https://i.imgur.com/bT6KP3U.jpeg',
+      'https://i.imgur.com/fM8aq64.jpeg',
+      'https://i.imgur.com/AEx2g8Z.jpeg',
+      'https://i.imgur.com/XubGxgp.jpeg',
+      'https://i.imgur.com/ZoGu9JH.jpeg',
+      'https://i.imgur.com/5aA3Vui.jpeg',
+      'https://i.imgur.com/0UBTNWx.jpeg',
       'https://i.imgur.com/Rj1BovP.jpeg',
       'https://i.imgur.com/swW2iCB.jpeg',
       'https://i.imgur.com/2ZMLDYb.jpeg',
@@ -599,15 +606,20 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
       'https://i.imgur.com/Cvx0nZl.jpeg'
     ],
     menuImages: [
-      'https://i.imgur.com/aB4OnKu.jpeg',
-      'https://i.imgur.com/NYCp4CN.jpeg',
-      'https://i.imgur.com/jJLu1Cl.jpeg',
-      'https://i.imgur.com/tJesKoY.jpeg',
-      'https://i.imgur.com/7mwJlNr.jpeg'
+      'https://i.imgur.com/x877PoH.jpeg',
+      'https://i.imgur.com/JJfqBNP.jpeg',
+      'https://i.imgur.com/u266rrj.jpeg',
+      'https://i.imgur.com/A4QbiY0.jpeg',
+      'https://i.imgur.com/ps7jMvy.jpeg',
+      'https://i.imgur.com/hgZkxzn.jpeg',
+      'https://i.imgur.com/S3autk9.jpeg',
+      'https://i.imgur.com/h7bH98o.jpeg',
+      'https://i.imgur.com/EaV1aRf.jpeg',
+      'https://i.imgur.com/QS2ccbB.jpeg'
     ],
     schedule: { 
-      'Lunes- Sábado': '12:00 AM - 11:45 PM',
-      'Domingo': '12:00 AM - 12:45 PM'
+      'Lunes- Sábado': '12:00 AM - 11:00 PM',
+      'Domingo': '12:00 AM - 11:00 PM'
     },
     adLevel: AdLevel.PREMIUM,
     qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-1',
