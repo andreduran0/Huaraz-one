@@ -586,8 +586,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Local 1: Jr. Ramón Castilla 1ra. Cuadra (Frente a Pumacayán) | Local 2: Av. Confraternidad Internacional Este 640, Huaraz',
    lat: -9.5185, 
    lng: -77.5050,
-    phone: '+51 930811600', 
-    whatsapp: '51930811600',
+    phone: '+51 950818598', 
+    whatsapp: '51950818598',
     photos: [
       'https://i.imgur.com/O6f4j0e.jpeg',
       'https://i.imgur.com/bT6KP3U.jpeg',
