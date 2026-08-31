@@ -10,6 +10,15 @@ export interface JobOffer {
 
 export const jobsData: JobOffer[] = [
   {
+    id: 'job-5',
+    businessId: '25', 
+    businessName: 'Pizzería Mi Chef Monchi',
+    title: 'Ayudante de Cocina',
+    description: 'Buscamos un ayudante de cocina proactivo para unirse a nuestro equipo. Sus funciones incluirán el apoyo en la preparación de ingredientes, asistencia en el armado de pizzas y shawarmas, y mantenimiento del orden y limpieza del área de trabajo.',
+    salary: 'A tratar',
+    whatsappContact: '51948262095' 
+  },
+  {
     id: 'hotel-los-inkas', // ID único para este trabajo
     businessId: 'hotel-los-inkas', // ⚠️ Reemplaza con el ID del hotel en tu base de datos si lo tienes
     businessName: 'Hotel Los Inkas',
