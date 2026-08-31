@@ -2,6 +2,14 @@ import { Coupon } from '../types';
 
 export const coupons: Coupon[] = [
   {
+  id: 'c25-2',
+  businessId: '25', // Pizzería Mi Chef Monchi
+  title: '30% de Descuento en Shawarmas',
+  description: '¡Disfruta del mejor sabor! Por ser usuario de Huaraz Explorer, obtén un 30% de descuento en tu pedido de shawarma en Pizzería Mi Chef Monchi. Válido presentando este cupón digital en el local.',
+  code: 'MONCHISHAWARMA30',
+  expiryDate: '2026-08-31', // Manteniendo la misma fecha base del cupón anterior
+  },
+  {
     id: 'inka-frut-calientito',
     businessId: '28', // Asegúrate de que coincida con el ID o slug que le pusiste en Supabase
     title: '2 x S/ 30 en Calientitos',
