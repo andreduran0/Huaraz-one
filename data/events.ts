@@ -432,5 +432,13 @@ export const events: Event[] = [
     type: 'entertainment',
     time: '08:00 p. m.',
     location: 'Hakuna Matata Restobar (Psje. Jesús Morales 977, Huaraz)'
+  },
+  {
+    date: '2026-09-12',
+    title: 'Rock Power: Tributo a Lady Gaga, Avril Lavigne y Paramore',
+    description: 'Noche de rock en Hakuna Matata Restobar con los imitadores de "Yo Soy" Alejandra Muñoz (Lady Gaga) y Mady Hema (Hayley Williams de Paramore), además del tributo a Avril Lavigne y bandas invitadas. Reservas al 967 477 268.',
+    type: 'party', 
+    time: 'Por la noche', 
+    location: 'Hakuna Matata Restobar (Pasaje Jesús Morales 977, Huaraz)'
   }
 ];
