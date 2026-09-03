@@ -26,7 +26,7 @@ const NewsletterPage: React.FC = () => {
     setStatus('loading');
 
     try {
-      const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/28590861/4t5k8zn/';
+      const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/28736049/4hf6o2h/';
 
       const formData = new FormData();
       formData.append('whatsapp', whatsapp); 
