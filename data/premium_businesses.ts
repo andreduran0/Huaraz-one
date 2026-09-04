@@ -178,8 +178,33 @@ export const premiumBusinesses: Business[] = [
       'https://i.imgur.com/pkO1HxJ.jpeg'
     ],
     menuImages: [
-      'https://i.imgur.com/9g77qWL.jpeg',
-      'https://i.imgur.com/C4Dwt5t.jpeg'
+      'https://i.imgur.com/6ZiyY2q.jpeg',
+      'https://i.imgur.com/3ULOkXk.jpeg',
+       'https://i.imgur.com/w9yb6gj.jpeg',
+      'https://i.imgur.com/bHwVeJ7.jpeg',
+       'https://i.imgur.com/qTDHnuX.jpeg',
+      'https://i.imgur.com/PQVXNhZ.jpeg',
+       'https://i.imgur.com/62W38VL.jpeg',
+      'https://i.imgur.com/X4WwfCy.jpeg',
+       'https://i.imgur.com/XNVGVhf.jpeg',
+      'https://i.imgur.com/EOvIiME.jpeg',
+       'https://i.imgur.com/cAT2Qtn.jpeg',
+      'https://i.imgur.com/DHpHEe4.jpeg',
+       'https://i.imgur.com/yLOl7ku.jpeg',
+      'https://i.imgur.com/DCoUB14.jpeg',
+      'https://i.imgur.com/40aEniE.jpeg',
+      'https://i.imgur.com/XrKgp4X.jpeg',
+       'https://i.imgur.com/lvQDIN9.jpeg',
+      'https://i.imgur.com/Yu9nv2b.jpeg',
+       'https://i.imgur.com/2Qc69Dv.jpeg',
+      'https://i.imgur.com/4SeI1pE.jpeg',
+       'https://i.imgur.com/5yyLiS5.jpeg',
+      'https://i.imgur.com/7XGQ6b3.jpeg',
+       'https://i.imgur.com/2wpBZrY.jpeg',
+      'https://i.imgur.com/7Taq1GZ.jpeg',
+       'https://i.imgur.com/2ydsQLe.jpeg',
+      'https://i.imgur.com/Pqd9j0L.jpeg',
+      'https://i.imgur.com/R8RMAOU.jpeg'
     ],
     schedule: {
       'Lunes - Sábado': '10:00 A.M - 11:00 P.M'
@@ -439,7 +464,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     phone: '961951453',
     whatsapp: '51961951453',
     photos: [
-      'https://i.imgur.com/DnMZLSY.jpeg',
+      'https://i.imgur.com/QqXa2SC.jpeg',
       'https://i.imgur.com/GOjggrc.jpeg'
     ],
     menuImages: [
@@ -1186,8 +1211,20 @@ Nos diferenciamos de las demás taquerías por ofrecer una combinación única d
     phone: '+51 983 182 747',
     whatsapp: '51983 182 747',
     photos: [
-      'https://i.imgur.com/n9lBIzu.jpeg',
-      'https://i.imgur.com/ItVUAHf.jpeg'
+      'https://i.imgur.com/qrNiWTN.jpeg',
+      'https://i.imgur.com/CmuZAAR.jpeg',
+      'https://i.imgur.com/R7rNVoo.jpeg',
+      'https://i.imgur.com/HqKdcSw.jpeg',
+      'https://i.imgur.com/ydKJpUU.jpeg',
+      'https://i.imgur.com/eDlPgrr.jpeg',
+      'https://i.imgur.com/wj8aBW3.jpeg',
+      'https://i.imgur.com/pjXwrjJ.jpeg',
+      'https://i.imgur.com/YWDPhHp.jpeg',
+      'https://i.imgur.com/8PUhO2Z.jpeg',
+      'https://i.imgur.com/QsIanec.jpeg',
+      'https://i.imgur.com/9w2tJ7q.jpeg',
+      'https://i.imgur.com/5gnv8Sq.jpeg',
+      'https://i.imgur.com/MvtZsQJ.jpeg'
     ],
     menuImages: [
       'https://i.imgur.com/ETUxhc9.jpeg',
