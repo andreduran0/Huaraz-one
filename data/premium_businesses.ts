@@ -464,6 +464,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     phone: '961951453',
     whatsapp: '51961951453',
     photos: [
+      'https://i.imgur.com/SvMEXKC.jpeg',
       'https://i.imgur.com/QqXa2SC.jpeg',
       'https://i.imgur.com/GOjggrc.jpeg'
     ],
