@@ -90,7 +90,7 @@ const HomePage: React.FC = () => {
             <div className="w-full bg-[#0A0A0A] rounded-[2.5rem] p-6 md:p-8 shadow-2xl text-white overflow-hidden relative border border-[#FFD700]/30 flex flex-col">
               <div 
                 className="absolute inset-0 z-0 bg-cover bg-center opacity-30 mix-blend-luminosity"
-                style={{ backgroundImage: "url('https://images.unsplash.com/photo-1617802690992-15d93263d3cf?q=80&w=1000&auto=format&fit=crop')" }}
+                style={{ backgroundImage: "url('https://i.imgur.com/nnv6ogs.jpeg')" }}
               ></div>
               <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/90 to-[#0A0A0A]/60"></div>
               <div className="absolute inset-0 z-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, #FFD700 0%, transparent 70%)' }}></div>
@@ -104,7 +104,7 @@ const HomePage: React.FC = () => {
                       <span className="w-1.5 h-1.5 rounded-full bg-[#FFD700] animate-pulse"></span>
                       <p className="text-[9px] font-black tracking-[0.2em] text-white/80 uppercase">360° ENGINE</p>
                     </div>
-                    <h3 className="text-3xl font-black tracking-tighter italic uppercase">VIDRYX</h3>
+                    <h3 className="text-3xl font-black tracking-tighter italic uppercase">VIDRYX IA</h3>
                   </div>
                 </div>
                 
