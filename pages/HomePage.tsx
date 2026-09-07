@@ -79,14 +79,14 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 {/* INNOVACIONES - PANEL DESLIZANTE */}
-      <section className="animate-fadeIn space-y-6">
+      <section className="animate-fadeIn space-y-4">
         
         {/* Contenedor del Slider */}
-        <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-4 hide-scrollbar items-stretch">
+        <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 hide-scrollbar px-2">
           
-          {/* SLIDE 1: TOKEN $HUARAZ (Neón Verde) */}
-          <div className="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] snap-center shrink-0 flex">
-            <div className="w-full bg-[#0A0A0A] rounded-[3.5rem] p-10 shadow-2xl text-white overflow-hidden relative border border-[#39FF14]/30 flex flex-col justify-between">
+          {/* SLIDE 1: TOKEN $HUARAZ (Neón Verde - Diseño Inversión) */}
+          <div className="w-[90vw] md:w-[450px] snap-center shrink-0 flex">
+            <div className="w-full bg-[#0A0A0A] rounded-[2.5rem] p-6 md:p-8 shadow-2xl text-white overflow-hidden relative border border-[#39FF14]/30 flex flex-col justify-between">
               <div 
                 className="absolute inset-0 z-0 bg-cover bg-bottom opacity-150"
                 style={{ backgroundImage: "url('https://i.imgur.com/YelHKTw.jpeg')" }}
@@ -94,47 +94,47 @@ const HomePage: React.FC = () => {
               <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/80 to-[#0A0A0A]/40"></div>
 
               <div className="relative z-10 flex flex-col h-full">
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10">
-                  <div className="flex items-center gap-5">
-                    <div className="w-20 h-20 shrink-0 bg-[#39FF14] rounded-3xl flex items-center justify-center text-black font-black text-3xl shadow-[0_0_30px_rgba(57,255,20,0.6)]">HZ</div>
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 shrink-0 bg-[#39FF14] rounded-2xl flex items-center justify-center text-black font-black text-2xl shadow-[0_0_20px_rgba(57,255,20,0.5)]">HZ</div>
                     <div>
-                      <div className="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-xl inline-flex items-center gap-2 mb-2">
+                      <div className="bg-white/10 backdrop-blur-md border border-white/20 px-3 py-1 rounded-lg inline-flex items-center gap-2 mb-1">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#39FF14] animate-pulse"></span>
-                        <p className="text-[10px] font-black tracking-[0.2em] text-white/80 uppercase">PUMP.FUN LIVE</p>
+                        <p className="text-[9px] font-black tracking-[0.2em] text-white/80 uppercase">PUMP.FUN LIVE</p>
                       </div>
-                      <h3 className="text-4xl font-black tracking-tighter italic uppercase">$HUARAZ</h3>
+                      <h3 className="text-3xl font-black tracking-tighter italic uppercase">$HUARAZ</h3>
                     </div>
                   </div>
-                  <div className="text-left md:text-right">
-                     <p className="text-[10px] text-white/40 uppercase font-black tracking-[0.3em] mb-2">{t('Market Cap Est.', 'Est. Market Cap')}</p>
-                     <p className="text-5xl font-black tracking-tighter italic text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">$324.8K</p>
+                  <div className="text-left md:text-right mt-2 md:mt-0">
+                     <p className="text-[9px] text-white/40 uppercase font-black tracking-[0.3em] mb-1">{t('Market Cap Est.', 'Est. Market Cap')}</p>
+                     <p className="text-3xl font-black tracking-tighter italic text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">$324.8K</p>
                   </div>
                 </div>
                 
-                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 mb-10 mt-auto">
-                    <div className="flex justify-between items-center mb-6">
-                        <p className="text-[10px] font-black text-white/50 uppercase tracking-widest">Live Performance (24h)</p>
-                        <p className="text-2xl font-black text-white italic">$0.00142 <i className="fas fa-caret-up text-[#39FF14] ml-2"></i></p>
+                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-6 mb-6 mt-auto">
+                    <div className="flex justify-between items-center mb-4">
+                        <p className="text-[9px] font-black text-white/50 uppercase tracking-widest">Live Performance (24h)</p>
+                        <p className="text-xl font-black text-white italic">$0.00142 <i className="fas fa-caret-up text-[#39FF14] ml-2"></i></p>
                     </div>
-                    <div className="h-32 w-full flex items-end">
+                    <div className="h-24 w-full flex items-end">
                         <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible" preserveAspectRatio="none">
-                            <path d="M0,35 Q10,32 20,25 T40,28 T60,15 T80,18 T100,5" fill="none" stroke="#39FF14" strokeWidth="3" strokeLinecap="round" className="drop-shadow-[0_0_10px_rgba(57,255,20,0.8)]" />
+                            <path d="M0,35 Q10,32 20,25 T40,28 T60,15 T80,18 T100,5" fill="none" stroke="#39FF14" strokeWidth="2" strokeLinecap="round" className="drop-shadow-[0_0_10px_rgba(57,255,20,0.8)]" />
                             <path d="M0,35 Q10,32 20,25 T40,28 T60,15 T80,18 T100,5 L100,40 L0,40 Z" fill="url(#neonGradient)" opacity="0.3" />
                             <defs><linearGradient id="neonGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#39FF14" /><stop offset="100%" stopColor="transparent" /></linearGradient></defs>
                         </svg>
                     </div>
                 </div>
                 
-                <a href="https://pump.fun/" target="_blank" rel="noreferrer" className="w-full bg-[#39FF14] text-black py-6 rounded-[2rem] font-black uppercase text-xs tracking-[0.3em] flex items-center justify-center gap-4 hover:bg-white transition-all shadow-[0_15px_40px_rgba(57,255,20,0.3)]">
+                <a href="https://pump.fun/" target="_blank" rel="noreferrer" className="w-full bg-[#39FF14] text-black py-5 rounded-[1.5rem] font-black uppercase text-[10px] tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-white transition-all shadow-[0_15px_30px_rgba(57,255,20,0.2)]">
                     {t('Comprar ahora', 'Buy now')} <i className="fas fa-bolt"></i>
                 </a>
               </div>
             </div>
           </div>
 
-          {/* SLIDE 2: EXPERIENCIA INMERSIVA VIDRYX (Dorado Cyberpunk) */}
-          <div className="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] snap-center shrink-0 flex">
-            <div className="w-full bg-[#0A0A0A] rounded-[3.5rem] p-10 shadow-2xl text-white overflow-hidden relative border border-[#FFD700]/30 flex flex-col justify-between">
+          {/* SLIDE 2: EXPERIENCIA INMERSIVA VIDRYX (Dorado Cyberpunk - Diseño Tecnológico) */}
+          <div className="w-[90vw] md:w-[450px] snap-center shrink-0 flex">
+            <div className="w-full bg-[#0A0A0A] rounded-[2.5rem] p-6 md:p-8 shadow-2xl text-white overflow-hidden relative border border-[#FFD700]/30 flex flex-col justify-between">
               <div 
                 className="absolute inset-0 z-0 bg-cover bg-bottom opacity-150"
                 style={{ backgroundImage: "url('https://i.imgur.com/YelHKTw.jpeg')" }}
@@ -142,39 +142,30 @@ const HomePage: React.FC = () => {
               <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/90 to-[#0A0A0A]/60"></div>
 
               <div className="relative z-10 flex flex-col h-full">
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10">
-                  <div className="flex items-center gap-5">
-                    <div className="w-20 h-20 shrink-0 bg-[#FFD700] rounded-3xl flex items-center justify-center text-black font-black text-3xl shadow-[0_0_30px_rgba(255,215,0,0.6)]">VX</div>
+                <div className="flex items-start justify-between mb-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 shrink-0 bg-[#FFD700] rounded-2xl flex items-center justify-center text-black font-black text-2xl shadow-[0_0_20px_rgba(255,215,0,0.5)]">VX</div>
                     <div>
-                      <div className="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-xl inline-flex items-center gap-2 mb-2">
+                      <div className="bg-white/10 backdrop-blur-md border border-white/20 px-3 py-1 rounded-lg inline-flex items-center gap-2 mb-1">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#FFD700] animate-pulse"></span>
-                        <p className="text-[10px] font-black tracking-[0.2em] text-white/80 uppercase">360° LIVE</p>
+                        <p className="text-[9px] font-black tracking-[0.2em] text-white/80 uppercase">360° ENGINE</p>
                       </div>
-                      <h3 className="text-4xl font-black tracking-tighter italic uppercase">VIDRYX</h3>
+                      <h3 className="text-3xl font-black tracking-tighter italic uppercase">VIDRYX</h3>
                     </div>
-                  </div>
-                  <div className="text-left md:text-right">
-                     <p className="text-[10px] text-white/40 uppercase font-black tracking-[0.3em] mb-2">{t('Vistas Est.', 'Est. Views')}</p>
-                     <p className="text-5xl font-black tracking-tighter italic text-[#FFD700] drop-shadow-[0_0_15px_rgba(255,215,0,0.4)]">12.5K</p>
                   </div>
                 </div>
                 
-                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 mb-10 mt-auto">
-                    <div className="flex justify-between items-center mb-6">
-                        <p className="text-[10px] font-black text-white/50 uppercase tracking-widest">Exploraciones (24h)</p>
-                        <p className="text-2xl font-black text-white italic">+342 <i className="fas fa-caret-up text-[#FFD700] ml-2"></i></p>
-                    </div>
-                    <div className="h-32 w-full flex items-end">
-                        <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible" preserveAspectRatio="none">
-                            <path d="M0,30 Q15,35 25,20 T45,25 T65,10 T85,15 T100,5" fill="none" stroke="#FFD700" strokeWidth="3" strokeLinecap="round" className="drop-shadow-[0_0_10px_rgba(255,215,0,0.8)]" />
-                            <path d="M0,30 Q15,35 25,20 T45,25 T65,10 T85,15 T100,5 L100,40 L0,40 Z" fill="url(#goldGradient)" opacity="0.3" />
-                            <defs><linearGradient id="goldGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#FFD700" /><stop offset="100%" stopColor="transparent" /></linearGradient></defs>
-                        </svg>
-                    </div>
+                <div className="mb-6 mt-auto">
+                    <h4 className="text-3xl font-black uppercase tracking-tighter mb-4 leading-none">
+                        Explora en <br/><span className="text-[#FFD700] italic">Realidad Virtual</span>
+                    </h4>
+                    <p className="text-sm text-white/70 font-medium leading-relaxed">
+                        {t('Antes de reservar, camina por los hoteles y paisajes de la Cordillera Blanca con nuestros recorridos inmersivos en 360°.', 'Before booking, walk through the hotels and landscapes of the Cordillera Blanca with our 360° immersive tours.')}
+                    </p>
                 </div>
                 
-                <button onClick={() => navigate('/inmersivo')} className="w-full bg-[#FFD700] text-black py-6 rounded-[2rem] font-black uppercase text-xs tracking-[0.3em] flex items-center justify-center gap-4 hover:bg-white transition-all shadow-[0_15px_40px_rgba(255,215,0,0.3)]">
-                    {t('Explorar ahora', 'Explore now')} <i className="fas fa-vr-cardboard"></i>
+                <button onClick={() => navigate('/inmersivo')} className="w-full bg-[#FFD700] text-black py-5 rounded-[1.5rem] font-black uppercase text-[10px] tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-white transition-all shadow-[0_15px_30px_rgba(255,215,0,0.2)]">
+                    {t('Explorar ahora', 'Explore now')} <i className="fas fa-vr-cardboard text-sm"></i>
                 </button>
               </div>
             </div>
@@ -183,9 +174,9 @@ const HomePage: React.FC = () => {
         </div>
 
         {/* INDICADORES (Puntos) */}
-        <div className="flex justify-center gap-3 mt-2">
-            <div className="w-3 h-3 rounded-full bg-[#39FF14] shadow-[0_0_10px_rgba(57,255,20,0.6)] cursor-pointer transition-all"></div>
-            <div className="w-3 h-3 rounded-full bg-white/20 hover:bg-white/40 cursor-pointer transition-all"></div>
+        <div className="flex justify-center gap-2 mt-2">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#39FF14] shadow-[0_0_10px_rgba(57,255,20,0.6)] cursor-pointer"></div>
+            <div className="w-2.5 h-2.5 rounded-full bg-white/20 hover:bg-white/40 cursor-pointer"></div>
         </div>
 
         <style>{`
