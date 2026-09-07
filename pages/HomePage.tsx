@@ -78,65 +78,13 @@ const HomePage: React.FC = () => {
             <FeatureItem icon="fa-briefcase" color="bg-emerald-50 text-emerald-600" label={t("Bolsa de trabajo de empresas Hz", "Job board for locals")} />
         </div>
       </section>
-{/* INNOVACIONES - PANEL DESLIZANTE (Con la imagen de Vidryx mucho más visible) */}
+{/* INNOVACIONES - PANEL DESLIZANTE (Token primero, Vidryx transparente con fondo más visible) */}
       <section className="animate-fadeIn">
         
         {/* Contenedor del Slider */}
         <div className="flex overflow-x-auto snap-x snap-mandatory pb-4 hide-scrollbar items-stretch">
           
-          {/* SLIDE 1: EXPERIENCIA INMERSIVA VIDRYX IA */}
-          <div className="w-full shrink-0 snap-center px-1 flex">
-            <div className="w-full bg-[#0A0A0A] rounded-[2.5rem] p-5 md:p-7 shadow-2xl text-white overflow-hidden relative border border-[#FFD700]/30 flex flex-col">
-              
-              {/* Imagen de fondo con alta visibilidad (opacity-80 y degradados muy ligeros) */}
-              <div 
-                className="absolute inset-0 z-0 bg-cover bg-center opacity-80"
-                style={{ backgroundImage: "url('https://i.imgur.com/nnv6ogs.jpeg')" }}
-              ></div>
-              
-              {/* Degradado minimalista solo para mantener contraste en los textos */}
-              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/40 to-transparent"></div>
-
-              <div className="relative z-10 flex flex-col h-full">
-                
-                {/* Cabecera */}
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-14 h-14 bg-[#FFD700] rounded-[1.2rem] flex items-center justify-center text-black font-black text-xl shadow-[0_0_20px_rgba(255,215,0,0.6)] shrink-0">VX</div>
-                  <div>
-                    <div className="bg-black/60 backdrop-blur-md border border-white/20 px-3 py-0.5 rounded-lg inline-flex items-center gap-1.5 mb-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#FFD700] animate-pulse"></span>
-                      <p className="text-[8px] font-black tracking-[0.2em] text-white/90 uppercase">360° ENGINE</p>
-                    </div>
-                    <h3 className="text-2xl font-black tracking-tighter italic uppercase text-white drop-shadow-md">VIDRYX IA</h3>
-                  </div>
-                </div>
-                
-                {/* Contenedor central con fondo semitransparente para que la imagen luzca al fondo */}
-                <div className="bg-black/50 backdrop-blur-md border border-white/20 rounded-[1.8rem] p-5 mb-5 flex-grow flex flex-col justify-center shadow-2xl">
-                    <h4 className="text-xl md:text-2xl font-black uppercase tracking-tighter mb-2 leading-tight text-white drop-shadow-md">
-                        {t('Explora en', 'Explore in')} <br/>
-                        <span className="text-[#FFD700] italic drop-shadow-[0_2px_10px_rgba(255,215,0,0.6)]">{t('Realidad Virtual', 'Virtual Reality')}</span>
-                    </h4>
-                    <p className="text-white/90 font-medium leading-relaxed mb-3 text-xs drop-shadow">
-                        {t('Camina por los hoteles, restaurantes y paisajes de la Cordillera Blanca con nuestros recorridos inmersivos antes de hacer tu reserva.', 'Walk through the hotels, restaurants, and landscapes of the Cordillera Blanca with our immersive tours before booking.')}
-                    </p>
-                    
-                    <div className="flex flex-wrap gap-1.5">
-                        <span className="bg-black/60 border border-[#FFD700]/50 text-[#FFD700] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow"><i className="fas fa-hotel mr-1"></i>{t('Hoteles', 'Hotels')}</span>
-                        <span className="bg-black/60 border border-[#FFD700]/50 text-[#FFD700] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow"><i className="fas fa-utensils mr-1"></i>{t('Restaurantes', 'Restaurants')}</span>
-                        <span className="bg-black/60 border border-[#FFD700]/50 text-[#FFD700] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow"><i className="fas fa-mountain mr-1"></i>{t('Paisajes', 'Landscapes')}</span>
-                    </div>
-                </div>
-                
-                {/* Botón */}
-                <button onClick={() => navigate('/inmersivo')} className="w-full bg-[#FFD700] text-black py-3.5 rounded-[1.2rem] font-black uppercase text-[11px] tracking-[0.3em] flex items-center justify-center gap-2 hover:bg-white transition-all shadow-[0_10px_25px_rgba(255,215,0,0.3)] mt-auto">
-                    {t('Explorar en 360°', 'Explore in 360°')} <i className="fas fa-vr-cardboard text-base"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* SLIDE 2: TOKEN $HUARAZ */}
+          {/* SLIDE 1: TOKEN $HUARAZ (Ahora primero) */}
           <div className="w-full shrink-0 snap-center px-1 flex">
             <div className="w-full bg-[#0A0A0A] rounded-[2.5rem] p-6 md:p-8 shadow-2xl text-white overflow-hidden relative border border-[#39FF14]/30 flex flex-col">
               <div 
@@ -180,6 +128,58 @@ const HomePage: React.FC = () => {
                 <a href="https://pump.fun/" target="_blank" rel="noreferrer" className="w-full bg-[#39FF14] text-black py-4 rounded-[1.5rem] font-black uppercase text-xs tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-white transition-all shadow-[0_15px_30px_rgba(57,255,20,0.3)] mt-auto">
                     {t('Comprar ahora', 'Buy now')} <i className="fas fa-bolt"></i>
                 </a>
+              </div>
+            </div>
+          </div>
+
+          {/* SLIDE 2: EXPERIENCIA INMERSIVA VIDRYX IA (Imagen muy visible, sin Live Performance y paneles translúcidos) */}
+          <div className="w-full shrink-0 snap-center px-1 flex">
+            <div className="w-full bg-[#0A0A0A] rounded-[2.5rem] p-5 md:p-7 shadow-2xl text-white overflow-hidden relative border border-[#FFD700]/30 flex flex-col">
+              
+              {/* Imagen de fondo con opacidad alta para que se luzca nítida */}
+              <div 
+                className="absolute inset-0 z-0 bg-cover bg-center opacity-95"
+                style={{ backgroundImage: "url('https://i.imgur.com/nnv6ogs.jpeg')" }}
+              ></div>
+              
+              {/* Degradado muy sutil en la parte inferior para fundir con el borde oscuro */}
+              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A]/90 via-transparent to-black/20"></div>
+
+              <div className="relative z-10 flex flex-col h-full">
+                
+                {/* Cabecera translúcida */}
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-14 h-14 bg-[#FFD700] rounded-[1.2rem] flex items-center justify-center text-black font-black text-xl shadow-[0_0_20px_rgba(255,215,0,0.6)] shrink-0">VX</div>
+                  <div>
+                    <div className="bg-black/40 backdrop-blur-md border border-white/20 px-3 py-0.5 rounded-lg inline-flex items-center gap-1.5 mb-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#FFD700] animate-pulse"></span>
+                      <p className="text-[8px] font-black tracking-[0.2em] text-white/90 uppercase">360° ENGINE</p>
+                    </div>
+                    <h3 className="text-2xl font-black tracking-tighter italic uppercase text-white drop-shadow-md">VIDRYX IA</h3>
+                  </div>
+                </div>
+                
+                {/* Contenedor central más translúcido (background más oscuro/ligero) */}
+                <div className="bg-black/35 backdrop-blur-sm border border-white/15 rounded-[1.8rem] p-5 mb-5 flex-grow flex flex-col justify-center shadow-xl">
+                    <h4 className="text-xl md:text-2xl font-black uppercase tracking-tighter mb-2 leading-tight text-white drop-shadow-md">
+                        {t('Explora en', 'Explore in')} <br/>
+                        <span className="text-[#FFD700] italic drop-shadow-[0_2px_10px_rgba(255,215,0,0.8)]">{t('Realidad Virtual', 'Virtual Reality')}</span>
+                    </h4>
+                    <p className="text-white/95 font-medium leading-relaxed mb-3 text-xs drop-shadow">
+                        {t('Camina por los hoteles, restaurantes y paisajes de la Cordillera Blanca con nuestros recorridos inmersivos antes de hacer tu reserva.', 'Walk through the hotels, restaurants, and landscapes of the Cordillera Blanca with our immersive tours before booking.')}
+                    </p>
+                    
+                    <div className="flex flex-wrap gap-1.5">
+                        <span className="bg-black/50 border border-[#FFD700]/50 text-[#FFD700] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow"><i className="fas fa-hotel mr-1"></i>{t('Hoteles', 'Hotels')}</span>
+                        <span className="bg-black/50 border border-[#FFD700]/50 text-[#FFD700] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow"><i className="fas fa-utensils mr-1"></i>{t('Restaurantes', 'Restaurants')}</span>
+                        <span className="bg-black/50 border border-[#FFD700]/50 text-[#FFD700] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow"><i className="fas fa-mountain mr-1"></i>{t('Paisajes', 'Landscapes')}</span>
+                    </div>
+                </div>
+                
+                {/* Botón */}
+                <button onClick={() => navigate('/inmersivo')} className="w-full bg-[#FFD700] text-black py-3.5 rounded-[1.2rem] font-black uppercase text-[11px] tracking-[0.3em] flex items-center justify-center gap-2 hover:bg-white transition-all shadow-[0_10px_25px_rgba(255,215,0,0.3)] mt-auto">
+                    {t('Explorar en 360°', 'Explore in 360°')} <i className="fas fa-vr-cardboard text-base"></i>
+                </button>
               </div>
             </div>
           </div>
