@@ -78,7 +78,7 @@ const HomePage: React.FC = () => {
             <FeatureItem icon="fa-briefcase" color="bg-emerald-50 text-emerald-600" label={t("Bolsa de trabajo de empresas Hz", "Job board for locals")} />
         </div>
       </section>
-{/* INNOVACIONES - PANEL DESLIZANTE */}
+{/* INNOVACIONES - PANEL DESLIZANTE (Con la imagen de Vidryx mucho más visible) */}
       <section className="animate-fadeIn">
         
         {/* Contenedor del Slider */}
@@ -86,51 +86,49 @@ const HomePage: React.FC = () => {
           
           {/* SLIDE 1: EXPERIENCIA INMERSIVA VIDRYX IA */}
           <div className="w-full shrink-0 snap-center px-1 flex">
-            {/* Altura y paddings más compactos */}
             <div className="w-full bg-[#0A0A0A] rounded-[2.5rem] p-5 md:p-7 shadow-2xl text-white overflow-hidden relative border border-[#FFD700]/30 flex flex-col">
               
-              {/* Imagen de fondo más clara, nítida y con mayor opacidad (opacity-60) */}
+              {/* Imagen de fondo con alta visibilidad (opacity-80 y degradados muy ligeros) */}
               <div 
-                className="absolute inset-0 z-0 bg-cover bg-center opacity-60"
+                className="absolute inset-0 z-0 bg-cover bg-center opacity-80"
                 style={{ backgroundImage: "url('https://i.imgur.com/nnv6ogs.jpeg')" }}
               ></div>
               
-              {/* Degradado más suave para que la foto respire y el texto se lea perfectamente */}
-              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/70 to-[#0A0A0A]/30"></div>
-              <div className="absolute inset-0 z-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, #FFD700 0%, transparent 70%)' }}></div>
+              {/* Degradado minimalista solo para mantener contraste en los textos */}
+              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/40 to-transparent"></div>
 
               <div className="relative z-10 flex flex-col h-full">
                 
-                {/* Cabecera más compacta */}
+                {/* Cabecera */}
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-14 h-14 bg-[#FFD700] rounded-[1.2rem] flex items-center justify-center text-black font-black text-xl shadow-[0_0_20px_rgba(255,215,0,0.6)] shrink-0">VX</div>
                   <div>
-                    <div className="bg-white/10 backdrop-blur-md border border-white/20 px-3 py-0.5 rounded-lg inline-flex items-center gap-1.5 mb-1">
+                    <div className="bg-black/60 backdrop-blur-md border border-white/20 px-3 py-0.5 rounded-lg inline-flex items-center gap-1.5 mb-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#FFD700] animate-pulse"></span>
                       <p className="text-[8px] font-black tracking-[0.2em] text-white/90 uppercase">360° ENGINE</p>
                     </div>
-                    <h3 className="text-2xl font-black tracking-tighter italic uppercase">VIDRYX IA</h3>
+                    <h3 className="text-2xl font-black tracking-tighter italic uppercase text-white drop-shadow-md">VIDRYX IA</h3>
                   </div>
                 </div>
                 
-                {/* Contenedor central más corto y limpio */}
-                <div className="bg-black/40 backdrop-blur-md border border-white/15 rounded-[1.8rem] p-5 mb-5 flex-grow flex flex-col justify-center shadow-lg">
-                    <h4 className="text-xl md:text-2xl font-black uppercase tracking-tighter mb-2 leading-tight">
+                {/* Contenedor central con fondo semitransparente para que la imagen luzca al fondo */}
+                <div className="bg-black/50 backdrop-blur-md border border-white/20 rounded-[1.8rem] p-5 mb-5 flex-grow flex flex-col justify-center shadow-2xl">
+                    <h4 className="text-xl md:text-2xl font-black uppercase tracking-tighter mb-2 leading-tight text-white drop-shadow-md">
                         {t('Explora en', 'Explore in')} <br/>
-                        <span className="text-[#FFD700] italic drop-shadow-[0_2px_10px_rgba(255,215,0,0.4)]">{t('Realidad Virtual', 'Virtual Reality')}</span>
+                        <span className="text-[#FFD700] italic drop-shadow-[0_2px_10px_rgba(255,215,0,0.6)]">{t('Realidad Virtual', 'Virtual Reality')}</span>
                     </h4>
-                    <p className="text-white/80 font-medium leading-relaxed mb-3 text-xs">
+                    <p className="text-white/90 font-medium leading-relaxed mb-3 text-xs drop-shadow">
                         {t('Camina por los hoteles, restaurantes y paisajes de la Cordillera Blanca con nuestros recorridos inmersivos antes de hacer tu reserva.', 'Walk through the hotels, restaurants, and landscapes of the Cordillera Blanca with our immersive tours before booking.')}
                     </p>
                     
                     <div className="flex flex-wrap gap-1.5">
-                        <span className="bg-[#FFD700]/15 border border-[#FFD700]/40 text-[#FFD700] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center"><i className="fas fa-hotel mr-1"></i>{t('Hoteles', 'Hotels')}</span>
-                        <span className="bg-[#FFD700]/15 border border-[#FFD700]/40 text-[#FFD700] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center"><i className="fas fa-utensils mr-1"></i>{t('Restaurantes', 'Restaurants')}</span>
-                        <span className="bg-[#FFD700]/15 border border-[#FFD700]/40 text-[#FFD700] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center"><i className="fas fa-mountain mr-1"></i>{t('Paisajes', 'Landscapes')}</span>
+                        <span className="bg-black/60 border border-[#FFD700]/50 text-[#FFD700] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow"><i className="fas fa-hotel mr-1"></i>{t('Hoteles', 'Hotels')}</span>
+                        <span className="bg-black/60 border border-[#FFD700]/50 text-[#FFD700] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow"><i className="fas fa-utensils mr-1"></i>{t('Restaurantes', 'Restaurants')}</span>
+                        <span className="bg-black/60 border border-[#FFD700]/50 text-[#FFD700] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow"><i className="fas fa-mountain mr-1"></i>{t('Paisajes', 'Landscapes')}</span>
                     </div>
                 </div>
                 
-                {/* Botón ajustado */}
+                {/* Botón */}
                 <button onClick={() => navigate('/inmersivo')} className="w-full bg-[#FFD700] text-black py-3.5 rounded-[1.2rem] font-black uppercase text-[11px] tracking-[0.3em] flex items-center justify-center gap-2 hover:bg-white transition-all shadow-[0_10px_25px_rgba(255,215,0,0.3)] mt-auto">
                     {t('Explorar en 360°', 'Explore in 360°')} <i className="fas fa-vr-cardboard text-base"></i>
                 </button>
@@ -138,9 +136,56 @@ const HomePage: React.FC = () => {
             </div>
           </div>
 
+          {/* SLIDE 2: TOKEN $HUARAZ */}
+          <div className="w-full shrink-0 snap-center px-1 flex">
+            <div className="w-full bg-[#0A0A0A] rounded-[2.5rem] p-6 md:p-8 shadow-2xl text-white overflow-hidden relative border border-[#39FF14]/30 flex flex-col">
+              <div 
+                className="absolute inset-0 z-0 bg-cover bg-bottom opacity-150"
+                style={{ backgroundImage: "url('https://i.imgur.com/YelHKTw.jpeg')" }}
+              ></div>
+              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/80 to-[#0A0A0A]/40"></div>
+
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-[#39FF14] rounded-[1.5rem] flex items-center justify-center text-black font-black text-2xl shadow-[0_0_20px_rgba(57,255,20,0.6)] shrink-0">HZ</div>
+                    <div>
+                      <div className="bg-white/10 backdrop-blur-md border border-white/20 px-3 py-1 rounded-xl inline-flex items-center gap-2 mb-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#39FF14] animate-pulse"></span>
+                        <p className="text-[9px] font-black tracking-[0.2em] text-white/80 uppercase">PUMP.FUN LIVE</p>
+                      </div>
+                      <h3 className="text-3xl font-black tracking-tighter italic uppercase">$HUARAZ</h3>
+                    </div>
+                  </div>
+                  <div className="text-left md:text-right mt-1 md:mt-0">
+                     <p className="text-[9px] text-white/40 uppercase font-black tracking-[0.3em] mb-1">{t('Market Cap Est.', 'Est. Market Cap')}</p>
+                     <p className="text-3xl md:text-4xl font-black tracking-tighter italic text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">$324.8K</p>
+                  </div>
+                </div>
+                
+                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-6 mb-6 flex-grow">
+                    <div className="flex justify-between items-center mb-4">
+                        <p className="text-[9px] font-black text-white/50 uppercase tracking-widest">Live Performance (24h)</p>
+                        <p className="text-lg md:text-xl font-black text-white italic">$0.00142 <i className="fas fa-caret-up text-[#39FF14] ml-1"></i></p>
+                    </div>
+                    <div className="h-20 w-full flex items-end">
+                        <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible" preserveAspectRatio="none">
+                            <path d="M0,35 Q10,32 20,25 T40,28 T60,15 T80,18 T100,5" fill="none" stroke="#39FF14" strokeWidth="2.5" strokeLinecap="round" className="drop-shadow-[0_0_10px_rgba(57,255,20,0.8)]" />
+                            <path d="M0,35 Q10,32 20,25 T40,28 T60,15 T80,18 T100,5 L100,40 L0,40 Z" fill="url(#neonGradient)" opacity="0.3" />
+                            <defs><linearGradient id="neonGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#39FF14" /><stop offset="100%" stopColor="transparent" /></linearGradient></defs>
+                        </svg>
+                    </div>
+                </div>
+                
+                <a href="https://pump.fun/" target="_blank" rel="noreferrer" className="w-full bg-[#39FF14] text-black py-4 rounded-[1.5rem] font-black uppercase text-xs tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-white transition-all shadow-[0_15px_30px_rgba(57,255,20,0.3)] mt-auto">
+                    {t('Comprar ahora', 'Buy now')} <i className="fas fa-bolt"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
         </div>
 
-        {/* Estilos para ocultar la barra de scroll y mantener el swipe fluido */}
         <style>{`
           .hide-scrollbar::-webkit-scrollbar { display: none; }
           .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
