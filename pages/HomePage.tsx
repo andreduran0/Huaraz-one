@@ -132,7 +132,7 @@ const HomePage: React.FC = () => {
             </div>
           </div>
 
-          {/* SLIDE 2: EXPERIENCIA INMERSIVA VIDRYX (Mismo diseño, Dorado Cyberpunk) */}
+          {/* SLIDE 2: EXPERIENCIA INMERSIVA VIDRYX (Dorado Cyberpunk) */}
           <div className="w-full shrink-0 snap-center px-1">
             <div className="bg-[#0A0A0A] rounded-[3.5rem] p-10 shadow-2xl text-white overflow-hidden relative border border-[#FFD700]/30">
               <div 
@@ -180,12 +180,6 @@ const HomePage: React.FC = () => {
             </div>
           </div>
 
-        </div>
-
-        {/* INDICADORES (Puntos) */}
-        <div className="flex justify-center gap-3 mt-4">
-            <div className="w-3 h-3 rounded-full bg-[#39FF14] shadow-[0_0_10px_rgba(57,255,20,0.6)] cursor-pointer transition-all"></div>
-            <div className="w-3 h-3 rounded-full bg-white/20 hover:bg-[#FFD700] cursor-pointer transition-all"></div>
         </div>
 
         {/* Estilos para ocultar la barra de scroll y mantener el swipe fluido */}
