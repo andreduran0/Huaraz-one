@@ -78,134 +78,121 @@ const HomePage: React.FC = () => {
             <FeatureItem icon="fa-briefcase" color="bg-emerald-50 text-emerald-600" label={t("Bolsa de trabajo de empresas Hz", "Job board for locals")} />
         </div>
       </section>
-{/* PANEL DESLIZANTE DE INNOVACIONES */}
-      <section className="pt-4 animate-fadeIn">
-        <div className="flex items-center justify-between px-4 mb-6">
-            <h2 className="text-2xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter">
-              {t('Innovación', 'Innovation')} <span className="text-[#39FF14]">{t('Web3 & IA', 'Web3 & AI')}</span>
-            </h2>
-            <div className="h-px flex-grow bg-slate-200 dark:bg-slate-800 ml-6"></div>
-        </div>
+{/* INNOVACIONES - PANEL DESLIZANTE */}
+      <section className="animate-fadeIn space-y-6">
+        
+        {/* Contenedor del Slider */}
+        <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-4 hide-scrollbar items-stretch">
+          
+          {/* SLIDE 1: TOKEN $HUARAZ (Neón Verde) */}
+          <div className="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] snap-center shrink-0 flex">
+            <div className="w-full bg-[#0A0A0A] rounded-[3.5rem] p-10 shadow-2xl text-white overflow-hidden relative border border-[#39FF14]/30 flex flex-col justify-between">
+              <div 
+                className="absolute inset-0 z-0 bg-cover bg-bottom opacity-150"
+                style={{ backgroundImage: "url('https://i.imgur.com/YelHKTw.jpeg')" }}
+              ></div>
+              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/80 to-[#0A0A0A]/40"></div>
 
-        {/* Contenedor del Slider (Scroll horizontal) */}
-        <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 px-4 hide-scrollbar">
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10">
+                  <div className="flex items-center gap-5">
+                    <div className="w-20 h-20 shrink-0 bg-[#39FF14] rounded-3xl flex items-center justify-center text-black font-black text-3xl shadow-[0_0_30px_rgba(57,255,20,0.6)]">HZ</div>
+                    <div>
+                      <div className="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-xl inline-flex items-center gap-2 mb-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#39FF14] animate-pulse"></span>
+                        <p className="text-[10px] font-black tracking-[0.2em] text-white/80 uppercase">PUMP.FUN LIVE</p>
+                      </div>
+                      <h3 className="text-4xl font-black tracking-tighter italic uppercase">$HUARAZ</h3>
+                    </div>
+                  </div>
+                  <div className="text-left md:text-right">
+                     <p className="text-[10px] text-white/40 uppercase font-black tracking-[0.3em] mb-2">{t('Market Cap Est.', 'Est. Market Cap')}</p>
+                     <p className="text-5xl font-black tracking-tighter italic text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">$324.8K</p>
+                  </div>
+                </div>
+                
+                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 mb-10 mt-auto">
+                    <div className="flex justify-between items-center mb-6">
+                        <p className="text-[10px] font-black text-white/50 uppercase tracking-widest">Live Performance (24h)</p>
+                        <p className="text-2xl font-black text-white italic">$0.00142 <i className="fas fa-caret-up text-[#39FF14] ml-2"></i></p>
+                    </div>
+                    <div className="h-32 w-full flex items-end">
+                        <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible" preserveAspectRatio="none">
+                            <path d="M0,35 Q10,32 20,25 T40,28 T60,15 T80,18 T100,5" fill="none" stroke="#39FF14" strokeWidth="3" strokeLinecap="round" className="drop-shadow-[0_0_10px_rgba(57,255,20,0.8)]" />
+                            <path d="M0,35 Q10,32 20,25 T40,28 T60,15 T80,18 T100,5 L100,40 L0,40 Z" fill="url(#neonGradient)" opacity="0.3" />
+                            <defs><linearGradient id="neonGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#39FF14" /><stop offset="100%" stopColor="transparent" /></linearGradient></defs>
+                        </svg>
+                    </div>
+                </div>
+                
+                <a href="https://pump.fun/" target="_blank" rel="noreferrer" className="w-full bg-[#39FF14] text-black py-6 rounded-[2rem] font-black uppercase text-xs tracking-[0.3em] flex items-center justify-center gap-4 hover:bg-white transition-all shadow-[0_15px_40px_rgba(57,255,20,0.3)]">
+                    {t('Comprar ahora', 'Buy now')} <i className="fas fa-bolt"></i>
+                </a>
+              </div>
+            </div>
+          </div>
 
-          {/* SLIDE 1: EL TOKEN — verde #39FF14 */}
-          <div className="min-w-[90%] md:min-w-[60%] lg:min-w-[40%] snap-center shrink-0">
-            <div className="h-[420px] rounded-[3.5rem] p-8 shadow-2xl text-white overflow-hidden relative border border-[#39FF14]/30 bg-[#0A0A0A]">
-              <div
-                className="absolute inset-0 z-0 bg-cover bg-center"
-                style={{ backgroundImage: "url('https://i.imgur.com/YelHKTw.jpeg')" }}
-              ></div>
-              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/75 to-[#0A0A0A]/30"></div>
+          {/* SLIDE 2: EXPERIENCIA INMERSIVA VIDRYX (Dorado Cyberpunk) */}
+          <div className="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] snap-center shrink-0 flex">
+            <div className="w-full bg-[#0A0A0A] rounded-[3.5rem] p-10 shadow-2xl text-white overflow-hidden relative border border-[#FFD700]/30 flex flex-col justify-between">
+              <div 
+                className="absolute inset-0 z-0 bg-cover bg-bottom opacity-150"
+                style={{ backgroundImage: "url('https://i.imgur.com/YelHKTw.jpeg')" }}
+              ></div>
+              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/90 to-[#0A0A0A]/60"></div>
 
-              <div className="relative z-10 flex flex-col h-full justify-between">
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center gap-5">
-                    <div className="w-16 h-16 bg-[#39FF14] rounded-3xl flex items-center justify-center text-black font-black text-2xl shadow-[0_0_30px_rgba(57,255,20,0.6)]">HZ</div>
-                    <div>
-                      <div className="bg-white/10 backdrop-blur-md border border-white/20 px-3 py-1 rounded-xl inline-flex items-center gap-2 mb-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#39FF14] animate-pulse"></span>
-                        <p className="text-[9px] font-black tracking-[0.2em] text-white/80 uppercase">PUMP.FUN LIVE</p>
-                      </div>
-                      <h3 className="text-3xl font-black tracking-tighter italic uppercase">$HUARAZ</h3>
-                    </div>
-                  </div>
-                  <div>
-                     <p className="text-[10px] text-white/40 uppercase font-black tracking-[0.3em] mb-1">{t('Market Cap Est.', 'Est. Market Cap')}</p>
-                     <p className="text-4xl font-black tracking-tighter italic text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">$324.8K</p>
-                  </div>
-                </div>
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10">
+                  <div className="flex items-center gap-5">
+                    <div className="w-20 h-20 shrink-0 bg-[#FFD700] rounded-3xl flex items-center justify-center text-black font-black text-3xl shadow-[0_0_30px_rgba(255,215,0,0.6)]">VX</div>
+                    <div>
+                      <div className="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-xl inline-flex items-center gap-2 mb-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#FFD700] animate-pulse"></span>
+                        <p className="text-[10px] font-black tracking-[0.2em] text-white/80 uppercase">360° LIVE</p>
+                      </div>
+                      <h3 className="text-4xl font-black tracking-tighter italic uppercase">VIDRYX</h3>
+                    </div>
+                  </div>
+                  <div className="text-left md:text-right">
+                     <p className="text-[10px] text-white/40 uppercase font-black tracking-[0.3em] mb-2">{t('Vistas Est.', 'Est. Views')}</p>
+                     <p className="text-5xl font-black tracking-tighter italic text-[#FFD700] drop-shadow-[0_0_15px_rgba(255,215,0,0.4)]">12.5K</p>
+                  </div>
+                </div>
+                
+                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 mb-10 mt-auto">
+                    <div className="flex justify-between items-center mb-6">
+                        <p className="text-[10px] font-black text-white/50 uppercase tracking-widest">Exploraciones (24h)</p>
+                        <p className="text-2xl font-black text-white italic">+342 <i className="fas fa-caret-up text-[#FFD700] ml-2"></i></p>
+                    </div>
+                    <div className="h-32 w-full flex items-end">
+                        <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible" preserveAspectRatio="none">
+                            <path d="M0,30 Q15,35 25,20 T45,25 T65,10 T85,15 T100,5" fill="none" stroke="#FFD700" strokeWidth="3" strokeLinecap="round" className="drop-shadow-[0_0_10px_rgba(255,215,0,0.8)]" />
+                            <path d="M0,30 Q15,35 25,20 T45,25 T65,10 T85,15 T100,5 L100,40 L0,40 Z" fill="url(#goldGradient)" opacity="0.3" />
+                            <defs><linearGradient id="goldGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#FFD700" /><stop offset="100%" stopColor="transparent" /></linearGradient></defs>
+                        </svg>
+                    </div>
+                </div>
+                
+                <button onClick={() => navigate('/inmersivo')} className="w-full bg-[#FFD700] text-black py-6 rounded-[2rem] font-black uppercase text-xs tracking-[0.3em] flex items-center justify-center gap-4 hover:bg-white transition-all shadow-[0_15px_40px_rgba(255,215,0,0.3)]">
+                    {t('Explorar ahora', 'Explore now')} <i className="fas fa-vr-cardboard"></i>
+                </button>
+              </div>
+            </div>
+          </div>
 
-                <a href="https://pump.fun/" target="_blank" rel="noreferrer" className="w-full bg-[#39FF14] text-black py-5 rounded-[2rem] font-black uppercase text-xs tracking-[0.3em] flex items-center justify-center gap-4 hover:bg-white transition-all shadow-[0_15px_40px_rgba(57,255,20,0.3)]">
-                    {t('Comprar ahora', 'Buy now')} <i className="fas fa-bolt"></i>
-                </a>
-              </div>
-            </div>
-          </div>
+        </div>
 
-          {/* SLIDE 2: REALIDAD INMERSIVA 360 — dorado */}
-          <div className="min-w-[90%] md:min-w-[60%] lg:min-w-[40%] snap-center shrink-0">
-            <div className="h-[420px] rounded-[3.5rem] p-8 shadow-2xl text-white overflow-hidden relative border border-[#D4AF37]/30 bg-[#1a1508]">
-              <div
-                className="absolute inset-0 z-0 bg-cover bg-center"
-                style={{ backgroundImage: "url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80')" }}
-              ></div>
-              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#1a1508] via-[#1a1508]/75 to-[#1a1508]/30"></div>
+        {/* INDICADORES (Puntos) */}
+        <div className="flex justify-center gap-3 mt-2">
+            <div className="w-3 h-3 rounded-full bg-[#39FF14] shadow-[0_0_10px_rgba(57,255,20,0.6)] cursor-pointer transition-all"></div>
+            <div className="w-3 h-3 rounded-full bg-white/20 hover:bg-white/40 cursor-pointer transition-all"></div>
+        </div>
 
-              <div className="relative z-10 flex flex-col h-full justify-between">
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center gap-5">
-                    <div className="w-16 h-16 bg-[#D4AF37] rounded-3xl flex items-center justify-center text-black font-black text-2xl shadow-[0_0_30px_rgba(212,175,55,0.6)]">
-                      <i className="fas fa-vr-cardboard"></i>
-                    </div>
-                    <div>
-                      <div className="bg-white/10 backdrop-blur-md border border-white/20 px-3 py-1 rounded-xl inline-flex items-center gap-2 mb-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse"></span>
-                        <p className="text-[9px] font-black tracking-[0.2em] text-white/80 uppercase">VIDRYX 360°</p>
-                      </div>
-                      <h3 className="text-3xl font-black tracking-tighter italic uppercase leading-tight">
-                        {t('Realidad', 'Virtual')} <span className="text-[#D4AF37]">{t('Inmersiva', 'Reality')}</span>
-                      </h3>
-                    </div>
-                  </div>
-                  <p className="text-sm text-slate-200 font-medium leading-relaxed max-w-xs">
-                    {t('Recorre hoteles, restaurantes y paisajes de la Cordillera Blanca en 360° antes de hacer tu reserva.', 'Tour hotels, restaurants, and landscapes of the Cordillera Blanca in 360° before booking.')}
-                  </p>
-                </div>
-
-                <button onClick={() => navigate('/inmersivo')} className="w-full bg-[#D4AF37] text-black py-5 rounded-[2rem] font-black uppercase text-xs tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-white transition-all shadow-[0_15px_40px_rgba(212,175,55,0.3)]">
-                    {t('Probar ahora', 'Try now')} <i className="fas fa-vr-cardboard"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* SLIDE 3: IA TRAVEL PLANNER — azul */}
-          <div className="min-w-[90%] md:min-w-[60%] lg:min-w-[40%] snap-center shrink-0">
-            <div className="h-[420px] rounded-[3.5rem] p-8 shadow-2xl text-white overflow-hidden relative border border-blue-500/30 bg-[#060a16]">
-              <div
-                className="absolute inset-0 z-0 bg-cover bg-center opacity-60"
-                style={{ backgroundImage: "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80')" }}
-              ></div>
-              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#060a16] via-[#060a16]/80 to-[#060a16]/40"></div>
-
-              <div className="relative z-10 flex flex-col h-full justify-between">
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center gap-5">
-                    <div className="w-16 h-16 bg-blue-500 rounded-3xl flex items-center justify-center text-white font-black text-2xl shadow-[0_0_30px_rgba(59,130,246,0.6)]">
-                      <i className="fas fa-robot"></i>
-                    </div>
-                    <div>
-                      <div className="bg-white/10 backdrop-blur-md border border-white/20 px-3 py-1 rounded-xl inline-flex items-center gap-2 mb-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
-                        <p className="text-[9px] font-black tracking-[0.2em] text-white/80 uppercase">{t('AI POWERED', 'AI POWERED')}</p>
-                      </div>
-                      <h3 className="text-3xl font-black tracking-tighter italic uppercase leading-tight">
-                        {t('Planificador', 'Smart')} <span className="text-blue-400">{t('Inteligente', 'Planner')}</span>
-                      </h3>
-                    </div>
-                  </div>
-                  <p className="text-sm text-slate-200 font-medium leading-relaxed max-w-xs">
-                    {t('Crea itinerarios perfectos al instante. Nuestra IA analiza tus gustos y te recomienda la ruta ideal en Huaraz.', 'Create perfect itineraries instantly. Our AI analyzes your tastes and recommends the ideal route in Huaraz.')}
-                  </p>
-                </div>
-
-                <button onClick={() => navigate('/ai-guide')} className="w-full bg-blue-500 text-white py-5 rounded-[2rem] font-black uppercase text-xs tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-blue-400 transition-all shadow-[0_15px_40px_rgba(59,130,246,0.3)]">
-                    {t('Crear ruta', 'Create route')} <i className="fas fa-magic"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <style>{`
-          .hide-scrollbar::-webkit-scrollbar { display: none; }
-          .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        `}</style>
-      </section>
-      
+        <style>{`
+          .hide-scrollbar::-webkit-scrollbar { display: none; }
+          .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        `}</style>
+      </section>
 
       {/* COMUNIDAD Y NEWSLETTER */}
       <section className="bg-[#0A0A0A] rounded-[3.5rem] p-12 text-center relative overflow-hidden shadow-2xl border border-white/10 animate-fadeIn group">
