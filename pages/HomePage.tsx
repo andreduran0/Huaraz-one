@@ -205,13 +205,7 @@ const HomePage: React.FC = () => {
           .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         `}</style>
       </section>
-        
-        {/* CSS integrado para ocultar la barra de scroll pero mantener la funcionalidad de swipe */}
-        <style>{`
-          .hide-scrollbar::-webkit-scrollbar { display: none; }
-          .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        `}</style>
-      </section>
+      
 
       {/* COMUNIDAD Y NEWSLETTER */}
       <section className="bg-[#0A0A0A] rounded-[3.5rem] p-12 text-center relative overflow-hidden shadow-2xl border border-white/10 animate-fadeIn group">
