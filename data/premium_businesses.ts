@@ -1212,6 +1212,7 @@ Nos diferenciamos de las demás taquerías por ofrecer una combinación única d
     phone: '+51 983 182 747',
     whatsapp: '51983 182 747',
     photos: [
+      'https://i.imgur.com/n9lBIzu.jpeg',
       'https://i.imgur.com/qrNiWTN.jpeg',
       'https://i.imgur.com/CmuZAAR.jpeg',
       'https://i.imgur.com/R7rNVoo.jpeg',
