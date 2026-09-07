@@ -10,6 +10,15 @@ export interface JobOffer {
 
 export const jobsData: JobOffer[] = [
   {
+    id: 'job-6', // Puedes cambiar el número según el orden de tu lista
+    businessId: '26', // Reemplaza esto con el ID real del Hotel Los Inkas en tu base de datos
+    businessName: 'Hotel Los Inkas Huaraz',
+    title: 'Personal de Limpieza',
+    description: '¡Únete a nuestro equipo! Buscamos personal de limpieza CON EXPERIENCIA en habitaciones y áreas comunes. Requisitos: Compromiso, responsabilidad y honestidad; actitud proactiva y capacidad para el trabajo en equipo. Ofrecemos un ambiente de trabajo seguro y respetuoso, trato amable y buen compañerismo.',
+    salary: 'A tratar',
+    whatsappContact: '51935260190'
+  },
+  {
     id: 'job-5',
     businessId: '25', 
     businessName: 'Pizzería Mi Chef Monchi',
