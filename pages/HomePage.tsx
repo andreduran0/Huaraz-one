@@ -84,18 +84,18 @@ const HomePage: React.FC = () => {
         {/* Contenedor del Slider */}
         <div className="flex overflow-x-auto snap-x snap-mandatory pb-4 hide-scrollbar items-stretch">
           
-          {/* SLIDE 1: TOKEN $HUARAZ (Ahora primero) */}
+      {/* SLIDE 1: TOKEN $HUARAZ (Transparente, mostrando el fondo de los carros e importación) */}
           <div className="w-full shrink-0 snap-center px-1 flex">
             <div className="w-full bg-[#0A0A0A] rounded-[2.5rem] p-5 md:p-7 shadow-2xl text-white overflow-hidden relative border border-[#39FF14]/30 flex flex-col">
               
-              {/* Imagen de fondo nítida */}
+              {/* Imagen de fondo nítida para que los vehículos/tecnología se vean claros */}
               <div 
-                className="absolute inset-0 z-0 bg-cover bg-center opacity-95"
-                style={{ backgroundImage: "url('https://i.imgur.com/YelHKTw.jpeg')" }}
+                className="absolute inset-0 z-0 bg-cover bg-center opacity-90"
+                style={{ backgroundImage: "url('https://i.imgur.com/YelHKTw.jpeg')" }} 
               ></div>
               
-              {/* Degradado suave para no tapar la montaña */}
-              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A]/90 via-transparent to-black/20"></div>
+              {/* Degradado sutil solo en los bordes para mantener legibilidad sin tapar el centro */}
+              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A]/90 via-black/20 to-black/40"></div>
 
               <div className="relative z-10 flex flex-col h-full">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-4">
@@ -115,17 +115,20 @@ const HomePage: React.FC = () => {
                   </div>
                 </div>
                 
-              <div className="bg-[#050505]/80 backdrop-blur-lg border border-white/10 rounded-[1.8rem] p-5 mb-5 flex-grow flex flex-col justify-center shadow-2xl">
-                    <div className="flex justify-between items-center mb-4">
-                        <p className="text-[9px] font-black text-white/50 uppercase tracking-widest">Live Performance (24h)</p>
-                        <p className="text-lg md:text-xl font-black text-white italic">$0.00142 <i className="fas fa-caret-up text-[#39FF14] ml-1"></i></p>
-                    </div>
-                    <div className="h-20 w-full flex items-end">
-                        <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible" preserveAspectRatio="none">
-                            <path d="M0,35 Q10,32 20,25 T40,28 T60,15 T80,18 T100,5" fill="none" stroke="#39FF14" strokeWidth="2.5" strokeLinecap="round" className="drop-shadow-[0_0_10px_rgba(57,255,20,0.8)]" />
-                            <path d="M0,35 Q10,32 20,25 T40,28 T60,15 T80,18 T100,5 L100,40 L0,40 Z" fill="url(#neonGradient)" opacity="0.3" />
-                            <defs><linearGradient id="neonGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#39FF14" /><stop offset="100%" stopColor="transparent" /></linearGradient></defs>
-                        </svg>
+                {/* Panel totalmente transparente (estilo Vidryx) con el texto de importación */}
+                <div className="bg-black/35 backdrop-blur-sm border border-white/15 rounded-[1.8rem] p-5 mb-5 flex-grow flex flex-col justify-center shadow-xl">
+                    <h4 className="text-xl md:text-2xl font-black uppercase tracking-tighter mb-2 leading-tight text-white drop-shadow-md">
+                        {t('Inversión &', 'Investment &')} <br/>
+                        <span className="text-[#39FF14] italic drop-shadow-[0_2px_10px_rgba(57,255,20,0.8)]">{t('Tecnología Sostenible', 'Sustainable Tech')}</span>
+                    </h4>
+                    <p className="text-white/95 font-medium leading-relaxed mb-3 text-xs drop-shadow">
+                        {t('Token de utilidad para financiar la importación de vehículos ecológicos y tecnología limpia, impulsando un turismo moderno y sustentable en Huaraz.', 'Utility token to finance the importation of eco-friendly vehicles and clean tech, driving modern and sustainable tourism in Huaraz.')}
+                    </p>
+                    
+                    <div className="flex flex-wrap gap-1.5">
+                        <span className="bg-black/50 border border-[#39FF14]/50 text-[#39FF14] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow"><i className="fas fa-car mr-1"></i>{t('Importación', 'Importation')}</span>
+                        <span className="bg-black/50 border border-[#39FF14]/50 text-[#39FF14] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow"><i className="fas fa-leaf mr-1"></i>{t('Ecológico', 'Eco-friendly')}</span>
+                        <span className="bg-black/50 border border-[#39FF14]/50 text-[#39FF14] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow"><i className="fas fa-hand-holding-dollar mr-1"></i>{t('Respaldo Real', 'Real Backing')}</span>
                     </div>
                 </div>
                 
