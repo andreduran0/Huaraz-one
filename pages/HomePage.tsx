@@ -115,10 +115,9 @@ const HomePage: React.FC = () => {
                   </div>
                 </div>
                 
-                {/* 🔴 AQUÍ ESTÁ LA SOLUCIÓN: Panel totalmente translúcido idéntico al de Vidryx 🔴 */}
-                <div className="bg-black/35 backdrop-blur-sm border border-white/15 rounded-[1.8rem] p-5 mb-5 flex-grow flex flex-col justify-center shadow-xl">
+              <div className="bg-[#050505]/80 backdrop-blur-lg border border-white/10 rounded-[1.8rem] p-5 mb-5 flex-grow flex flex-col justify-center shadow-2xl">
                     <div className="flex justify-between items-center mb-4">
-                        <p className="text-[9px] font-black text-white/70 uppercase tracking-widest">Live Performance (24h)</p>
+                        <p className="text-[9px] font-black text-white/50 uppercase tracking-widest">Live Performance (24h)</p>
                         <p className="text-lg md:text-xl font-black text-white italic">$0.00142 <i className="fas fa-caret-up text-[#39FF14] ml-1"></i></p>
                     </div>
                     <div className="h-20 w-full flex items-end">
