@@ -111,9 +111,10 @@ const HomePage: React.FC = () => {
                   </div>
                 </div>
                 
-                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-6 mb-6 flex-grow">
+               {/* Panel translúcido limpio y transparente */}
+                <div className="bg-black/35 backdrop-blur-sm border border-white/15 rounded-[1.8rem] p-6 mb-6 flex-grow flex flex-col justify-center shadow-xl">
                     <div className="flex justify-between items-center mb-4">
-                        <p className="text-[9px] font-black text-white/50 uppercase tracking-widest">Live Performance (24h)</p>
+                        <p className="text-[9px] font-black text-white/70 uppercase tracking-widest">Live Performance (24h)</p>
                         <p className="text-lg md:text-xl font-black text-white italic">$0.00142 <i className="fas fa-caret-up text-[#39FF14] ml-1"></i></p>
                     </div>
                     <div className="h-20 w-full flex items-end">
