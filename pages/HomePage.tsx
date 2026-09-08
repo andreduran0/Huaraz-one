@@ -115,20 +115,20 @@ const HomePage: React.FC = () => {
                   </div>
                 </div>
                 
-                {/* Panel totalmente transparente (estilo Vidryx) con el texto de importación */}
-                <div className="bg-black/35 backdrop-blur-sm border border-white/15 rounded-[1.8rem] p-5 mb-5 flex-grow flex flex-col justify-center shadow-xl">
+              {/* Panel con transparencia ajustada (cristal muy fino) para ver los carros de fondo */}
+                <div className="bg-black/15 backdrop-blur-sm border border-white/10 rounded-[1.8rem] p-5 mb-5 flex-grow flex flex-col justify-center shadow-md hover:bg-black/20 transition-all duration-300">
                     <h4 className="text-xl md:text-2xl font-black uppercase tracking-tighter mb-2 leading-tight text-white drop-shadow-md">
                         {t('Inversión &', 'Investment &')} <br/>
                         <span className="text-[#39FF14] italic drop-shadow-[0_2px_10px_rgba(57,255,20,0.8)]">{t('Tecnología Sostenible', 'Sustainable Tech')}</span>
                     </h4>
-                    <p className="text-white/95 font-medium leading-relaxed mb-3 text-xs drop-shadow">
+                    <p className="text-white/95 font-medium leading-relaxed mb-3 text-xs drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
                         {t('Token de utilidad para financiar la importación de vehículos ecológicos y tecnología limpia, impulsando un turismo moderno y sustentable en Huaraz.', 'Utility token to finance the importation of eco-friendly vehicles and clean tech, driving modern and sustainable tourism in Huaraz.')}
                     </p>
                     
                     <div className="flex flex-wrap gap-1.5">
-                        <span className="bg-black/50 border border-[#39FF14]/50 text-[#39FF14] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow"><i className="fas fa-car mr-1"></i>{t('Importación', 'Importation')}</span>
-                        <span className="bg-black/50 border border-[#39FF14]/50 text-[#39FF14] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow"><i className="fas fa-leaf mr-1"></i>{t('Ecológico', 'Eco-friendly')}</span>
-                        <span className="bg-black/50 border border-[#39FF14]/50 text-[#39FF14] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow"><i className="fas fa-hand-holding-dollar mr-1"></i>{t('Respaldo Real', 'Real Backing')}</span>
+                        <span className="bg-black/40 backdrop-blur-md border border-[#39FF14]/40 text-[#39FF14] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow-sm"><i className="fas fa-car mr-1"></i>{t('Importación', 'Importation')}</span>
+                        <span className="bg-black/40 backdrop-blur-md border border-[#39FF14]/40 text-[#39FF14] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow-sm"><i className="fas fa-leaf mr-1"></i>{t('Ecológico', 'Eco-friendly')}</span>
+                        <span className="bg-black/40 backdrop-blur-md border border-[#39FF14]/40 text-[#39FF14] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow-sm"><i className="fas fa-hand-holding-dollar mr-1"></i>{t('Respaldo Real', 'Real Backing')}</span>
                     </div>
                 </div>
                 
