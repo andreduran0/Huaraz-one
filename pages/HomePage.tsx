@@ -86,33 +86,37 @@ const HomePage: React.FC = () => {
           
           {/* SLIDE 1: TOKEN $HUARAZ (Ahora primero) */}
           <div className="w-full shrink-0 snap-center px-1 flex">
-            <div className="w-full bg-[#0A0A0A] rounded-[2.5rem] p-6 md:p-8 shadow-2xl text-white overflow-hidden relative border border-[#39FF14]/30 flex flex-col">
+            <div className="w-full bg-[#0A0A0A] rounded-[2.5rem] p-5 md:p-7 shadow-2xl text-white overflow-hidden relative border border-[#39FF14]/30 flex flex-col">
+              
+              {/* Imagen de fondo nítida */}
               <div 
-                className="absolute inset-0 z-0 bg-cover bg-bottom opacity-150"
+                className="absolute inset-0 z-0 bg-cover bg-center opacity-95"
                 style={{ backgroundImage: "url('https://i.imgur.com/YelHKTw.jpeg')" }}
               ></div>
-              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/80 to-[#0A0A0A]/40"></div>
+              
+              {/* Degradado suave para no tapar la montaña */}
+              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A]/90 via-transparent to-black/20"></div>
 
               <div className="relative z-10 flex flex-col h-full">
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-4">
                   <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-[#39FF14] rounded-[1.5rem] flex items-center justify-center text-black font-black text-2xl shadow-[0_0_20px_rgba(57,255,20,0.6)] shrink-0">HZ</div>
+                    <div className="w-14 h-14 bg-[#39FF14] rounded-[1.2rem] flex items-center justify-center text-black font-black text-xl shadow-[0_0_20px_rgba(57,255,20,0.6)] shrink-0">HZ</div>
                     <div>
-                      <div className="bg-white/10 backdrop-blur-md border border-white/20 px-3 py-1 rounded-xl inline-flex items-center gap-2 mb-1">
+                      <div className="bg-black/40 backdrop-blur-md border border-white/20 px-3 py-0.5 rounded-lg inline-flex items-center gap-1.5 mb-1">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#39FF14] animate-pulse"></span>
-                        <p className="text-[9px] font-black tracking-[0.2em] text-white/80 uppercase">PUMP.FUN LIVE</p>
+                        <p className="text-[8px] font-black tracking-[0.2em] text-white/90 uppercase">PUMP.FUN LIVE</p>
                       </div>
-                      <h3 className="text-3xl font-black tracking-tighter italic uppercase">$HUARAZ</h3>
+                      <h3 className="text-2xl font-black tracking-tighter italic uppercase text-white drop-shadow-md">$HUARAZ</h3>
                     </div>
                   </div>
                   <div className="text-left md:text-right mt-1 md:mt-0">
-                     <p className="text-[9px] text-white/40 uppercase font-black tracking-[0.3em] mb-1">{t('Market Cap Est.', 'Est. Market Cap')}</p>
-                     <p className="text-3xl md:text-4xl font-black tracking-tighter italic text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">$324.8K</p>
+                     <p className="text-[8px] text-white/60 uppercase font-black tracking-[0.3em] mb-0.5">{t('Market Cap Est.', 'Est. Market Cap')}</p>
+                     <p className="text-3xl font-black tracking-tighter italic text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.6)]">$324.8K</p>
                   </div>
                 </div>
                 
-               {/* Panel translúcido limpio y transparente */}
-                <div className="bg-black/35 backdrop-blur-sm border border-white/15 rounded-[1.8rem] p-6 mb-6 flex-grow flex flex-col justify-center shadow-xl">
+                {/* 🔴 AQUÍ ESTÁ LA SOLUCIÓN: Panel totalmente translúcido idéntico al de Vidryx 🔴 */}
+                <div className="bg-black/35 backdrop-blur-sm border border-white/15 rounded-[1.8rem] p-5 mb-5 flex-grow flex flex-col justify-center shadow-xl">
                     <div className="flex justify-between items-center mb-4">
                         <p className="text-[9px] font-black text-white/70 uppercase tracking-widest">Live Performance (24h)</p>
                         <p className="text-lg md:text-xl font-black text-white italic">$0.00142 <i className="fas fa-caret-up text-[#39FF14] ml-1"></i></p>
@@ -126,8 +130,8 @@ const HomePage: React.FC = () => {
                     </div>
                 </div>
                 
-                <a href="https://pump.fun/" target="_blank" rel="noreferrer" className="w-full bg-[#39FF14] text-black py-4 rounded-[1.5rem] font-black uppercase text-xs tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-white transition-all shadow-[0_15px_30px_rgba(57,255,20,0.3)] mt-auto">
-                    {t('Comprar ahora', 'Buy now')} <i className="fas fa-bolt"></i>
+                <a href="https://pump.fun/" target="_blank" rel="noreferrer" className="w-full bg-[#39FF14] text-black py-3.5 rounded-[1.2rem] font-black uppercase text-[11px] tracking-[0.3em] flex items-center justify-center gap-2 hover:bg-white transition-all shadow-[0_10px_25px_rgba(57,255,20,0.3)] mt-auto">
+                    {t('Comprar ahora', 'Buy now')} <i className="fas fa-bolt text-sm"></i>
                 </a>
               </div>
             </div>
