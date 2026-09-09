@@ -39,6 +39,15 @@ const HomePage: React.FC = () => {
         }
       }
     }, 4000);
+    // Función para detectar qué tarjeta está en pantalla
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const slider = e.currentTarget;
+    const scrollPosition = slider.scrollLeft;
+    const cardWidth = slider.clientWidth;
+    // Calcula el índice (0 o 1) basándose en la posición del scroll
+    const index = Math.round(scrollPosition / cardWidth);
+    setActiveIndex(index);
+  };
 
     return () => clearInterval(interval);
   }, []);
@@ -137,6 +146,7 @@ const HomePage: React.FC = () => {
         <div 
           ref={sliderRef}
           id="innovations-slider" 
+          onScroll={handleScroll} // 
           className="flex overflow-x-auto snap-x snap-mandatory pb-4 hide-scrollbar items-stretch scroll-smooth"
         >
           
