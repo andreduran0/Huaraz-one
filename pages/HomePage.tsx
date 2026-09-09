@@ -239,13 +239,15 @@ const HomePage: React.FC = () => {
           </div>
 
         </div>
-
-        {/* INDICADORES VISUALES (Móvil) */}
-        <div className="flex justify-center md:hidden gap-2 mt-2 opacity-50">
-           <div className="w-4 h-1 rounded-full bg-[#39FF14]"></div>
-           <div className="w-2 h-1 rounded-full bg-slate-400"></div>
+ {/* INDICADORES VISUALES (Móvil) - Puntos Transparentes */}
+        <div className="flex justify-center md:hidden gap-3 mt-3">
+           {/* Punto Activo (Transparente con borde más marcado) */}
+           <div className="w-2.5 h-2.5 rounded-full bg-transparent border-2 border-slate-500 dark:border-slate-400"></div>
+           
+           {/* Punto Inactivo (Transparente con borde muy sutil) */}
+           <div className="w-2.5 h-2.5 rounded-full bg-transparent border border-slate-300 dark:border-slate-600"></div>
         </div>
-
+     
         <style>{`
           .hide-scrollbar::-webkit-scrollbar { display: none; }
           .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
