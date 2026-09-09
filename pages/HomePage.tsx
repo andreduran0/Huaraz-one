@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAppContext } from '../context/AppContext';
 import BusinessCard from '../components/BusinessCard';
 import HeroSlider from '../components/HeroSlider';
-// import { useTranslations } from '../hooks/useTranslations'; // Lo comentamos si usamos la función local
 import { useNavigate } from 'react-router-dom';
 import { BusinessCategory } from '../types';
 
@@ -16,13 +15,33 @@ const FeatureItem: React.FC<{ icon: string; color: string; label: string }> = ({
 );
 
 const HomePage: React.FC = () => {
-  // 1. Extraemos 'language' del contexto
   const { businesses, heroImages, language } = useAppContext(); 
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
 
-  // 2. Creamos la función traductora
+  // REFERENCIA PARA EL SLIDER Y AUTOPLAY
+  const sliderRef = useRef<HTMLDivElement>(null);
+
   const t = (es: string, en: string) => language === 'es' ? es : en;
+
+  // Lógica de auto-deslizamiento cada 4 segundos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (sliderRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
+        
+        // Si ya llegó al final (Vidryx), regresa al principio (Token)
+        if (scrollLeft + clientWidth >= scrollWidth - 10) {
+          sliderRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          // Si está en el principio, desliza hacia la derecha
+          sliderRef.current.scrollBy({ left: clientWidth, behavior: 'smooth' });
+        }
+      }
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const filteredBusinesses = businesses.filter(b => {
     const matchesSearch = b.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -38,7 +57,7 @@ const HomePage: React.FC = () => {
         {t('Plataforma de recomendaciones turísticas en Huaraz', 'Tourist recommendation platform in Huaraz')}
       </h1>
 
-   {/* HERO SECTION */}
+      {/* HERO SECTION */}
       <section className="relative h-80 bg-slate-800 dark:bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl">
         <HeroSlider images={heroImages}>
           <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center p-6">
@@ -78,23 +97,58 @@ const HomePage: React.FC = () => {
             <FeatureItem icon="fa-briefcase" color="bg-emerald-50 text-emerald-600" label={t("Bolsa de trabajo de empresas Hz", "Job board for locals")} />
         </div>
       </section>
-{/* INNOVACIONES - PANEL DESLIZANTE (Token primero, Vidryx transparente con fondo más visible) */}
-      <section className="animate-fadeIn">
+
+      {/* INNOVACIONES - PANEL DESLIZANTE CON AUTOPLAY */}
+      <section className="animate-fadeIn relative px-2">
         
-        {/* Contenedor del Slider */}
-        <div className="flex overflow-x-auto snap-x snap-mandatory pb-4 hide-scrollbar items-stretch">
+        {/* ENCABEZADO Y CONTROLES */}
+        <div className="flex items-end justify-between px-2 mb-6">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter leading-none mb-1">
+              {t('Próximos', 'Upcoming')} <span className="text-[#39FF14]">{t('Lanzamientos', 'Releases')}</span>
+            </h2>
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">
+              {t('Tecnología para Huaraz', 'Technology for Huaraz')}
+            </p>
+          </div>
           
-      {/* SLIDE 1: TOKEN $HUARAZ (Transparente, mostrando el fondo de los carros e importación) */}
+          {/* BOTONES DE NAVEGACIÓN (Desktop) */}
+          <div className="hidden md:flex gap-2">
+            <button 
+              onClick={() => {
+                sliderRef.current?.scrollBy({ left: -300, behavior: 'smooth' });
+              }}
+              className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-[#39FF14] hover:text-black transition-colors"
+            >
+              <i className="fas fa-chevron-left"></i>
+            </button>
+            <button 
+              onClick={() => {
+                sliderRef.current?.scrollBy({ left: 300, behavior: 'smooth' });
+              }}
+              className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-[#39FF14] hover:text-black transition-colors"
+            >
+              <i className="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        {/* Contenedor del Slider */}
+        <div 
+          ref={sliderRef}
+          id="innovations-slider" 
+          className="flex overflow-x-auto snap-x snap-mandatory pb-4 hide-scrollbar items-stretch scroll-smooth"
+        >
+          
+          {/* SLIDE 1: TOKEN $HUARAZ */}
           <div className="w-full shrink-0 snap-center px-1 flex">
             <div className="w-full bg-[#0A0A0A] rounded-[2.5rem] p-5 md:p-7 shadow-2xl text-white overflow-hidden relative border border-[#39FF14]/30 flex flex-col">
               
-              {/* Imagen de fondo nítida para que los vehículos/tecnología se vean claros */}
               <div 
                 className="absolute inset-0 z-0 bg-cover bg-center opacity-90"
                 style={{ backgroundImage: "url('https://i.imgur.com/YelHKTw.jpeg')" }} 
               ></div>
               
-              {/* Degradado sutil solo en los bordes para mantener legibilidad sin tapar el centro */}
               <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A]/90 via-black/20 to-black/40"></div>
 
               <div className="relative z-10 flex flex-col h-full">
@@ -115,7 +169,6 @@ const HomePage: React.FC = () => {
                   </div>
                 </div>
                 
-              {/* Panel con transparencia ajustada (cristal muy fino) para ver los carros de fondo */}
                 <div className="bg-black/15 backdrop-blur-sm border border-white/10 rounded-[1.8rem] p-5 mb-5 flex-grow flex flex-col justify-center shadow-md hover:bg-black/20 transition-all duration-300">
                     <h4 className="text-xl md:text-2xl font-black uppercase tracking-tighter mb-2 leading-tight text-white drop-shadow-md">
                         {t('Inversión &', 'Investment &')} <br/>
@@ -139,22 +192,18 @@ const HomePage: React.FC = () => {
             </div>
           </div>
 
-          {/* SLIDE 2: EXPERIENCIA INMERSIVA VIDRYX IA (Imagen muy visible, sin Live Performance y paneles translúcidos) */}
+          {/* SLIDE 2: EXPERIENCIA INMERSIVA VIDRYX IA */}
           <div className="w-full shrink-0 snap-center px-1 flex">
             <div className="w-full bg-[#0A0A0A] rounded-[2.5rem] p-5 md:p-7 shadow-2xl text-white overflow-hidden relative border border-[#FFD700]/30 flex flex-col">
               
-              {/* Imagen de fondo con opacidad alta para que se luzca nítida */}
               <div 
                 className="absolute inset-0 z-0 bg-cover bg-center opacity-95"
                 style={{ backgroundImage: "url('https://i.imgur.com/nnv6ogs.jpeg')" }}
               ></div>
               
-              {/* Degradado muy sutil en la parte inferior para fundir con el borde oscuro */}
               <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A]/90 via-transparent to-black/20"></div>
 
               <div className="relative z-10 flex flex-col h-full">
-                
-                {/* Cabecera translúcida */}
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-14 h-14 bg-[#FFD700] rounded-[1.2rem] flex items-center justify-center text-black font-black text-xl shadow-[0_0_20px_rgba(255,215,0,0.6)] shrink-0">VX</div>
                   <div>
@@ -166,7 +215,6 @@ const HomePage: React.FC = () => {
                   </div>
                 </div>
                 
-                {/* Contenedor central más translúcido (background más oscuro/ligero) */}
                 <div className="bg-black/35 backdrop-blur-sm border border-white/15 rounded-[1.8rem] p-5 mb-5 flex-grow flex flex-col justify-center shadow-xl">
                     <h4 className="text-xl md:text-2xl font-black uppercase tracking-tighter mb-2 leading-tight text-white drop-shadow-md">
                         {t('Explora en', 'Explore in')} <br/>
@@ -183,7 +231,6 @@ const HomePage: React.FC = () => {
                     </div>
                 </div>
                 
-                {/* Botón */}
                 <button onClick={() => navigate('/inmersivo')} className="w-full bg-[#FFD700] text-black py-3.5 rounded-[1.2rem] font-black uppercase text-[11px] tracking-[0.3em] flex items-center justify-center gap-2 hover:bg-white transition-all shadow-[0_10px_25px_rgba(255,215,0,0.3)] mt-auto">
                     {t('Explorar en 360°', 'Explore in 360°')} <i className="fas fa-vr-cardboard text-base"></i>
                 </button>
@@ -193,11 +240,18 @@ const HomePage: React.FC = () => {
 
         </div>
 
+        {/* INDICADORES VISUALES (Móvil) */}
+        <div className="flex justify-center md:hidden gap-2 mt-2 opacity-50">
+           <div className="w-4 h-1 rounded-full bg-[#39FF14]"></div>
+           <div className="w-2 h-1 rounded-full bg-slate-400"></div>
+        </div>
+
         <style>{`
           .hide-scrollbar::-webkit-scrollbar { display: none; }
           .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         `}</style>
       </section>
+
       {/* COMUNIDAD Y NEWSLETTER */}
       <section className="bg-[#0A0A0A] rounded-[3.5rem] p-12 text-center relative overflow-hidden shadow-2xl border border-white/10 animate-fadeIn group">
         <div 
