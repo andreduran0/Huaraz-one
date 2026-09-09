@@ -100,7 +100,7 @@ const HomePage: React.FC = () => {
             <FeatureItem icon="fa-robot" color="bg-slate-100 text-slate-600" label={t("Guía turístico IA 24/7", "24/7 AI Tourist Guide")} />
             <FeatureItem icon="fa-ticket" color="bg-orange-50 text-orange-500" label={t("Cupones y beneficios", "Coupons and benefits")} />
             <FeatureItem icon="fa-newspaper" color="bg-gray-50 text-gray-500" label={t("Newsletter & Token Huaraz", "Newsletter & Huaraz Token")} />
-            <FeatureItem icon="fa-briefcase" color="bg-emerald-50 text-emerald-600" label={t("Bolsa de trabajo de empresas Hz", "Job board for locals")} />
+            <FeatureItem icon="fa-briefcase" color="bg-emerald-50 text-emerald-600" label={t("Bolsa de trabajo de empresas", "Job board for locals")} />
         </div>
       </section>
 
@@ -263,7 +263,10 @@ const HomePage: React.FC = () => {
         `}</style>
       </section>
 
-     {/* COMUNIDAD Y NEWSLETTER */}
+     Aquí tienes la sección de **Comunidad y Newsletter** con el texto un poco más desarrollado y enriquecido, dándole un toque de mayor profundidad a la propuesta de valor sin perder la estructura compacta y estilizada que acabamos de lograr:
+
+```javascript
+      {/* COMUNIDAD Y NEWSLETTER */}
       <section className="bg-[#0A0A0A] rounded-[2.5rem] p-8 md:p-10 text-center relative overflow-hidden shadow-2xl border border-white/10 animate-fadeIn group">
         <div 
           className="absolute inset-0 z-0 bg-cover bg-center opacity-130 mix-blend-luminosity"
@@ -273,10 +276,9 @@ const HomePage: React.FC = () => {
         <div className="absolute inset-0 z-0 opacity-40 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#39FF14 0.8px, transparent 0.8px)', backgroundSize: '24px 24px' }}></div>
         <div className="absolute top-0 left-0 w-full h-full z-0 bg-gradient-to-b from-[#39FF14]/5 to-transparent"></div>
 
-        {/* Contenedor central más compacto: space-y-10 -> space-y-6 */}
         <div className="relative z-10 space-y-6">
             
-            {/* Pastilla de iconos reducida en tamaño */}
+            {/* Pastilla de iconos */}
             <div className="w-24 h-12 bg-white/5 backdrop-blur-xl rounded-[1.5rem] flex items-center justify-center mx-auto border border-white/10 shadow-[0_15px_30px_rgba(0,0,0,0.5)] transition-transform group-hover:scale-105 gap-3 px-5">
                 <i className="fab fa-whatsapp text-2xl text-[#39FF14] drop-shadow-[0_0_10px_rgba(57,255,20,0.6)]"></i>
                 <div className="w-px h-5 bg-white/20"></div>
@@ -284,27 +286,24 @@ const HomePage: React.FC = () => {
             </div>
             
             <div className="space-y-3">
-                {/* Título un poco más compacto */}
                 <h3 className="text-3xl md:text-4xl font-black text-white uppercase italic tracking-tighter leading-none">
-                    {t('ÚNETE A LA ', 'JOIN THE ')} <br/><span className="text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">{t('COMUNIDAD', 'COMMUNITY')}</span>
+                    {t('ÚNETE A LA ', 'JOIN THE ')} <br/><span className="text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.4)]">{t('COMUNIDAD EXCLUSIVA', 'EXCLUSIVE COMMUNITY')}</span>
                 </h3>
-                {/* Texto ajustado a xs para ocupar menos líneas */}
-                <p className="text-white/70 text-xs md:text-sm font-bold max-w-sm mx-auto leading-relaxed italic">
+                <p className="text-white/80 text-xs md:text-sm font-bold max-w-lg mx-auto leading-relaxed italic">
                     {language === 'es' ? (
-                      <>Únete a nuestro <span className="text-white">grupo VIP de WhatsApp</span>. Recibe <span className="text-[#39FF14]">promociones exclusivas</span>, sé parte de nuestro ecosistema para <span className="text-[#39FF14]">importar tecnología sostenible mientras inviertes</span>, obtén <span className="text-[#39FF14]">merch oficial</span>, beneficios en aerolíneas y eventos, pruebas antes que nadie nuestras <span className="text-[#39FF14]">experiencias inmersivas y juegos de montaña</span> en Huaraz Explorer.</>
+                      <>Forma parte de nuestro <span className="text-white">canal y grupo VIP en WhatsApp</span> para conectar directamente con pioneros del turismo y la tecnología. Recibe <span className="text-[#39FF14]">alertas de inversión</span>, participa en la importación de vehículos sostenibles, obtén <span className="text-[#39FF14]">merch oficial limitado</span>, accede a tarifas preferenciales en experiencias de montaña y sé el primero en probar las herramientas de Inteligencia Artificial de Huaraz Explorer.</>
                     ) : (
-                      <>Join our <span className="text-white">VIP WhatsApp group</span>. Get <span className="text-[#39FF14]">exclusive promotions</span>, be part of our ecosystem to <span className="text-[#39FF14]">import sustainable tech while investing</span>, get <span className="text-[#39FF14]">official merch</span>, airline & event benefits, and test our <span className="text-[#39FF14]">immersive mountain games</span> before anyone else on Huaraz Explorer.</>
+                      <>Join our <span className="text-white">VIP WhatsApp channel and group</span> to connect directly with tourism and tech pioneers. Receive <span className="text-[#39FF14]">investment alerts</span>, participate in sustainable vehicle importation, get <span className="text-[#39FF14]">limited official merch</span>, access preferential rates on mountain experiences, and be the first to test Huaraz Explorer's Artificial Intelligence tools.</>
                     )}
                 </p>
             </div>
 
-            {/* Botón con menos padding vertical (py-4 en lugar de py-7) */}
             <button 
                 onClick={() => navigate('/newsletter')} 
                 className="w-full bg-[#39FF14] text-black py-4 rounded-[1.5rem] font-black uppercase text-[11px] tracking-[0.4em] shadow-[0_15px_30px_rgba(57,255,20,0.3)] hover:bg-white hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-3 overflow-hidden relative"
             >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]"></div>
-                {t('UNIRME AHORA', 'JOIN NOW')} <i className="fas fa-arrow-right text-[10px]"></i>
+                {t('ACCEDER AL GRUPO VIP', 'ACCESS VIP GROUP')} <i className="fas fa-arrow-right text-[10px]"></i>
             </button>
 
             <p className="text-[8px] font-black text-white/20 uppercase tracking-[0.5em] m-0">HUARAZ EXPLORER • {t('RED DE INNOVADORES', 'INNOVATORS NETWORK')}</p>
