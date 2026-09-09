@@ -18,36 +18,34 @@ const HomePage: React.FC = () => {
   const { businesses, heroImages, language } = useAppContext(); 
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-
-  // REFERENCIA PARA EL SLIDER Y AUTOPLAY
+  
+  // ESTADOS Y REFERENCIAS PARA EL SLIDER
+  const [activeIndex, setActiveIndex] = useState(0);
   const sliderRef = useRef<HTMLDivElement>(null);
 
   const t = (es: string, en: string) => language === 'es' ? es : en;
 
-  // Lógica de auto-deslizamiento cada 4 segundos
+  // Detectar el scroll para cambiar el color de los puntos
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const slider = e.currentTarget;
+    if (slider.clientWidth > 0) {
+      const index = Math.round(slider.scrollLeft / slider.clientWidth);
+      setActiveIndex(index);
+    }
+  };
+
+  // Autoplay cada 4 segundos
   useEffect(() => {
     const interval = setInterval(() => {
       if (sliderRef.current) {
         const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
-        
-        // Si ya llegó al final (Vidryx), regresa al principio (Token)
         if (scrollLeft + clientWidth >= scrollWidth - 10) {
           sliderRef.current.scrollTo({ left: 0, behavior: 'smooth' });
         } else {
-          // Si está en el principio, desliza hacia la derecha
           sliderRef.current.scrollBy({ left: clientWidth, behavior: 'smooth' });
         }
       }
     }, 4000);
-    // Función para detectar qué tarjeta está en pantalla
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const slider = e.currentTarget;
-    const scrollPosition = slider.scrollLeft;
-    const cardWidth = slider.clientWidth;
-    // Calcula el índice (0 o 1) basándose en la posición del scroll
-    const index = Math.round(scrollPosition / cardWidth);
-    setActiveIndex(index);
-  };
 
     return () => clearInterval(interval);
   }, []);
@@ -61,7 +59,6 @@ const HomePage: React.FC = () => {
   return (
     <div className="bg-slate-50 dark:bg-slate-950 min-h-screen pb-40 px-4 space-y-10 pt-6 font-['Plus_Jakarta_Sans'] relative overflow-x-hidden">
       
-      {/* SEO H1 */}
       <h1 className="sr-only">
         {t('Plataforma de recomendaciones turísticas en Huaraz', 'Tourist recommendation platform in Huaraz')}
       </h1>
@@ -107,7 +104,7 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* INNOVACIONES - PANEL DESLIZANTE CON AUTOPLAY */}
+      {/* INNOVACIONES - PANEL DESLIZANTE CON AUTOPLAY Y PUNTOS */}
       <section className="animate-fadeIn relative px-2">
         
         {/* ENCABEZADO Y CONTROLES */}
@@ -121,20 +118,15 @@ const HomePage: React.FC = () => {
             </p>
           </div>
           
-          {/* BOTONES DE NAVEGACIÓN (Desktop) */}
           <div className="hidden md:flex gap-2">
             <button 
-              onClick={() => {
-                sliderRef.current?.scrollBy({ left: -300, behavior: 'smooth' });
-              }}
+              onClick={() => sliderRef.current?.scrollBy({ left: -300, behavior: 'smooth' })}
               className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-[#39FF14] hover:text-black transition-colors"
             >
               <i className="fas fa-chevron-left"></i>
             </button>
             <button 
-              onClick={() => {
-                sliderRef.current?.scrollBy({ left: 300, behavior: 'smooth' });
-              }}
+              onClick={() => sliderRef.current?.scrollBy({ left: 300, behavior: 'smooth' })}
               className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-[#39FF14] hover:text-black transition-colors"
             >
               <i className="fas fa-chevron-right"></i>
@@ -146,7 +138,7 @@ const HomePage: React.FC = () => {
         <div 
           ref={sliderRef}
           id="innovations-slider" 
-          onScroll={handleScroll} // 
+          onScroll={handleScroll}
           className="flex overflow-x-auto snap-x snap-mandatory pb-4 hide-scrollbar items-stretch scroll-smooth"
         >
           
@@ -249,15 +241,22 @@ const HomePage: React.FC = () => {
           </div>
 
         </div>
- {/* INDICADORES VISUALES (Móvil) - Puntos Transparentes */}
+
+        {/* INDICADORES VISUALES DINÁMICOS (Móvil) */}
         <div className="flex justify-center md:hidden gap-3 mt-3">
-           {/* Punto Activo (Transparente con borde más marcado) */}
-           <div className="w-2.5 h-2.5 rounded-full bg-transparent border-2 border-slate-500 dark:border-slate-400"></div>
+           <div className={`h-2.5 rounded-full transition-all duration-300 ${
+             activeIndex === 0 
+               ? 'bg-slate-800 dark:bg-white w-5' 
+               : 'bg-transparent border border-slate-400 dark:border-slate-600 w-2.5'
+           }`}></div>
            
-           {/* Punto Inactivo (Transparente con borde muy sutil) */}
-           <div className="w-2.5 h-2.5 rounded-full bg-transparent border border-slate-300 dark:border-slate-600"></div>
+           <div className={`h-2.5 rounded-full transition-all duration-300 ${
+             activeIndex === 1 
+               ? 'bg-slate-800 dark:bg-white w-5' 
+               : 'bg-transparent border border-slate-400 dark:border-slate-600 w-2.5'
+           }`}></div>
         </div>
-     
+
         <style>{`
           .hide-scrollbar::-webkit-scrollbar { display: none; }
           .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
