@@ -812,7 +812,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
  {
     id: 'vermiel-emolienteria',
     name: 'Vermiel - Emolientería',
-    category:BusinessCategory.emolienteria,
+    category:'emolienteria'
     description: 'Descubre la evolución de una tradición peruana en Vermiel. El refugio perfecto para abrigarte del clima andino con nuestras exclusivas fusiones de emoliente, hierbas medicinales e infusiones naturales. Acompaña tus bebidas calientes con deliciosos complementos en un ambiente cálido y acogedor. El lugar ideal para recargar energías y compartir una buena charla al caer la tarde.',
     address: 'Jr. Leonisa Lescano #635, Huaraz',
     lat: -9.7020, 
