@@ -8,17 +8,22 @@ export enum BusinessCategory {
   RESTAURANT = 'restaurant',
   POLLERIA = 'polleria',
   CEVICHERIA = 'cevicheria',
+  RESTOBAR = 'restobar',
   LAUNDRY = 'laundry',
   HOTEL = 'hotel',
   DENTIST = 'dentist',
-  BAKERY = 'bakery',
+  BAKERY = 'bakery', // Esta la usaremos para Panaderías
   TOURIST_SPOT = 'tourist_spot',
   EDUCATION = 'education',
   HEALTH = 'health',
   EXCHANGE = 'exchange',
   CHOCOLATERIA = 'chocolateria',
+  // --- NUEVAS CATEGORÍAS ---
+  SUSHI_BAR = 'sushi_bar',
+  EMOLIENTERIA = 'emolienteria',
+  TORTERIA = 'torteria',
+  POSTRES = 'postres'
 }
-
 export interface Business {
   id: string;
   name: string;
