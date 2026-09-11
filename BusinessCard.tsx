@@ -46,7 +46,7 @@ const translateCategory = (category: BusinessCategory) => {
    [BusinessCategory.PIZERIA]: 'pizeria',
     [BusinessCategory.RESTOBAR]: 'Restobar',
     [BusinessCategory.SUSHI_BAR]: 'Sushi Bar',
-    [BusinessCategory.BAKERY]: 'Panadería',
+    [BusinessCategory.PANADERIA]: 'Panadería',
     [BusinessCategory.EMOLIENTERIA]: 'Emolientería',
     [BusinessCategory.TORTERIA]: 'Tortería',
     [BusinessCategory.POSTRES]: 'Postres',
