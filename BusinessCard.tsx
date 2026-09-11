@@ -37,19 +37,29 @@ const getCategoryStyles = (category: BusinessCategory) => {
     }
 };
 
-// Traductor de Categorías para la Tarjeta (¡NUEVO!)
+// Traductor de Categorías para la Tarjeta (¡ACTUALIZADO!)
 const translateCategory = (category: BusinessCategory) => {
-    const translations: Record<string, string> = {
-        [BusinessCategory.RESTAURANT]: 'Restaurante',
-        [BusinessCategory.POLLERIA]: 'Pollería',
-        [BusinessCategory.HOTEL]: 'Hotel',
-        [BusinessCategory.TOURIST_SPOT]: 'Punto Turístico',
-        [BusinessCategory.CHOCOLATERIA]: 'Chocolatería',
-        [BusinessCategory.EXCHANGE]: 'Casa de Cambio',
-        [BusinessCategory.HEALTH]: 'Salud',
-        [BusinessCategory.EDUCATION]: 'Educación'
-    };
-    return translations[category] || 'Negocio Local';
+  const translations: Record<string, string> = {
+    [BusinessCategory.RESTAURANT]: 'Restaurante',
+    [BusinessCategory.POLLERIA]: 'Pollería',
+    [BusinessCategory.CEVICHERIA]: 'Cevichería',
+    [BusinessCategory.RESTOBAR]: 'Restobar',
+    [BusinessCategory.SUSHI_BAR]: 'Sushi Bar',
+    [BusinessCategory.BAKERY]: 'Panadería',
+    [BusinessCategory.EMOLIENTERIA]: 'Emolientería',
+    [BusinessCategory.TORTERIA]: 'Tortería',
+    [BusinessCategory.POSTRES]: 'Postres',
+    [BusinessCategory.HOTEL]: 'Hotel',
+    [BusinessCategory.TOURIST_SPOT]: 'Punto Turístico',
+    [BusinessCategory.CHOCOLATERIA]: 'Chocolatería',
+    [BusinessCategory.EXCHANGE]: 'Casa de Cambio',
+    [BusinessCategory.HEALTH]: 'Salud',
+    [BusinessCategory.EDUCATION]: 'Educación',
+    [BusinessCategory.LAUNDRY]: 'Lavandería',
+    [BusinessCategory.DENTIST]: 'Dentista'
+  };
+  
+  return translations[category] || 'Negocio Local';
 };
 
 export default function StaticMap({ 
