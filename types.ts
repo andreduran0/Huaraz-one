@@ -6,6 +6,8 @@ export enum AdLevel {
 
 export enum BusinessCategory {
   RESTAURANT = 'restaurant',
+  PIZZERIA = 'pizzeria',
+  PANADERIA = 'panaderia',
   POLLERIA = 'polleria',
   CEVICHERIA = 'cevicheria',
   RESTOBAR = 'restobar',
