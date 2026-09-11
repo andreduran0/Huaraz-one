@@ -48,7 +48,7 @@ export const premiumBusinesses: Business[] = [
   {
     id: '25',
     name: 'Pizzeria Mi Chef Monchi',
-    category: BusinessCategory.RESTAURANT,
+    category: BusinessCategory.PIZZERIA,
     description: 'La historia de "Mi Chef Monchi" es la historia de un sueño hecho realidad. Moisés Álvarez, conocido por todos como Monchi, inició este proyecto tras años de perfeccionar sus técnicas en restaurantes y pizzerías. Inspirado por su jefe y mentor François, de quien heredó la receta secreta de la masa perfecta, Monchi construyó con sus propias manos el horno artesanal de barro donde hoy se hornean sus famosas pizzas. No te puedes ir sin probar la Pizza de Lomo Saltado, una exquisita fusión italo-peruana, o su pizza especial con el delicioso jamón serrano regional.',
     address: 'Parque Ginebra - Huaraz, al costado de Casa de Guías',
   lat: -9.5389, 
@@ -325,7 +325,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
   {
     id: '27',
     name: 'Shopping Tanta - Panadería y Pastelería',
-    category: BusinessCategory.PANADERIA, // Asegúrate de que tu enum acepte PANADERIA
+    category: BusinessCategory.PANADERÍA, // Asegúrate de que tu enum acepte PANADERIA
     description: 'Panadería de generación en generación con el alma familiar. Venden los ricos panes artesanales como el de trigo, el de maíz, el mishty, el candado, el mollete, el cuay, el de mantequilla y sus infaltables cachitos para remojar en el café, que te harán agua la boca. Una tradición que no se encuentra a la vuelta de la esquina.',
     address: 'Jirón Los Girasoles. Mz 163 Lt 9 - Huaraz.',
     lat: -9.5379, // ⚠️ CUIDADO: Estas son las coordenadas de Malibú, ¡cámbialas!
