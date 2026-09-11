@@ -14,7 +14,6 @@ export enum BusinessCategory {
   LAUNDRY = 'laundry',
   HOTEL = 'hotel',
   DENTIST = 'dentist',
-  BAKERY = 'bakery', // Esta la usaremos para Panaderías
   TOURIST_SPOT = 'tourist_spot',
   EDUCATION = 'education',
   HEALTH = 'health',
