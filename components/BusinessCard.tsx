@@ -87,7 +87,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
                 cevicheria: 'Cevichería',
                 restobar: 'Restobar',
                 sushi_bar: 'Sushi Bar',
-                bakery: 'Panadería',
+                panaderia: 'Panadería',
                 emolienteria: 'Emolientería',
                 torteria: 'Tortería',
                 postres: 'Postres',
