@@ -325,7 +325,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
   {
     id: '27',
     name: 'Shopping Tanta - Panadería y Pastelería',
-    category: BusinessCategory.PANADERÍA, // Asegúrate de que tu enum acepte PANADERIA
+    category: BusinessCategory.PANADERIA, // Asegúrate de que tu enum acepte PANADERIA
     description: 'Panadería de generación en generación con el alma familiar. Venden los ricos panes artesanales como el de trigo, el de maíz, el mishty, el candado, el mollete, el cuay, el de mantequilla y sus infaltables cachitos para remojar en el café, que te harán agua la boca. Una tradición que no se encuentra a la vuelta de la esquina.',
     address: 'Jirón Los Girasoles. Mz 163 Lt 9 - Huaraz.',
     lat: -9.5379, // ⚠️ CUIDADO: Estas son las coordenadas de Malibú, ¡cámbialas!
