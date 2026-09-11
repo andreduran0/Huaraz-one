@@ -166,7 +166,7 @@ export const premiumBusinesses: Business[] = [
   {
     id: '24',
     name: 'Hakuna Matata Restobar',
-    category: BusinessCategory.RESTAURANT,
+    category: BusinessCategory.RESTOBAR,
     description: 'Hakuna Matata es un restobar con alma ochentera y noventera, con la mejor música y eventos que llevan el alma del rock a los huaracinos. Tomarte una cerveza o un cóctel aquí es una vitrina hacia una nueva forma de disfrutar. Un local que propone una nueva especialidad en restauración con los mejores platos de Huaraz y una carta de presentación con shows en vivo infaltables donde podrás escuchar la música de nuestra región.',
     address: 'Pasaje Jesús Morales 977 - Huaraz - Ancash. (Referencia: a media cuadra de la Av. Gamarra con 28 de Julio, frente al CETPRO Teófilo Méndez Ramos).',
      lat: -9.5339, 
@@ -218,7 +218,7 @@ export const premiumBusinesses: Business[] = [
   {
     id: '26',
     name: 'Malibu Resto Bar',
-    category: BusinessCategory.RESTAURANT,
+    category: BusinessCategory.RESTOBAR,
     description: 'Malibu es un restobar con alma rockera y salsera, un mix actualizado con la mejor música y eventos que llevan el alma del rock a los huaracinos. Tomarte una cerveza o un cóctel aquí es una vitrina hacia una nueva forma de disfrutar. Un local que propone una nueva especialidad en restauración con los mejores platos de Huaraz y una carta de presentación con shows en vivo infaltables donde podrás escuchar la música de nuestra región.',
     address: 'Parque Ginebra en la recta del Pasaje Wamashraju - Huaraz.',
     lat: -9.5339, 
@@ -607,7 +607,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
   {
     id: '8',
     name: 'Norabuena pollos y parillas',
-    category: BusinessCategory.RESTAURANT,
+    category: BusinessCategory.POLLERIA,
     description: '¡El verdadero sabor a la brasa en el corazón de Huaraz! En Norabuena Pollos y Parrillas te esperamos con los pollos más jugosos, doraditos y con esa sazón inconfundible que nos caracteriza. Disfruta también de nuestras contundentes parrillas, carnes seleccionadas y guarniciones generosas. Un ambiente familiar y atención de primera, justo frente al histórico monumento de Pumacayán. ¡Tu antojo de un buen pollo a la brasa se cumple aquí!',
     address: 'Local 1: Jr. Ramón Castilla 1ra. Cuadra (Frente a Pumacayán) | Local 2: Av. Confraternidad Internacional Este 640, Huaraz',
    lat: -9.5185, 
@@ -753,7 +753,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
   {
     id: '47-ronnin-sushi-bar', // Usamos este ID para que la URL sea más profesional
     name: '47 RONNIN Sushi Bar',
-    category: BusinessCategory.RESTAURANT,
+    category: BusinessCategory.SUSHI_BAR,
     description: '47 RONNIN Sushi Bar es cocina japonesa con alma peruana, donde los sabores se encuentran con la tradición y la fusión cobra vida en cada plato. Una experiencia auténtica y llena de identidad.',
     address: 'Jr. Víctor Cordero 866 (Entre el Parque de las Banderas y la Av. Gamarra), Huaraz',
    lat: -9.5359, 
@@ -924,7 +924,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
   {
     id: 'tortas-camucha',
     name: 'Tortas Camucha',
-    category: BusinessCategory.BAKERY,
+    category: BusinessCategory.TORTERIA,
     description: 'Tortas Camucha es el legado vivo de una pasión que comenzó en 1971. Fundada por la matriarca Camucha, esta pastelería artesanal ha transformado recetas familiares en piezas maestras de sabor durante más de 50 años. Hoy, combinamos nuestra rica herencia con una visión moderna, manteniendo el compromiso de ofrecer productos frescos, elegantes y con el toque casero inconfundible que nos convirtió en un referente de la tradición huaracina.',
     address: 'Jr. Gabino Uribe 638 - Belén | Jr. Huaylas esq. con Jr. Tereza Gonzales de Fanning 516',
   lat: -9.5445, lng: -77.5280, 
@@ -981,7 +981,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
   {
     id: 'qorianka-chocolateria', // ID optimizado para una URL profesional
     name: 'Qorianka - Chocolatería',
-    category: 'chocolateria' as BusinessCategory, // ⚠️ Asegúrate de tener SHOP, CAFE o RESTAURANT en tu archivo types.ts
+    category: BusinessCategory.CHOCOLATERIA,
     description: 'Descubre la magia del auténtico cacao peruano en Qorianka. Te ofrecemos los más exquisitos chocolates artesanales, bombones, chocotejas y postres elaborados con insumos de primera calidad. Ya sea para recargar energías tras una ruta por la Cordillera Blanca, disfrutar de una bebida caliente o llevar el mejor recuerdo de Huaraz, cada bocado es una experiencia de altura.',
     address: 'Jr. Damaso Antunez 726 - Belén, Huaraz',
     lat: -9.5720, lng: -77.4954,
@@ -1102,7 +1102,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
   {
     id: '19',
     name: 'Catamares - Cevicheria & Restaurante',
-    category: BusinessCategory.RESTAURANT, 
+    category: BusinessCategory.CEVICHERIA, 
     description: `Somos una cevichería especializada en pescados y mariscos frescos, preparada con ingredientes de la más alta calidad y el auténtico sabor Chimbotano. 
 Nuestro compromiso es brindar una experiencia única, combinando frescura, sabor y excelente atención en un ambiente acogedor. Lo que nos diferencia es nuestro compromiso con la frescura, la calidad y el sabor auténtico. Seleccionamos cuidadosamente nuestros pescados y mariscos para garantizar platos preparados al momento, conservando todo su sabor natural.
 
@@ -1204,7 +1204,7 @@ Nos diferenciamos de las demás taquerías por ofrecer una combinación única d
   {
     id: '21',
     name: 'Las Agüero',
-    category: BusinessCategory.RESTAURANT,
+    category: BusinessCategory.POSTRES,
     description: 'Las Agüero | comer bien, vivir mejor. ¡Bienvenidos a nuestro mundo de postres saludables y comida sana! Vive el bienestar en cada bocado y aroma.',
     address: 'Jirón Garino Uribe, Huaraz, Perú',
  lat: -9.5374, 
