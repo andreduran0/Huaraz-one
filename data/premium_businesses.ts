@@ -466,6 +466,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     photos: [
       'https://i.imgur.com/SvMEXKC.jpeg',
       'https://i.imgur.com/QqXa2SC.jpeg',
+      'https://i.imgur.com/8Osqnm6.jpeg',
       'https://i.imgur.com/GOjggrc.jpeg'
     ],
     menuImages: [
