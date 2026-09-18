@@ -2,6 +2,14 @@ import { Coupon } from '../types';
 
 export const coupons: Coupon[] = [
   {
+    id: 'malibu-alitas-calientito',
+    businessId: '26', 
+    title: 'Alitas + Calientito por S/ 30',
+    description: '¡Todos los Jueves y Viernes en Malibu a 3050 MSNM! Disfruta de una porción de alitas (BBQ, Búfalo o Acevichada) más un calientito de cualquier presentación por solo 30 soles. La comida está a cargo de Mi Chef Monchi. Válido de 4 PM a 10 PM presentando este cupón digital[cite: 6].',
+    code: 'MALIBU30',
+    expiryDate: '2026-10-31', // Ajusta la fecha según la vigencia que desees darle
+  },
+  {
   id: 'c25-2',
   businessId: '25', // Pizzería Mi Chef Monchi
   title: '30% de Descuento en Shawarmas',
