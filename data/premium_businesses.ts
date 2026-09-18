@@ -260,6 +260,7 @@ export const premiumBusinesses: Business[] = [
       'https://i.imgur.com/xnIOROG.jpeg'
     ],
     menuImages: [
+    'https://i.imgur.com/cxxYEP1.jpeg',
       'https://i.imgur.com/a7YMXA0.jpeg',
       'https://i.imgur.com/4bUU67f.jpeg',
      'https://i.imgur.com/BKRI40X.jpeg',
