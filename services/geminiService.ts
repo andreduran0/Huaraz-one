@@ -11,7 +11,7 @@ const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
   const sponsored = businesses.filter(b => b.adLevel !== 'none' && b.status === 'approved');
 
   return ai.chats.create({
-    model: 'gemini-2.5-flash',
+    model: 'gemini-3.6-flash',
     config: {
       systemInstruction: `Eres 'Huaraz Explorer AI'. Tu objetivo es ser el guía turístico digital más amable y experto de Huaraz, Perú.
 
