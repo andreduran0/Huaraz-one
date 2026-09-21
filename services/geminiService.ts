@@ -7,7 +7,7 @@ export const createTouristChat = (
   coupons: Coupon[],
   language: 'es' | 'en'
 ): Chat => {
-const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
+const ai = new GoogleGenAI({ apiKey: import.meta.env.GEMINI_API_KEY });
   const sponsored = businesses.filter(b => b.adLevel !== 'none' && b.status === 'approved');
 
   return ai.chats.create({
