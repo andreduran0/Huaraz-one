@@ -111,7 +111,7 @@ export default async function handler(req: any, res: any) {
     const context = await getContext(message, ciudadId);
     
     const model = geminiClient.getGenerativeModel({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-1.5-flash',
 // ... (el resto del código sigue exactamente igual)
       systemInstruction: ARKAIKO_SYSTEM_PROMPT + '\n\nCONTEXTO:\n' + context,
     });
