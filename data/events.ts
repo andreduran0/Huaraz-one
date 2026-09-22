@@ -440,5 +440,14 @@ export const events: Event[] = [
     type: 'party', 
     time: 'Por la noche', 
     location: 'Hakuna Matata Restobar (Pasaje Jesús Morales 977, Huaraz)'
+  },
+  //--- EVENTOS SEPTIEMBRE 2026 ---
+  {
+    date: 'Todos los Jueves y Viernes',
+    title: 'Promo Malibu: Alitas + Calientitos con DJ en vivo',
+    description: 'Por solo 30 soles llévate alitas (BBQ, Búfalo o Acevichada) más un calientito en cualquier presentación[cite: 14]. El mejor ambiente con DJ ElvisPC en cabina y la comida a cargo de Mi Chef Monchi[cite: 14].',
+    type: 'entertainment',
+    time: '04:00 p. m. - 10:00 p. m.',
+    location: 'Malibu 3050 m.s.n.m. (Pasaje Wamashraju J 144, a espaldas del Parq. Ginebra, Huaraz)[cite: 14]'
   }
 ];
