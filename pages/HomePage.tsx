@@ -283,8 +283,8 @@ const HomePage: React.FC = () => {
                     </div>
                 </div>
                 
-                <button onClick={() => navigate('/inmersivo')} className="w-full bg-[#FFD700] text-black py-3.5 rounded-[1.2rem] font-black uppercase text-[11px] tracking-[0.3em] flex items-center justify-center gap-2 hover:bg-white transition-all shadow-[0_10px_25px_rgba(255,215,0,0.3)] mt-auto">
-                    {t('Explorar en 360°', 'Explore in 360°')} <i className="fas fa-vr-cardboard text-base"></i>
+           <button className="w-full bg-[#0A0A0A] border border-[#FFD700] text-[#FFD700] py-3.5 rounded-[1.2rem] font-black uppercase text-[11px] tracking-[0.3em] flex items-center justify-center gap-2 hover:bg-[#FFD700] hover:text-black transition-all shadow-[0_5px_15px_rgba(255,215,0,0.1)] mt-auto cursor-default">
+                    {t('En desarrollo', 'In development')} <i className="fas fa-cog fa-spin text-sm"></i>
                 </button>
               </div>
             </div>
