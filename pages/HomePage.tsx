@@ -244,7 +244,7 @@ const HomePage: React.FC = () => {
             </div>
           </div>
 
-          {/* SLIDE 2: EXPERIENCIA INMERSIVA VIDRYX IA */}
+        {/* SLIDE 2: EXPERIENCIA INMERSIVA VIDRYX IA */}
           <div className="w-full shrink-0 snap-center px-1 flex">
             <div className="w-full bg-[#0A0A0A] rounded-[2.5rem] p-5 md:p-7 shadow-2xl text-white overflow-hidden relative border border-[#FFD700]/30 flex flex-col">
               
@@ -283,7 +283,8 @@ const HomePage: React.FC = () => {
                     </div>
                 </div>
                 
-             <button className="w-full bg-[#0A0A0A] border border-[#FFD700] text-[#FFD700] py-3.5 rounded-[1.2rem] font-black uppercase text-[11px] tracking-[0.3em] flex items-center justify-center gap-2 hover:bg-[#FFD700] hover:text-black transition-all shadow-[0_5px_15px_rgba(255,215,0,0.1)] mt-auto cursor-default">
+                {/* BOTÓN ACTUALIZADO A "EN DESARROLLO" */}
+                <button className="w-full bg-[#0A0A0A] border border-[#FFD700] text-[#FFD700] py-3.5 rounded-[1.2rem] font-black uppercase text-[11px] tracking-[0.3em] flex items-center justify-center gap-2 hover:bg-[#FFD700] hover:text-black transition-all shadow-[0_5px_15px_rgba(255,215,0,0.1)] mt-auto cursor-default">
                     {t('En desarrollo', 'In development')} <i className="fas fa-cog fa-spin text-sm"></i>
                 </button>
               </div>
