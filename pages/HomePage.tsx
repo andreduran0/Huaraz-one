@@ -141,56 +141,6 @@ const HomePage: React.FC = () => {
           onScroll={handleScroll}
           className="flex overflow-x-auto snap-x snap-mandatory pb-4 hide-scrollbar items-stretch scroll-smooth"
         >
-          {/* SLIDE NUEVO: EXPANSIÓN HOTELES Y AGENCIAS */}
-          <div className="w-full shrink-0 snap-center px-1 flex">
-            <div className="w-full bg-[#0A0A0A] rounded-[2.5rem] p-5 md:p-7 shadow-2xl text-white overflow-hidden relative border border-[#00E5FF]/30 flex flex-col">
-              
-              {/* Fondo sugerido: Una vista de Huaraz o nevados combinada con ciudad */}
-              <div 
-                className="absolute inset-0 z-0 bg-cover bg-center opacity-80"
-                style={{ backgroundImage: "url('https://images.unsplash.com/photo-1587595431973-160d0d94add1?q=80&w=1000&auto=format&fit=crop')" }} 
-              ></div>
-              
-              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A0A0A]/95 via-black/40 to-black/60"></div>
-
-              <div className="relative z-10 flex flex-col h-full">
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-4">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 bg-[#00E5FF] rounded-[1.2rem] flex items-center justify-center text-black font-black text-xl shadow-[0_0_20px_rgba(0,229,255,0.6)] shrink-0">
-                      <i className="fas fa-map-marked-alt"></i>
-                    </div>
-                    <div>
-                      <div className="bg-black/40 backdrop-blur-md border border-white/20 px-3 py-0.5 rounded-lg inline-flex items-center gap-1.5 mb-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#00E5FF] animate-pulse"></span>
-                        <p className="text-[8px] font-black tracking-[0.2em] text-white/90 uppercase">MUY PRONTO</p>
-                      </div>
-                      <h3 className="text-2xl font-black tracking-tighter italic uppercase text-white drop-shadow-md">CATÁLOGO 2.0</h3>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-[1.8rem] p-5 mb-5 flex-grow flex flex-col justify-center shadow-md hover:bg-black/40 transition-all duration-300">
-                    <h4 className="text-xl md:text-2xl font-black uppercase tracking-tighter mb-2 leading-tight text-white drop-shadow-md">
-                        {t('Hoteles &', 'Hotels &')} <br/>
-                        <span className="text-[#00E5FF] italic drop-shadow-[0_2px_10px_rgba(0,229,255,0.8)]">{t('Agencias de Turismo', 'Travel Agencies')}</span>
-                    </h4>
-                    <p className="text-white/95 font-medium leading-relaxed mb-3 text-xs drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                        {t('Estamos integrando a los mejores hospedajes y operadores turísticos. Planifica dónde dormir y tus expediciones a los nevados desde una sola plataforma.', 'We are integrating the best accommodations and tour operators. Plan where to sleep and your expeditions to the snowy peaks from a single platform.')}
-                    </p>
-                    
-                    <div className="flex flex-wrap gap-1.5">
-                        <span className="bg-black/40 backdrop-blur-md border border-[#00E5FF]/40 text-[#00E5FF] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow-sm"><i className="fas fa-bed mr-1"></i>{t('Hospedaje', 'Lodging')}</span>
-                        <span className="bg-black/40 backdrop-blur-md border border-[#00E5FF]/40 text-[#00E5FF] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow-sm"><i className="fas fa-hiking mr-1"></i>{t('Trekking', 'Trekking')}</span>
-                        <span className="bg-black/40 backdrop-blur-md border border-[#00E5FF]/40 text-[#00E5FF] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center shadow-sm"><i className="fas fa-bus-alt mr-1"></i>{t('Tours', 'Tours')}</span>
-                    </div>
-                </div>
-                
-                <button className="w-full bg-[#0A0A0A] border border-[#00E5FF] text-[#00E5FF] py-3.5 rounded-[1.2rem] font-black uppercase text-[11px] tracking-[0.3em] flex items-center justify-center gap-2 hover:bg-[#00E5FF] hover:text-black transition-all shadow-[0_5px_15px_rgba(0,229,255,0.1)] mt-auto cursor-default">
-                    {t('En desarrollo', 'In development')} <i className="fas fa-cog fa-spin text-sm"></i>
-                </button>
-              </div>
-            </div>
-          </div>
           
           {/* SLIDE 1: TOKEN $HUARAZ */}
           <div className="w-full shrink-0 snap-center px-1 flex">
