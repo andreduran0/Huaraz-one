@@ -104,7 +104,7 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* INNOVACIONES - PANEL DESLIZANTE CON AUTOPLAY Y PUNTOS */}
+     {/* INNOVACIONES - PANEL DESLIZANTE CON AUTOPLAY Y PUNTOS */}
       <section className="animate-fadeIn relative px-2">
         
         {/* ENCABEZADO Y CONTROLES */}
@@ -244,7 +244,7 @@ const HomePage: React.FC = () => {
             </div>
           </div>
 
-        {/* SLIDE 2: EXPERIENCIA INMERSIVA VIDRYX IA */}
+          {/* SLIDE 2: EXPERIENCIA INMERSIVA VIDRYX IA */}
           <div className="w-full shrink-0 snap-center px-1 flex">
             <div className="w-full bg-[#0A0A0A] rounded-[2.5rem] p-5 md:p-7 shadow-2xl text-white overflow-hidden relative border border-[#FFD700]/30 flex flex-col">
               
@@ -283,13 +283,14 @@ const HomePage: React.FC = () => {
                     </div>
                 </div>
                 
-                {/* BOTÓN ACTUALIZADO A "EN DESARROLLO" */}
-                <button className="w-full bg-[#0A0A0A] border border-[#FFD700] text-[#FFD700] py-3.5 rounded-[1.2rem] font-black uppercase text-[11px] tracking-[0.3em] flex items-center justify-center gap-2 hover:bg-[#FFD700] hover:text-black transition-all shadow-[0_5px_15px_rgba(255,215,0,0.1)] mt-auto cursor-default">
-                    {t('En desarrollo', 'In development')} <i className="fas fa-cog fa-spin text-sm"></i>
+                <button onClick={() => navigate('/inmersivo')} className="w-full bg-[#FFD700] text-black py-3.5 rounded-[1.2rem] font-black uppercase text-[11px] tracking-[0.3em] flex items-center justify-center gap-2 hover:bg-white transition-all shadow-[0_10px_25px_rgba(255,215,0,0.3)] mt-auto">
+                    {t('Explorar en 360°', 'Explore in 360°')} <i className="fas fa-vr-cardboard text-base"></i>
                 </button>
               </div>
             </div>
           </div>
+
+        </div>
 
         {/* INDICADORES VISUALES DINÁMICOS (Móvil) */}
         <div className="flex justify-center md:hidden gap-3 mt-3">
