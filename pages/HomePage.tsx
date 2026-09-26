@@ -98,7 +98,7 @@ const HomePage: React.FC = () => {
             <FeatureItem icon="fa-star" color="bg-yellow-50 text-yellow-500" label={t("Negocios locales recomendados", "Recommended local businesses")} />
             <FeatureItem icon="fa-calendar-day" color="bg-blue-50 text-blue-500" label={t("Festividades y eventos", "Festivities and events")} />
             <FeatureItem icon="fa-robot" color="bg-slate-100 text-slate-600" label={t("Guía turístico IA 24/7", "24/7 AI Tourist Guide")} />
-            <FeatureItem icon="fa-ticket" color="bg-orange-50 text-orange-500" label={t("Cupones y beneficios", "Coupons and benefits")} />
+            <FeatureItem icon="fa-ticket" color="bg-orange-50 text-orange-500" label={t("Cupones y Promociones", "Coupons and benefits")} />
             <FeatureItem icon="fa-newspaper" color="bg-gray-50 text-gray-500" label={t("Newsletter & Token Huaraz", "Newsletter & Huaraz Token")} />
             <FeatureItem icon="fa-briefcase" color="bg-emerald-50 text-emerald-600" label={t("Bolsa de trabajo de empresas", "Job board for locals")} />
         </div>
