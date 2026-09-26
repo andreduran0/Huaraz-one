@@ -164,7 +164,7 @@ const HomePage: React.FC = () => {
                         <span className="w-1.5 h-1.5 rounded-full bg-[#00E5FF] animate-pulse"></span>
                         <p className="text-[8px] font-black tracking-[0.2em] text-white/90 uppercase">EN ACCIÓN</p>
                       </div>
-                      <h3 className="text-2xl font-black tracking-tighter italic uppercase text-white drop-shadow-md">HOTELES Y AGENCIAS</h3>
+                      <h3 className="text-2xl font-black tracking-tighter italic uppercase text-white drop-shadow-md">HOTELES Y AGENCIAS DE TURISMO</h3>
                     </div>
                   </div>
                 </div>
