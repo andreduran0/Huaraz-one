@@ -103,13 +103,12 @@ const BusinessDetailPage: React.FC = () => {
     };
     const menuTitle = getMenuTitle();
 
-    // 👇 LA NUEVA LÓGICA INTELIGENTE DE RESERVAS (OPCIÓN 1) 👇
+    // LÓGICA INTELIGENTE DE RESERVAS
     const getReservationData = () => {
-        // Excepción específica y personalizada para Inka Frut
         if (business.name.toLowerCase().includes('inka frut')) {
             return { 
                 tag: 'RESERVA INMEDIATA', 
-                icon: 'fa-leaf', // Le ponemos una hojita por su concepto natural y opciones vegetarianas
+                icon: 'fa-leaf', 
                 prefix: 'EXPERIENCIA ', 
                 highlight: 'NOVOANDINA', 
                 desc: 'Fusión de cocina contemporánea con insumos y platos tradicionales de la Región de Áncash con opciones vegetarianas. (S/ 50 - S/ 80)', 
@@ -130,6 +129,61 @@ const BusinessDetailPage: React.FC = () => {
         }
     };
     const resData = getReservationData();
+
+    // 👇 NUEVO: ESTADO Y FUNCIÓN DE GENERACIÓN DE VOUCHERS 👇
+    const [isBooking, setIsBooking] = useState(false);
+
+    const handleReservationClick = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        if (!business) return;
+        setIsBooking(true);
+
+        try {
+            // 1. Generar código único
+            const uniqueCode = 'HX-' + Math.random().toString(36).substr(2, 4).toUpperCase();
+
+            // 2. Extraer credenciales de Supabase
+            // @ts-ignore
+            const viteUrl = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_URL : null;
+            // @ts-ignore
+            const viteKey = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_ANON_KEY : null;
+            const nextUrl = typeof process !== 'undefined' && process.env ? process.env.NEXT_PUBLIC_SUPABASE_URL : null;
+            const nextKey = typeof process !== 'undefined' && process.env ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY : null;
+            
+            const url = viteUrl || nextUrl;
+            const key = viteKey || nextKey;
+
+            // 3. Guardar en Supabase
+            if (url && key && url !== 'https://placeholder.supabase.co') {
+                const supabase = createClient(url, key);
+                const { error } = await supabase
+                    .from('reservations_tracking')
+                    .insert([{
+                        business_id: business.id,
+                        business_name: business.name,
+                        voucher_code: uniqueCode,
+                        status: 'whatsapp_redirected',
+                        created_at: new Date().toISOString()
+                    }]);
+
+                if (error) console.error("Error guardando voucher en Supabase:", error);
+            }
+
+            // 4. Armar el mensaje final
+            const baseMessage = getWhatsappMessage(); 
+            const finalMessage = `${baseMessage} \n\n🎫 *Mi código de Huaraz Explorer es:* ${uniqueCode}`;
+            const finalWhatsappUrl = `https://wa.me/${business.whatsapp}?text=${encodeURIComponent(finalMessage)}`;
+
+            // 5. Registrar el clic y redirigir
+            logClick(`Detalle - ${business.name} - Voucher: ${uniqueCode}`);
+            window.open(finalWhatsappUrl, '_blank');
+
+        } catch (err) {
+            console.error("Error inesperado al generar reserva:", err);
+        } finally {
+            setIsBooking(false);
+        }
+    };
 
     return (
         <div className="bg-slate-50 dark:bg-slate-950 min-h-screen relative font-['Plus_Jakarta_Sans']">
@@ -266,16 +320,25 @@ const BusinessDetailPage: React.FC = () => {
                             <p className="text-lg font-bold text-white/60 leading-relaxed max-w-sm italic">
                                 {resData.desc}
                             </p>
-                            <a
-                                href={`https://wa.me/${business.whatsapp}?text=${whatsappMessage}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                onClick={() => logClick(`Detalle - ${business.name}`)}
-                                className="inline-flex bg-white text-[#2A4D69] px-12 py-7 rounded-[2rem] font-black uppercase text-xs tracking-[0.4em] items-center gap-5 shadow-2xl hover:bg-slate-50 transition-all active:scale-95 group/btn"
+                            
+                            {/* BOTÓN INTELIGENTE CON VOUCHER AUTOMÁTICO */}
+                            <button
+                                onClick={handleReservationClick}
+                                disabled={isBooking}
+                                className="inline-flex bg-white text-[#2A4D69] px-12 py-7 rounded-[2rem] font-black uppercase text-xs tracking-[0.4em] items-center gap-5 shadow-2xl hover:bg-slate-50 transition-all active:scale-95 group/btn disabled:opacity-70 disabled:cursor-not-allowed"
                             >
-                                {resData.btn}
-                                <i className="fab fa-whatsapp text-2xl group-hover/btn:rotate-12 transition-transform"></i>
-                            </a>
+                                {isBooking ? (
+                                    <>
+                                        <span className="animate-pulse">Generando...</span>
+                                        <i className="fas fa-spinner fa-spin text-2xl"></i>
+                                    </>
+                                ) : (
+                                    <>
+                                        {resData.btn}
+                                        <i className="fab fa-whatsapp text-2xl group-hover/btn:rotate-12 transition-transform"></i>
+                                    </>
+                                )}
+                            </button>
                         </div>
                     </div>
                 </div>
