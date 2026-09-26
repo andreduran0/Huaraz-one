@@ -292,26 +292,35 @@ const HomePage: React.FC = () => {
 
         </div>
 
-        {/* INDICADORES VISUALES DINÁMICOS (Móvil) */}
-        <div className="flex justify-center md:hidden gap-3 mt-3">
-           <div className={`h-2.5 rounded-full transition-all duration-300 ${
-             activeIndex === 0 
-               ? 'bg-slate-800 dark:bg-white w-5' 
-               : 'bg-transparent border border-slate-400 dark:border-slate-600 w-2.5'
-           }`}></div>
-           
-           <div className={`h-2.5 rounded-full transition-all duration-300 ${
-             activeIndex === 1 
-               ? 'bg-slate-800 dark:bg-white w-5' 
-               : 'bg-transparent border border-slate-400 dark:border-slate-600 w-2.5'
-           }`}></div>
-        </div>
+       {/* INDICADORES VISUALES DINÁMICOS (Móvil) */}
+<div className="flex justify-center md:hidden gap-3 mt-3">
+    {/* Punto 1 */}
+    <div className={`h-2.5 rounded-full transition-all duration-300 ${
+        activeIndex === 0 
+        ? 'bg-slate-800 dark:bg-white w-5' 
+        : 'bg-transparent border border-slate-400 dark:border-slate-600 w-2.5'
+    }`}></div>
+    
+    {/* Punto 2 */}
+    <div className={`h-2.5 rounded-full transition-all duration-300 ${
+        activeIndex === 1 
+        ? 'bg-slate-800 dark:bg-white w-5' 
+        : 'bg-transparent border border-slate-400 dark:border-slate-600 w-2.5'
+    }`}></div>
 
-        <style>{`
-          .hide-scrollbar::-webkit-scrollbar { display: none; }
-          .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        `}</style>
-      </section>
+    {/* Punto 3 */}
+    <div className={`h-2.5 rounded-full transition-all duration-300 ${
+        activeIndex === 2 
+        ? 'bg-slate-800 dark:bg-white w-5' 
+        : 'bg-transparent border border-slate-400 dark:border-slate-600 w-2.5'
+    }`}></div>
+</div>
+
+<style>{`
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+`}</style>
+</section>
 
 {/* COMUNIDAD Y NEWSLETTER */}
 
