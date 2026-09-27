@@ -10,6 +10,14 @@ export const coupons: Coupon[] = [
     expiryDate: '2026-10-31', // Ajusta la fecha según la vigencia que desees darle
   },
   {
+      id: 'malibu-pan-ajo-bebida',
+      businessId: '26',
+      title: 'Pan al ajo por S/ 5 con tu bebida',
+      description: '¡Acompaña tu momento en Malibu a 3050 MSNM! Por la compra de cualquier bebida de la casa, añade solo 5 soles y llévate un delicioso pan al ajo crujiente. Válido presentando este cupón digital.',
+      code: 'MALIBUPAN5',
+      expiryDate: '2026-10-31',
+    },
+  {
   id: 'c25-2',
   businessId: '25', // Pizzería Mi Chef Monchi
   title: '30% de Descuento en Shawarmas',
