@@ -98,8 +98,11 @@ export const premiumBusinesses: Business[] = [
     whatsapp: '51935260190',
     photos: [
       'https://i.imgur.com/QAW2TPJ.jpeg',
+      'https://i.imgur.com/2ETykEI.jpeg',
       'https://i.imgur.com/YZkzYJL.jpeg',
       'https://i.imgur.com/F3TAAUa.jpeg',
+      'https://i.imgur.com/u2tDXuU.jpeg',
+      'https://i.imgur.com/uqxFTlU.jpeg',
       'https://i.imgur.com/PCKEWw7.jpeg',
       'https://i.imgur.com/BMWOpwY.jpeg',
       'https://i.imgur.com/ksVDWYy.jpeg',
