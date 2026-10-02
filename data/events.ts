@@ -449,5 +449,30 @@ export const events: Event[] = [
     type: 'entertainment',
     time: '04:00 p. m. - 10:00 p. m.',
     location: 'Malibu 3050 m.s.n.m. (Pasaje Wamashraju J 144, a espaldas del Parq. Ginebra, Huaraz)[cite: 14]'
+  },
+  //--- EVENTOS OCTUBRE 2026 ---
+  {
+    date: '17 de Octubre',
+    title: 'Tributo a Héroes del Silencio & Canciones Variadas',
+    description: 'Noche de rock en Hakuna Matata Restobar con un tributo especial a Héroes del Silencio junto a Manuel Adriazen, y la presentación de la banda invitada "Luna Eterna"[cite: 8]. ¡Entrada GRATIS! Reservas solo por WhatsApp al 967 477 268[cite: 8].',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: 'Hakuna Matata Restobar (Pasaje Jesús Morales 977, Huaraz)[cite: 8]'
+  },
+  {
+    date: '24 de Octubre',
+    title: 'Alex Joffre & Johannes: Vivir para recordarla',
+    description: 'Especial de Rock Peruano con tributo a Norecomendable y Daniel F, además de lo mejor de Libido, Amén, Río y Zen[cite: 8]. Contará con invitados especiales[cite: 8]. Informes al WhatsApp 927 700 852[cite: 8].',
+    type: 'entertainment',
+    time: '09:00 p. m.',
+    location: 'Hakuna Matata Restobar (Jesús Morales 977, Huaraz)[cite: 8]'
+  },
+  {
+    date: '31 de Octubre',
+    title: 'Rock Halloween: Tributo Oficial a Hombres G',
+    description: 'Celebra Rock Halloween con el tributo oficial a Hombres G (Yo Soy) desde Lima, a cargo de Hendrix Music y su banda internacional[cite: 9]. Contará con la participación de la banda invitada "Los Amantes de Martha"[cite: 9]. Venta de tickets disponible[cite: 9].',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: 'Hakuna Matata Restobar (Pasaje Jesús Morales 977, Huaraz)[cite: 9]'
   }
 ];
