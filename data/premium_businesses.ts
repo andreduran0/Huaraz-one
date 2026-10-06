@@ -86,7 +86,7 @@ export const premiumBusinesses: Business[] = [
     name: 'Visval Hotel',
     category: BusinessCategory.HOTEL, // Asegúrate de que HOTEL esté en tu enum BusinessCategory
     description: 'ahorita te paso la grabacion de la entrevista para que lo pongas ',
-    address: 'Jr. Juan de la Cruz Romero 647',
+    address: 'Jr. Juan de la Cruz Romero 647-Huaraz',
     lat: -9.5470, 
     lng: -77.5008,
     phone: '+51 920042000', 
