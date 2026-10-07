@@ -18,6 +18,38 @@ export const coupons: Coupon[] = [
     expiryDate: '2026-10-31',
   },
   {
+    id: 'tamya-combo-familiar',
+    businessId: 'ID_DE_TAMYA', // Asegúrate de poner el ID correcto de Tamya aquí
+    title: 'Combo Familiar Tamya por S/ 72',
+    description: '¡Ideal para compartir entre 3 a 4 personas! Llévate 2 pizzas deliciosas + 1 jarra de chicha de litro + pan al ajo por solo 72 soles[cite: 9]. Pídelo hoy por delivery al 942 558 498 o visítanos en nuestros locales (Jr. Amadeo Figueroa 1274 / Av. Luzuriaga 840)[cite: 9].',
+    code: 'TAMYAFAMILIA',
+    expiryDate: '2026-10-31', 
+  },
+  {
+    id: 'tamya-combo-bicentenario',
+    businessId: 'ID_DE_TAMYA', // Asegúrate de poner el ID correcto de Tamya aquí
+    title: 'Combo Bicentenario por S/ 69',
+    description: '¡Celebra a lo grande con este súper combo! Disfruta de 1 Pizza + Tequeños + Alitas + Gaseosa de 1L por solo 69 soles[cite: 10]. Disponible en Tamya (Cocina Italiana) y el Panino (Sandwiches & Más)[cite: 10]. Pídelo por delivery al 942 558 498[cite: 10].',
+    code: 'TAMYABICENTENARIO',
+    expiryDate: '2026-10-31',
+  },
+  {
+    id: 'tamya-combo-especial',
+    businessId: 'ID_DE_TAMYA', // Usa el mismo ID que pusiste en los combos anteriores de Tamya
+    title: 'Combo Especial por S/ 79.90',
+    description: '¡Ideal para compartir entre 3 a 4 personas! Disfruta de 1 Pizza (Americana, Hawaiana o Pepperoni) + Lasagna Artesanal + 1 Jarra de Chicha de 1 Litro por solo 79.90 soles[cite: 11]. Disponible en Tamya Pizzería y Parrilla[cite: 11].',
+    code: 'TAMYAESPECIAL',
+    expiryDate: '2026-10-31', 
+  },
+  {
+    id: 'tamya-combo-noche-italiana',
+    businessId: 'ID_DE_TAMYA', // Usa el mismo ID de Tamya / Il Panino
+    title: 'Combo Noche Italiana desde S/ 59.90',
+    description: 'La combinación perfecta para una noche especial: Lomo fino a la parrilla + Pasta a elección + 1 copa de Aperol Spritz[cite: 14]. Precio para 1 persona: S/ 59.90 | Para 2 personas: S/ 109.90[cite: 14]. Disponible en Tamya (Jr. Amadeo Figueroa 1274) e Il Panino (Av. Luzuriaga 840)[cite: 14].',
+    code: 'TAMYANOCHE',
+    expiryDate: '2026-10-31',
+  },
+  {
     id: 'malibu-alitas-calientito',
     businessId: '26', 
     title: 'Alitas + Calientito por S/ 30',
