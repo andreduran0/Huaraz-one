@@ -139,6 +139,52 @@ export const premiumBusinesses: Business[] = [
     googleMapsQuery: 'Jr. Juan de la Cruz Romero 647',
   },
   {
+    id: '30',
+    name: 'Tamya Pizzeria',
+    category: BusinessCategory.PIZZERIA, // Asegúrate de que PIZZERIA esté en tu enum (o usa RESTAURANT)
+    description: `Ubicada en el corazón del histórico y tradicional barrio de La Soledad, Tamya Pizzería es el rincón perfecto donde la exquisita gastronomía se encuentra con la calidez de las costumbres huaracinas. Rodeado de un entorno de calles empedradas y profunda historia local, este restaurante ofrece un ambiente acogedor ideal para disfrutar en familia o con amigos. Una experiencia culinaria única que te invita a saborear sus especialidades mientras te sumerges en la auténtica esencia y tradición de Huaraz.`,
+    address: 'Jr. Amadeo Figueroa N 1274 - La Soledad, Huaraz, Peru',
+    lat: -9.5470, 
+    lng: -77.5008,
+    phone: '+51 955716534', 
+    whatsapp: '51955716534',
+    photos: [
+      'https://i.imgur.com/lQy2vKp.jpeg',
+      'https://i.imgur.com/ZoVx3cm.jpeg',
+      'https://i.imgur.com/U4mOLic.jpeg',
+      'https://i.imgur.com/QaWUbzp.jpeg',
+      'https://i.imgur.com/CQmLI69.jpeg',
+      'https://i.imgur.com/XTabLbL.jpeg',
+      'https://i.imgur.com/xgk1fyp.jpeg',
+      'https://i.imgur.com/t0iqof1.jpeg',
+      'https://i.imgur.com/OKNvcp2.jpeg',
+      'https://i.imgur.com/ibQ2e3z.jpeg',
+      'https://i.imgur.com/PTUwatL.jpeg',
+      'https://i.imgur.com/CSriwPU.jpeg',
+      'https://i.imgur.com/82sbf8f.jpeg',
+      'https://i.imgur.com/QaJv5NZ.jpeg',
+      'https://i.imgur.com/yfIjLsS.jpeg',
+      'https://i.imgur.com/7dDoiW2.jpeg',
+      'https://i.imgur.com/R97LFUh.jpeg',
+      'https://i.imgur.com/HOref5V.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/hOuKAac.jpeg',
+      'https://i.imgur.com/8Nm23Cw.jpeg',
+      'https://i.imgur.com/ALnpGZl.jpeg',
+      'https://i.imgur.com/yWHqlwN.jpeg',
+      'https://i.imgur.com/qahUUxc.jpeg'
+    ],
+    schedule: { 
+      'Lunes - Domingo': '12:00 P.M - 10:45 P.M'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-30',
+    status: 'approved', 
+    ownerUserId: 'u30',
+    googleMapsQuery: 'Jr.Amadeo Figueroa N 1274 - La soledad,Huaraz,Peru',
+  },
+  {
     id: '28',
     name: 'Inka Frut',
     category: BusinessCategory.RESTAURANT,
@@ -1291,9 +1337,9 @@ Nos diferenciamos de las demás taquerías por ofrecer una combinación única d
       'https://i.imgur.com/MvtZsQJ.jpeg'
     ],
     menuImages: [
-      'https://i.imgur.com/ETUxhc9.jpeg',
-      'https://i.imgur.com/ItVUAHf.jpeg',
-      'https://i.imgur.com/6k7gjHA.jpeg'
+      'https://i.imgur.com/7DvgkjD.jpeg',
+      'https://i.imgur.com/L7E7OGV.jpeg',
+      'https://i.imgur.com/gZQ09HA.jpeg'
     ],
     schedule: {
       'Lunes - Viernes': '8:00 AM - 8:00 PM',
