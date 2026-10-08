@@ -2,8 +2,8 @@ import { Coupon } from '../types';
 
 export const coupons: Coupon[] = [
   {
-    id: '21',
-    businessId: ''47-ronnin-sushi-bar', // Asegúrate de poner el ID correcto de 47 Ronnin aquí
+    id: 'C2',
+    businessId: '47-ronnin-sushi-bar', // Asegúrate de poner el ID correcto de 47 Ronnin aquí
     title: 'Miércoles de Promo: 2 Makis + 6 Pzas Gratis',
     description: '¡Miércoles de Ronnin! Sabor que impacta y calidad que se siente[cite: 7]. Pide 2 tablas de makis y llévate 6 piezas totalmente GRATIS[cite: 7]. Válido solo los miércoles presentando este cupón digital.',
     code: 'RONNINMIERCOLES',
@@ -11,7 +11,7 @@ export const coupons: Coupon[] = [
   },
   {
     id: '21',
-    businessId: ''47-ronnin-sushi-bar', // Asegúrate de poner el ID correcto de 47 Ronnin aquí
+    businessId: '47-ronnin-sushi-bar', // Asegúrate de poner el ID correcto de 47 Ronnin aquí
     title: 'Martes de Makis por S/ 25.00',
     description: '¡Todos los martes son de 47 Ronnin Sushi Bar! Disfruta de nuestra selección especial de makis por solo 25 soles[cite: 8]. Válido únicamente los días martes presentando este cupón digital.',
     code: 'RONNINMARTES',
