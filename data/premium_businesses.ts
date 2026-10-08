@@ -149,6 +149,7 @@ export const premiumBusinesses: Business[] = [
     phone: '+51 955716534', 
     whatsapp: '51955716534',
     photos: [
+      'https://i.imgur.com/kxmhNTQ.jpeg',
       'https://i.imgur.com/lQy2vKp.jpeg',
       'https://i.imgur.com/ZoVx3cm.jpeg',
       'https://i.imgur.com/U4mOLic.jpeg',
@@ -399,6 +400,7 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     phone: '+51 965 260 764', 
     whatsapp: '51965260764',
     photos: [
+      'https://i.imgur.com/vwgVX33.jpeg',
       'https://i.imgur.com/RHc9N2T.jpeg',
       'https://i.imgur.com/QR3WjrA.jpeg',
       'https://i.imgur.com/LJBl7UF.jpeg',
