@@ -138,53 +138,53 @@ export const premiumBusinesses: Business[] = [
     ownerUserId: 'u29',
     googleMapsQuery: 'Jr. Juan de la Cruz Romero 647',
   },
-   {
-    id: '22',
+ {
+    id: '31', // Cambiado a 31 para que no choque con Hotel los Inkas
     name: 'Landauro Alojamiento',
-    category: BusinessCategory.HOTEL, // Asegúrate de que HOTEL esté en tu enum BusinessCategory
+    category: BusinessCategory.HOTEL, 
     description: `Ubicado majestuosamente en la misma Plaza de Armas de Huaraz, Landauro Alojamiento es un verdadero ícono de tradición y hospitalidad desde 1986. Con una rica historia que comenzó en las raíces de su emblemática pizzería y evolucionó hasta convertirse en un acogedor hospedaje, ofrece a los viajeros una experiencia única impregnada de identidad huaracina. Su ubicación inmejorable en el corazón histórico de la ciudad brinda la máxima comodidad, vistas privilegiadas y un trato cálido y familiar.`,
     address: 'Plaza De Armas - Huaraz',
     lat: -9.5470, 
     lng: -77.5008,
     phone: '+51 941277627', 
     whatsapp: '51941277627',
+    // ¡Aquí eliminé el "}," que cortaba tu código!
+    photos: [
+      'https://i.imgur.com/scvuX7K.jpeg',
+      'https://i.imgur.com/wcTdj9o.jpeg',
+      'https://i.imgur.com/bTrd763.jpeg',
+      'https://i.imgur.com/NCzGWTy.jpeg',
+      'https://i.imgur.com/LpPP7uP.jpeg',
+      'https://i.imgur.com/TFbX6fA.jpeg',
+      'https://i.imgur.com/5ZQ25mS.jpeg',
+      'https://i.imgur.com/b1TAEcu.jpeg',
+      'https://i.imgur.com/j70Zfke.jpeg',
+      'https://i.imgur.com/8tdlXej.jpeg',
+      'https://i.imgur.com/E61tCgm.jpeg',
+      'https://i.imgur.com/r5hcxYG.jpeg',
+      'https://i.imgur.com/aaNh9yB.jpeg',
+      'https://i.imgur.com/MysqqkB.jpeg',
+      'https://i.imgur.com/90W86Nb.jpeg',
+      'https://i.imgur.com/JSrfEIv.jpeg'
+      // Eliminé la imagen "blob:" porque daría error en internet
+    ],
+    menuImages: [
+      'https://i.imgur.com/F3TAAUa.jpeg',
+      'https://i.imgur.com/1smYCth.jpeg',
+      'https://i.imgur.com/tGJTIZp.jpeg',
+      'https://i.imgur.com/3zYZUnE.jpeg',
+      'https://i.imgur.com/5tsUB68.jpeg',
+      'https://i.imgur.com/y6AzFxG.jpeg'
+    ],
+    schedule: { 
+      'Lunes - Domingo': '24 horas'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-31',
+    status: 'approved', 
+    ownerUserId: 'u31',
+    googleMapsQuery: 'Plaza de Armas-Huaraz ',
   },
-    photos: [
-      'https://i.imgur.com/scvuX7K.jpeg',
-      'https://i.imgur.com/wcTdj9o.jpeg',
-      'https://i.imgur.com/bTrd763.jpeg',
-      'https://i.imgur.com/NCzGWTy.jpeg',
-      'https://i.imgur.com/LpPP7uP.jpeg',
-      'https://i.imgur.com/TFbX6fA.jpeg',
-      'https://i.imgur.com/5ZQ25mS.jpeg',
-      'https://i.imgur.com/b1TAEcu.jpeg',
-      'https://i.imgur.com/j70Zfke.jpeg',
-      'https://i.imgur.com/8tdlXej.jpeg',
-      'https://i.imgur.com/E61tCgm.jpeg',
-      'https://i.imgur.com/r5hcxYG.jpeg',
-      'https://i.imgur.com/aaNh9yB.jpeg',
-     'https://i.imgur.com/MysqqkB.jpeg',
-      'https://i.imgur.com/90W86Nb.jpeg',
-      'https://i.imgur.com/JSrfEIv.jpeg',
-      'blob:https://imgur.com/34784a15-a913-4efc-9118-166764e1cd21'
-    ],
-    menuImages: [
-      'https://i.imgur.com/F3TAAUa.jpeg',
-      'https://i.imgur.com/1smYCth.jpeg',
-      'https://i.imgur.com/tGJTIZp.jpeg',
-      'https://i.imgur.com/3zYZUnE.jpeg',
-      'https://i.imgur.com/5tsUB68.jpeg',
-      'https://i.imgur.com/y6AzFxG.jpeg'
-    ],
-    schedule: { 
-      'Lunes - Domingo': '24 horas'
-    },
-    adLevel: AdLevel.PREMIUM,
-    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-31',
-    status: 'approved', 
-    ownerUserId: 'u31',
-    googleMapsQuery: 'Plaza de Armas-Huaraz ',
-  },
   {
     id: '30',
     name: 'Tamya Pizzeria',
