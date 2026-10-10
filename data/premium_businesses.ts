@@ -186,6 +186,57 @@ export const premiumBusinesses: Business[] = [
     googleMapsQuery: 'Plaza de Armas-Huaraz ',
   },
   {
+  id: '33',
+  name: 'Chasing Adventures',
+  category: BusinessCategory.AGENCIA_TURISMO,
+  description: 'Chasing Adventures EIRL es una empresa peruana con sede en Huaraz, que ofrece experiencias personalizadas para descubrir la Cordillera Blanca y Huayhuash. Ofrecemos una variedad de tours, trekking y montañismo, así como asistencia y soporte logístico para individuos y grupos. Nuestro enfoque es la protección y preservación del medio ambiente y nuestro equipo está formado por profesionales altamente capacitados y apasionados por las montañas y la naturaleza. Brindamos un servicio excepcional para hacer de la experiencia de nuestros clientes algo inolvidable.',
+  address: 'Jirón José de Sucre Pasaje Comercio, Huaraz',
+  lat: -9.5339, 
+  lng: -77.5014,
+  phone: '+51 900272654',
+  whatsapp: '51900272654', 
+  photos: [
+    'https://i.imgur.com/TjOF4gZ.jpeg',
+    'https://i.imgur.com/mzG2plG.jpeg',
+    'https://i.imgur.com/MNtvRA3.jpeg',
+    'https://i.imgur.com/nWKnV2t.jpeg',
+    'https://i.imgur.com/186hD7s.jpeg',
+    'https://i.imgur.com/OWRIxoU.jpeg',
+    'https://i.imgur.com/e3XOld9.jpeg',
+    'https://i.imgur.com/stUgijf.jpeg',
+    'https://i.imgur.com/IZrBYxR.jpeg',
+    'https://i.imgur.com/II6nb1Z.jpeg',
+    'https://i.imgur.com/39ctnsx.jpeg',
+    'https://i.imgur.com/MllTqTX.jpeg',
+    'https://i.imgur.com/dlXzbgG.jpeg',
+    'https://i.imgur.com/1dtn3jr.jpeg',
+    'https://i.imgur.com/Bni1fvK.jpeg',
+    'https://i.imgur.com/RwoyqKu.jpeg'
+  ],
+  menuImages: [
+    'https://i.imgur.com/BfdUrP9.jpeg',
+    'https://i.imgur.com/NDTIRh2.jpeg',
+    'https://i.imgur.com/kAlhuMT.jpeg',
+    'https://i.imgur.com/fdOXzNm.jpeg',
+    'https://i.imgur.com/CJVp0Gm.jpeg',
+    'https://i.imgur.com/Z2915uh.jpeg',
+    'https://i.imgur.com/LSzKvD6.jpeg',
+    'https://i.imgur.com/dT0T85V.jpeg',
+    'https://i.imgur.com/4tWoQ30.jpeg',
+    'https://i.imgur.com/zoLCTH5.jpeg',
+    'https://i.imgur.com/ogjZUqO.jpeg',
+    'https://i.imgur.com/mj6SMrI.jpeg'
+  ],
+  schedule: {
+    lunes_a_domingo: '12:00 PM - 12:00 AM'
+  },
+  adLevel: AdLevel.PREMIUM,
+  qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-33',
+  status: 'approved',
+  ownerUserId: 'u33',
+  googleMapsQuery: 'Chasing Adventures Jirón José de Sucre Pasaje Comercio Huaraz'
+},
+  {
     id: '30',
     name: 'Tamya Pizzeria',
     category: BusinessCategory.PIZZERIA, // Asegúrate de que PIZZERIA esté en tu enum (o usa RESTAURANT)
