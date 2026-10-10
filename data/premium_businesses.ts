@@ -435,6 +435,33 @@ export const premiumBusinesses: Business[] = [
     googleMapsQuery: 'Parque Ginebra en la recta del pasaje wamashraju- Huaraz',
   },
   {
+  id: '32',
+  name: '7 cuervos restobar',
+  category: BusinessCategory.RESTOBAR,
+  description: '7 Cuervos Restobar es un refugio bohemio y acogedor ubicado en el corazón del emblemático barrio histórico de José Olaya, el único que conservó su arquitectura tras el sismo de 1970. Rodeado de calles empedradas, balcones tradicionales y justo frente a la histórica capilla del barrio, este espacio fusiona la rica cultura de Huaraz con una propuesta moderna de coctelería y piqueos. Disfruta de un paisaje espectacular, un ambiente rústico inigualable y la atmósfera perfecta para relajarte, conversar y conectar después de un día de trekking en las montañas.',
+  address: 'Barrio Jose Olaya Al frente de la capilla - Huaraz.',
+  lat: -9.5339, 
+  lng: -77.5014,
+  phone: '+51 943972261',
+  whatsapp: '51943972261', 
+  photos: [
+    'https://i.imgur.com/jwI2wU5.png'
+  ],
+  menuImages: [
+    'https://i.imgur.com/Go7f8Cn.jpeg',
+    'https://i.imgur.com/kIP5Tv3.jpeg'
+  ],
+  schedule: {
+    lunes: 'Cerrado',
+    martes_a_domingo: '11:00 PM - 1:00 AM'
+  },
+  adLevel: AdLevel.PREMIUM,
+  qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-32',
+  status: 'approved',
+  ownerUserId: 'u32',
+  googleMapsQuery: 'Barrio Jose Olaya Al frente de la capilla - Huaraz',
+}
+  {
     id: '23',
     name: 'EITZA - Pasta-Grill',
     category: BusinessCategory.RESTAURANT,
