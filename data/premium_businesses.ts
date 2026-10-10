@@ -460,7 +460,7 @@ export const premiumBusinesses: Business[] = [
   status: 'approved',
   ownerUserId: 'u32',
   googleMapsQuery: 'Barrio Jose Olaya Al frente de la capilla - Huaraz',
-}
+},
   {
     id: '23',
     name: 'EITZA - Pasta-Grill',
