@@ -81,22 +81,21 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
           {/* CATEGORÍA Y DIRECCIÓN GRIS - ¡AQUÍ ESTÁ LA SOLUCIÓN! */}
           <p className="text-slate-500 font-bold text-sm mb-6">
             {(() => {
-              const fallbackCategories: Record<string, string> = {
-                restaurant: 'Restaurante',
-                polleria: 'Pollería',
-                cevicheria: 'Cevichería',
-                restobar: 'Restobar',
-                sushi_bar: 'Sushi Bar',
-                panaderia: 'Panadería',
-                emolienteria: 'Emolientería',
-                torteria: 'Tortería',
-                postres: 'Postres',
-                hotel: 'Hotel',
-                touristspot: 'Lugar Turístico',
-                touragency: 'Agencia de Turismo', // <--- ¡Añadido aquí!
-                agencia_turismo: 'Agencia de Turismo', // <--- Alternativa por si viene en español
-                chocolateria: 'Chocolatería'
-              };
+           const fallbackCategories: Record<string, string> = {
+      restaurant: 'Restaurante',
+      polleria: 'Pollería',
+      cevicheria: 'Cevichería',
+      pizzeria: 'Pizzería',
+      restobar: 'Restobar',
+      sushi_bar: 'Sushi Bar',
+      bakery: 'Panadería',
+      emolienteria: 'Emolientería',
+      torteria: 'Tortería',
+      postres: 'Postres',
+      hotel: 'Hotel',
+      tourist_spot: 'Punto Turístico',
+      chocolateria: 'Chocolatería'
+    };
               
               const translated = t(`category.${business.category}` as any);
               // Si el traductor falla y escupe la llave cruda, usamos nuestro diccionario limpio
