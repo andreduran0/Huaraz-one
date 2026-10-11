@@ -92,8 +92,8 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
                 torteria: 'Tortería',
                 postres: 'Postres',
                 hotel: 'Hotel',
-                tourist_spot: 'Lugar Turístico',
-                tour_agency: 'Agencia de Turismo', // <--- ¡Añadido aquí!
+                touristspot: 'Lugar Turístico',
+                touragency: 'Agencia de Turismo', // <--- ¡Añadido aquí!
                 agencia_turismo: 'Agencia de Turismo', // <--- Alternativa por si viene en español
                 chocolateria: 'Chocolatería'
               };
