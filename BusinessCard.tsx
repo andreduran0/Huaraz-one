@@ -20,7 +20,7 @@ const MAP_BOUNDS = {
 const VIRTUAL_WIDTH = 3000;
 const VIRTUAL_HEIGHT = 3000;
 
-// Estilos del Mapa (¡Corregido sin 'default' repetido!)
+// Estilos del Mapa (¡Incluye la Agencia de Turismo!)
 const getCategoryStyles = (category: BusinessCategory) => {
     switch (category) {
         case BusinessCategory.RESTAURANT: 
@@ -30,6 +30,8 @@ const getCategoryStyles = (category: BusinessCategory) => {
             return { icon: 'fa-bed', color: 'bg-[#2A4D69]', text: 'text-white', ring: 'ring-blue-200' };
         case BusinessCategory.TOURIST_SPOT: 
             return { icon: 'fa-mountain-sun', color: 'bg-emerald-600', text: 'text-white', ring: 'ring-emerald-200' };
+        case BusinessCategory.TOUR_AGENCY: // <--- ¡Añadido ícono de brújula para agencias!
+            return { icon: 'fa-compass', color: 'bg-teal-600', text: 'text-white', ring: 'ring-teal-200' };
         case BusinessCategory.CHOCOLATERIA:
             return { icon: 'fa-mug-hot', color: 'bg-[#7B3F00]', text: 'text-white', ring: 'ring-[#D2691E]/40' };
         default: 
@@ -37,21 +39,30 @@ const getCategoryStyles = (category: BusinessCategory) => {
     }
 };
 
-// Traductor de Categorías para la Tarjeta (¡ACTUALIZADO!)
-const translateCategory = (category: BusinessCategory) => {
+// Traductor de Categorías para la Tarjeta (¡Blindado e Infalible!)
+const translateCategory = (category: any) => {
+  if (!category) return 'Negocio Local';
+
+  const catStr = String(category).toLowerCase();
+  
+  // Si coincide con tour o agencia, retorna "Agencia de Turismo"
+  if (catStr.includes('tour') || catStr.includes('agency') || catStr.includes('agencia')) {
+    return 'Agencia de Turismo';
+  }
+
   const translations: Record<string, string> = {
     [BusinessCategory.RESTAURANT]: 'Restaurante',
     [BusinessCategory.POLLERIA]: 'Pollería',
     [BusinessCategory.CEVICHERIA]: 'Cevichería',
-   [BusinessCategory.PIZZERIA]: 'pizzeria',
+    [BusinessCategory.PIZZERIA]: 'Pizzería',
     [BusinessCategory.RESTOBAR]: 'Restobar',
     [BusinessCategory.SUSHI_BAR]: 'Sushi Bar',
-    [BusinessCategory.BAKERY]: 'Panaderia',
+    [BusinessCategory.BAKERY]: 'Panadería',
     [BusinessCategory.EMOLIENTERIA]: 'Emolientería',
     [BusinessCategory.TORTERIA]: 'Tortería',
     [BusinessCategory.POSTRES]: 'Postres',
     [BusinessCategory.HOTEL]: 'Hotel',
-    [BusinessCategory.TOURIST_SPOT]: 'Punto Turístico,
+    [BusinessCategory.TOURIST_SPOT]: 'Punto Turístico',
     [BusinessCategory.TOUR_AGENCY]: 'Agencia de Turismo',
     [BusinessCategory.CHOCOLATERIA]: 'Chocolatería',
     [BusinessCategory.EXCHANGE]: 'Casa de Cambio',
