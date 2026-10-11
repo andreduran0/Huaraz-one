@@ -188,7 +188,7 @@ export const premiumBusinesses: Business[] = [
   {
   id: '33',
   name: 'Chasing Adventures',
-  category: BusinessCategory.TOUR_SPOT,
+  category: BusinessCategory.agencia_de_turismo,
   description: 'Chasing Adventures EIRL es una empresa peruana con sede en Huaraz, que ofrece experiencias personalizadas para descubrir la Cordillera Blanca y Huayhuash. Ofrecemos una variedad de tours, trekking y montañismo, así como asistencia y soporte logístico para individuos y grupos. Nuestro enfoque es la protección y preservación del medio ambiente y nuestro equipo está formado por profesionales altamente capacitados y apasionados por las montañas y la naturaleza. Brindamos un servicio excepcional para hacer de la experiencia de nuestros clientes algo inolvidable.',
   address: 'Jirón José de Sucre Pasaje Comercio, Huaraz',
   lat: -9.5339, 
