@@ -474,5 +474,42 @@ export const events: Event[] = [
     type: 'entertainment',
     time: '08:00 p. m.',
     location: 'Hakuna Matata Restobar (Pasaje Jesús Morales 977, Huaraz)[cite: 9]'
+  },
+  //--- SÁBADOS DE ROCK EN MALIBÚ A 3050 MSNM ---
+  {
+    id: 'malibu-rock-10-oct',
+    date: '2026-10-10',
+    title: 'Sábados de Rock: Tierra de Ángeles',
+    description: '¡Los mejores sábados de rock volvieron a Malibú a 3050 MSNM[cite: 10]! Disfruta de una noche de excelente música en las alturas con la presentación en vivo de Tierra de Ángeles.',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: 'Malibú a 3050 MSNM (Huaraz)[cite: 10]'
+  },
+  {
+    id: 'malibu-rock-17-oct',
+    date: '2026-10-17',
+    title: 'Sábados de Rock: Mambo Five',
+    description: '¡La buena música también se vive en las alturas! Sigue la temporada de rock en Malibú a 3050 MSNM[cite: 10] con el show imperdible de Mambo Five.',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: 'Malibú a 3050 MSNM (Huaraz)[cite: 10]'
+  },
+  {
+    id: 'malibu-rock-24-oct',
+    date: '2026-10-24',
+    title: 'Sábados de Rock: Enigma',
+    description: 'Especial de rock en vivo con la gran banda Enigma. Vive la energía y el mejor ambiente de Huaraz en los Sábados de Rock de Malibú a 3050 MSNM[cite: 10].',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: 'Malibú a 3050 MSNM (Huaraz)[cite: 10]'
+  },
+  {
+    id: 'malibu-rock-31-oct',
+    date: '2026-10-31',
+    title: 'Sábados de Rock: Cierre de Mes / Especial',
+    description: 'Cierra el mes de octubre con la mejor cartelera de rock en vivo de la ciudad. Disfruta de la música, el buen ambiente y la vista única de Malibú a 3050 MSNM[cite: 10].',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: 'Malibú a 3050 MSNM (Huaraz)[cite: 10]'
   }
 ];
