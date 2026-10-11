@@ -496,7 +496,7 @@ export const premiumBusinesses: Business[] = [
   phone: '+51 943972261',
   whatsapp: '51943972261', 
   photos: [
-    'https://i.imgur.com/jwI2wU5.png'
+    'https://i.imgur.com/WUquv5n.jpeg'
   ],
   menuImages: [
     'https://i.imgur.com/Go7f8Cn.jpeg',
