@@ -51,7 +51,7 @@ const translateCategory = (category: BusinessCategory) => {
     [BusinessCategory.TORTERIA]: 'Tortería',
     [BusinessCategory.POSTRES]: 'Postres',
     [BusinessCategory.HOTEL]: 'Hotel',
-    [BusinessCategory.TOURIST_SPOT]: 'Punto Turístico'
+    [BusinessCategory.TOURIST_SPOT]: 'Punto Turístico,
     [BusinessCategory.TOUR_AGENCY]: 'Agencia de Turismo',
     [BusinessCategory.CHOCOLATERIA]: 'Chocolatería',
     [BusinessCategory.EXCHANGE]: 'Casa de Cambio',
