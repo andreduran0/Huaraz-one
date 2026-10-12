@@ -78,24 +78,40 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
             <BusinessRating businessId={business.id} />
           </div>
 
-          {/* CATEGORÍA Y DIRECCIÓN GRIS - ¡AQUÍ ESTÁ LA SOLUCIÓN! */}
+      {/* CATEGORÍA Y DIRECCIÓN GRIS - ¡REEMPLAZAR AQUÍ! */}
           <p className="text-slate-500 font-bold text-sm mb-6">
             {(() => {
-           const fallbackCategories: Record<string, string> = {
-      restaurant: 'Restaurante',
-      polleria: 'Pollería',
-      cevicheria: 'Cevichería',
-      pizzeria: 'Pizzería',
-      restobar: 'Restobar',
-      sushi_bar: 'Sushi Bar',
-      bakery: 'Panadería',
-      emolienteria: 'Emolientería',
-      torteria: 'Tortería',
-      postres: 'Postres',
-      hotel: 'Hotel',
-      agencia_de_turismo: 'agencia de turismo',
-      chocolateria: 'Chocolatería'
-    };
+              const rawCategory = String(business.category || '').toLowerCase();
+
+              // 1. Detección directa para Agencias de Turismo
+              if (rawCategory.includes('tour') || rawCategory.includes('agency') || rawCategory.includes('agencia')) {
+                return 'Agencia de Turismo';
+              }
+
+              // 2. Diccionario limpio para demás categorías
+              const fallbackCategories: Record<string, string> = {
+                restaurant: 'Restaurante',
+                polleria: 'Pollería',
+                cevicheria: 'Cevichería',
+                pizzeria: 'Pizzería',
+                restobar: 'Restobar',
+                sushi_bar: 'Sushi Bar',
+                bakery: 'Panadería',
+                emolienteria: 'Emolientería',
+                torteria: 'Tortería',
+                postres: 'Postres',
+                hotel: 'Hotel',
+                tourist_spot: 'Punto Turístico',
+                chocolateria: 'Chocolatería'
+              };
+
+              const translated = t(`category.${business.category}` as any);
+              if (!translated || translated.startsWith('category.')) {
+                return fallbackCategories[rawCategory] || business.category || 'Negocio Local';
+              }
+              return translated;
+            })()} • {business.address}
+          </p>
               
               const translated = t(`category.${business.category}` as any);
               // Si el traductor falla y escupe la llave cruda, usamos nuestro diccionario limpio
