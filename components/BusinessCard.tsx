@@ -75,12 +75,12 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
             <BusinessRating businessId={business.id} />
           </div>
 
-          {/* CATEGORÍA Y DIRECCIÓN (EVALUACIÓN BLINDADA) */}
+         {/* CATEGORÍA Y DIRECCIÓN GRIS */}
           <p className="text-slate-500 font-bold text-sm mb-6">
             {(() => {
               const rawCategory = String(business.category || '').toLowerCase();
 
-              // Detección directa por nombre o palabras clave de agencia
+              // 1. Detección directa por palabras clave principales
               if (
                 business.name.toLowerCase().includes('chasing') ||
                 rawCategory.includes('tour') || 
@@ -90,8 +90,11 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
                 return 'Agencia de Turismo';
               }
 
+              // 2. Diccionario completo con TODAS las categorías de tu plataforma
               const fallbackCategories: Record<string, string> = {
+                // Alimentación y Gastronomía
                 restaurant: 'Restaurante',
+                food: 'Restaurante',
                 polleria: 'Pollería',
                 cevicheria: 'Cevichería',
                 pizzeria: 'Pizzería',
@@ -101,15 +104,27 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
                 emolienteria: 'Emolientería',
                 torteria: 'Tortería',
                 postres: 'Postres',
+                chocolateria: 'Chocolatería',
+                
+                // Hospedaje y Turismo
                 hotel: 'Hotel',
                 tourist_spot: 'Punto Turístico',
-                chocolateria: 'Chocolatería'
+                tour_agency: 'Agencia de Turismo',
+
+                // Educación, Salud y Servicios
+                education: 'Colegio / Educación',
+                health: 'Centro Médico / Salud',
+                exchange: 'Casa de Cambio',
+                services: 'Servicios'
               };
 
-              return fallbackCategories[rawCategory] || 'Negocio Local';
+              // Si existe en el diccionario lo muestra; si no, limpia el texto de la categoría original
+              return (
+                fallbackCategories[rawCategory] || 
+                (typeof business.category === 'string' && business.category ? business.category : 'Negocio Local')
+              );
             })()} • {business.address}
           </p>
-
           <div className="w-full h-px bg-slate-100 mb-6"></div>
         </Link>
 
