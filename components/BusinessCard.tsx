@@ -74,11 +74,11 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
             <h3 className="text-2xl font-black text-[#2A4D69] leading-tight">
               {business.name}
             </h3> 
-            {/* NUEVA ESTRELLA AUTÓNOMA AQUÍ AL LADO DEL NOMBRE */}
+            {/* ESTRELLA AUTÓNOMA AL LADO DEL NOMBRE */}
             <BusinessRating businessId={business.id} />
           </div>
 
-      {/* CATEGORÍA Y DIRECCIÓN GRIS */}
+          {/* CATEGORÍA Y DIRECCIÓN GRIS */}
           <p className="text-slate-500 font-bold text-sm mb-6">
             {(() => {
               const rawCategory = String(business.category || '').toLowerCase();
@@ -106,23 +106,6 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
               };
 
               return fallbackCategories[rawCategory] || String(business.category) || 'Negocio Local';
-            })()} • {business.address}
-          </p>
-
-              const translated = t(`category.${business.category}` as any);
-              if (!translated || translated.startsWith('category.')) {
-                return fallbackCategories[rawCategory] || business.category || 'Negocio Local';
-              }
-              return translated;
-            })()} • {business.address}
-          </p>
-              
-              const translated = t(`category.${business.category}` as any);
-              // Si el traductor falla y escupe la llave cruda, usamos nuestro diccionario limpio
-              if (!translated || translated.startsWith('category.')) {
-                return fallbackCategories[business.category] || business.category;
-              }
-              return translated;
             })()} • {business.address}
           </p>
 
