@@ -81,14 +81,20 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
           {/* CATEGORÍA Y DIRECCIÓN GRIS */}
           <p className="text-slate-500 font-bold text-sm mb-6">
             {(() => {
-              const rawCategory = String(business.category || '').toLowerCase();
+              const catValue = business.category;
+              const rawCategory = String(catValue || '').toLowerCase();
 
-              // 1. Detección directa para Agencias de Turismo
-              if (rawCategory.includes('tour') || rawCategory.includes('agency') || rawCategory.includes('agencia')) {
+              // 1. Detección directa y universal para Agencias de Turismo
+              if (
+                rawCategory.includes('tour') || 
+                rawCategory.includes('agency') || 
+                rawCategory.includes('agencia') ||
+                rawCategory.includes('tour_agency')
+              ) {
                 return 'Agencia de Turismo';
               }
 
-              // 2. Diccionario de respaldo para demás categorías
+              // 2. Diccionario de respaldo seguro
               const fallbackCategories: Record<string, string> = {
                 restaurant: 'Restaurante',
                 polleria: 'Pollería',
@@ -101,11 +107,13 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
                 torteria: 'Tortería',
                 postres: 'Postres',
                 hotel: 'Hotel',
-                tour_agency: 'Agencia de Turismo',      
+                tourist_spot: 'Punto Turístico',
+                tour_agency: 'Agencia de Turismo',
                 chocolateria: 'Chocolatería'
               };
 
-              return fallbackCategories[rawCategory] || String(business.category) || 'Negocio Local';
+              // Si existe en el diccionario lo usa, si no, intenta traducir con seguridad o muestra un texto por defecto
+              return fallbackCategories[rawCategory] || (typeof catValue === 'string' ? catValue : 'Negocio Local');
             })()} • {business.address}
           </p>
 
