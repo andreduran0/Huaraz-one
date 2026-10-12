@@ -78,7 +78,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
             <BusinessRating businessId={business.id} />
           </div>
 
-      {/* CATEGORÍA Y DIRECCIÓN GRIS - ¡REEMPLAZAR AQUÍ! */}
+      {/* CATEGORÍA Y DIRECCIÓN GRIS */}
           <p className="text-slate-500 font-bold text-sm mb-6">
             {(() => {
               const rawCategory = String(business.category || '').toLowerCase();
@@ -88,7 +88,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
                 return 'Agencia de Turismo';
               }
 
-              // 2. Diccionario limpio para demás categorías
+              // 2. Diccionario de respaldo para demás categorías
               const fallbackCategories: Record<string, string> = {
                 restaurant: 'Restaurante',
                 polleria: 'Pollería',
@@ -104,6 +104,10 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
                 tourist_spot: 'Punto Turístico',
                 chocolateria: 'Chocolatería'
               };
+
+              return fallbackCategories[rawCategory] || String(business.category) || 'Negocio Local';
+            })()} • {business.address}
+          </p>
 
               const translated = t(`category.${business.category}` as any);
               if (!translated || translated.startsWith('category.')) {
