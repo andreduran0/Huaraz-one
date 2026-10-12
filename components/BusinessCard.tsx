@@ -1,4 +1,4 @@
-import BusinessRating from './BusinessRating';
+mport BusinessRating from './BusinessRating';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { createClient } from '@supabase/supabase-js';
@@ -81,20 +81,14 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
           {/* CATEGORÍA Y DIRECCIÓN GRIS */}
           <p className="text-slate-500 font-bold text-sm mb-6">
             {(() => {
-              const catValue = business.category;
-              const rawCategory = String(catValue || '').toLowerCase();
+              const rawCategory = String(business.category || '').toLowerCase();
 
-              // 1. Detección directa y universal para Agencias de Turismo
-              if (
-                rawCategory.includes('tour') || 
-                rawCategory.includes('agency') || 
-                rawCategory.includes('agencia') ||
-                rawCategory.includes('tour_agency')
-              ) {
+              // 1. Detección directa para Agencias de Turismo
+              if (rawCategory.includes('tour') || rawCategory.includes('agency') || rawCategory.includes('agencia')) {
                 return 'Agencia de Turismo';
               }
 
-              // 2. Diccionario de respaldo seguro
+              // 2. Diccionario de respaldo para demás categorías
               const fallbackCategories: Record<string, string> = {
                 restaurant: 'Restaurante',
                 polleria: 'Pollería',
@@ -108,12 +102,10 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
                 postres: 'Postres',
                 hotel: 'Hotel',
                 tourist_spot: 'Punto Turístico',
-                tour_agency: 'Agencia de Turismo',
                 chocolateria: 'Chocolatería'
               };
 
-              // Si existe en el diccionario lo usa, si no, intenta traducir con seguridad o muestra un texto por defecto
-              return fallbackCategories[rawCategory] || (typeof catValue === 'string' ? catValue : 'Negocio Local');
+              return fallbackCategories[rawCategory] || String(business.category) || 'Negocio Local';
             })()} • {business.address}
           </p>
 
