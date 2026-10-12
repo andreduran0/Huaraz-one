@@ -96,30 +96,33 @@ const BusinessDetailPage: React.FC = () => {
     };
     const whatsappMessage = encodeURIComponent(getWhatsappMessage());
 
-    // LÓGICA DEL TÍTULO DE LA CARTA/HABITACIONES
-const getMenuTitle = () => {
+// LÓGICA DEL TÍTULO DE LA CARTA / HABITACIONES / TOURS
+    const getMenuTitle = () => {
+        const nameLower = business.name.toLowerCase();
+
+        // 1. Prioridad absoluta si es Chasing Adventures o una agencia/tour
+        if (nameLower.includes('chasing') || categoryText.includes('tour') || categoryText.includes('agency') || categoryText.includes('agencia')) {
+            return { prefix: 'NUESTROS ', highlight: 'TOURS Y DESTINOS', subtitle: 'Explora las mejores rutas y expediciones' };
+        }
+
+        // 2. Demás categorías
         if (categoryText === 'education') return { prefix: 'NUESTRA PROPUESTA ', highlight: 'EDUCATIVA', subtitle: 'Conoce nuestro modelo de enseñanza' };
         if (categoryText === 'exchange' || categoryText === 'services') return { prefix: 'NUESTROS ', highlight: 'SERVICIOS', subtitle: 'Conoce nuestras opciones' };
         if (categoryText === 'health') return { prefix: 'NUESTRAS ', highlight: 'ESPECIALIDADES', subtitle: 'Conoce nuestros servicios médicos' };
         if (categoryText === 'hotel') return { prefix: 'NUESTRAS ', highlight: 'HABITACIONES', subtitle: 'Conoce nuestras opciones de descanso' };
-        if (categoryText.includes('tour') || categoryText.includes('agency') || categoryText.includes('tour_agency')) {
-            return { prefix: 'NUESTROS ', highlight: 'TOURS Y DESTINOS', subtitle: 'Explora las mejores rutas y expediciones' };
-        }
+        
         return { prefix: 'NUESTRA ', highlight: 'CARTA', subtitle: 'Consulta nuestros platos y especialidades' };
     };
     const menuTitle = getMenuTitle();
 
     // LÓGICA INTELIGENTE DE RESERVAS
     const getReservationData = () => {
-        if (business.name.toLowerCase().includes('inka frut')) {
-            return { 
-                tag: 'RESERVA INMEDIATA', 
-                icon: 'fa-leaf', 
-                prefix: 'EXPERIENCIA ', 
-                highlight: 'NOVOANDINA', 
-                desc: 'Fusión de cocina contemporánea con insumos y platos tradicionales de la Región de Áncash con opciones vegetarianas. (S/ 50 - S/ 80)', 
-                btn: 'Reservar Mesa' 
-            };
+        const nameLower = business.name.toLowerCase();
+
+        if (nameLower.includes('chasing') || categoryText.includes('tour') || categoryText.includes('agency') || categoryText.includes('agencia')) {
+            return { tag: 'RESERVA DE TOUR', icon: 'fa-compass', prefix: 'PLANEA TU ', highlight: 'AVENTURA', desc: 'Vive expediciones inolvidables por la Cordillera Blanca con guías profesionales.', btn: 'Reservar Tour' };
+        } else if (business.name.toLowerCase().includes('inka frut')) {
+            return { tag: 'RESERVA INMEDIATA', icon: 'fa-leaf', prefix: 'EXPERIENCIA ', highlight: 'NOVOANDINA', desc: 'Fusión de cocina contemporánea con insumos y platos tradicionales de la Región de Áncash con opciones vegetarianas. (S/ 50 - S/ 80)', btn: 'Reservar Mesa' };
         } else if (categoryText === 'hotel') {
             return { tag: 'RESERVA INMEDIATA', icon: 'fa-bed', prefix: 'ASEGURA TU ', highlight: 'DESCANSO', desc: 'Vive la mejor experiencia de confort y relajación en Huaraz.', btn: 'Reservar Habitación' };
         } else if (categoryText === 'restaurant' || categoryText === 'food') {
@@ -130,8 +133,6 @@ const getMenuTitle = () => {
             return { tag: 'ATENCIÓN RÁPIDA', icon: 'fa-money-bill-wave', prefix: 'CAMBIA CON ', highlight: 'SEGURIDAD', desc: 'Cotiza el mejor tipo de cambio de forma rápida y 100% confiable.', btn: 'Cotizar Cambio' };
         } else if (categoryText === 'health') {
             return { tag: 'ATENCIÓN MÉDICA', icon: 'fa-stethoscope', prefix: 'CUIDA TU ', highlight: 'SALUD', desc: 'Pon tu bienestar en manos de los mejores especialistas.', btn: 'Agendar Cita' };
-        } else if (categoryText.includes('tour') || categoryText.includes('agency') || categoryText.includes('tour_agency')) {
-            return { tag: 'RESERVA DE TOUR', icon: 'fa-compass', prefix: 'PLANEA TU ', highlight: 'AVENTURA', desc: 'Vive expediciones inolvidables por la Cordillera Blanca con guías profesionales.', btn: 'Reservar Tour' };
         } else {
             return { tag: 'RESERVA INMEDIATA', icon: 'fa-calendar-check', prefix: 'ASEGURA TU LUGAR EN ', highlight: 'LA CIMA', desc: 'Vive la mejor experiencia de Huaraz con nuestra atención de primera.', btn: 'Reservar Ahora' };
         }
