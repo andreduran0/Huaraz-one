@@ -78,9 +78,21 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
             <BusinessRating businessId={business.id} />
           </div>
 
-          {/* CATEGORÍA Y DIRECCIÓN GRIS - ¡AQUÍ ESTÁ LA SOLUCIÓN! */}
+          {/* CATEGORÍA Y DIRECCIÓN GRIS */}
           <p className="text-slate-500 font-bold text-sm mb-6">
             {(() => {
+              const rawCategory = String(business.category || '').toLowerCase();
+              const bizName = String(business.name || '').toLowerCase();
+
+              if (
+                bizName.includes('chasing') ||
+                rawCategory.includes('tour') || 
+                rawCategory.includes('agency') || 
+                rawCategory.includes('agencia')
+              ) {
+                return 'Agencia de Turismo';
+              }
+
               const fallbackCategories: Record<string, string> = {
                 restaurant: 'Restaurante',
                 polleria: 'Pollería',
@@ -99,9 +111,8 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
               };
               
               const translated = t(`category.${business.category}` as any);
-              // Si el traductor falla y escupe la llave cruda, usamos nuestro diccionario limpio
               if (!translated || translated.startsWith('category.')) {
-                return fallbackCategories[business.category] || business.category;
+                return fallbackCategories[rawCategory] || business.category;
               }
               return translated;
             })()} • {business.address}
