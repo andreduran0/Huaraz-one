@@ -74,38 +74,34 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
             <h3 className="text-2xl font-black text-[#2A4D69] leading-tight">
               {business.name}
             </h3> 
-            {/* ESTRELLA AUTÓNOMA AL LADO DEL NOMBRE */}
+            {/* NUEVA ESTRELLA AUTÓNOMA AQUÍ AL LADO DEL NOMBRE */}
             <BusinessRating businessId={business.id} />
           </div>
 
-          {/* CATEGORÍA Y DIRECCIÓN GRIS */}
+          {/* CATEGORÍA Y DIRECCIÓN GRIS - ¡AQUÍ ESTÁ LA SOLUCIÓN! */}
           <p className="text-slate-500 font-bold text-sm mb-6">
             {(() => {
-              const rawCategory = String(business.category || '').toLowerCase();
-
-              // 1. Detección directa para Agencias de Turismo
-              if (rawCategory.includes('tour') || rawCategory.includes('agency') || rawCategory.includes('agencia')) {
-                return 'Agencia de Turismo';
-              }
-
-              // 2. Diccionario de respaldo para demás categorías
               const fallbackCategories: Record<string, string> = {
                 restaurant: 'Restaurante',
                 polleria: 'Pollería',
                 cevicheria: 'Cevichería',
-                pizzeria: 'Pizzería',
                 restobar: 'Restobar',
                 sushi_bar: 'Sushi Bar',
-                bakery: 'Panadería',
+                panaderia: 'Panadería',
                 emolienteria: 'Emolientería',
                 torteria: 'Tortería',
                 postres: 'Postres',
                 hotel: 'Hotel',
-                tourist_spot: 'Punto Turístico',
+                tourist_spot: 'Lugar Turístico',
                 chocolateria: 'Chocolatería'
               };
-
-              return fallbackCategories[rawCategory] || String(business.category) || 'Negocio Local';
+              
+              const translated = t(`category.${business.category}` as any);
+              // Si el traductor falla y escupe la llave cruda, usamos nuestro diccionario limpio
+              if (!translated || translated.startsWith('category.')) {
+                return fallbackCategories[business.category] || business.category;
+              }
+              return translated;
             })()} • {business.address}
           </p>
 
