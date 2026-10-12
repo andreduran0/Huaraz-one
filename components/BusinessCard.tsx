@@ -15,7 +15,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
   // 👇 FUNCIÓN ESPÍA BLINDADA 👇
   const handleWhatsAppClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    e.stopPropagation();
+    e.stopPropagation(); // Evita que al darle al WhatsApp te mande a "Ver Detalles"
 
     const registrarClic = async () => {
       try {
@@ -44,13 +44,14 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
     const whatsappUrl = `https://wa.me/${business.whatsapp}`;
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
   };
+  // 👆 FIN DEL ESPÍA 👆
 
   const isSponsored = business.adLevel !== AdLevel.NONE;
 
   return (
     <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden flex flex-col h-full">
 
-      {/* FOTO SUPERIOR CLICKEABLE */}
+      {/* 📸 FOTO SUPERIOR CLICKEABLE */}
       <Link to={`/business/${business.id}`} className="block relative">
         <div className="h-48 w-full relative">
           <img src={business.photos[0]} alt={business.name} className="w-full h-full object-cover" />
@@ -64,37 +65,38 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
         </div>
       </Link>
 
-      {/* CONTENIDO INFERIOR */}
+      {/* 📄 CONTENIDO INFERIOR */}
       <div className="p-6 flex flex-col flex-grow">
 
+        {/* TEXTOS CLICKEABLES */}
         <Link to={`/business/${business.id}`} className="block flex-grow">
           <div className="flex justify-between items-start gap-4 mb-2">
             <h3 className="text-2xl font-black text-[#2A4D69] leading-tight">
               {business.name}
             </h3> 
+            {/* ESTRELLA AUTÓNOMA AL LADO DEL NOMBRE */}
             <BusinessRating businessId={business.id} />
           </div>
 
-         {/* CATEGORÍA Y DIRECCIÓN GRIS */}
+          {/* CATEGORÍA Y DIRECCIÓN GRIS */}
           <p className="text-slate-500 font-bold text-sm mb-6">
             {(() => {
-              const rawCategory = String(business.category || '').toLowerCase();
+              const catValue = business.category;
+              const rawCategory = String(catValue || '').toLowerCase();
 
-              // 1. Detección directa por palabras clave principales
+              // 1. Detección directa y universal para Agencias de Turismo
               if (
-                business.name.toLowerCase().includes('chasing') ||
                 rawCategory.includes('tour') || 
                 rawCategory.includes('agency') || 
-                rawCategory.includes('agencia')
+                rawCategory.includes('agencia') ||
+                rawCategory.includes('tour_agency')
               ) {
                 return 'Agencia de Turismo';
               }
 
-              // 2. Diccionario completo con TODAS las categorías de tu plataforma
+              // 2. Diccionario de respaldo seguro
               const fallbackCategories: Record<string, string> = {
-                // Alimentación y Gastronomía
                 restaurant: 'Restaurante',
-                food: 'Restaurante',
                 polleria: 'Pollería',
                 cevicheria: 'Cevichería',
                 pizzeria: 'Pizzería',
@@ -104,33 +106,26 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
                 emolienteria: 'Emolientería',
                 torteria: 'Tortería',
                 postres: 'Postres',
-                chocolateria: 'Chocolatería',
-                
-                // Hospedaje y Turismo
                 hotel: 'Hotel',
                 tourist_spot: 'Punto Turístico',
                 tour_agency: 'Agencia de Turismo',
-
-                // Educación, Salud y Servicios
-                education: 'Colegio / Educación',
-                health: 'Centro Médico / Salud',
-                exchange: 'Casa de Cambio',
-                services: 'Servicios'
+                chocolateria: 'Chocolatería'
               };
 
-              // Si existe en el diccionario lo muestra; si no, limpia el texto de la categoría original
-              return (
-                fallbackCategories[rawCategory] || 
-                (typeof business.category === 'string' && business.category ? business.category : 'Negocio Local')
-              );
+              // Si existe en el diccionario lo usa, si no, intenta traducir con seguridad o muestra un texto por defecto
+              return fallbackCategories[rawCategory] || (typeof catValue === 'string' ? catValue : 'Negocio Local');
             })()} • {business.address}
           </p>
+
+          {/* LA LÍNEA SEPARADORA FINA */}
           <div className="w-full h-px bg-slate-100 mb-6"></div>
         </Link>
 
-        {/* BOTONES DE ACCIÓN */}
+        {/* 🔘 BOTONES DE ACCIÓN */}
         <div className="flex items-center justify-between mt-auto">
           <div className="flex gap-4">
+
+            {/* BOTÓN TELÉFONO CIRCULAR */}
             {business.phone && (
               <a
                 href={`tel:${business.phone}`}
@@ -141,6 +136,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
               </a>
             )}
 
+            {/* BOTÓN WHATSAPP CIRCULAR VERDE */}
             {business.whatsapp && (
               <button
                 onClick={handleWhatsAppClick}
@@ -149,8 +145,10 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
                 <i className="fab fa-whatsapp text-xl"></i>
               </button>
             )}
+
           </div>
 
+          {/* TEXTO VER DETALLES SUBRAYADO */}
           <Link
             to={`/business/${business.id}`}
             className="text-[#2A4D69] font-black text-sm underline decoration-2 underline-offset-4 hover:text-[#1a3346]"
