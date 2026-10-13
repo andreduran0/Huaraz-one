@@ -186,7 +186,7 @@ export const premiumBusinesses: Business[] = [
     googleMapsQuery: 'Plaza de Armas-Huaraz ',
   },
   {
-  id: '33',
+  id: '33',cha
   name: 'Chasing Adventures',
   category: BusinessCategory.TOUR_AGENCY,
   description: 'Chasing Adventures EIRL es una empresa peruana con sede en Huaraz, que ofrece experiencias personalizadas para descubrir la Cordillera Blanca y Huayhuash. Ofrecemos una variedad de tours, trekking y montañismo, así como asistencia y soporte logístico para individuos y grupos. Nuestro enfoque es la protección y preservación del medio ambiente y nuestro equipo está formado por profesionales altamente capacitados y apasionados por las montañas y la naturaleza. Brindamos un servicio excepcional para hacer de la experiencia de nuestros clientes algo inolvidable.',
@@ -214,17 +214,26 @@ export const premiumBusinesses: Business[] = [
     'https://i.imgur.com/RwoyqKu.jpeg'
   ],
   menuImages: [
-    'https://i.imgur.com/BfdUrP9.jpeg',
     'https://i.imgur.com/NDTIRh2.jpeg',
+    'https://i.imgur.com/1jb0Nd5.jpeg',
+    'https://i.imgur.com/yzzvx6u.jpeg',
+    'https://i.imgur.com/Lxw9me4.jpeg',
+    'https://i.imgur.com/95kaY1G.jpeg',
+    'https://i.imgur.com/gnrLvf9.jpeg',
     'https://i.imgur.com/kAlhuMT.jpeg',
     'https://i.imgur.com/fdOXzNm.jpeg',
     'https://i.imgur.com/CJVp0Gm.jpeg',
-    'https://i.imgur.com/Z2915uh.jpeg',
     'https://i.imgur.com/LSzKvD6.jpeg',
+    'https://i.imgur.com/Z2915uh.jpeg',
+    'https://i.imgur.com/fDpXYH2.jpeg,'
+       'https://i.imgur.com/p5k2BB5.jpeg',
+    'https://i.imgur.com/zQooRiq.jpeg',
     'https://i.imgur.com/dT0T85V.jpeg',
+    'https://i.imgur.com/KFrdhFt.jpeg',
     'https://i.imgur.com/4tWoQ30.jpeg',
-    'https://i.imgur.com/zoLCTH5.jpeg',
     'https://i.imgur.com/ogjZUqO.jpeg',
+      'https://i.imgur.com/zoLCTH5.jpeg',
+    'https://i.imgur.com/BPzWPhq.jpeg',
     'https://i.imgur.com/mj6SMrI.jpeg'
   ],
   schedule: {
@@ -247,8 +256,6 @@ export const premiumBusinesses: Business[] = [
     phone: '+51 955716534', 
     whatsapp: '51955716534',
     photos: [
-      'https://i.imgur.com/kxmhNTQ.jpeg',
-      'https://i.imgur.com/lQy2vKp.jpeg',
       'https://i.imgur.com/ZoVx3cm.jpeg',
       'https://i.imgur.com/U4mOLic.jpeg',
       'https://i.imgur.com/QaWUbzp.jpeg',
