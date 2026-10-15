@@ -169,9 +169,9 @@ export const premiumBusinesses: Business[] = [
       // Eliminé la imagen "blob:" porque daría error en internet
     ],
     menuImages: [
-      'https://i.imgur.com/dL640g8.jpeg',
-      'https://i.imgur.com/3RoWocG.jpeg',
-      'https://i.imgur.com/ZP3SfzF.jpeg'
+      'https://i.imgur.com/9q2z2df.jpeg',
+      'https://i.imgur.com/AxqyU97.jpeg',
+      'https://i.imgur.com/ZiuxK6m.jpeg'
     ],
     schedule: { 
       'Lunes - Domingo': '24 horas'
