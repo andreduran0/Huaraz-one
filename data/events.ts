@@ -460,6 +460,14 @@ export const events: Event[] = [
     location: 'Hakuna Matata Restobar (Pasaje Jesús Morales 977, Huaraz)[cite: 8]'
   },
   {
+    date: '2026-10-17',
+    title: 'Divas del Rock (Concierto en Vivo)',
+    description: 'Noche de rock en vivo en 7 Cuervos con la presentación especial de Chesberry y banda completa rindiendo homenaje a las Divas del Rock. ¡Ingreso libre!',
+    type: 'entertainment',
+    time: '09:00 p. m.',
+    location: '7 Cuervos (Jr. José Olaya N° 580, Huaraz - frente a la capilla principal)'
+  },
+  {
     date: '2026-10-24',
     title: 'Alex Joffre & Johannes: Vivir para recordarla',
     description: 'Especial de Rock Peruano con tributo a Norecomendable y Daniel F, además de lo mejor de Libido, Amén, Río y Zen[cite: 8]. Contará con invitados especiales[cite: 8]. Informes al WhatsApp 927 700 852[cite: 8].',
