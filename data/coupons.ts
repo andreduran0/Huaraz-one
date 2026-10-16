@@ -2,6 +2,30 @@ import { Coupon } from '../types';
 
 export const coupons: Coupon[] = [
   {
+    id: 'C3',
+    businessId: '8', // ID de Norabuena pollos y parrillas
+    title: 'Combo 1/2 Pollo + Papas + Ensalada + 2 Inka Kolas',
+    description: '1/2 pollo a la brasa + Papas fritas medianas + Ensalada clásica mediana + 2 gaseosas Inka Kola de 500 ml por solo S/ 39.00 soles.',
+    code: 'NORABUENA39',
+    expiryDate: '2026-10-31',
+  },
+  {
+    id: 'C4',
+    businessId: '8', // ID de Norabuena pollos y parrillas
+    title: 'Combo Individual: 1/4 Pollo + Helado + Gaseosa',
+    description: '1/4 de pollo a la brasa + Papas fritas personales + Ensalada clásica + Gaseosa de 500 ml + Una copa de helado por solo S/ 30.00 soles.',
+    code: 'NORABUENA30',
+    expiryDate: '2026-10-31',
+  },
+  {
+    id: 'C5',
+    businessId: '8', // ID de Norabuena pollos y parrillas
+    title: 'Combo Familiar Top: 1 Pollo y 1/4 + Papas + Ensalada + Inka 1.5L',
+    description: '1 pollo a la brasa + 1/4 de pollo a la brasa + Papas fritas familiares + Ensalada clásica familiar + Gaseosa Inka Kola de 1.5L por solo S/ 87.00 soles.',
+    code: 'NORABUENA87',
+    expiryDate: '2026-10-31',
+  },
+  {
     id: 'C2',
     businessId: '47-ronnin-sushi-bar', // Asegúrate de poner el ID correcto de 47 Ronnin aquí
     title: 'Miércoles de Promo: 2 Makis + 6 Pzas Gratis',
