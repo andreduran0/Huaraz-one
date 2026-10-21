@@ -166,7 +166,7 @@ export const premiumBusinesses: Business[] = [
       // Eliminé la imagen "blob:" porque daría error en internet
     ],
     menuImages: [
-      'https://i.imgur.com/9q2z2df.jpeg',
+      'https://i.imgur.com/7AhW0OW.jpeg',
       'https://i.imgur.com/AxqyU97.jpeg',
       'https://i.imgur.com/ZiuxK6m.jpeg'
     ],
