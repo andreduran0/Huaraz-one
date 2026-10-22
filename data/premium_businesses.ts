@@ -122,9 +122,9 @@ export const premiumBusinesses: Business[] = [
       'https://i.imgur.com/8Dl9LdX.jpeg'
     ],
     menuImages: [
-      'https://i.imgur.com/FOWuyWk.jpeg',
-      'https://i.imgur.com/L0XeHop.jpeg',
-      'https://i.imgur.com/vZWsDhG.jpeg'
+      'https://i.imgur.com/JB0k9xV.jpeg',
+      'https://i.imgur.com/HP2dPHQ.jpeg',
+      'https://i.imgur.com/CmV8upS.jpeg'
     ],
     schedule: { 
       'Lunes - Domingo': '24 horas'
