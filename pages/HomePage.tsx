@@ -217,7 +217,7 @@ const HomePage: React.FC = () => {
                   </div>
                   <div className="text-left md:text-right mt-1 md:mt-0">
                      <p className="text-[8px] text-white/60 uppercase font-black tracking-[0.3em] mb-0.5">{t('Market Cap Est.', 'Est. Market Cap')}</p>
-                     <p className="text-3xl font-black tracking-tighter italic text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.6)]">$424.8K</p>
+                     <p className="text-3xl font-black tracking-tighter italic text-[#39FF14] drop-shadow-[0_0_15px_rgba(57,255,20,0.6)]">$524.8K</p>
                   </div>
                 </div>
                 
@@ -261,7 +261,7 @@ const HomePage: React.FC = () => {
                   <div>
                     <div className="bg-black/40 backdrop-blur-md border border-white/20 px-3 py-0.5 rounded-lg inline-flex items-center gap-1.5 mb-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#FFD700] animate-pulse"></span>
-                      <p className="text-[8px] font-black tracking-[0.2em] text-white/90 uppercase">360° ENGINE</p>
+                      <p className="text-[8px] font-black tracking-[0.2em] text-white/90 uppercase">360° Turismo</p>
                     </div>
                     <h3 className="text-2xl font-black tracking-tighter italic uppercase text-white drop-shadow-md">VIDRYX IA</h3>
                   </div>
@@ -270,7 +270,7 @@ const HomePage: React.FC = () => {
                 <div className="bg-black/35 backdrop-blur-sm border border-white/15 rounded-[1.8rem] p-5 mb-5 flex-grow flex flex-col justify-center shadow-xl">
                     <h4 className="text-xl md:text-2xl font-black uppercase tracking-tighter mb-2 leading-tight text-white drop-shadow-md">
                         {t('Explora en', 'Explore in')} <br/>
-                        <span className="text-[#FFD700] italic drop-shadow-[0_2px_10px_rgba(255,215,0,0.8)]">{t('Realidad Virtual', 'Virtual Reality')}</span>
+                        <span className="text-[#FFD700] italic drop-shadow-[0_2px_10px_rgba(255,215,0,0.8)]">{t('Experiencia Inmersiva', 'Virtual Reality')}</span>
                     </h4>
                     <p className="text-white/95 font-medium leading-relaxed mb-3 text-xs drop-shadow">
                         {t('Camina por los hoteles, restaurantes y paisajes de la Cordillera Blanca con nuestros recorridos inmersivos antes de hacer tu reserva.', 'Walk through the hotels, restaurants, and landscapes of the Cordillera Blanca with our immersive tours before booking.')}
