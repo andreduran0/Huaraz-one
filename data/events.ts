@@ -512,6 +512,14 @@ export const events: Event[] = [
     location: 'Malibú a 3050 MSNM (Huaraz)[cite: 10]'
   },
   {
+    date: '2026-10-24',
+    title: 'Rave en las Alturas (Uniendo a los apasionados de la electrónica)',
+    description: 'Noche de música electrónica en 7 Cuervos Huaraz. Una experiencia única en la casa del rave para vivir la música como nos gusta. Auspiciado por Alvana Entertainment. ¡El ingreso es limitado!',
+    type: 'entertainment',
+    time: '09:00 p. m.', // (Ajustar hora exacta si se especifica en la programación interna)
+    location: '7 Cuervos (Jr. José Olaya N° 580, Huaraz - frente a la capilla principal)'
+  },
+  {
     id: 'malibu-rock-31-oct',
     date: '2026-10-31',
     title: 'Sábados de Rock: Cierre de Mes / Especial',
