@@ -527,7 +527,7 @@ export const events: Event[] = [
     type: 'entertainment',
     time: '08:00 p. m.',
     location: 'Malibú a 3050 MSNM (Huaraz)[cite: 10]'
-  }
+  },
   //--- SÁBADOS DE ROCK EN MALIBÚ A 3050 MSNM (NOVIEMBRE) ---
   {
     id: 'malibu-rock-07-nov',
