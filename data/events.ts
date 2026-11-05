@@ -564,5 +564,14 @@ export const events: Event[] = [
     type: 'entertainment',
     time: '08:00 p. m.',
     location: 'Malibú a 3050 MSNM (Huaraz)'
+  },
+  {
+    id: 'hakuna-tributo-bon-jovi-14-nov',
+    date: '2026-11-14',
+    title: 'Tributo a Bon Jovi',
+    description: 'Noche de rock con el tributo a Bon Jovi a cargo de la banda Contexto, acompañado de bandas invitadas. Reservas solo vía WhatsApp al 967 477 268.',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: 'Hakuna Matata Restobar (Pasaje Jesús Morales 977, Huaraz)'
   }
 ];
