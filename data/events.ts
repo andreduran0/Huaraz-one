@@ -528,4 +528,41 @@ export const events: Event[] = [
     time: '08:00 p. m.',
     location: 'Malibú a 3050 MSNM (Huaraz)[cite: 10]'
   }
+  //--- SÁBADOS DE ROCK EN MALIBÚ A 3050 MSNM (NOVIEMBRE) ---
+  {
+    id: 'malibu-rock-07-nov',
+    date: '2026-11-07',
+    title: 'Sábados de Rock: Apu Rumi',
+    description: '¡Los mejores sábados de rock continúan en Malibú a 3050 MSNM con las mejores bandas de la ciudad! Disfruta de la potente presentación en vivo de Apu Rumi.',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: 'Malibú a 3050 MSNM (Huaraz)'
+  },
+  {
+    id: 'malibu-rock-14-nov',
+    date: '2026-11-14',
+    title: 'Sábados de Rock: Alba',
+    description: '¡La temporada de rock sigue en alta montaña! Disfruta de una gran noche de música en vivo con la presentación de la banda Alba en Malibú a 3050 MSNM.',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: 'Malibú a 3050 MSNM (Huaraz)'
+  },
+  {
+    id: 'malibu-rock-21-nov',
+    date: '2026-11-21',
+    title: 'Sábados de Rock: Cero Kilómetros',
+    description: '¡La energía del rock se siente a 3050 MSNM! No te pierdas el show en vivo de Cero Kilómetros en Malibú.',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: 'Malibú a 3050 MSNM (Huaraz)'
+  },
+  {
+    id: 'malibu-rock-28-nov',
+    date: '2026-11-28',
+    title: 'Sábados de Rock: Dosis',
+    description: 'Cierra el mes con la mejor música en vivo. Disfruta de la presentación de la banda Dosis en los Sábados de Rock de Malibú a 3050 MSNM.',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: 'Malibú a 3050 MSNM (Huaraz)'
+  }
 ];
