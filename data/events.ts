@@ -539,6 +539,15 @@ export const events: Event[] = [
     location: 'Malibú a 3050 MSNM (Huaraz)'
   },
   {
+    id: 'hakuna-over-one-07-nov',
+    date: '2026-11-07',
+    title: 'Over-One Rock en Vivo: Clásicos del Rock y el Pop Alternativo',
+    description: 'Noche de música en vivo a cargo de Iván en la voz y Martín en la guitarra, interpretando los mejores clásicos del rock y el pop alternativo.',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: 'Hakuna Matata Restobar (Pasaje Jesús Morales 977, Huaraz)'
+  },
+  {
     id: 'malibu-rock-14-nov',
     date: '2026-11-14',
     title: 'Sábados de Rock: Alba',
