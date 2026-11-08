@@ -582,5 +582,46 @@ export const events: Event[] = [
     type: 'entertainment',
     time: '08:00 p. m.',
     location: 'Hakuna Matata Restobar (Pasaje Jesús Morales 977, Huaraz)'
+  },
+  //--- AGENDA RECURCURRENTE / SEMANAL: 7 CUERVOS ---
+  {
+    id: '7-cuervos-jueves-karaoke',
+    date: '2026-11-05', // Fecha exacta en formato ISO (Jueves)
+    dayOfWeek: 'Jueves', // Campo opcional de apoyo visual
+    title: 'Jueves de Karaoke',
+    description: 'Saca la voz que llevas dentro y ven a disfrutar de los jueves de karaoke en 7 Cuervos. ¡Ambiente asegurado!',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: '7 Cuervos (Jr. José Olaya N° 580, Huaraz - frente a la capilla principal)'
+  },
+  {
+    id: '7-cuervos-viernes-pachanga',
+    date: '2026-11-06', // Viernes
+    dayOfWeek: 'Viernes',
+    title: 'Viernes de Pachanga y Salsa',
+    description: 'El fin de semana se enciende con los viernes de pachanga y la mejor salsa para gozar toda la noche en 7 Cuervos.',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: '7 Cuervos (Jr. José Olaya N° 580, Huaraz - frente a la capilla principal)'
+  },
+  {
+    id: '7-cuervos-sabados-rave',
+    date: '2026-11-07', // Sábado
+    dayOfWeek: 'Sábado',
+    title: 'Sábados de Rave y Más',
+    description: 'La noche se enciende en las alturas. Vive la mejor energía electrónica y los mejores beats de la ciudad en los Sábados de Rave y más en 7 Cuervos.',
+    type: 'entertainment',
+    time: '09:00 p. m.',
+    location: '7 Cuervos (Jr. José Olaya N° 580, Huaraz - frente a la capilla principal)'
+  },
+  {
+    id: '7-cuervos-domingos-pena',
+    date: '2026-11-08', // Domingo
+    dayOfWeek: 'Domingo',
+    title: 'Domingos de Peña y Sabor Andino',
+    description: 'Cierra la semana con una tarde de peña imperdible. Disfruta de nuestra gastronomía tradicional: pachamanca a la piedra, picante de cuy fiestero, pollo a la parrilla andino, brochetas de cerdo y trucha a la parrilla.',
+    type: 'entertainment',
+    time: '01:00 p. m.',
+    location: '7 Cuervos (Jr. José Olaya N° 580, Huaraz - frente a la capilla principal)'
   }
 ];
