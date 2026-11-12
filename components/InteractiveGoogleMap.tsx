@@ -167,7 +167,7 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
       (process.env?.REACT_APP_GOOGLE_MAPS_API_KEY || process.env?.VITE_GOOGLE_MAPS_API_KEY)) ||
     '';
 
-  // Inicializar Google Maps con la API funcional setOptions e importLibrary
+  // Inicializar Google Maps
   useEffect(() => {
     let isCancelled = false;
 
@@ -179,7 +179,6 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
         version: 'weekly',
         language: 'es',
         region: 'PE',
-        // Atribución obligatoria de uso en AI Studio
         internalUsageAttributionIds: ['gmp_mcp_codeassist_v1_aistudio']
       } as any);
 
@@ -192,7 +191,6 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
           const map = new Map(mapContainerRef.current, {
             center: HUARAZ_CENTER,
             zoom: DEFAULT_ZOOM,
-            // DEMO_MAP_ID requerido para AdvancedMarkerElement
             mapId: 'DEMO_MAP_ID',
             disableDefaultUI: true,
             gestureHandling: 'greedy',
@@ -204,7 +202,6 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
             styles: vectorizedTourismStyle
           });
 
-          // Cerrar tarjeta activa al tocar el fondo del mapa
           map.addListener('click', () => {
             setActiveBusiness(null);
           });
@@ -237,7 +234,6 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
 
     let isSubscribed = true;
 
-    // Limpiar marcadores anteriores
     markersRef.current.forEach((marker) => {
       marker.map = null;
     });
@@ -260,7 +256,6 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
               ? business.photos[0]
               : 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=120');
 
-          // Crear elemento HTML personalizado para el pin circular
           const pinContainer = document.createElement('div');
           pinContainer.className =
             'relative flex flex-col items-center cursor-pointer select-none transition-all duration-300 transform hover:scale-125 hover:z-[999] group';
@@ -277,7 +272,6 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
             </div>
           `;
 
-          // Evento de clic en el pin
           pinContainer.addEventListener('click', (e) => {
             e.stopPropagation();
             setActiveBusiness(business);
@@ -306,7 +300,7 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
     };
   }, [businesses, mapLoaded, activeCategory]);
 
-  // Actualizar marcador de GPS del usuario con pulso neón verde
+  // Actualizar marcador de GPS del usuario
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map || !mapLoaded || !userPos) return;
@@ -345,7 +339,6 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
     };
   }, [userPos, mapLoaded]);
 
-  // Manejador de controles de navegación (Zoom y GPS)
   const handleZoom = (delta: number) => {
     const map = mapInstanceRef.current;
     if (!map) return;
@@ -394,7 +387,6 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
     setActiveBusiness(null);
   };
 
-  // Obtener la geolocalización inicial silenciosa
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -412,7 +404,6 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
 
   return (
     <div className="w-full h-full relative overflow-hidden bg-slate-950 select-none">
-      {/* Estilos CSS para el pulso neón y marcadores */}
       <style>
         {`
           .user-pulse {
@@ -440,25 +431,18 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
         `}
       </style>
 
-      {/* Contenedor del Mapa de Google */}
       <div ref={mapContainerRef} className="w-full h-full absolute inset-0 z-0" />
 
-      {/* Banner de error o API Key faltante */}
       {loadError && (
         <div className="absolute top-24 left-1/2 -translate-x-1/2 z-30 bg-red-900/90 backdrop-blur-md text-white px-6 py-4 rounded-2xl shadow-2xl border border-red-500/30 text-center max-w-md">
           <p className="text-xs font-black uppercase tracking-wider mb-1 flex items-center justify-center gap-2">
             <i className="fas fa-triangle-exclamation text-yellow-400"></i> Google Maps API
           </p>
-          <p className="text-[11px] text-red-200">
-            {loadError}
-          </p>
-          <p className="text-[9px] text-white/60 mt-2">
-            Verifica la variable VITE_GOOGLE_MAPS_API_KEY en tu entorno.
-          </p>
+          <p className="text-[11px] text-red-200">{loadError}</p>
         </div>
       )}
 
-      {/* CONTROLES FLOTANTES LATERALES (Zoom, GPS, Reset) */}
+      {/* Controles Flotantes */}
       <div className="absolute top-24 right-6 flex flex-col gap-3 z-20">
         <div className="flex flex-col bg-white/95 backdrop-blur-2xl rounded-[2rem] shadow-2xl border border-white/30 p-2 gap-2">
           <button
@@ -479,7 +463,6 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
           </button>
         </div>
 
-        {/* Botón de ubicación GPS con pulso verde neón */}
         <button
           onClick={handleLocateUser}
           className={`w-15 h-15 rounded-[2rem] flex items-center justify-center shadow-[0_12px_35px_rgba(57,255,20,0.35)] transition-all active:scale-90 border-2 border-white/50 ${
@@ -491,7 +474,6 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
           <i className="fas fa-location-crosshairs text-xl"></i>
         </button>
 
-        {/* Botón para restablecer la vista central de Huaraz */}
         <button
           onClick={handleResetView}
           className="w-15 h-15 bg-[#2A4D69] text-white rounded-[2rem] flex items-center justify-center shadow-xl hover:bg-slate-800 transition-all active:scale-90 border-2 border-white/20"
@@ -502,11 +484,10 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
         </button>
       </div>
 
-      {/* MODAL / TARJETA FLOTANTE AL SELECCIONAR UN LOCAL (ESTILO MORFY) */}
+      {/* Tarjeta Flotante Estilo Morfy */}
       {activeBusiness && (
         <div className="absolute bottom-10 left-4 right-4 md:left-10 md:w-[420px] z-30 animate-fadeIn">
           <div className="bg-white rounded-[2.8rem] shadow-[0_35px_90px_rgba(0,0,0,0.3)] overflow-hidden border border-slate-100 transition-all duration-300">
-            {/* Foto de portada */}
             <div className="relative h-48 w-full bg-slate-100">
               <img
                 src={
@@ -519,7 +500,6 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
               />
               <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
 
-              {/* Botón Cerrar (X) */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -531,7 +511,6 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
                 <i className="fas fa-times text-sm"></i>
               </button>
 
-              {/* Distintivo de categoría en la imagen */}
               <div className="absolute top-5 left-5 z-20">
                 <span className="bg-black/60 backdrop-blur-md text-white text-[9px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full border border-white/20 flex items-center gap-1.5">
                   <i className={`fas ${getCategoryPinStyle(activeBusiness.category).icon}`}></i>
@@ -540,7 +519,6 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
               </div>
             </div>
 
-            {/* Contenido de la Tarjeta */}
             <div className="p-8 pt-0 -mt-8 relative z-10">
               <div className="bg-white p-6 rounded-[2.2rem] shadow-sm border border-slate-50">
                 <h4 className="text-2xl md:text-3xl font-black text-slate-900 uppercase italic tracking-tighter leading-none mb-3">
@@ -558,7 +536,6 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
                   </p>
                 )}
 
-                {/* Botón de acción principal: Ver Detalles / Smart Voucher */}
                 <button
                   onClick={() => navigate(`/business/${activeBusiness.id}`)}
                   className="w-full bg-[#2A4D69] text-white py-5 rounded-[1.8rem] font-black uppercase text-[11px] tracking-[0.2em] shadow-xl hover:bg-[#39FF14] hover:text-black transition-all active:scale-95 flex items-center justify-center gap-3 group"
