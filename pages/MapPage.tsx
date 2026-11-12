@@ -13,7 +13,7 @@ const MapPage: React.FC = () => {
   
   const [activeCategory, setActiveCategory] = useState<string>('all');
   
-  // Estado para alternar entre Google Maps y Mapa Ilustrado
+  // Estado para alternar entre Google Maps e Ilustrado
   const [mapMode, setMapMode] = useState<'google' | 'static'>('google');
   
   const filteredBusinesses = businesses.filter(b => 
@@ -31,16 +31,14 @@ const MapPage: React.FC = () => {
              )}
         </div>
 
-        {/* Barra Superior con Switcher de Vista y Filtros Flotantes */}
+        {/* Barra Superior: Switcher de Vista y Filtros Flotantes */}
         <div className="absolute top-4 left-0 right-0 z-20 flex items-center justify-between px-4 pointer-events-none gap-2">
-          {/* Switcher de Vista de Mapa (Google / Ilustrado) */}
+          {/* Switcher de Vista (Google / Ilustrado) */}
           <div className="bg-white/95 backdrop-blur-md p-1 rounded-full shadow-xl border border-slate-100 flex items-center gap-1 pointer-events-auto shrink-0">
             <button
               onClick={() => setMapMode('google')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-wider transition-all ${
-                mapMode === 'google' 
-                  ? 'bg-[#2A4D69] text-white shadow-md' 
-                  : 'text-slate-500 hover:text-slate-900'
+                mapMode === 'google' ? 'bg-[#2A4D69] text-white shadow-md' : 'text-slate-500 hover:text-slate-900'
               }`}
             >
               <i className="fas fa-map-location-dot"></i> Google
@@ -48,45 +46,43 @@ const MapPage: React.FC = () => {
             <button
               onClick={() => setMapMode('static')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-wider transition-all ${
-                mapMode === 'static' 
-                  ? 'bg-[#2A4D69] text-white shadow-md' 
-                  : 'text-slate-500 hover:text-slate-900'
+                mapMode === 'static' ? 'bg-[#2A4D69] text-white shadow-md' : 'text-slate-500 hover:text-slate-900'
               }`}
             >
               <i className="fas fa-image"></i> {t("Ilustrado", "Illustrated")}
             </button>
           </div>
 
-          {/* Filtros Flotantes (Categorías) con soporte de traducción */}
-          <div className="flex gap-1 overflow-x-auto no-scrollbar pointer-events-auto bg-white/90 backdrop-blur-md p-1.5 rounded-[2rem] shadow-xl border border-slate-100 max-w-[calc(100vw-170px)]">
-               <FilterPill 
-                    active={activeCategory === 'all'} 
-                    onClick={() => setActiveCategory('all')} 
-                    label={t("Todos", "All")} 
-                    icon="fa-border-all" 
-               />
-               <FilterPill 
-                    active={activeCategory === BusinessCategory.HOTEL} 
-                    onClick={() => setActiveCategory(BusinessCategory.HOTEL)} 
-                    label={t("Hoteles", "Hotels")} 
-                    icon="fa-bed" 
-               />
-               <FilterPill 
-                    active={activeCategory === BusinessCategory.RESTAURANT} 
-                    onClick={() => setActiveCategory(BusinessCategory.RESTAURANT)} 
-                    label={t("Comida", "Food")} 
-                    icon="fa-utensils" 
-               />
-               <FilterPill 
-                    active={activeCategory === BusinessCategory.TOURIST_SPOT} 
-                    onClick={() => setActiveCategory(BusinessCategory.TOURIST_SPOT)} 
-                    label={t("Turismo", "Tourism")} 
-                    icon="fa-mountain-sun" 
-               />
+          {/* Filtros Flotantes (Categorías) */}
+          <div className="flex gap-1 overflow-x-auto no-scrollbar pointer-events-auto bg-white/90 backdrop-blur-md p-1.5 rounded-[2rem] shadow-xl border border-slate-100 max-w-[calc(100vw-180px)]">
+             <FilterPill 
+                active={activeCategory === 'all'} 
+                onClick={() => setActiveCategory('all')} 
+                label={t("Todos", "All")} 
+                icon="fa-border-all" 
+             />
+             <FilterPill 
+                active={activeCategory === BusinessCategory.HOTEL} 
+                onClick={() => setActiveCategory(BusinessCategory.HOTEL)} 
+                label={t("Hoteles", "Hotels")} 
+                icon="fa-bed" 
+             />
+             <FilterPill 
+                active={activeCategory === BusinessCategory.RESTAURANT} 
+                onClick={() => setActiveCategory(BusinessCategory.RESTAURANT)} 
+                label={t("Comida", "Food")} 
+                icon="fa-utensils" 
+             />
+             <FilterPill 
+                active={activeCategory === BusinessCategory.TOURIST_SPOT} 
+                onClick={() => setActiveCategory(BusinessCategory.TOURIST_SPOT)} 
+                label={t("Turismo", "Tourism")} 
+                icon="fa-mountain-sun" 
+             />
           </div>
         </div>
 
-        {/* Leyenda Dinámica (Desktop) con Traducción */}
+        {/* Leyenda Dinámica (Desktop) */}
         <div className="absolute bottom-28 left-6 z-20 hidden md:block pointer-events-none">
             <div className="bg-white/90 backdrop-blur-xl p-6 rounded-[2rem] shadow-2xl border border-slate-100">
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">
