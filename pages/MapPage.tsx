@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import StaticMap from '../components/StaticMap';
+import InteractiveGoogleMap from '../components/InteractiveGoogleMap';
 import { Link } from 'react-router-dom';
 import { BusinessCategory } from '../types';
 
@@ -12,45 +13,73 @@ const MapPage: React.FC = () => {
   
   const [activeCategory, setActiveCategory] = useState<string>('all');
   
+  // Estado para alternar entre Google Maps e Ilustrado
+  const [mapMode, setMapMode] = useState<'google' | 'static'>('google');
+  
   const filteredBusinesses = businesses.filter(b => 
     b.status === 'approved' && (activeCategory === 'all' || b.category === activeCategory)
   );
 
   return (
     <div className="relative h-[calc(100vh-64px)] w-full bg-white overflow-hidden font-['Plus_Jakarta_Sans']">
-        {/* Capa del Mapa Estático con z-0 bajo */}
+        {/* Capa Dinámica del Mapa (Google Maps o Ilustrado) */}
         <div className="absolute inset-0 z-0">
-             <StaticMap businesses={filteredBusinesses} activeCategory={activeCategory} />
+             {mapMode === 'google' ? (
+               <InteractiveGoogleMap businesses={filteredBusinesses} activeCategory={activeCategory} />
+             ) : (
+               <StaticMap businesses={filteredBusinesses} activeCategory={activeCategory} />
+             )}
         </div>
 
-        {/* Filtros Flotantes (Categorías) */}
-        <div className="absolute top-6 left-1/2 -translate-x-1/2 z-20 flex gap-2 overflow-x-auto no-scrollbar max-w-[95vw] px-4 pointer-events-auto">
-             <div className="bg-white/80 backdrop-blur-md p-1.5 rounded-[2rem] shadow-xl border border-slate-100 flex gap-1">
-                 <FilterPill 
-                    active={activeCategory === 'all'} 
-                    onClick={() => setActiveCategory('all')} 
-                    label={t("Todos", "All")} 
-                    icon="fa-border-all" 
-                 />
-                 <FilterPill 
-                    active={activeCategory === BusinessCategory.HOTEL} 
-                    onClick={() => setActiveCategory(BusinessCategory.HOTEL)} 
-                    label={t("Hoteles", "Hotels")} 
-                    icon="fa-bed" 
-                 />
-                 <FilterPill 
-                    active={activeCategory === BusinessCategory.RESTAURANT} 
-                    onClick={() => setActiveCategory(BusinessCategory.RESTAURANT)} 
-                    label={t("Comida", "Food")} 
-                    icon="fa-utensils" 
-                 />
-                 <FilterPill 
-                    active={activeCategory === BusinessCategory.TOURIST_SPOT} 
-                    onClick={() => setActiveCategory(BusinessCategory.TOURIST_SPOT)} 
-                    label={t("Turismo", "Tourism")} 
-                    icon="fa-mountain-sun" 
-                 />
-             </div>
+        {/* Barra Superior: Switcher de Vista y Filtros Flotantes */}
+        <div className="absolute top-4 left-0 right-0 z-20 flex items-center justify-between px-4 pointer-events-none gap-2">
+          {/* Switcher de Vista (Google / Ilustrado) */}
+          <div className="bg-white/95 backdrop-blur-md p-1 rounded-full shadow-xl border border-slate-100 flex items-center gap-1 pointer-events-auto shrink-0">
+            <button
+              onClick={() => setMapMode('google')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-wider transition-all ${
+                mapMode === 'google' ? 'bg-[#2A4D69] text-white shadow-md' : 'text-slate-500 hover:text-slate-900'
+              }`}
+            >
+              <i className="fas fa-map-location-dot"></i> Google
+            </button>
+            <button
+              onClick={() => setMapMode('static')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-wider transition-all ${
+                mapMode === 'static' ? 'bg-[#2A4D69] text-white shadow-md' : 'text-slate-500 hover:text-slate-900'
+              }`}
+            >
+              <i className="fas fa-image"></i> {t("Ilustrado", "Illustrated")}
+            </button>
+          </div>
+
+          {/* Filtros Flotantes (Categorías) */}
+          <div className="flex gap-1 overflow-x-auto no-scrollbar pointer-events-auto bg-white/90 backdrop-blur-md p-1.5 rounded-[2rem] shadow-xl border border-slate-100 max-w-[calc(100vw-180px)]">
+             <FilterPill 
+                active={activeCategory === 'all'} 
+                onClick={() => setActiveCategory('all')} 
+                label={t("Todos", "All")} 
+                icon="fa-border-all" 
+             />
+             <FilterPill 
+                active={activeCategory === BusinessCategory.HOTEL} 
+                onClick={() => setActiveCategory(BusinessCategory.HOTEL)} 
+                label={t("Hoteles", "Hotels")} 
+                icon="fa-bed" 
+             />
+             <FilterPill 
+                active={activeCategory === BusinessCategory.RESTAURANT} 
+                onClick={() => setActiveCategory(BusinessCategory.RESTAURANT)} 
+                label={t("Comida", "Food")} 
+                icon="fa-utensils" 
+             />
+             <FilterPill 
+                active={activeCategory === BusinessCategory.TOURIST_SPOT} 
+                onClick={() => setActiveCategory(BusinessCategory.TOURIST_SPOT)} 
+                label={t("Turismo", "Tourism")} 
+                icon="fa-mountain-sun" 
+             />
+          </div>
         </div>
 
         {/* Leyenda Dinámica (Desktop) */}
@@ -67,14 +96,12 @@ const MapPage: React.FC = () => {
             </div>
         </div>
 
-        {/* Botón Flotante de Cupones - Tamaño Reducido */}
+        {/* Botón Flotante de Cupones */}
         <div className="fixed bottom-28 right-6 z-[100]">
             <Link to="/coupons" className="group flex items-center gap-3 bg-white p-2 pr-5 rounded-full shadow-[0_10px_25px_rgba(0,0,0,0.1)] border border-slate-100 transition-all hover:scale-105 active:scale-95 pointer-events-auto">
-                {/* Icono más pequeño */}
                 <div className="w-10 h-10 rounded-full bg-[#F58220] flex items-center justify-center text-white shadow-md group-hover:rotate-12 transition-transform">
                     <i className="fas fa-ticket-alt text-sm"></i>
                 </div>
-                {/* Texto ajustado */}
                 <div className="text-left">
                     <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none mb-0.5">
                         {t("Descuentos", "Discounts")}
