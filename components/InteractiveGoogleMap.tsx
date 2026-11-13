@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { setOptions, importLibrary } from '@googlemaps/js-api-loader';
+import { Loader } from '@googlemaps/js-api-loader';
 import { useNavigate } from 'react-router-dom';
 import { Business, BusinessCategory } from '../types';
 import { useAppContext } from '../context/AppContext';
@@ -52,6 +52,7 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<google.maps.Map | null>(null);
+  const loaderRef = useRef<Loader | null>(null);
   const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
   const userMarkerRef = useRef<google.maps.marker.AdvancedMarkerElement | null>(null);
 
@@ -72,14 +73,16 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
     if (!mapContainerRef.current) return;
 
     try {
-      setOptions({
+      const loader = new Loader({
         apiKey,
         version: 'weekly',
         language: 'es',
         region: 'PE'
-      } as any);
+      });
+      loaderRef.current = loader;
 
-      importLibrary('maps')
+      loader
+        .importLibrary('maps')
         .then((mapsLib) => {
           if (isCancelled || !mapContainerRef.current) return;
           const { Map } = mapsLib as google.maps.MapsLibrary;
@@ -112,13 +115,14 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
 
   useEffect(() => {
     const map = mapInstanceRef.current;
-    if (!map || !mapLoaded) return;
+    const loader = loaderRef.current;
+    if (!map || !loader || !mapLoaded) return;
     let isSubscribed = true;
 
     markersRef.current.forEach((m) => (m.map = null));
     markersRef.current = [];
 
-    importLibrary('marker').then((markerLib) => {
+    loader.importLibrary('marker').then((markerLib) => {
       if (!isSubscribed) return;
       const { AdvancedMarkerElement } = markerLib as google.maps.MarkerLibrary;
       const newMarkers: google.maps.marker.AdvancedMarkerElement[] = [];
@@ -175,10 +179,11 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
 
   useEffect(() => {
     const map = mapInstanceRef.current;
-    if (!map || !mapLoaded || !userPos) return;
+    const loader = loaderRef.current;
+    if (!map || !loader || !mapLoaded || !userPos) return;
     let isSubscribed = true;
 
-    importLibrary('marker').then((markerLib) => {
+    loader.importLibrary('marker').then((markerLib) => {
       if (!isSubscribed) return;
       const { AdvancedMarkerElement } = markerLib as google.maps.MarkerLibrary;
 
