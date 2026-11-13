@@ -95,7 +95,7 @@ const MapPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Botón Flotante de Cupones (Respetando posición móvil) */}
+      {/* Botón Flotante de Cupones */}
       <div className="fixed bottom-28 right-6 z-[100]">
         <Link
           to="/coupons"
