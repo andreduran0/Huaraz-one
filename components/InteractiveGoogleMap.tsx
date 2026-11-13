@@ -34,18 +34,6 @@ const getCategoryPinStyle = (category: BusinessCategory | string) => {
   }
 };
 
-const vectorizedTourismStyle: google.maps.MapTypeStyle[] = [
-  { featureType: 'all', elementType: 'geometry', stylers: [{ lightness: 10 }] },
-  { featureType: 'landscape.natural', elementType: 'geometry', stylers: [{ color: '#f3f4f6' }] },
-  { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#dcfce7' }] },
-  { featureType: 'poi.business', stylers: [{ visibility: 'simplified' }] },
-  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#ffffff' }] },
-  { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#e5e7eb' }, { weight: 1 }] },
-  { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#fef3c7' }] },
-  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#c7d2fe' }] },
-  { featureType: 'transit', stylers: [{ visibility: 'simplified' }] }
-];
-
 export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
   businesses,
   activeCategory = 'all'
@@ -93,8 +81,7 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
             mapId: 'DEMO_MAP_ID',
             disableDefaultUI: true,
             gestureHandling: 'greedy',
-            clickableIcons: false,
-            styles: vectorizedTourismStyle
+            clickableIcons: false
           });
 
           map.addListener('click', () => setActiveBusiness(null));
