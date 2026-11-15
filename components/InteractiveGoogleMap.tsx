@@ -115,7 +115,10 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
       const newMarkers: google.maps.marker.AdvancedMarkerElement[] = [];
 
       businesses.forEach((business) => {
-        if (!business.lat || !business.lng) return;
+     const targetLat = (business as any).googleLat ?? business.lat;
+     const targetLng = (business as any).googleLng ?? business.lng;
+
+     if (!targetLat || !targetLng) return;
 
         const pinStyle = getCategoryPinStyle(business.category);
         const photoUrl =
