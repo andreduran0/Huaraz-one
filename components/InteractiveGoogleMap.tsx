@@ -114,11 +114,12 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
       const { AdvancedMarkerElement } = markerLib as google.maps.MarkerLibrary;
       const newMarkers: google.maps.marker.AdvancedMarkerElement[] = [];
 
-      businesses.forEach((business) => {
-     const targetLat = (business as any).googleLat ?? business.lat;
-     const targetLng = (business as any).googleLng ?? business.lng;
+businesses.forEach((business) => {
+      // Forzamos la lectura de googleLat/googleLng si existen; si no, usan lat/lng
+      const targetLat = Number((business as any).googleLat) || business.lat;
+      const targetLng = Number((business as any).googleLng) || business.lng;
 
-     if (!targetLat || !targetLng) return;
+      if (!targetLat || !targetLng) return;
 
         const pinStyle = getCategoryPinStyle(business.category);
         const photoUrl =
