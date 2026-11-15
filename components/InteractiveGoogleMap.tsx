@@ -115,11 +115,11 @@ export const InteractiveGoogleMap: React.FC<InteractiveGoogleMapProps> = ({
       const newMarkers: google.maps.marker.AdvancedMarkerElement[] = [];
 
 businesses.forEach((business) => {
-      // Forzamos la lectura de googleLat/googleLng si existen; si no, usan lat/lng
-      const targetLat = Number((business as any).googleLat) || business.lat;
-      const targetLng = Number((business as any).googleLng) || business.lng;
+        // Forzamos la lectura de googleLat/googleLng si existen; si no, usan lat/lng
+        const targetLat = Number((business as any).googleLat) || business.lat;
+        const targetLng = Number((business as any).googleLng) || business.lng;
 
-      if (!targetLat || !targetLng) return;
+        if (!targetLat || !targetLng) return;
 
         const pinStyle = getCategoryPinStyle(business.category);
         const photoUrl =
@@ -146,14 +146,14 @@ businesses.forEach((business) => {
         pinContainer.addEventListener('click', (e) => {
           e.stopPropagation();
           setActiveBusiness(business);
-          map.panTo({ lat: business.lat, lng: business.lng });
+          map.panTo({ lat: targetLat, lng: targetLng }); // <--- Usamos targetLat
           map.setZoom(Math.max(map.getZoom() || DEFAULT_ZOOM, 16));
         });
 
         newMarkers.push(
           new AdvancedMarkerElement({
             map,
-            position: { lat: business.lat, lng: business.lng },
+            position: { lat: targetLat, lng: targetLng }, // <--- Usamos targetLat
             content: pinContainer,
             title: business.name
           })
