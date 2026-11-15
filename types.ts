@@ -33,6 +33,8 @@ export interface Business {
   address: string;
   lat: number;
   lng: number;
+  googleLat?: number; // <--- Añade esto
+  googleLng?: number; // <--- Añade esto
   phone?: string;
   whatsapp?: string;
   photos: string[];
