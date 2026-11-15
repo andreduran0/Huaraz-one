@@ -1054,6 +1054,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jr. Leonisa Lescano #635, Huaraz',
     lat: -9.7020, 
     lng: -77.4925,
+   googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '+51 990 312 326', 
     whatsapp: '51990312326',
     photos: [
