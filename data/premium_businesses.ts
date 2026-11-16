@@ -193,8 +193,8 @@ export const premiumBusinesses: Business[] = [
     address: 'Jirón José de Sucre Pasaje Comercio, Huaraz',
     lat: -9.529298655602219,
     lng: -77.52847789163013,
-   googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+   googleLat: -9.529266913232428,
+   googleLng: -77.5284886204662 , 
     phone: '+51 900272654',
     whatsapp: '51900272654', 
     photos: [
