@@ -770,8 +770,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Pasaje Comercio (1era. Tienda costado del Banco Interbank), Jirón José de Sucre S/N, Huaraz',
    lat: -9.5370, 
    lng: -77.5079,
-    googleLat: -9.529298655602219,
-   googleLng: -77.52846716279394,
+    googleLat: -9.528650,
+   googleLng: -77.530232,
     phone: '943121714',
     whatsapp: '51943121714',
     photos: [
