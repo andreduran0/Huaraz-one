@@ -770,8 +770,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Pasaje Comercio (1era. Tienda costado del Banco Interbank), Jirón José de Sucre S/N, Huaraz',
    lat: -9.5370, 
    lng: -77.5079,
-    googleLat: -9.528650,
-   googleLng: -77.530232,
+    googleLat: -9.529266913232428,
+   googleLng: -77.5284886204662 ,
     phone: '943121714',
     whatsapp: '51943121714',
     photos: [
@@ -1104,8 +1104,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jr. Leonisa Lescano #635, Huaraz',
     lat: -9.7020, 
     lng: -77.4925,
-   googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+   googleLat: -9.528751578483766, 
+   googleLng: -77.5304553762854 , 
     phone: '+51 990 312 326', 
     whatsapp: '51990312326',
     photos: [
