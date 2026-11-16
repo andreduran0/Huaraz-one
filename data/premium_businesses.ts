@@ -770,8 +770,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Pasaje Comercio (1era. Tienda costado del Banco Interbank), Jirón José de Sucre S/N, Huaraz',
    lat: -9.5370, 
    lng: -77.5079,
-    googleLat: -9.529266913232428,
-   googleLng: -77.5284886204662 ,
+    googleLat: -9.529298655602219,
+   googleLng: -77.52846716279394,
     phone: '943121714',
     whatsapp: '51943121714',
     photos: [
@@ -1043,8 +1043,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jr. Víctor Cordero 866 (Entre el Parque de las Banderas y la Av. Gamarra), Huaraz',
    lat: -9.5359, 
    lng: -77.5014,
-   googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+   googleLat: -9.532367222231679,
+   googleLng: -77.5274557627938, 
     phone: '+51 919589738', 
     whatsapp: '51919589738',
     photos: [
