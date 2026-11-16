@@ -1273,6 +1273,66 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     googleMapsQuery: 'Tortas Camucha Jr Gabino Uribe 638 Huaraz',
   },
   {
+    id: 'tortas-camucha-2', // <-- ID único para el segundo pin
+    name: 'Tortas Camucha (Sede Jr. Huaylas)', // <-- Nombre diferenciado en el mapa
+    category: BusinessCategory.TORTERIA,
+    description: 'Tortas Camucha es el legado vivo de una pasión que comenzó en 1971. Fundada por la matriarca Camucha, esta pastelería artesanal ha transformado recetas familiares en piezas maestras de sabor durante más de 50 años. Hoy, combinamos nuestra rica herencia con una visión moderna, manteniendo el compromiso de ofrecer productos frescos, elegantes y con el toque casero inconfundible que nos convirtió en un referente de la tradición huaracina.',
+    address: 'Jr. Huaylas esq. con Jr. Tereza Gonzales de Fanning 516', // <-- Dirección exacta de la 2da sede
+    lat: -9.5320, // <-- Pon aquí la coordenada visual de esta sede para el mapa ilustrado
+    lng: -77.5300, // <-- Pon aquí la coordenada visual de esta sede para el mapa ilustrado
+    googleLat: -9.517869150856852,
+    googleLng: -77.53204826227365,
+    phone: '+51 943 691 598 / +51 968 945 835',
+    whatsapp: '51968945835',
+    photos: [
+      'https://i.imgur.com/D9rhQKy.jpeg',
+      'https://i.imgur.com/ov9gmzB.jpeg',
+      'https://i.imgur.com/YrO3IgD.jpeg',
+      'https://i.imgur.com/FnmlXMh.jpeg',
+      'https://i.imgur.com/1D6QHY6.jpeg',
+      'https://i.imgur.com/xe828vR.jpeg',
+      'https://i.imgur.com/tM3ffd8.jpeg',
+      'https://i.imgur.com/doUzLtN.jpeg',
+      'https://i.imgur.com/i2enMGM.jpeg',
+      'https://i.imgur.com/1RRmIAn.jpeg',
+      'https://i.imgur.com/dPB0StD.jpeg',
+      'https://i.imgur.com/eE9O2bd.jpeg',
+      'https://i.imgur.com/NxAQy5J.jpeg',
+      'https://i.imgur.com/rag57mn.jpeg',
+      'https://i.imgur.com/lyuW64C.jpeg',
+      'https://i.imgur.com/3FtNt83.jpeg',
+      'https://i.imgur.com/az8Mvrk.jpeg',
+      'https://i.imgur.com/EFl0gVs.jpeg',
+      'https://i.imgur.com/BrUOZ2s.jpeg',
+      'https://i.imgur.com/GbYplAL.jpeg',
+      'https://i.imgur.com/xnPH1Ob.jpeg',
+      'https://i.imgur.com/oQEZ2oz.jpeg',
+      'https://i.imgur.com/niPTFGb.jpeg',
+      'https://i.imgur.com/gkPWa4F.jpeg',
+      'https://i.imgur.com/DxPLBGx.jpeg',
+      'https://i.imgur.com/zKzZsnx.jpeg',
+      'https://i.imgur.com/dqtTNR2.jpeg',
+      'https://i.imgur.com/BrUOZ2s.jpeg',
+      'https://i.imgur.com/5Ojxt7Y.jpeg'
+    ],
+    menuImages: [
+      'https://i.imgur.com/nq1OCfk.jpeg',
+      'https://i.imgur.com/UwqggPI.jpeg',
+      'https://i.imgur.com/oUYyfiE.jpeg',
+      'https://i.imgur.com/UGyZeL7.jpeg',
+      'https://i.imgur.com/pGguPzj.jpeg',
+      'https://i.imgur.com/kmqTAcb.jpeg',
+    ],
+    schedule: { 
+      'Lunes - Sábado': '8:00 AM - 2:00 PM y 3:00 PM - 8:45 PM'
+    },
+    adLevel: AdLevel.PREMIUM,
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=huaraz-tortas-camucha-2',
+    status: 'approved', 
+    ownerUserId: 'u14',
+    googleMapsQuery: 'Tortas Camucha Jr Huaylas Huaraz',
+  },
+  {
     id: 'qorianka-chocolateria', // ID optimizado para una URL profesional
     name: 'Qorianka - Chocolatería',
     category: BusinessCategory.CHOCOLATERIA,
