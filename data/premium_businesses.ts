@@ -698,8 +698,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jr. Damaso Antúnez N.º 744, Huaraz',
    lat: -9.5379, 
    lng: -77.5014,
-   googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+   googleLat: -9.53232885234643,
+   googleLng: -77.5287861315477,
     phone: '954758684',
     whatsapp: '51954758684',
     photos: [
@@ -730,8 +730,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Av. Luzuriaga N° 1004 Belén ',
      lat: -9.5399, 
    lng: -77.5025,
-  googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+  googleLat: -9.53236124774483,
+   googleLng:-77.52970051117782,
     phone: '961951453',
     whatsapp: '51961951453',
     photos: [
@@ -770,8 +770,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Pasaje Comercio (1era. Tienda costado del Banco Interbank), Jirón José de Sucre S/N, Huaraz',
    lat: -9.5370, 
    lng: -77.5079,
-    googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+    googleLat: -9.529298655602219,
+   googleLng: -77.52846716279394,
     phone: '943121714',
     whatsapp: '51943121714',
     photos: [
@@ -800,8 +800,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jr. Teófilo Castillo 539, Huaraz',
     lat: -9.4280,
     lng: -77.4270,
-   googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+   googleLat: -9.53192891855341,
+   googleLng:  -77.5301187762852,
     phone: '+51 972 399 950', 
     whatsapp: '51972399950', 
     photos: [
@@ -841,8 +841,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Av. Luzuriaga N·702 (Segundo piso Serpost) - Huaraz',
     lat: -9.5395, 
    lng: -77.5079,
-  googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+  googleLat: -9.529410701916536,
+   googleLng: -77.5293157051215,
     phone: '+51 920 784 431', 
     whatsapp: '51920784431',
     photos: [
@@ -891,8 +891,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Local 1: Jr. Ramón Castilla 1ra. Cuadra (Frente a Pumacayán) | Local 2: Av. Confraternidad Internacional Este 640, Huaraz',
    lat: -9.5185, 
    lng: -77.5050,
-  googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+  googleLat: -9.530076375300656,
+   googleLng: -77.52310360512146,
     phone: '+51 950818598', 
     whatsapp: '51950818598',
     photos: [
@@ -942,8 +942,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jr. San Martin 746, Huaraz',
    lat: -9.5432, 
    lng: -77.5079,
-   googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+   googleLat: -9.529516855730844, 
+   googleLng: -77.53017719162956,
     phone: '+51 953604939', 
     whatsapp: '51953604939',
     photos: [
@@ -994,8 +994,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jirón Simón Bolívar 572 - 2do piso, Huaraz',
     lat: -9.5360, 
     lng: -77.5110,
-   googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+   googleLat: -9.528061016518539, 
+   googleLng:  -77.52756068977664,
     phone: '+51 942441725', 
     whatsapp: '51942441725',
     photos: [
@@ -1140,8 +1140,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Parque Ginebra, Huaraz, Perú',
   lat: -9.5360, 
   lng: -77.5097,
- googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+ googleLat:-9.528748459284058,
+   googleLng:-77.52823976279387,
     phone: '+51 976272174', 
     whatsapp: '51976272174',
     photos: [
@@ -1220,8 +1220,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jr. Gabino Uribe 638 - Belén | Jr. Huaylas esq. con Jr. Tereza Gonzales de Fanning 516',
   lat: -9.5445, 
   lng: -77.5280,
-   googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+   googleLat: -9.53171355671195,
+   googleLng: -77.52903913850317,
     phone: '+51 943 691 598 / +51 968 945 835',
     whatsapp: '51968945835',
     photos: [
@@ -1280,8 +1280,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jr. Damaso Antunez 726 - Belén, Huaraz',
     lat: -9.5720, 
     lng: -77.4954,
-   googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+   googleLat: -9.532517271441192,
+   googleLng: -77.52883244364064,
     phone: '+51 997 023 217', 
     whatsapp: '51997023217',
     photos: [
@@ -1334,8 +1334,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jr. 28 de Julio N° 487 (Frente a Dollarcity), Huaraz',
     lat: -9.5040, 
     lng: -77.1955,
-  googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+  googleLat: -9.530634479357508, 
+   googleLng: -77.53029484744933,
     phone: '+51 932 287 593', 
     whatsapp: '51932287593',
     photos: [
@@ -1420,8 +1420,8 @@ Nuestro compromiso es brindar una experiencia única, combinando frescura, sabor
     address: 'AV. Agustín Gamarra N.º 625 ref: media cuadra de la alameda Grau ',
     lat: -9.1020,
     lng: -77.4055,
-    googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+    googleLat: -9.528663955229216, 
+   googleLng: -77.52639091861319,
     phone: '+51 998 127 329', 
     whatsapp: '51998127329',
     photos: [
@@ -1475,8 +1475,8 @@ Nos diferenciamos de las demás taquerías por ofrecer una combinación única d
     address: 'AV. Agustín Gamarra N.º 625 ref: media cuadra de la alameda Grau ',
    lat: -9.5339, 
    lng: -77.5050,
-   googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+   googleLat: -9.528663955229216,
+   googleLng: -77.52639091861319,
     phone: '+51 998 127 329', 
     whatsapp: '51998127329',
     photos: [
@@ -1517,8 +1517,8 @@ Nos diferenciamos de las demás taquerías por ofrecer una combinación única d
     address: 'Jirón Garino Uribe, Huaraz, Perú',
  lat: -9.5374, 
   lng: -77.5042,
-   googleLat: -9.528471, // Coordenada exacta de Google Maps
-   googleLng: -77.530232,
+   googleLat: -9.531666737705068,
+   googleLng: -77.52880622046578,
     phone: '+51 983 182 747',
     whatsapp: '51983 182 747',
     photos: [
