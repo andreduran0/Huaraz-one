@@ -9,6 +9,8 @@ export const premiumBusinesses: Business[] = [
     address: 'Jr. Federico Sal y Rosas 305 - Huaraz',
     lat: -9.5470, 
     lng: -77.5008,
+   googleLat: -9.532573957540071,
+   googleLng: -77.53182076279641,
     phone: '+51 935 260 190', 
     whatsapp: '51935260190',
     photos: [
@@ -89,6 +91,8 @@ export const premiumBusinesses: Business[] = [
     address: 'Jr. Juan de la Cruz Romero 647 - Huaraz',
     lat: -9.5470, 
     lng: -77.5008,
+    googleLat: -9.528732578475168,
+   googleLng: -77.53080218977699,
     phone: '+51 920042000', 
     whatsapp: '51920042000',
     photos: [
@@ -143,6 +147,8 @@ export const premiumBusinesses: Business[] = [
     address: 'Plaza De Armas - Huaraz',
     lat: -9.5470, 
     lng: -77.5008,
+    googleLat: -9.529256951659073,
+   googleLng:  -77.52821704559658,
     phone: '+51 941277627', 
     whatsapp: '51941277627',
     // ¡Aquí eliminé el "}," que cortaba tu código!
@@ -185,8 +191,10 @@ export const premiumBusinesses: Business[] = [
     category: BusinessCategory.TOUR_AGENCY,
     description: 'Chasing Adventures EIRL es una empresa peruana con sede en Huaraz, que ofrece experiencias personalizadas para descubrir la Cordillera Blanca y Huayhuash. Ofrecemos una variedad de tours, trekking y montañismo, así como asistencia y soporte logístico para individuos y grupos. Nuestro enfoque es la protección y preservación del medio ambiente y nuestro equipo está formado por profesionales altamente capacitados y apasionados por las montañas y la naturaleza. Brindamos un servicio excepcional para hacer de la experiencia de nuestros clientes algo inolvidable.',
     address: 'Jirón José de Sucre Pasaje Comercio, Huaraz',
-    lat: -9.5339, 
-    lng: -77.5014,
+    lat: -9.529298655602219,
+    lng: -77.52847789163013,
+   googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '+51 900272654',
     whatsapp: '51900272654', 
     photos: [
@@ -247,6 +255,8 @@ export const premiumBusinesses: Business[] = [
     address: 'Jr. Amadeo Figueroa N 1274 - La Soledad, Huaraz, Peru',
     lat: -9.5470, 
     lng: -77.5008,
+  googleLat: -9.530811779439967,
+   googleLng: -77.52340795908768,
     phone: '+51 955716534', 
     whatsapp: '51955716534',
     photos: [
@@ -293,6 +303,8 @@ export const premiumBusinesses: Business[] = [
     address: 'Parque Ginebra s/n Zona Comercial - Huaraz.',
     lat: -9.5489, 
     lng: -77.5897,
+  googleLat: -9.528643012807441,
+   googleLng: -77.52832824930248,
     phone: '+51 976 510 041', 
     whatsapp: '51976510041', // Sin espacios para que funcione el enlace
     photos: [
@@ -337,6 +349,8 @@ export const premiumBusinesses: Business[] = [
     address: 'Parque Ginebra - Huaraz, al costado de Casa de Guías',
   lat: -9.5389, 
     lng: -77.5097,
+    googleLat: -9.52835660855959,
+   googleLng: -77.52830476279391,
     phone: '+51 948262095', 
     whatsapp: '51948262095',
     photos: [
@@ -378,6 +392,8 @@ export const premiumBusinesses: Business[] = [
     address: 'Pasaje Jesús Morales 977 - Huaraz - Ancash. (Referencia: a media cuadra de la Av. Gamarra con 28 de Julio, frente al CETPRO Teófilo Méndez Ramos).',
      lat: -9.5339, 
    lng: -77.5014,
+    googleLat: -9.532049899315528,
+   googleLng: -77.52658179162982,
     phone: '+51 967477268',
     whatsapp: '51967477268',
     photos: [
@@ -430,6 +446,8 @@ export const premiumBusinesses: Business[] = [
     address: 'Parque Ginebra en la recta del Pasaje Wamashraju - Huaraz.',
     lat: -9.5339, 
     lng: -77.5014,
+    googleLat: -9.528496401606082, 
+   googleLng: -77.52806794744903,
     phone: '+51 956 278 429',
     whatsapp: '51956278429', // Sin espacios para que funcione el link de WhatsApp
     photos: [
@@ -495,6 +513,8 @@ export const premiumBusinesses: Business[] = [
   address: 'Barrio Jose Olaya Al frente de la capilla - Huaraz.',
   lat: -9.5339, 
   lng: -77.5014,
+  googleLat: -9.527780978033624,
+   googleLng:-77.51950246094064,
   phone: '+51 943972261',
   whatsapp: '51943972261', 
   photos: [
@@ -524,6 +544,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jirón Pedro Campos, Huaraz, Perú', // Ojo: en tu borrador decía Ramón Castilla en la dirección pero Pedro Campos en Google Maps. Lo unifiqué a Pedro Campos para que no haya errores de navegación.
    lat: -9.5265, 
    lng: -77.5048,
+   googleLat: -9.530762579417196,
+   googleLng: -77.52416550512142,
     phone: '+51 965 260 764', 
     whatsapp: '51965260764',
     photos: [
@@ -566,6 +588,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jirón Los Girasoles. Mz 163 Lt 9 - Huaraz.',
     lat: -9.5379, // ⚠️ CUIDADO: Estas son las coordenadas de Malibú, ¡cámbialas!
     lng: -767.5414, // ⚠️ CUIDADO: Estas son las coordenadas de Malibú, ¡cámbialas!
+   googleLat: -9.538201263379674,
+   googleLng: -77.52952783210436,
     phone: '+51 995890102', // Corregido: faltaba la comilla final
     whatsapp: '51995890102', 
     photos: [
@@ -590,7 +614,11 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     category: BusinessCategory.RESTAURANT,
     description: 'Restaurante ubicado en el mirador de Rataquenua. Disfruta de una vista panorámica inigualable de Huaraz y la Cordillera Blanca junto a una experiencia gastronómica de altura con platos regionales y fusión.',
     address: 'Mirador de Rataquenua, Huaraz',
-    lat: -9.5152, lng: -77.4877,
+    lat: -9.5152, 
+    lng: -77.4877,
+   googleLat: -9.535692252492487, 
+   googleLng: -77.51493512654304,
+    
     phone: '+51 937 511 052', 
     whatsapp: '51937511052',
     photos: [
@@ -628,7 +656,10 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     category: BusinessCategory.EDUCATION,
     description: 'Institución Educativa líder en Huaraz, dedicada a la formación integral de estudiantes con un enfoque en ingeniería y ciencias. Nuestra propuesta educativa combina la excelencia académica con el desarrollo de valores, preparando a los líderes del mañana en un entorno moderno y estratégico.',
     address: 'Jr. Augusto B. Leguía n.º 267, Huaraz - Independencia',
-    lat: -9.5410, lng: -77.5280, 
+    lat: -9.5410, 
+    lng: -77.5280, 
+   googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '914915067',
     whatsapp: '51929866812',
     photos: [
@@ -667,6 +698,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jr. Damaso Antúnez N.º 744, Huaraz',
    lat: -9.5379, 
    lng: -77.5014,
+   googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '954758684',
     whatsapp: '51954758684',
     photos: [
@@ -697,6 +730,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Av. Luzuriaga N° 1004 Belén ',
      lat: -9.5399, 
    lng: -77.5025,
+  googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '961951453',
     whatsapp: '51961951453',
     photos: [
@@ -735,6 +770,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Pasaje Comercio (1era. Tienda costado del Banco Interbank), Jirón José de Sucre S/N, Huaraz',
    lat: -9.5370, 
    lng: -77.5079,
+    googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '943121714',
     whatsapp: '51943121714',
     photos: [
@@ -761,7 +798,10 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     category: BusinessCategory.RESTAURANT,
     description: 'La Carpa Rosa es un espacio gastronómico en el corazón de Huaraz que combina sabor, calidez y una experiencia acogedora. Destaca por su propuesta de cocina peruana con énfasis en parrillas, caldos reconfortantes y platos preparados al momento con ese toque casero que conquista. Es el lugar ideal para compartir con amigos o en familia en un ambiente íntimo y agradable, donde la iluminación cálida y la buena música crean momentos especiales.',
     address: 'Jr. Teófilo Castillo 539, Huaraz',
-    lat: -9.4280, lng: -77.4270, 
+    lat: -9.4280,
+    lng: -77.4270,
+   googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '+51 972 399 950', 
     whatsapp: '51972399950', 
     photos: [
@@ -801,6 +841,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Av. Luzuriaga N·702 (Segundo piso Serpost) - Huaraz',
     lat: -9.5395, 
    lng: -77.5079,
+  googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '+51 920 784 431', 
     whatsapp: '51920784431',
     photos: [
@@ -849,6 +891,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Local 1: Jr. Ramón Castilla 1ra. Cuadra (Frente a Pumacayán) | Local 2: Av. Confraternidad Internacional Este 640, Huaraz',
    lat: -9.5185, 
    lng: -77.5050,
+  googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '+51 950818598', 
     whatsapp: '51950818598',
     photos: [
@@ -898,6 +942,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jr. San Martin 746, Huaraz',
    lat: -9.5432, 
    lng: -77.5079,
+   googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '+51 953604939', 
     whatsapp: '51953604939',
     photos: [
@@ -948,6 +994,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jirón Simón Bolívar 572 - 2do piso, Huaraz',
     lat: -9.5360, 
     lng: -77.5110,
+   googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '+51 942441725', 
     whatsapp: '51942441725',
     photos: [
@@ -995,6 +1043,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jr. Víctor Cordero 866 (Entre el Parque de las Banderas y la Av. Gamarra), Huaraz',
    lat: -9.5359, 
    lng: -77.5014,
+   googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '+51 919589738', 
     whatsapp: '51919589738',
     photos: [
@@ -1089,7 +1139,9 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     description: 'Lo mejor de la comida de la India, Tailandia y México en el corazón de Huaraz. Sabores auténticos, especias seleccionadas y una experiencia gastronómica internacional única que solo podrás encontrar en Chilli Heaven.',
     address: 'Parque Ginebra, Huaraz, Perú',
   lat: -9.5360, 
-    lng: -77.5097,
+  lng: -77.5097,
+ googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '+51 976272174', 
     whatsapp: '51976272174',
     photos: [
@@ -1166,7 +1218,10 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     category: BusinessCategory.TORTERIA,
     description: 'Tortas Camucha es el legado vivo de una pasión que comenzó en 1971. Fundada por la matriarca Camucha, esta pastelería artesanal ha transformado recetas familiares en piezas maestras de sabor durante más de 50 años. Hoy, combinamos nuestra rica herencia con una visión moderna, manteniendo el compromiso de ofrecer productos frescos, elegantes y con el toque casero inconfundible que nos convirtió en un referente de la tradición huaracina.',
     address: 'Jr. Gabino Uribe 638 - Belén | Jr. Huaylas esq. con Jr. Tereza Gonzales de Fanning 516',
-  lat: -9.5445, lng: -77.5280, 
+  lat: -9.5445, 
+  lng: -77.5280,
+   googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '+51 943 691 598 / +51 968 945 835',
     whatsapp: '51968945835',
     photos: [
@@ -1223,7 +1278,10 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     category: BusinessCategory.CHOCOLATERIA,
     description: 'Descubre la magia del auténtico cacao peruano en Qorianka. Te ofrecemos los más exquisitos chocolates artesanales, bombones, chocotejas y postres elaborados con insumos de primera calidad. Ya sea para recargar energías tras una ruta por la Cordillera Blanca, disfrutar de una bebida caliente o llevar el mejor recuerdo de Huaraz, cada bocado es una experiencia de altura.',
     address: 'Jr. Damaso Antunez 726 - Belén, Huaraz',
-    lat: -9.5720, lng: -77.4954,
+    lat: -9.5720, 
+    lng: -77.4954,
+   googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '+51 997 023 217', 
     whatsapp: '51997023217',
     photos: [
@@ -1276,6 +1334,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jr. 28 de Julio N° 487 (Frente a Dollarcity), Huaraz',
     lat: -9.5040, 
     lng: -77.1955,
+  googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '+51 932 287 593', 
     whatsapp: '51932287593',
     photos: [
@@ -1316,6 +1376,8 @@ Nacimos en el corazón de los Andes, en Huaraz, con el propósito de ofrecer una
     address: 'Jr. Daniel Villazan N· 162',
       lat: -9.5362, 
       lng: -77.5269, 
+    googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
       googleLat: -9.520381,
      googleLng: -77.528521,
     phone: '+51 910562501', 
@@ -1358,6 +1420,8 @@ Nuestro compromiso es brindar una experiencia única, combinando frescura, sabor
     address: 'AV. Agustín Gamarra N.º 625 ref: media cuadra de la alameda Grau ',
     lat: -9.1020,
     lng: -77.4055,
+    googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '+51 998 127 329', 
     whatsapp: '51998127329',
     photos: [
@@ -1411,6 +1475,8 @@ Nos diferenciamos de las demás taquerías por ofrecer una combinación única d
     address: 'AV. Agustín Gamarra N.º 625 ref: media cuadra de la alameda Grau ',
    lat: -9.5339, 
    lng: -77.5050,
+   googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '+51 998 127 329', 
     whatsapp: '51998127329',
     photos: [
@@ -1450,7 +1516,9 @@ Nos diferenciamos de las demás taquerías por ofrecer una combinación única d
     description: 'Las Agüero | comer bien, vivir mejor. ¡Bienvenidos a nuestro mundo de postres saludables y comida sana! Vive el bienestar en cada bocado y aroma.',
     address: 'Jirón Garino Uribe, Huaraz, Perú',
  lat: -9.5374, 
-   lng: -77.5042,
+  lng: -77.5042,
+   googleLat: -9.528471, // Coordenada exacta de Google Maps
+   googleLng: -77.530232,
     phone: '+51 983 182 747',
     whatsapp: '51983 182 747',
     photos: [
