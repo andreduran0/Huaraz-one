@@ -623,5 +623,25 @@ export const events: Event[] = [
     type: 'entertainment',
     time: '01:00 p. m.',
     location: '7 Cuervos (Jr. José Olaya N° 580, Huaraz - frente a la capilla principal)'
-  }
+  },
+  {
+    id: 'hakuna-matata-tributo-airbag-2026-11-21',
+    date: '2026-11-21', // Sábado
+    dayOfWeek: 'Sábado',
+    title: 'Tributo a Airbag y Rock de los 80s y 90s',
+    description: 'Disfruta de un show en vivo con tributo a Airbag y los clásicos del rock de los 80s y 90s a cargo de la banda Enigma en Hakuna Matata Restobar. Entradas gratis. Reservas solo por WhatsApp al 967 477 268.',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: 'Hakuna Matata Restobar (Pasaje Jesús Morales 977, Huaraz)'
+  },
+  {
+    id: 'hakuna-matata-aliados-2026-11-28',
+    date: '2026-11-28', // Sábado
+    dayOfWeek: 'Sábado',
+    title: 'Aliados en Vivo',
+    description: 'Vive una noche de música en vivo con Aliados en Hakuna Matata Restobar desde las 8:00 p. m. Preventa a S/ 25. Reservas solo por WhatsApp al 967 477 268.',
+    type: 'entertainment',
+    time: '08:00 p. m.',
+    location: 'Hakuna Matata Restobar (Pasaje Jesús Morales 977, Huaraz)'
+  },
 ];
