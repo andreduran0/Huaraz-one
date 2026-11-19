@@ -2,6 +2,14 @@ import { Coupon } from '../types';
 
 export const coupons: Coupon[] = [
   {
+    id: '22', // Ajusta al siguiente ID correlativo de tu lista
+    businessId: '22', // ID de Hotel Los Inkas en premium_businesses.ts
+    title: 'Habitación Matrimonial por 4 horas a S/ 80',
+    description: 'Tu momento de relax: Habitación matrimonial equipada con cama matrimonial, WiFi, TV Smart y agua caliente por 4 horas a solo S/ 80.00 soles (Jr. Federico Sal y Rosas 305).',
+    code: 'INKAS80',
+    expiryDate: '2026-12-31',
+  },
+  {
     id: 'C3',
     businessId: '8', // ID de Norabuena pollos y parrillas
     title: 'Combo 1/2 Pollo + Papas + Ensalada + 2 Inka Kolas',
