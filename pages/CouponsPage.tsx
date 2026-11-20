@@ -1,20 +1,11 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { Link } from 'react-router-dom';
-import { logBusinessClick, issueBusinessVoucher } from '../services/analyticsService';
 
-const CouponCard: React.FC<{ coupon: any; business: any }> = ({ coupon, business }) => {
-    const { language } = useAppContext();
-    const t = (es: string, en: string) => (language === 'es' ? es : en);
-    const [redeeming, setRedeeming] = useState(false);
-
-    const handlePromoTouch = () => {
-        void logBusinessClick({
-            business,
-            eventType: 'promotion_click',
-            label: `Promo - ${business.name}`,
-        });
-    };
+const CouponCard: React.FC<{ coupon: any, business: any }> = ({ coupon, business }) => {
+    const { language } = useAppContext(); // Extraemos language
+    const t = (es: string, en: string) => language === 'es' ? es : en;
+    const [copied, setCopied] = useState(false);
 
     const isExpiringSoon = () => {
         const expiry = new Date(coupon.expiryDate);
@@ -24,41 +15,8 @@ const CouponCard: React.FC<{ coupon: any; business: any }> = ({ coupon, business
         return days > 0 && days < 30;
     };
 
-    const handleRedeem = async () => {
-        if (redeeming) return;
-        setRedeeming(true);
-
-        handlePromoTouch();
-
-        let codeRef = coupon.code || '';
-        try {
-            const result = await issueBusinessVoucher({
-                business,
-                couponCode: coupon.code,
-                couponTitle: coupon.title,
-            });
-            if (result?.success && result?.voucherCode) {
-                codeRef = result.voucherCode;
-            }
-        } catch {
-            // No bloqueamos WhatsApp si falla el registro del voucher
-        } finally {
-            setRedeeming(false);
-        }
-
-        const numeroWhatsApp = "51944841455";
-        const extraCode = codeRef ? ` (${codeRef})` : '';
-        const mensaje = encodeURIComponent(
-            t(
-                `Hola Arkaiko, quiero canjear el cupón: ${coupon.title}${extraCode} en Huaraz Explorer.`,
-                `Hi Arkáiko, I want to redeem the coupon: ${coupon.title}${extraCode} at Huaraz Explorer.`
-            )
-        );
-        window.open(`https://wa.me/${numeroWhatsApp}?text=${mensaje}`, '_blank');
-    };
-
     return (
-        <div className="relative group animate-fadeIn" onClick={handlePromoTouch}>
+        <div className="relative group animate-fadeIn">
             <div className="absolute -inset-1 bg-[#00D4FF]/10 rounded-[2.6rem] blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
             
             <div className="relative flex flex-col md:flex-row bg-white rounded-[2.5rem] shadow-[0_15px_50px_rgba(0,0,0,0.05)] overflow-hidden border border-slate-100 transition-all hover:border-[#00D4FF]/50 group-hover:scale-[1.01]">
@@ -71,14 +29,7 @@ const CouponCard: React.FC<{ coupon: any; business: any }> = ({ coupon, business
                     
                     <div className="space-y-4 min-w-0">
                         <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
-                             <Link
-                                to={`/business/${business.id}`}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handlePromoTouch();
-                                }}
-                                className="text-[10px] font-black text-[#00D4FF] uppercase tracking-[0.4em] hover:drop-shadow-[0_0_5px_rgba(0,212,255,0.5)] transition-all"
-                             >
+                             <Link to={`/business/${business.id}`} className="text-[10px] font-black text-[#00D4FF] uppercase tracking-[0.4em] hover:drop-shadow-[0_0_5px_rgba(0,212,255,0.5)] transition-all">
                                 {business.name}
                             </Link>
                             {isExpiringSoon() && (
@@ -118,10 +69,15 @@ const CouponCard: React.FC<{ coupon: any; business: any }> = ({ coupon, business
                     </div>
                     
                     <button 
-                        type="button"
-                        onClick={handleRedeem}
-                        disabled={redeeming}
-                        className="w-full py-5 rounded-3xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3 relative overflow-hidden group/btn bg-[#00D4FF] text-white shadow-[0_10px_30px_rgba(0,212,255,0.3)] hover:scale-105 disabled:opacity-70"
+                        onClick={() => {
+                            const numeroWhatsApp = "51944841455"; 
+                            const mensaje = encodeURIComponent(t(
+                                `Hola Arkaiko, quiero canjear el cupón: ${coupon.title} en Huaraz Explorer.`,
+                                `Hi Arkáiko, I want to redeem the coupon: ${coupon.title} at Huaraz Explorer.`
+                            ));
+                            window.open(`https://wa.me/${numeroWhatsApp}?text=${mensaje}`, '_blank');
+                        }}
+                        className="w-full py-5 rounded-3xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3 relative overflow-hidden group/btn bg-[#00D4FF] text-white shadow-[0_10px_30px_rgba(0,212,255,0.3)] hover:scale-105"
                     >
                         <i className="fab fa-whatsapp text-lg"></i> {t('Canjear Cupón', 'Redeem Coupon')}
                     </button>
@@ -139,7 +95,7 @@ const CouponCard: React.FC<{ coupon: any; business: any }> = ({ coupon, business
 
 const CouponsPage: React.FC = () => {
   const { coupons, businesses, language } = useAppContext();
-  const t = (es: string, en: string) => (language === 'es' ? es : en);
+  const t = (es: string, en: string) => language === 'es' ? es : en;
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] pb-40 font-['Plus_Jakarta_Sans']">
@@ -211,6 +167,6 @@ const CouponsPage: React.FC = () => {
         </div>
     </div>
   );
-};
+}; esto es lo que que esta corriendo en git hub 
 
 export default CouponsPage;
