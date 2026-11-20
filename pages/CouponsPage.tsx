@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { Link } from 'react-router-dom';
-import { supabase } from '../supabaseClient'; // Ajusta esta ruta si tu cliente de Supabase está en otra carpeta (ej. ../lib/supabase)
-
-const generateVoucherCode = () => {
-    const randomNum = Math.floor(1000 + Math.random() * 9000);
-    return `HEXP-${randomNum}`;
-};
 
 const CouponCard: React.FC<{ coupon: any, business: any }> = ({ coupon, business }) => {
-    const { language } = useAppContext();
+    const { language } = useAppContext(); // Extraemos language
     const t = (es: string, en: string) => language === 'es' ? es : en;
-    const [redeeming, setRedeeming] = useState(false);
+    const [copied, setCopied] = useState(false);
 
     const isExpiringSoon = () => {
         const expiry = new Date(coupon.expiryDate);
@@ -19,49 +13,6 @@ const CouponCard: React.FC<{ coupon: any, business: any }> = ({ coupon, business
         const diff = expiry.getTime() - now.getTime();
         const days = diff / (1000 * 3600 * 24);
         return days > 0 && days < 30;
-    };
-
-    const handleRedeemClick = async () => {
-        if (redeeming) return;
-        setRedeeming(true);
-
-        const voucherCode = generateVoucherCode();
-        const businessName = business?.name || 'Negocio';
-        const businessId = business?.id || null;
-
-        try {
-            // 1. Registra el clic en la sección de promociones (el trigger SQL lo clasifica automáticamente)
-            await supabase.from('clicks_log').insert([
-                {
-                    business_name: `Promo - ${businessName} - Voucher: ${voucherCode}`,
-                    business_id: businessId,
-                    event_type: 'promotion_click'
-                }
-            ]);
-
-            // 2. Registra el voucher emitido en vouchers_issued con el business_id real
-            if (businessId) {
-                await supabase.from('vouchers_issued').insert([
-                    {
-                        business_id: businessId,
-                        voucher_code: voucherCode,
-                        status: 'issued'
-                    }
-                ]);
-            }
-        } catch (err) {
-            console.error('Error registrando cupón/voucher:', err);
-        } finally {
-            setRedeeming(false);
-        }
-
-        // 3. Mantiene exactamente tu flujo actual de WhatsApp
-        const numeroWhatsApp = "51944841455";
-        const mensaje = encodeURIComponent(t(
-            `Hola Arkaiko, quiero canjear el cupón: ${coupon.title} (${voucherCode}) en ${businessName} - Huaraz Explorer.`,
-            `Hi Arkáiko, I want to redeem the coupon: ${coupon.title} (${voucherCode}) at ${businessName} - Huaraz Explorer.`
-        ));
-        window.open(`https://wa.me/${numeroWhatsApp}?text=${mensaje}`, '_blank');
     };
 
     return (
@@ -118,10 +69,15 @@ const CouponCard: React.FC<{ coupon: any, business: any }> = ({ coupon, business
                     </div>
                     
                     <button 
-                        type="button"
-                        onClick={handleRedeemClick}
-                        disabled={redeeming}
-                        className="w-full py-5 rounded-3xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3 relative overflow-hidden group/btn bg-[#00D4FF] text-white shadow-[0_10px_30px_rgba(0,212,255,0.3)] hover:scale-105 disabled:opacity-70"
+                        onClick={() => {
+                            const numeroWhatsApp = "51944841455"; 
+                            const mensaje = encodeURIComponent(t(
+                                `Hola Arkaiko, quiero canjear el cupón: ${coupon.title} en Huaraz Explorer.`,
+                                `Hi Arkáiko, I want to redeem the coupon: ${coupon.title} at Huaraz Explorer.`
+                            ));
+                            window.open(`https://wa.me/${numeroWhatsApp}?text=${mensaje}`, '_blank');
+                        }}
+                        className="w-full py-5 rounded-3xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3 relative overflow-hidden group/btn bg-[#00D4FF] text-white shadow-[0_10px_30px_rgba(0,212,255,0.3)] hover:scale-105"
                     >
                         <i className="fab fa-whatsapp text-lg"></i> {t('Canjear Cupón', 'Redeem Coupon')}
                     </button>
@@ -211,6 +167,4 @@ const CouponsPage: React.FC = () => {
         </div>
     </div>
   );
-};
-
-export default CouponsPage;
+}; export default CouponsPage;
