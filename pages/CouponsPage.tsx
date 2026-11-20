@@ -167,6 +167,4 @@ const CouponsPage: React.FC = () => {
         </div>
     </div>
   );
-}; esto es lo que que esta corriendo en git hub 
-
-export default CouponsPage;
+}; export default CouponsPage;
