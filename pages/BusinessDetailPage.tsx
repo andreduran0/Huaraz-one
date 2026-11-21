@@ -3,30 +3,29 @@ import { useParams } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useTranslations } from '../hooks/useTranslations';
 import { AdLevel } from '../types';
-import { createClient } from '@supabase/supabase-js'; // EL ESPÍA
+import { getSupabase } from '../services/supabase'; // Cambia a '../services/supabaseClient' si así se llama tu archivo en services/[cite: 3]
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch"; // ZOOM
 
 import TestimonialsList from '../components/TestimonialsList';
 import TestimonialForm from '../components/TestimonialForm';
 
 // 👇 EL ESPÍA BLINDADO 👇
-const logClick = async (businessName: string) => {
+const logClick = async (
+    businessName: string,
+    eventType: 'detail_view' | 'detail_reserve_click' | 'promotion_click' | 'arkaiko_reserve_click' = 'detail_view',
+    businessId?: string | null
+) => {
     try {
-        // @ts-ignore
-        const viteUrl = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_URL : null;
-        // @ts-ignore
-        const viteKey = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_ANON_KEY : null;
+        const supabase = getSupabase();
+        if (!supabase) return;
 
-        const nextUrl = typeof process !== 'undefined' && process.env ? process.env.NEXT_PUBLIC_SUPABASE_URL : null;
-        const nextKey = typeof process !== 'undefined' && process.env ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY : null;
-
-        const url = viteUrl || nextUrl;
-        const key = viteKey || nextKey;
-
-        if (url && key && url !== 'https://placeholder.supabase.co') {
-            const supabase = createClient(url, key);
-            await supabase.from('clicks_log').insert([{ business_name: businessName }]);
-        }
+        await supabase.from('clicks_log').insert([
+            {
+                business_name: businessName,
+                business_id: businessId || null,
+                event_type: eventType,
+            },
+        ]);
     } catch (err) {
         console.error("Error silencioso del espía:", err);
     }
@@ -45,6 +44,12 @@ const BusinessDetailPage: React.FC = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [id]);
+
+    useEffect(() => {
+        if (business) {
+            void logClick(business.name, 'detail_view', business.id);
+        }
+    }, [business?.id]);
 
     if (!business) {
         return (
@@ -85,7 +90,7 @@ const BusinessDetailPage: React.FC = () => {
         : `https://www.google.com/maps/search/?api=1&query=${business.lat},${business.lng}`;
 
     // LÓGICA DE MENSAJES DE WHATSAPP
-   const getWhatsappMessage = () => {
+    const getWhatsappMessage = () => {
         if (categoryText === 'education') return `Hola, quisiera solicitar una entrevista para el ${business.name}. Lo vi en Huaraz Explorer.`;
         if (categoryText === 'exchange' || categoryText === 'services') return `Hola, quisiera consultar el tipo de cambio en ${business.name}. Lo vi en Huaraz Explorer.`;
         if (categoryText === 'health') return `Hola, quisiera agendar una cita en ${business.name}. Lo vi en Huaraz Explorer.`;
@@ -96,7 +101,7 @@ const BusinessDetailPage: React.FC = () => {
     };
     const whatsappMessage = encodeURIComponent(getWhatsappMessage());
 
-// LÓGICA DEL TÍTULO DE LA CARTA / HABITACIONES / TOURS
+    // LÓGICA DEL TÍTULO DE LA CARTA / HABITACIONES / TOURS
     const getMenuTitle = () => {
         const nameLower = business.name.toLowerCase();
 
@@ -148,23 +153,10 @@ const BusinessDetailPage: React.FC = () => {
         setIsBooking(true);
 
         try {
-            // 1. Generar código único
             const uniqueCode = 'HX-' + Math.random().toString(36).substr(2, 4).toUpperCase();
+            const supabase = getSupabase();
 
-            // 2. Extraer credenciales de Supabase
-            // @ts-ignore
-            const viteUrl = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_URL : null;
-            // @ts-ignore
-            const viteKey = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_ANON_KEY : null;
-            const nextUrl = typeof process !== 'undefined' && process.env ? process.env.NEXT_PUBLIC_SUPABASE_URL : null;
-            const nextKey = typeof process !== 'undefined' && process.env ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY : null;
-            
-            const url = viteUrl || nextUrl;
-            const key = viteKey || nextKey;
-
-            // 3. Guardar en Supabase
-            if (url && key && url !== 'https://placeholder.supabase.co') {
-                const supabase = createClient(url, key);
+            if (supabase) {
                 const { error } = await supabase
                     .from('reservations_tracking')
                     .insert([{
@@ -176,15 +168,22 @@ const BusinessDetailPage: React.FC = () => {
                     }]);
 
                 if (error) console.error("Error guardando voucher en Supabase:", error);
+
+                // También registramos en vouchers_issued para el panel de caja en /socios
+                await supabase
+                    .from('vouchers_issued')
+                    .insert([{
+                        business_id: business.id,
+                        voucher_code: uniqueCode,
+                        status: 'issued'
+                    }]);
             }
 
-            // 4. Armar el mensaje final
             const baseMessage = getWhatsappMessage(); 
             const finalMessage = `${baseMessage} \n\n🎫 *Mi código de Huaraz Explorer es:* ${uniqueCode}`;
             const finalWhatsappUrl = `https://wa.me/${business.whatsapp}?text=${encodeURIComponent(finalMessage)}`;
 
-            // 5. Registrar el clic y redirigir
-            logClick(`Detalle - ${business.name} - Voucher: ${uniqueCode}`);
+            void logClick(`Detalle - ${business.name} - Voucher: ${uniqueCode}`, 'detail_reserve_click', business.id);
             window.open(finalWhatsappUrl, '_blank');
 
         } catch (err) {
@@ -232,12 +231,22 @@ const BusinessDetailPage: React.FC = () => {
                     </div>
                     <div className="flex flex-wrap justify-center gap-4">
                         {business.phone && (
-                            <a href={`tel:${business.phone}`} className="w-16 h-16 md:w-20 md:h-20 bg-slate-50 dark:bg-slate-800 rounded-[2rem] flex items-center justify-center text-[#2A4D69] border border-slate-100 dark:border-slate-700 active:scale-95 transition-all shadow-sm">
+                            <a
+                                href={`tel:${business.phone}`}
+                                onClick={() => void logClick(`Telefono - ${business.name}`, 'detail_reserve_click', business.id)}
+                                className="w-16 h-16 md:w-20 md:h-20 bg-slate-50 dark:bg-slate-800 rounded-[2rem] flex items-center justify-center text-[#2A4D69] border border-slate-100 dark:border-slate-700 active:scale-95 transition-all shadow-sm"
+                            >
                                 <i className="fas fa-phone text-xl md:text-2xl"></i>
                             </a>
                         )}
                         {business.whatsapp && (
-                            <a href={`https://wa.me/${business.whatsapp}?text=${whatsappMessage}`} target="_blank" rel="noreferrer" onClick={() => logClick(`Detalle - ${business.name}`)} className="w-16 h-16 md:w-20 md:h-20 bg-green-50 dark:bg-green-900/20 rounded-[2rem] flex items-center justify-center text-green-500 border border-green-100 dark:border-green-900/40 active:scale-95 transition-all shadow-sm">
+                            <a
+                                href={`https://wa.me/${business.whatsapp}?text=${whatsappMessage}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                onClick={() => void logClick(`WhatsApp - ${business.name}`, 'detail_reserve_click', business.id)}
+                                className="w-16 h-16 md:w-20 md:h-20 bg-green-50 dark:bg-green-900/20 rounded-[2rem] flex items-center justify-center text-green-500 border border-green-100 dark:border-green-900/40 active:scale-95 transition-all shadow-sm"
+                            >
                                 <i className="fab fa-whatsapp text-3xl md:text-4xl"></i>
                             </a>
                         )}
@@ -372,7 +381,7 @@ const BusinessDetailPage: React.FC = () => {
                 </div>
                 
                 {/* TESTIMONIOS */}
-                   <div id="review-section" className="pt-10">
+                <div id="review-section" className="pt-10">
                     <TestimonialsList businessId={business.id} />
                 </div>
                 
