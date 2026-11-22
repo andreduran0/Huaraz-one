@@ -21,42 +21,54 @@ const CouponCard: React.FC<{ coupon: any, business: any }> = ({ coupon, business
         return days > 0 && days < 30;
     };
 
-    const handleRedeemClick = async () => {
+   const handleRedeemClick = async () => {
         if (redeeming) return;
         setRedeeming(true);
 
         const voucherCode = generateVoucherCode();
         const businessName = business?.name || 'Negocio';
-        const businessId = business?.id || null;
+        const rawBusinessId = business?.id || null;
+        const validBusinessId =
+            rawBusinessId && UUID_REGEX.test(rawBusinessId) ? rawBusinessId : null;
         const supabase = getSupabase();
 
         try {
             if (supabase) {
-                // 1. Registra el clic en promociones (el trigger SQL lo clasifica automáticamente)
-                await supabase.from('clicks_log').insert([
+                // 1. Registra el clic en promociones (con validBusinessId para evitar 400)
+                const { error: clickError } = await supabase.from('clicks_log').insert([
                     {
                         business_name: `Promo - ${businessName} - Voucher: ${voucherCode}`,
-                        business_id: businessId,
+                        business_id: validBusinessId,
                         event_type: 'promotion_click'
                     }
                 ]);
+                if (clickError) console.error('Error en clicks_log (cupón):', clickError);
 
-                // 2. Emite el voucher con el business_id real
-                if (businessId) {
-                    await supabase.from('vouchers_issued').insert([
-                        {
-                            business_id: businessId,
-                            voucher_code: voucherCode,
-                            status: 'issued'
-                        }
-                    ]);
-                }
+                // 2. Emite el voucher siempre (el trigger SQL resuelve el UUID si validBusinessId es null)
+                const { error: voucherError } = await supabase.from('vouchers_issued').insert([
+                    {
+                        business_id: validBusinessId,
+                        business_name: businessName,
+                        voucher_code: voucherCode,
+                        status: 'issued'
+                    }
+                ]);
+                if (voucherError) console.error('Error en vouchers_issued (cupón):', voucherError);
             }
         } catch (err) {
             console.error('Error registrando cupón/voucher:', err);
         } finally {
             setRedeeming(false);
         }
+
+        // 3. Mantiene exactamente tu flujo actual de WhatsApp
+        const numeroWhatsApp = "51944841455";
+        const mensaje = encodeURIComponent(t(
+            `Hola Arkaiko, quiero canjear el cupón: ${coupon.title} (${voucherCode}) en ${businessName} - Huaraz Explorer.`,
+            `Hi Arkáiko, I want to redeem the coupon: ${coupon.title} (${voucherCode}) at ${businessName} - Huaraz Explorer.`
+        ));
+        window.open(`https://wa.me/${numeroWhatsApp}?text=${mensaje}`, '_blank');
+    };
 
         // 3. Mantiene exactamente tu flujo actual de WhatsApp
         const numeroWhatsApp = "51944841455";
