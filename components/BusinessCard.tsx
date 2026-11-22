@@ -11,8 +11,10 @@ interface BusinessCardProps {
 
 const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
   const t = useTranslations();
+  
+  const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-  const registrarEvento = async (
+const registrarEvento = async (
     label: string,
     eventType: 'detail_view' | 'detail_reserve_click' | 'promotion_click' | 'arkaiko_reserve_click'
   ) => {
@@ -20,14 +22,18 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
       const supabase = getSupabase();
       if (!supabase) return;
 
-      const businessId = (business as any)?.id || null;
-      await supabase.from('clicks_log').insert([
+      const rawId = (business as any)?.id || null;
+      const validBusinessId = rawId && UUID_REGEX.test(rawId) ? rawId : null;
+
+      const { error } = await supabase.from('clicks_log').insert([
         {
           business_name: label,
-          business_id: businessId,
+          business_id: validBusinessId,
           event_type: eventType,
         },
       ]);
+
+      if (error) console.error('Error en clicks_log (BusinessCard):', error);
     } catch (error) {
       console.error('Error silencioso del espía:', error);
     }
