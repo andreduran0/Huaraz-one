@@ -9,7 +9,8 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch"; // 
 import TestimonialsList from '../components/TestimonialsList';
 import TestimonialForm from '../components/TestimonialForm';
 
-// 👇 EL ESPÍA BLINDADO 👇
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 const logClick = async (
     businessName: string,
     eventType: 'detail_view' | 'detail_reserve_click' | 'promotion_click' | 'arkaiko_reserve_click' = 'detail_view',
@@ -19,10 +20,13 @@ const logClick = async (
         const supabase = getSupabase();
         if (!supabase) return;
 
+        const validBusinessId =
+            businessId && UUID_REGEX.test(businessId) ? businessId : null;
+
         await supabase.from('clicks_log').insert([
             {
                 business_name: businessName,
-                business_id: businessId || null,
+                business_id: validBusinessId,
                 event_type: eventType,
             },
         ]);
@@ -155,9 +159,11 @@ const BusinessDetailPage: React.FC = () => {
         try {
             const uniqueCode = 'HX-' + Math.random().toString(36).substr(2, 4).toUpperCase();
             const supabase = getSupabase();
+            const validBusinessId =
+                business.id && UUID_REGEX.test(business.id) ? business.id : null;
 
             if (supabase) {
-                const { error } = await supabase
+                const { error: trackingError } = await supabase
                     .from('reservations_tracking')
                     .insert([{
                         business_id: business.id,
@@ -167,23 +173,30 @@ const BusinessDetailPage: React.FC = () => {
                         created_at: new Date().toISOString()
                     }]);
 
-                if (error) console.error("Error guardando voucher en Supabase:", error);
+                if (trackingError) console.error("Error en reservations_tracking:", trackingError);
 
-                // También registramos en vouchers_issued para el panel de caja en /socios
-                await supabase
+                // Registramos en vouchers_issued usando validBusinessId y business_name
+                const { error: voucherError } = await supabase
                     .from('vouchers_issued')
                     .insert([{
-                        business_id: business.id,
+                        business_id: validBusinessId,
+                        business_name: business.name,
                         voucher_code: uniqueCode,
                         status: 'issued'
                     }]);
+
+                if (voucherError) console.error("Error en vouchers_issued:", voucherError);
             }
 
             const baseMessage = getWhatsappMessage(); 
             const finalMessage = `${baseMessage} \n\n🎫 *Mi código de Huaraz Explorer es:* ${uniqueCode}`;
             const finalWhatsappUrl = `https://wa.me/${business.whatsapp}?text=${encodeURIComponent(finalMessage)}`;
 
-            void logClick(`Detalle - ${business.name} - Voucher: ${uniqueCode}`, 'detail_reserve_click', business.id);
+            void logClick(
+                `Detalle - ${business.name} - Voucher: ${uniqueCode}`,
+                'detail_reserve_click',
+                validBusinessId
+            );
             window.open(finalWhatsappUrl, '_blank');
 
         } catch (err) {
@@ -192,7 +205,6 @@ const BusinessDetailPage: React.FC = () => {
             setIsBooking(false);
         }
     };
-
     return (
         <div className="bg-slate-50 dark:bg-slate-950 min-h-screen relative font-['Plus_Jakarta_Sans']">
 
