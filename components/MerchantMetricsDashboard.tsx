@@ -405,10 +405,14 @@ export const MerchantMetricsDashboard: React.FC = () => {
   const estimatedReturn = totalReservationIntents * avgTicket;
   const midFunnelInterested = metrics.promotion_click + metrics.arkaiko_reserve_click;
 
-  const conversionRate = useMemo(() => {
-    if (metrics.detail_view === 0) return '0.0';
-    return ((totalReservationIntents / metrics.detail_view) * 100).toFixed(1);
-  }, [totalReservationIntents, metrics.detail_view]);
+  const conversionDenominator = Math.max(
+  metrics.detail_view,
+  metrics.detail_view + metrics.arkaiko_reserve_click
+);
+const conversionRate =
+  conversionDenominator > 0
+    ? Math.min(100, (totalReservationIntents / conversionDenominator) * 100).toFixed(1)
+    : '0.0';
 
   const channels = useMemo(() => {
     const raw = [
