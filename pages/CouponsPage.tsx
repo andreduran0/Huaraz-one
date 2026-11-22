@@ -3,6 +3,8 @@ import { useAppContext } from '../context/AppContext';
 import { Link } from 'react-router-dom';
 import { getSupabase } from '../services/supabase'; 
 
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 const generateVoucherCode = () => {
     const randomNum = Math.floor(1000 + Math.random() * 9000);
     return `HEXP-${randomNum}`;
@@ -21,7 +23,7 @@ const CouponCard: React.FC<{ coupon: any, business: any }> = ({ coupon, business
         return days > 0 && days < 30;
     };
 
-   const handleRedeemClick = async () => {
+    const handleRedeemClick = async () => {
         if (redeeming) return;
         setRedeeming(true);
 
@@ -60,15 +62,6 @@ const CouponCard: React.FC<{ coupon: any, business: any }> = ({ coupon, business
         } finally {
             setRedeeming(false);
         }
-
-        // 3. Mantiene exactamente tu flujo actual de WhatsApp
-        const numeroWhatsApp = "51944841455";
-        const mensaje = encodeURIComponent(t(
-            `Hola Arkaiko, quiero canjear el cupón: ${coupon.title} (${voucherCode}) en ${businessName} - Huaraz Explorer.`,
-            `Hi Arkáiko, I want to redeem the coupon: ${coupon.title} (${voucherCode}) at ${businessName} - Huaraz Explorer.`
-        ));
-        window.open(`https://wa.me/${numeroWhatsApp}?text=${mensaje}`, '_blank');
-    };
 
         // 3. Mantiene exactamente tu flujo actual de WhatsApp
         const numeroWhatsApp = "51944841455";
