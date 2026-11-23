@@ -298,8 +298,7 @@ export const MerchantMetricsDashboard: React.FC = () => {
       setSearchParams(next, { replace: true });
     }
   };
-
- const handleRedeemVoucher = async (voucher: VoucherIssuedRow) => {
+const handleRedeemVoucher = async (voucher: VoucherIssuedRow) => {
     if (!business?.id || voucher.status === 'redeemed') return;
 
     const rawAmount = window.prompt(
@@ -330,10 +329,10 @@ export const MerchantMetricsDashboard: React.FC = () => {
         .update({
           status: 'redeemed',
           ticket_amount: parsedAmount,
-          redeemed_at: new Date().toISOString(),
         })
         .eq('id', voucher.id)
         .eq('business_id', business.id);
+ 
 
       if (error) {
         setActionBanner({
