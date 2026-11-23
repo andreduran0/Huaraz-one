@@ -10,47 +10,61 @@ const generateVoucherCode = () => {
     return `HEXP-${randomNum}`;
 };
 
-const CouponCard: React.FC<{ coupon: any, business: any }> = ({ coupon, business }) => {
-    const { language } = useAppContext();
-    const t = (es: string, en: string) => language === 'es' ? es : en;
-    const [redeeming, setRedeeming] = useState(false);
-
-    const isExpiringSoon = () => {
-        const expiry = new Date(coupon.expiryDate);
-        const now = new Date();
-        const diff = expiry.getTime() - now.getTime();
-        const days = diff / (1000 * 3600 * 24);
-        return days > 0 && days < 30;
-    };
-
-    const handleRedeemClick = async () => {
+const handleRedeemClick = async () => {
         if (redeeming) return;
         setRedeeming(true);
 
         const voucherCode = generateVoucherCode();
-        const businessName = business?.name || 'Negocio';
-        const rawBusinessId = business?.id || null;
-        const validBusinessId =
+        const fallbackName = (business?.name || 'Negocio').trim();
+        const rawBusinessId = business?.id ? String(business.id).trim() : '';
+        let resolvedBusinessId: string | null =
             rawBusinessId && UUID_REGEX.test(rawBusinessId) ? rawBusinessId : null;
+        let resolvedBusinessName = fallbackName;
+
         const supabase = getSupabase();
 
         try {
             if (supabase) {
-                // 1. Registra el clic en promociones (con validBusinessId para evitar 400)
+                if (resolvedBusinessId) {
+                    const { data: byId } = await supabase
+                        .from('businesses')
+                        .select('id, name')
+                        .eq('id', resolvedBusinessId)
+                        .maybeSingle();
+
+                    if (byId?.id) {
+                        resolvedBusinessId = byId.id;
+                        resolvedBusinessName = byId.name || fallbackName;
+                    }
+                } else if (fallbackName && fallbackName !== 'Negocio') {
+                    const { data: byName } = await supabase
+                        .from('businesses')
+                        .select('id, name')
+                        .ilike('name', fallbackName)
+                        .limit(1)
+                        .maybeSingle();
+
+                    if (byName?.id) {
+                        resolvedBusinessId = byName.id;
+                        resolvedBusinessName = byName.name || fallbackName;
+                    }
+                }
+
+                // 1. Registra el clic en promociones con business_id y business_name limpios
                 const { error: clickError } = await supabase.from('clicks_log').insert([
                     {
-                        business_name: `Promo - ${businessName} - Voucher: ${voucherCode}`,
-                        business_id: validBusinessId,
+                        business_id: resolvedBusinessId,
+                        business_name: resolvedBusinessName,
                         event_type: 'promotion_click'
                     }
                 ]);
                 if (clickError) console.error('Error en clicks_log (cupón):', clickError);
 
-                // 2. Emite el voucher siempre (el trigger SQL resuelve el UUID si validBusinessId es null)
+                // 2. Emite el voucher vinculado al negocio oficial
                 const { error: voucherError } = await supabase.from('vouchers_issued').insert([
                     {
-                        business_id: validBusinessId,
-                        business_name: businessName,
+                        business_id: resolvedBusinessId,
+                        business_name: resolvedBusinessName,
                         voucher_code: voucherCode,
                         status: 'issued'
                     }
@@ -66,8 +80,8 @@ const CouponCard: React.FC<{ coupon: any, business: any }> = ({ coupon, business
         // 3. Mantiene exactamente tu flujo actual de WhatsApp
         const numeroWhatsApp = "51944841455";
         const mensaje = encodeURIComponent(t(
-            `Hola Arkaiko, quiero canjear el cupón: ${coupon.title} (${voucherCode}) en ${businessName} - Huaraz Explorer.`,
-            `Hi Arkáiko, I want to redeem the coupon: ${coupon.title} (${voucherCode}) at ${businessName} - Huaraz Explorer.`
+            `Hola Arkaiko, quiero canjear el cupón: ${coupon.title} (${voucherCode}) en ${resolvedBusinessName} - Huaraz Explorer.`,
+            `Hi Arkáiko, I want to redeem the coupon: ${coupon.title} (${voucherCode}) at ${resolvedBusinessName} - Huaraz Explorer.`
         ));
         window.open(`https://wa.me/${numeroWhatsApp}?text=${mensaje}`, '_blank');
     };
