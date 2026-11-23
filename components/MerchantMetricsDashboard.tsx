@@ -323,12 +323,13 @@ const handleRedeemVoucher = async (voucher: VoucherIssuedRow) => {
     setRedeemingId(voucher.id);
     setActionBanner(null);
 
-    try {
+   try {
       const { error } = await supabase
         .from('vouchers_issued')
         .update({
           status: 'redeemed',
           ticket_amount: parsedAmount,
+          redeemed_at: new Date().toISOString(),
         })
         .eq('id', voucher.id)
         .eq('business_id', business.id);
