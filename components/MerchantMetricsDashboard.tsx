@@ -299,8 +299,25 @@ export const MerchantMetricsDashboard: React.FC = () => {
     }
   };
 
-  const handleRedeemVoucher = async (voucher: VoucherIssuedRow) => {
+ const handleRedeemVoucher = async (voucher: VoucherIssuedRow) => {
     if (!business?.id || voucher.status === 'redeemed') return;
+
+    const rawAmount = window.prompt(
+      `Ingresa el monto consumido en caja (S/) para el voucher ${voucher.voucher_code}:`,
+      '65'
+    );
+
+    if (rawAmount === null) return;
+
+    const parsedAmount = Number(rawAmount.replace(',', '.').trim());
+    if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
+      setActionBanner({
+        type: 'error',
+        text: 'Ingresa un monto válido mayor a S/ 0 para registrar el canje y la comisión.',
+      });
+      return;
+    }
+
     const supabase = getSupabase();
     if (!supabase) return;
 
@@ -310,7 +327,11 @@ export const MerchantMetricsDashboard: React.FC = () => {
     try {
       const { error } = await supabase
         .from('vouchers_issued')
-        .update({ status: 'redeemed' })
+        .update({
+          status: 'redeemed',
+          ticket_amount: parsedAmount,
+          redeemed_at: new Date().toISOString(),
+        })
         .eq('id', voucher.id)
         .eq('business_id', business.id);
 
