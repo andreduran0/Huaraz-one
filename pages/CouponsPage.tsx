@@ -25,6 +25,7 @@ const handleRedeemClick = async () => {
 
         try {
             if (supabase) {
+                // Resuelve el registro oficial en public.businesses (33 negocios activos)
                 if (resolvedBusinessId) {
                     const { data: byId } = await supabase
                         .from('businesses')
@@ -55,8 +56,13 @@ const handleRedeemClick = async () => {
                     {
                         business_id: resolvedBusinessId,
                         business_name: resolvedBusinessName,
-                        event_type: 'promotion_click'
-                    }
+                        event_type: 'promotion_click',
+                        metadata: {
+                            voucher_code: voucherCode,
+                            coupon_title: coupon?.title || null,
+                            source: 'coupons_page',
+                        },
+                    },
                 ]);
                 if (clickError) console.error('Error en clicks_log (cupón):', clickError);
 
@@ -66,8 +72,8 @@ const handleRedeemClick = async () => {
                         business_id: resolvedBusinessId,
                         business_name: resolvedBusinessName,
                         voucher_code: voucherCode,
-                        status: 'issued'
-                    }
+                        status: 'issued',
+                    },
                 ]);
                 if (voucherError) console.error('Error en vouchers_issued (cupón):', voucherError);
             }
