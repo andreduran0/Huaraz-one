@@ -167,6 +167,31 @@ const BusinessDetailPage: React.FC = () => {
     };
   }, [business?.id, id]);
 
+  const bAny = (business || {}) as any;
+  const rawMenuUrl = (extraData.menu_url || bAny.menu_url || '').trim();
+  const menuIsPdf = Boolean(rawMenuUrl) && isPdfUrl(rawMenuUrl);
+  const menuIsImage = Boolean(rawMenuUrl) && !menuIsPdf;
+
+  // TODOS LOS useMemo VAN SIEMPRE ARRIBA DE CUALQUIER RETURN CONDICIONAL
+  const combinedMenuImages = useMemo(() => {
+    const baseMenu = Array.isArray(business?.menuImages) ? [...business.menuImages] : [];
+    if (menuIsImage && rawMenuUrl && !baseMenu.includes(rawMenuUrl)) {
+      baseMenu.unshift(rawMenuUrl);
+    }
+    return baseMenu;
+  }, [business?.menuImages, menuIsImage, rawMenuUrl]);
+
+  const combinedGalleryPhotos = useMemo(() => {
+    const basePhotos = Array.isArray(business?.photos) ? [...business.photos] : [];
+    const extraGallery = Array.isArray(extraData.gallery_urls) ? extraData.gallery_urls : [];
+    for (const url of extraGallery) {
+      if (url && !basePhotos.includes(url)) {
+        basePhotos.push(url);
+      }
+    }
+    return basePhotos;
+  }, [business?.photos, extraData.gallery_urls]);
+
   if (loadingBusiness) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
@@ -187,7 +212,6 @@ const BusinessDetailPage: React.FC = () => {
     );
   }
 
-  const bAny = business as any;
   const logoUrl = extraData.logo_url || bAny.logo_url || null;
   const heroImage = extraData.imagen_url || bAny.imagen_url || business.photos?.[0] || '';
   const displayAddress = extraData.location || business.address || '';
@@ -196,35 +220,12 @@ const BusinessDetailPage: React.FC = () => {
   const cleanWhatsapp = String(rawWhatsapp).replace(/[^0-9]/g, '');
   const openingHoursText = (extraData.opening_hours || bAny.opening_hours || '').trim();
   const culturalDescriptionText = (extraData.cultural_description || bAny.cultural_description || '').trim();
-
-  const rawMenuUrl = (extraData.menu_url || bAny.menu_url || '').trim();
   const catalogType = (extraData.catalog_type || bAny.catalog_type || 'carta').toLowerCase();
-  const menuIsPdf = Boolean(rawMenuUrl) && isPdfUrl(rawMenuUrl);
-  const menuIsImage = Boolean(rawMenuUrl) && !menuIsPdf;
-
-  const combinedMenuImages = useMemo(() => {
-    const baseMenu = Array.isArray(business.menuImages) ? [...business.menuImages] : [];
-    if (menuIsImage && rawMenuUrl && !baseMenu.includes(rawMenuUrl)) {
-      baseMenu.unshift(rawMenuUrl);
-    }
-    return baseMenu;
-  }, [business.menuImages, menuIsImage, rawMenuUrl]);
-
-  const combinedGalleryPhotos = useMemo(() => {
-    const basePhotos = Array.isArray(business.photos) ? [...business.photos] : [];
-    const extraGallery = Array.isArray(extraData.gallery_urls) ? extraData.gallery_urls : [];
-    for (const url of extraGallery) {
-      if (url && !basePhotos.includes(url)) {
-        basePhotos.push(url);
-      }
-    }
-    return basePhotos;
-  }, [business.photos, extraData.gallery_urls]);
 
   const isSponsored = business.adLevel !== AdLevel.NONE;
   const hasMenuImages = combinedMenuImages.length > 0;
   const hasAnyMenu = hasMenuImages || Boolean(rawMenuUrl);
-  const categoryText = String(business.category).toLowerCase();
+  const categoryText = String(business.category || '').toLowerCase();
 
   const getCatalogLabel = () => {
     if (catalogType === 'catalogo') return 'Ver Catálogo';
@@ -256,7 +257,9 @@ const BusinessDetailPage: React.FC = () => {
 
   const mapUrl = business.googleMapsQuery
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.googleMapsQuery)}`
-    : `https://www.google.com/maps/search/?api=1&query=${business.lat},${business.lng}`;
+    : business.lat && business.lng
+    ? `https://www.google.com/maps/search/?api=1&query=${business.lat},${business.lng}`
+    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${business.name} ${displayAddress}`)}`;
 
   // LÓGICA DE MENSAJES DE WHATSAPP
   const getWhatsappMessage = () => {
@@ -275,7 +278,7 @@ const BusinessDetailPage: React.FC = () => {
 
   // LÓGICA DEL TÍTULO DE LA CARTA / HABITACIONES / TOURS
   const getMenuTitle = () => {
-    const nameLower = business.name.toLowerCase();
+    const nameLower = String(business.name || '').toLowerCase();
 
     if (nameLower.includes('chasing') || categoryText.includes('tour') || categoryText.includes('agency') || categoryText.includes('agencia')) {
       return { prefix: 'NUESTROS ', highlight: 'TOURS Y DESTINOS', subtitle: 'Explora las mejores rutas y expediciones' };
@@ -297,11 +300,11 @@ const BusinessDetailPage: React.FC = () => {
 
   // LÓGICA INTELIGENTE DE RESERVAS
   const getReservationData = () => {
-    const nameLower = business.name.toLowerCase();
+    const nameLower = String(business.name || '').toLowerCase();
 
     if (nameLower.includes('chasing') || categoryText.includes('tour') || categoryText.includes('agency') || categoryText.includes('agencia')) {
       return { tag: 'RESERVA DE TOUR', icon: 'fa-compass', prefix: 'PLANEA TU ', highlight: 'AVENTURA', desc: 'Vive expediciones inolvidables por la Cordillera Blanca con guías profesionales.', btn: 'Reservar Tour' };
-    } else if (business.name.toLowerCase().includes('inka frut')) {
+    } else if (nameLower.includes('inka frut')) {
       return { tag: 'RESERVA INMEDIATA', icon: 'fa-leaf', prefix: 'EXPERIENCIA ', highlight: 'NOVOANDINA', desc: 'Fusión de cocina contemporánea con insumos y platos tradicionales de la Región de Áncash con opciones vegetarianas. (S/ 50 - S/ 80)', btn: 'Reservar Mesa' };
     } else if (categoryText === 'hotel') {
       return { tag: 'RESERVA INMEDIATA', icon: 'fa-bed', prefix: 'ASEGURA TU ', highlight: 'DESCANSO', desc: 'Vive la mejor experiencia de confort y relajación en Huaraz.', btn: 'Reservar Habitación' };
