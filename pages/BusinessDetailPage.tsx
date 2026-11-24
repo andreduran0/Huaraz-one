@@ -79,30 +79,31 @@ const BusinessDetailPage: React.FC = () => {
 
   // Trae los campos nuevos desde Supabase para asegurar datos frescos aunque AppContext no los incluya
   useEffect(() => {
-    let active = true;
-    const loadExtraProfile = async () => {
-      if (!business?.id || !UUID_REGEX.test(business.id)) return;
-      const supabase = getSupabase();
-      if (!supabase) return;
+  let active = true;
+  const loadExtraProfile = async () => {
+    const targetId = business?.id || id;
+    if (!targetId) return;
+    const supabase = getSupabase();
+    if (!supabase) return;
 
-      const { data, error } = await supabase
-        .from('businesses')
-        .select(
-          'logo_url, imagen_url, menu_url, catalog_type, gallery_urls, phone, whatsapp, whatsapp_number, default_message, location, opening_hours, cultural_description'
-        )
-        .eq('id', business.id)
-        .maybeSingle();
+    const { data, error } = await supabase
+      .from('businesses')
+      .select(
+        'logo_url, imagen_url, menu_url, catalog_type, gallery_urls, phone, whatsapp, whatsapp_number, default_message, location, opening_hours, cultural_description'
+      )
+      .eq('id', targetId)
+      .maybeSingle();
 
-      if (active && !error && data) {
-        setExtraData(data as ExtraBusinessFields);
-      }
-    };
+    if (active && !error && data) {
+      setExtraData(data as ExtraBusinessFields);
+    }
+  };
 
-    void loadExtraProfile();
-    return () => {
-      active = false;
-    };
-  }, [business?.id]);
+  void loadExtraProfile();
+  return () => {
+    active = false;
+  };
+}, [business?.id, id]);
 
   if (!business) {
     return (
