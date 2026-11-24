@@ -2,6 +2,14 @@ import { Coupon } from '../types';
 
 export const coupons: Coupon[] = [
   {
+    id: '23', // Ajusta al siguiente ID correlativo de tu lista
+    businessId: '22', // ID de Hotel Los Inkas en premium_businesses.ts
+    title: 'Habitación con Jacuzzi por 4 horas a S/ 100',
+    description: 'Oferta especial de mañana: 4 horas de relajación en habitación con jacuzzi con hidromasaje, habitación amplia y moderna, WiFi, TV Smart y agua caliente a solo S/ 100.00. Válido solo de lunes a viernes de 8 am a 1 pm (Jr. Federico Sal y Rosas 305).',
+    code: 'INKAS100',
+    expiryDate: '2026-12-31',
+  },
+  {
     id: '22', // Ajusta al siguiente ID correlativo de tu lista
     businessId: '22', // ID de Hotel Los Inkas en premium_businesses.ts
     title: 'Habitación Matrimonial por 4 horas a S/ 80',
