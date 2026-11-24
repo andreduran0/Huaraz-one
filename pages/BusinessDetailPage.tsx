@@ -59,7 +59,10 @@ const BusinessDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { businesses } = useAppContext();
   const t = useTranslations();
-  const business = businesses.find((b) => b.id === id);
+
+  const businessFromContext = businesses.find((b) => b.id === id) || null;
+  const [fetchedBusiness, setFetchedBusiness] = useState<any | null>(null);
+  const [loadingBusiness, setLoadingBusiness] = useState<boolean>(!businessFromContext && Boolean(id));
 
   const [extraData, setExtraData] = useState<ExtraBusinessFields>({});
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -67,9 +70,68 @@ const BusinessDetailPage: React.FC = () => {
   const [lightboxMode, setLightboxMode] = useState<'gallery' | 'menu'>('gallery');
   const [isBooking, setIsBooking] = useState(false);
 
+  const business = businessFromContext || fetchedBusiness;
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    setFetchedBusiness(null);
   }, [id]);
+
+  // Si el ID no está en AppContext (por ejemplo, un UUID directo de Supabase), lo busca en public.businesses
+  useEffect(() => {
+    let active = true;
+    const fetchBusinessById = async () => {
+      if (!id) {
+        if (active) setLoadingBusiness(false);
+        return;
+      }
+      if (businessFromContext) {
+        if (active) setLoadingBusiness(false);
+        return;
+      }
+
+      setLoadingBusiness(true);
+      const supabase = getSupabase();
+      if (!supabase) {
+        if (active) setLoadingBusiness(false);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('businesses')
+        .select('*')
+        .eq('id', id)
+        .maybeSingle();
+
+      if (active) {
+        if (!error && data) {
+          const photosFromDb = Array.isArray(data.gallery_urls) && data.gallery_urls.length > 0
+            ? data.gallery_urls
+            : data.imagen_url
+            ? [data.imagen_url]
+            : [];
+
+          setFetchedBusiness({
+            ...data,
+            address: data.location || data.address || '',
+            whatsapp: data.whatsapp_number || data.whatsapp || '',
+            photos: photosFromDb,
+            menuImages: Array.isArray(data.menuImages) ? data.menuImages : [],
+            schedule: data.schedule || {},
+            adLevel: data.adLevel || AdLevel.NONE,
+          });
+        } else {
+          setFetchedBusiness(null);
+        }
+        setLoadingBusiness(false);
+      }
+    };
+
+    void fetchBusinessById();
+    return () => {
+      active = false;
+    };
+  }, [id, businessFromContext]);
 
   useEffect(() => {
     if (business) {
@@ -79,31 +141,41 @@ const BusinessDetailPage: React.FC = () => {
 
   // Trae los campos nuevos desde Supabase para asegurar datos frescos aunque AppContext no los incluya
   useEffect(() => {
-  let active = true;
-  const loadExtraProfile = async () => {
-    const targetId = business?.id || id;
-    if (!targetId) return;
-    const supabase = getSupabase();
-    if (!supabase) return;
+    let active = true;
+    const loadExtraProfile = async () => {
+      const targetId = business?.id || id;
+      if (!targetId) return;
+      const supabase = getSupabase();
+      if (!supabase) return;
 
-    const { data, error } = await supabase
-      .from('businesses')
-      .select(
-        'logo_url, imagen_url, menu_url, catalog_type, gallery_urls, phone, whatsapp, whatsapp_number, default_message, location, opening_hours, cultural_description'
-      )
-      .eq('id', targetId)
-      .maybeSingle();
+      const { data, error } = await supabase
+        .from('businesses')
+        .select(
+          'logo_url, imagen_url, menu_url, catalog_type, gallery_urls, phone, whatsapp, whatsapp_number, default_message, location, opening_hours, cultural_description'
+        )
+        .eq('id', targetId)
+        .maybeSingle();
 
-    if (active && !error && data) {
-      setExtraData(data as ExtraBusinessFields);
-    }
-  };
+      if (active && !error && data) {
+        setExtraData(data as ExtraBusinessFields);
+      }
+    };
 
-  void loadExtraProfile();
-  return () => {
-    active = false;
-  };
-}, [business?.id, id]);
+    void loadExtraProfile();
+    return () => {
+      active = false;
+    };
+  }, [business?.id, id]);
+
+  if (loadingBusiness) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
+        <div className="text-center space-y-4">
+          <p className="font-black text-slate-400 uppercase tracking-widest text-xs">Cargando negocio...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!business) {
     return (
