@@ -1,19 +1,12 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { getSupabase } from '../services/supabase';
+import { MerchantProfileEditor, EditableMerchantBusiness } from './MerchantProfileEditor';
 
 type PeriodKey = '7d' | '30d' | 'month';
 type VoucherFilter = 'all' | 'issued' | 'redeemed';
 
-interface MerchantBusiness {
-  id: string;
-  name: string;
-  category: string | null;
-  city: string | null;
-  location: string | null;
-  slug: string | null;
-  is_sponsored: boolean | null;
-}
+interface MerchantBusiness extends EditableMerchantBusiness {}
 
 interface ClickLogRow {
   id: string;
@@ -161,11 +154,13 @@ export const MerchantMetricsDashboard: React.FC = () => {
   const urlPin = searchParams.get('pin');
 
   const [pinInput, setPinInput] = useState(urlPin || '');
+  const [activePin, setActivePin] = useState(urlPin || '');
   const [showPin, setShowPin] = useState(false);
   const [authLoading, setAuthLoading] = useState(Boolean(urlPin));
   const [authError, setAuthError] = useState<string | null>(null);
   const [business, setBusiness] = useState<MerchantBusiness | null>(null);
 
+  const [activeTab, setActiveTab] = useState<'metrics' | 'profile'>('metrics');
   const [period, setPeriod] = useState<PeriodKey>('30d');
   const [avgTicket, setAvgTicket] = useState<number>(150);
 
@@ -200,7 +195,9 @@ export const MerchantMetricsDashboard: React.FC = () => {
     try {
       const { data, error } = await supabase
         .from('businesses')
-        .select('id, name, category, city, location, slug, is_sponsored')
+        .select(
+          'id, name, category, city, location, slug, is_sponsored, description, cultural_description, phone, whatsapp, whatsapp_number, default_message, website, opening_hours, logo_url, imagen_url, menu_url, catalog_type, gallery_urls'
+        )
         .eq('access_pin', cleanPin)
         .limit(1)
         .maybeSingle();
@@ -214,6 +211,7 @@ export const MerchantMetricsDashboard: React.FC = () => {
       } else {
         const matched = data as MerchantBusiness;
         setBusiness(matched);
+        setActivePin(cleanPin);
         setAvgTicket(getDefaultTicketForCategory(matched.category));
       }
     } catch {
@@ -291,6 +289,8 @@ export const MerchantMetricsDashboard: React.FC = () => {
     setClicks([]);
     setVouchers([]);
     setPinInput('');
+    setActivePin('');
+    setActiveTab('metrics');
     setAuthError(null);
     if (searchParams.has('pin')) {
       const next = new URLSearchParams(searchParams);
@@ -298,7 +298,8 @@ export const MerchantMetricsDashboard: React.FC = () => {
       setSearchParams(next, { replace: true });
     }
   };
-const handleRedeemVoucher = async (voucher: VoucherIssuedRow) => {
+
+  const handleRedeemVoucher = async (voucher: VoucherIssuedRow) => {
     if (!business?.id || voucher.status === 'redeemed') return;
 
     const rawAmount = window.prompt(
@@ -323,7 +324,7 @@ const handleRedeemVoucher = async (voucher: VoucherIssuedRow) => {
     setRedeemingId(voucher.id);
     setActionBanner(null);
 
-   try {
+    try {
       const { error } = await supabase
         .from('vouchers_issued')
         .update({
@@ -333,7 +334,6 @@ const handleRedeemVoucher = async (voucher: VoucherIssuedRow) => {
         })
         .eq('id', voucher.id)
         .eq('business_id', business.id);
- 
 
       if (error) {
         setActionBanner({
@@ -427,13 +427,13 @@ const handleRedeemVoucher = async (voucher: VoucherIssuedRow) => {
   const midFunnelInterested = metrics.promotion_click + metrics.arkaiko_reserve_click;
 
   const conversionDenominator = Math.max(
-  metrics.detail_view,
-  metrics.detail_view + metrics.arkaiko_reserve_click
-);
-const conversionRate =
-  conversionDenominator > 0
-    ? Math.min(100, (totalReservationIntents / conversionDenominator) * 100).toFixed(1)
-    : '0.0';
+    metrics.detail_view,
+    metrics.detail_view + metrics.arkaiko_reserve_click
+  );
+  const conversionRate =
+    conversionDenominator > 0
+      ? Math.min(100, (totalReservationIntents / conversionDenominator) * 100).toFixed(1)
+      : '0.0';
 
   const channels = useMemo(() => {
     const raw = [
@@ -481,7 +481,8 @@ const conversionRate =
     return raw.map((c) => ({
       ...c,
       barPercent: c.value === 0 ? 0 : Math.max(Math.round((c.value / maxVal) * 100), 4),
-      sharePercent: totalVal === 1 && raw.every((r) => r.value === 0) ? 0 : Math.round((c.value / totalVal) * 100),
+      sharePercent:
+        totalVal === 1 && raw.every((r) => r.value === 0) ? 0 : Math.round((c.value / totalVal) * 100),
     }));
   }, [metrics, voucherCounts.redeemed]);
 
@@ -641,543 +642,584 @@ const conversionRate =
           </div>
         </div>
 
-        {dataError && (
-          <div
-            role="alert"
-            className="bg-red-50 border border-red-200 text-red-700 text-sm font-medium rounded-xl px-4 py-3 flex items-center justify-between gap-4"
+        {/* Selector de sección del panel de socios */}
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setActiveTab('metrics')}
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-colors flex items-center gap-2 ${
+              activeTab === 'metrics'
+                ? 'bg-slate-900 text-white'
+                : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
+            }`}
           >
-            <span>{dataError}</span>
-            <button
-              type="button"
-              onClick={() => void fetchMerchantData(business.id, period)}
-              className="text-xs font-bold underline shrink-0"
-            >
-              Reintentar
-            </button>
-          </div>
-        )}
+            <i className="fas fa-chart-line text-xs" aria-hidden="true"></i>
+            <span>Métricas y Caja</span>
+          </button>
 
-        {/* 1. ENCABEZADO DEL NEGOCIO Y RESUMEN EJECUTIVO */}
-        <section className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8">
-          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 pb-6 border-b border-slate-100">
-            <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs font-medium text-slate-500">
-                <span>{business.category || 'Comercio Afiliado'}</span>
-                <span aria-hidden="true">·</span>
-                <span>{business.city || business.location || 'Huaraz'}</span>
-                <span aria-hidden="true">·</span>
-                <span className="inline-flex items-center gap-1.5 text-emerald-700 font-semibold">
-                  <i className="fas fa-circle-check text-[11px]" aria-hidden="true"></i>
-                  {business.is_sponsored ? 'Socio Activo' : 'Perfil Activo'}
-                </span>
-              </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 text-balance">
-                {business.name}
-              </h1>
-              <p className="text-sm text-slate-600 max-w-2xl">
-                Métricas reales de los turistas y clientes que interactuaron con tu negocio en Huaraz Explorer y Arkáiko.
-              </p>
-            </div>
+          <button
+            type="button"
+            onClick={() => setActiveTab('profile')}
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-colors flex items-center gap-2 ${
+              activeTab === 'profile'
+                ? 'bg-emerald-600 text-white'
+                : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
+            }`}
+          >
+            <i className="fas fa-store text-xs" aria-hidden="true"></i>
+            <span>Mi Perfil, Logo y Carta</span>
+          </button>
+        </div>
 
-            {/* Selector de Periodo */}
-            <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl self-start shrink-0">
-              {PERIOD_OPTIONS.map((option) => (
-                <button
-                  key={option.key}
-                  type="button"
-                  onClick={() => setPeriod(option.key)}
-                  className={`px-3.5 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shrink-0 ${
-                    period === option.key
-                      ? 'bg-white text-slate-900 shadow-sm'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Tarjeta destacada: Retorno Estimado */}
-          <div className="pt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-            <div className="lg:col-span-7 space-y-2">
-              <p className="text-xs font-semibold text-emerald-700 uppercase tracking-wider">
-                Retorno estimado ({periodMeta.contextLabel})
-              </p>
-              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                <span className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 tabular-nums">
-                  S/ {formatSoles(estimatedReturn)}
-                </span>
-                <span className="text-sm font-semibold text-emerald-700 tabular-nums">
-                  en ventas potenciales
-                </span>
-              </div>
-              <p className="text-sm text-slate-600">
-                Calculado con{' '}
-                <strong className="font-bold text-slate-900 tabular-nums">
-                  {totalReservationIntents} intenciones de reserva
-                </strong>{' '}
-                ({metrics.detail_reserve_click} desde tu ficha + {metrics.arkaiko_reserve_click} recomendadas por Arkáiko)
-                multiplicadas por tu consumo promedio.
-              </p>
-            </div>
-
-            <div className="lg:col-span-5 bg-slate-50 border border-slate-200 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="space-y-1">
-                <label
-                  htmlFor="avg-ticket-input"
-                  className="block text-xs font-bold text-slate-800"
-                >
-                  Tu ticket promedio (S/)
-                </label>
-                <p className="text-xs text-slate-500">Ajusta el monto promedio por cliente o reserva</p>
-              </div>
-              <div className="flex items-center bg-white border border-slate-300 focus-within:border-emerald-600 focus-within:ring-2 focus-within:ring-emerald-600/15 rounded-lg px-3 py-2 w-full sm:w-36 shrink-0">
-                <span className="text-sm font-bold text-slate-400 mr-1.5 select-none">S/</span>
-                <input
-                  id="avg-ticket-input"
-                  type="text"
-                  inputMode="numeric"
-                  value={avgTicket === 0 ? '' : avgTicket}
-                  onChange={handleTicketChange}
-                  placeholder="0"
-                  className="w-full text-right font-bold text-slate-900 text-base tabular-nums bg-transparent outline-none"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 2. LOS 4 CONVERTIDORES PRINCIPALES (Tarjetas KPI reales de clicks_log) */}
-        <section aria-label="Indicadores principales" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* KPI 1: Visitas a tu ficha (detail_view) */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col justify-between gap-4">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-semibold text-slate-500">Visitas a tu ficha</span>
-              <i className="fas fa-eye text-slate-400 text-sm" aria-hidden="true"></i>
-            </div>
-            <div>
-              <p className="text-3xl font-extrabold text-slate-900 tracking-tight tabular-nums">
-                {dataLoading ? '—' : metrics.detail_view}{' '}
-                <span className="text-base font-semibold text-slate-500">vistas</span>
-              </p>
-              <p className="text-xs font-medium text-slate-500 mt-1">
-                {periodMeta.label}
-              </p>
-            </div>
-            <p className="text-xs text-slate-500 pt-3 border-t border-slate-100">
-              Turistas y locales que abrieron tu perfil
-            </p>
-          </div>
-
-          {/* KPI 2: Clics en promociones/cupones (promotion_click) */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col justify-between gap-4">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-semibold text-slate-500">Clics en promociones</span>
-              <i className="fas fa-ticket text-emerald-600 text-sm" aria-hidden="true"></i>
-            </div>
-            <div>
-              <p className="text-3xl font-extrabold text-slate-900 tracking-tight tabular-nums">
-                {dataLoading ? '—' : metrics.promotion_click}{' '}
-                <span className="text-base font-semibold text-slate-500">clics</span>
-              </p>
-              <p className="text-xs font-medium text-slate-500 mt-1">
-                Ofertas y cupones tocados
-              </p>
-            </div>
-            <p className="text-xs text-slate-500 pt-3 border-t border-slate-100">
-              Personas interesadas en tus ofertas y vouchers
-            </p>
-          </div>
-
-          {/* KPI 3: Reservas desde tu ficha (detail_reserve_click) */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col justify-between gap-4">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-semibold text-slate-500">Reservas desde tu ficha</span>
-              <i className="fab fa-whatsapp text-emerald-600 text-base" aria-hidden="true"></i>
-            </div>
-            <div>
-              <p className="text-3xl font-extrabold text-emerald-700 tracking-tight tabular-nums">
-                {dataLoading ? '—' : metrics.detail_reserve_click}{' '}
-                <span className="text-base font-semibold text-emerald-700/80">clics</span>
-              </p>
-              <p className="text-xs font-semibold text-emerald-700 mt-1">
-                WhatsApp, Teléfono y Reserva
-              </p>
-            </div>
-            <p className="text-xs text-slate-500 pt-3 border-t border-slate-100">
-              Clientes que dieron clic para contactarte directo
-            </p>
-          </div>
-
-          {/* KPI 4: Reservas recomendadas por Arkáiko (arkaiko_reserve_click) */}
-          <div className="bg-white border border-indigo-200 rounded-2xl p-5 flex flex-col justify-between gap-4">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-semibold text-indigo-700">Recomendadas por Arkáiko</span>
-              <i className="fas fa-robot text-indigo-600 text-sm" aria-hidden="true"></i>
-            </div>
-            <div>
-              <p className="text-3xl font-extrabold text-indigo-700 tracking-tight tabular-nums">
-                {dataLoading ? '—' : metrics.arkaiko_reserve_click}{' '}
-                <span className="text-base font-semibold text-indigo-600/80">reservas</span>
-              </p>
-              <p className="text-xs font-semibold text-indigo-600 mt-1">
-                Desde el Chat IA de Huaraz Explorer
-              </p>
-            </div>
-            <p className="text-xs text-slate-500 pt-3 border-t border-slate-100">
-              Turistas que pidieron recomendación al guía IA y eligieron tu local
-            </p>
-          </div>
-        </section>
-
-        {/* 3. COMPARATIVA DE CANALES + 4. EMBUDO DE INTERÉS */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Comparativa de Canales de Conversión */}
-          <div className="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100">
-              <div>
-                <h2 className="text-lg font-bold text-slate-900">¿De dónde vienen tus clientes?</h2>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Comparativa de canales registrados en {periodMeta.label.toLowerCase()}
-                </p>
-              </div>
-              <span className="text-xs font-semibold text-emerald-700 whitespace-nowrap">
-                Canal líder: {topReservationChannel}
-              </span>
-            </div>
-
-            <div className="space-y-5">
-              {channels.map((channel) => (
-                <div key={channel.id} className="space-y-2">
-                  <div className="flex items-baseline justify-between gap-4">
-                    <div className="min-w-0">
-                      <p className="text-sm font-bold text-slate-900 truncate">{channel.label}</p>
-                      <p className="text-xs text-slate-500">{channel.sublabel}</p>
-                    </div>
-                    <div className="text-right shrink-0 tabular-nums">
-                      <span className={`text-sm font-extrabold ${channel.valueClass}`}>
-                        {channel.value} {channel.unit}
-                      </span>
-                      <span className="text-xs text-slate-400 ml-2">({channel.sharePercent}%)</span>
-                    </div>
-                  </div>
-                  <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-300 ${channel.barClass}`}
-                      style={{ width: `${channel.barPercent}%` }}
-                    ></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Embudo de Interés Simple */}
-          <div className="lg:col-span-5 bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 flex flex-col justify-between space-y-6">
-            <div className="pb-4 border-b border-slate-100 flex items-start justify-between gap-4">
-              <div>
-                <h2 className="text-lg font-bold text-slate-900">De visita a cliente</h2>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Avance real hacia contacto o reserva
-                </p>
-              </div>
-              <div className="text-right shrink-0">
-                <p className="text-xs text-slate-500">Conversión</p>
-                <p className="text-xl font-extrabold text-emerald-700 tabular-nums">{conversionRate}%</p>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="font-semibold text-slate-700">1. Abrieron tu ficha</span>
-                  <span className="font-extrabold text-slate-900 tabular-nums">{metrics.detail_view}</span>
-                </div>
-                <div className="w-full h-8 bg-slate-100 rounded-lg overflow-hidden flex items-center">
-                  <div
-                    className="h-full bg-slate-700 rounded-lg transition-all duration-300"
-                    style={{ width: metrics.detail_view > 0 ? '100%' : '0%' }}
-                  ></div>
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="font-semibold text-slate-700">2. Vieron promo o hablaron con Arkáiko</span>
-                  <span className="font-extrabold text-indigo-700 tabular-nums">{midFunnelInterested}</span>
-                </div>
-                <div className="w-full h-8 bg-slate-100 rounded-lg overflow-hidden flex items-center">
-                  <div
-                    className="h-full bg-indigo-600 rounded-lg transition-all duration-300"
-                    style={{
-                      width: `${
-                        midFunnelInterested === 0
-                          ? 0
-                          : Math.max(
-                              Math.min(
-                                Math.round(
-                                  (midFunnelInterested / Math.max(metrics.detail_view, midFunnelInterested, 1)) * 100
-                                ),
-                                100
-                              ),
-                              8
-                            )
-                      }%`,
-                    }}
-                  ></div>
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="font-semibold text-slate-700">3. Pulsaron Reservar / WhatsApp</span>
-                  <span className="font-extrabold text-emerald-700 tabular-nums">{totalReservationIntents}</span>
-                </div>
-                <div className="w-full h-8 bg-slate-100 rounded-lg overflow-hidden flex items-center">
-                  <div
-                    className="h-full bg-emerald-600 rounded-lg transition-all duration-300"
-                    style={{
-                      width: `${
-                        totalReservationIntents === 0
-                          ? 0
-                          : Math.max(
-                              Math.min(
-                                Math.round(
-                                  (totalReservationIntents /
-                                    Math.max(metrics.detail_view, totalReservationIntents, 1)) *
-                                    100
-                                ),
-                                100
-                              ),
-                              8
-                            )
-                      }%`,
-                    }}
-                  ></div>
-                </div>
-              </div>
-            </div>
-
-            <p className="text-xs text-slate-500 pt-3 border-t border-slate-100">
-              {metrics.detail_view > 0 ? (
-                <>
-                  Por cada 100 personas que ven tu perfil,{' '}
-                  <strong className="text-slate-800 font-bold tabular-nums">
-                    {Math.round(Number(conversionRate))}
-                  </strong>{' '}
-                  dan el paso para contactarte o reservar.
-                </>
-              ) : (
-                'Aún no hay suficientes visitas en este periodo para calcular la proporción.'
-              )}
-            </p>
-          </div>
-        </section>
-
-        {/* 5. VOUCHERS EMITIDOS Y VALIDACIÓN EN CAJA (vouchers_issued) */}
-        <section className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 space-y-6">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-            <div>
-              <h2 className="text-lg font-bold text-slate-900">Vouchers y Cupones en Caja</h2>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Valida el código del cliente cuando lo presente en tu local para marcarlo como canjeado
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-4 text-xs tabular-nums">
-              <div className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
-                <span className="text-slate-500">Emitidos (por canjear): </span>
-                <strong className="text-amber-700 font-extrabold">{voucherCounts.issued}</strong>
-              </div>
-              <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
-                <span className="text-emerald-800">Canjeados: </span>
-                <strong className="text-emerald-700 font-extrabold">{voucherCounts.redeemed}</strong>
-              </div>
-              <div className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
-                <span className="text-slate-500">Total: </span>
-                <strong className="text-slate-900 font-extrabold">{voucherCounts.total}</strong>
-              </div>
-            </div>
-          </div>
-
-          {actionBanner && (
-            <div
-              role="status"
-              className={`rounded-xl px-4 py-3 text-xs font-semibold border flex items-center justify-between gap-3 ${
-                actionBanner.type === 'success'
-                  ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
-                  : 'bg-red-50 border-red-200 text-red-700'
-              }`}
-            >
-              <span>{actionBanner.text}</span>
-              <button
-                type="button"
-                onClick={() => setActionBanner(null)}
-                className="text-current opacity-70 hover:opacity-100"
-                aria-label="Cerrar aviso"
+        {activeTab === 'profile' ? (
+          <MerchantProfileEditor
+            business={business}
+            accessPin={activePin || pinInput}
+            onSaved={(updated) => {
+              setBusiness((prev) => (prev ? { ...prev, ...updated } : prev));
+            }}
+          />
+        ) : (
+          <>
+            {dataError && (
+              <div
+                role="alert"
+                className="bg-red-50 border border-red-200 text-red-700 text-sm font-medium rounded-xl px-4 py-3 flex items-center justify-between gap-4"
               >
-                <i className="fas fa-times"></i>
-              </button>
-            </div>
-          )}
-
-          {/* Barra de búsqueda y filtro */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="relative flex-1 max-w-sm">
-              <i className="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-              <input
-                type="text"
-                value={voucherSearch}
-                onChange={(e) => setVoucherSearch(e.target.value)}
-                placeholder="Buscar código de voucher (ej. HX-...)"
-                className="w-full bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl pl-9 pr-4 py-2 text-sm font-medium text-slate-900 outline-none"
-              />
-            </div>
-
-            <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl self-start">
-              {(
-                [
-                  { key: 'all', label: 'Todos' },
-                  { key: 'issued', label: 'Por canjear' },
-                  { key: 'redeemed', label: 'Canjeados' },
-                ] as const
-              ).map((tab) => (
+                <span>{dataError}</span>
                 <button
-                  key={tab.key}
                   type="button"
-                  onClick={() => setVoucherFilter(tab.key)}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shrink-0 ${
-                    voucherFilter === tab.key
-                      ? 'bg-white text-slate-900 shadow-sm'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
+                  onClick={() => void fetchMerchantData(business.id, period)}
+                  className="text-xs font-bold underline shrink-0"
                 >
-                  {tab.label}
+                  Reintentar
                 </button>
-              ))}
-            </div>
-          </div>
+              </div>
+            )}
 
-          {filteredVouchers.length === 0 ? (
-            <div className="py-10 text-center bg-slate-50 border border-dashed border-slate-200 rounded-xl">
-              <p className="text-sm font-semibold text-slate-500">
-                {vouchers.length === 0
-                  ? 'Aún no se han emitido vouchers para este negocio.'
-                  : 'Ningún voucher coincide con el filtro actual.'}
-              </p>
-            </div>
-          ) : (
-            <div className="divide-y divide-slate-100 border border-slate-100 rounded-xl overflow-hidden">
-              {filteredVouchers.map((voucher) => {
-                const isRedeemed = voucher.status === 'redeemed';
-                const contactLabel = maskContact(voucher.customer_whatsapp, voucher.customer_email);
-                const isUpdating = redeemingId === voucher.id;
+            {/* 1. ENCABEZADO DEL NEGOCIO Y RESUMEN EJECUTIVO */}
+            <section className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8">
+              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 pb-6 border-b border-slate-100">
+                <div className="space-y-2">
+                  <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs font-medium text-slate-500">
+                    <span>{business.category || 'Comercio Afiliado'}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{business.city || business.location || 'Huaraz'}</span>
+                    <span aria-hidden="true">·</span>
+                    <span className="inline-flex items-center gap-1.5 text-emerald-700 font-semibold">
+                      <i className="fas fa-circle-check text-[11px]" aria-hidden="true"></i>
+                      {business.is_sponsored ? 'Socio Activo' : 'Perfil Activo'}
+                    </span>
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 text-balance">
+                    {business.name}
+                  </h1>
+                  <p className="text-sm text-slate-600 max-w-2xl">
+                    Métricas reales de los turistas y clientes que interactuaron con tu negocio en Huaraz Explorer y Arkáiko.
+                  </p>
+                </div>
 
-                return (
-                  <div
-                    key={voucher.id}
-                    className="p-4 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-                  >
-                    <div className="space-y-1 min-w-0">
-                      <div className="flex flex-wrap items-center gap-2.5">
-                        <span className="font-mono text-sm font-extrabold text-slate-900 tracking-wide">
-                          {voucher.voucher_code || 'SIN-CÓDIGO'}
-                        </span>
-                        <span
-                          className={`text-xs font-bold px-2 py-0.5 rounded-md ${
-                            isRedeemed
-                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                              : 'bg-amber-50 text-amber-800 border border-amber-200'
-                          }`}
-                        >
-                          {isRedeemed ? 'Canjeado' : 'Emitido · Por canjear'}
-                        </span>
-                        <span className="text-xs text-slate-400 tabular-nums">
-                          {formatDateTime(voucher.created_at)}
-                        </span>
+                {/* Selector de Periodo */}
+                <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl self-start shrink-0">
+                  {PERIOD_OPTIONS.map((option) => (
+                    <button
+                      key={option.key}
+                      type="button"
+                      onClick={() => setPeriod(option.key)}
+                      className={`px-3.5 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shrink-0 ${
+                        period === option.key
+                          ? 'bg-white text-slate-900 shadow-sm'
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Tarjeta destacada: Retorno Estimado */}
+              <div className="pt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                <div className="lg:col-span-7 space-y-2">
+                  <p className="text-xs font-semibold text-emerald-700 uppercase tracking-wider">
+                    Retorno estimado ({periodMeta.contextLabel})
+                  </p>
+                  <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                    <span className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 tabular-nums">
+                      S/ {formatSoles(estimatedReturn)}
+                    </span>
+                    <span className="text-sm font-semibold text-emerald-700 tabular-nums">
+                      en ventas potenciales
+                    </span>
+                  </div>
+                  <p className="text-sm text-slate-600">
+                    Calculado con{' '}
+                    <strong className="font-bold text-slate-900 tabular-nums">
+                      {totalReservationIntents} intenciones de reserva
+                    </strong>{' '}
+                    ({metrics.detail_reserve_click} desde tu ficha + {metrics.arkaiko_reserve_click} recomendadas por Arkáiko)
+                    multiplicadas por tu consumo promedio.
+                  </p>
+                </div>
+
+                <div className="lg:col-span-5 bg-slate-50 border border-slate-200 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <label
+                      htmlFor="avg-ticket-input"
+                      className="block text-xs font-bold text-slate-800"
+                    >
+                      Tu ticket promedio (S/)
+                    </label>
+                    <p className="text-xs text-slate-500">Ajusta el monto promedio por cliente o reserva</p>
+                  </div>
+                  <div className="flex items-center bg-white border border-slate-300 focus-within:border-emerald-600 focus-within:ring-2 focus-within:ring-emerald-600/15 rounded-lg px-3 py-2 w-full sm:w-36 shrink-0">
+                    <span className="text-sm font-bold text-slate-400 mr-1.5 select-none">S/</span>
+                    <input
+                      id="avg-ticket-input"
+                      type="text"
+                      inputMode="numeric"
+                      value={avgTicket === 0 ? '' : avgTicket}
+                      onChange={handleTicketChange}
+                      placeholder="0"
+                      className="w-full text-right font-bold text-slate-900 text-base tabular-nums bg-transparent outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 2. LOS 4 CONVERTIDORES PRINCIPALES (Tarjetas KPI reales de clicks_log) */}
+            <section aria-label="Indicadores principales" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* KPI 1: Visitas a tu ficha (detail_view) */}
+              <div className="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col justify-between gap-4">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-semibold text-slate-500">Visitas a tu ficha</span>
+                  <i className="fas fa-eye text-slate-400 text-sm" aria-hidden="true"></i>
+                </div>
+                <div>
+                  <p className="text-3xl font-extrabold text-slate-900 tracking-tight tabular-nums">
+                    {dataLoading ? '—' : metrics.detail_view}{' '}
+                    <span className="text-base font-semibold text-slate-500">vistas</span>
+                  </p>
+                  <p className="text-xs font-medium text-slate-500 mt-1">
+                    {periodMeta.label}
+                  </p>
+                </div>
+                <p className="text-xs text-slate-500 pt-3 border-t border-slate-100">
+                  Turistas y locales que abrieron tu perfil
+                </p>
+              </div>
+
+              {/* KPI 2: Clics en promociones/cupones (promotion_click) */}
+              <div className="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col justify-between gap-4">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-semibold text-slate-500">Clics en promociones</span>
+                  <i className="fas fa-ticket text-emerald-600 text-sm" aria-hidden="true"></i>
+                </div>
+                <div>
+                  <p className="text-3xl font-extrabold text-slate-900 tracking-tight tabular-nums">
+                    {dataLoading ? '—' : metrics.promotion_click}{' '}
+                    <span className="text-base font-semibold text-slate-500">clics</span>
+                  </p>
+                  <p className="text-xs font-medium text-slate-500 mt-1">
+                    Ofertas y cupones tocados
+                  </p>
+                </div>
+                <p className="text-xs text-slate-500 pt-3 border-t border-slate-100">
+                  Personas interesadas en tus ofertas y vouchers
+                </p>
+              </div>
+
+              {/* KPI 3: Reservas desde tu ficha (detail_reserve_click) */}
+              <div className="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col justify-between gap-4">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-semibold text-slate-500">Reservas desde tu ficha</span>
+                  <i className="fab fa-whatsapp text-emerald-600 text-base" aria-hidden="true"></i>
+                </div>
+                <div>
+                  <p className="text-3xl font-extrabold text-emerald-700 tracking-tight tabular-nums">
+                    {dataLoading ? '—' : metrics.detail_reserve_click}{' '}
+                    <span className="text-base font-semibold text-emerald-700/80">clics</span>
+                  </p>
+                  <p className="text-xs font-semibold text-emerald-700 mt-1">
+                    WhatsApp, Teléfono y Reserva
+                  </p>
+                </div>
+                <p className="text-xs text-slate-500 pt-3 border-t border-slate-100">
+                  Clientes que dieron clic para contactarte directo
+                </p>
+              </div>
+
+              {/* KPI 4: Reservas recomendadas por Arkáiko (arkaiko_reserve_click) */}
+              <div className="bg-white border border-indigo-200 rounded-2xl p-5 flex flex-col justify-between gap-4">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-semibold text-indigo-700">Recomendadas por Arkáiko</span>
+                  <i className="fas fa-robot text-indigo-600 text-sm" aria-hidden="true"></i>
+                </div>
+                <div>
+                  <p className="text-3xl font-extrabold text-indigo-700 tracking-tight tabular-nums">
+                    {dataLoading ? '—' : metrics.arkaiko_reserve_click}{' '}
+                    <span className="text-base font-semibold text-indigo-600/80">reservas</span>
+                  </p>
+                  <p className="text-xs font-semibold text-indigo-600 mt-1">
+                    Desde el Chat IA de Huaraz Explorer
+                  </p>
+                </div>
+                <p className="text-xs text-slate-500 pt-3 border-t border-slate-100">
+                  Turistas que pidieron recomendación al guía IA y eligieron tu local
+                </p>
+              </div>
+            </section>
+
+            {/* 3. COMPARATIVA DE CANALES + 4. EMBUDO DE INTERÉS */}
+            <section className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              {/* Comparativa de Canales de Conversión */}
+              <div className="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100">
+                  <div>
+                    <h2 className="text-lg font-bold text-slate-900">¿De dónde vienen tus clientes?</h2>
+                    <p className="text-xs text-slate-500 mt-0.5">
+                      Comparativa de canales registrados en {periodMeta.label.toLowerCase()}
+                    </p>
+                  </div>
+                  <span className="text-xs font-semibold text-emerald-700 whitespace-nowrap">
+                    Canal líder: {topReservationChannel}
+                  </span>
+                </div>
+
+                <div className="space-y-5">
+                  {channels.map((channel) => (
+                    <div key={channel.id} className="space-y-2">
+                      <div className="flex items-baseline justify-between gap-4">
+                        <div className="min-w-0">
+                          <p className="text-sm font-bold text-slate-900 truncate">{channel.label}</p>
+                          <p className="text-xs text-slate-500">{channel.sublabel}</p>
+                        </div>
+                        <div className="text-right shrink-0 tabular-nums">
+                          <span className={`text-sm font-extrabold ${channel.valueClass}`}>
+                            {channel.value} {channel.unit}
+                          </span>
+                          <span className="text-xs text-slate-400 ml-2">({channel.sharePercent}%)</span>
+                        </div>
                       </div>
-                      {(voucher.mensaje_enviado || contactLabel) && (
-                        <p className="text-xs text-slate-500 truncate">
-                          {[voucher.mensaje_enviado, contactLabel].filter(Boolean).join(' · ')}
-                        </p>
-                      )}
+                      <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all duration-300 ${channel.barClass}`}
+                          style={{ width: `${channel.barPercent}%` }}
+                        ></div>
+                      </div>
                     </div>
+                  ))}
+                </div>
+              </div>
 
-                    <div className="shrink-0">
-                      {isRedeemed ? (
-                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
-                          <i className="fas fa-circle-check" aria-hidden="true"></i>
-                          Validado en caja
-                        </span>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => void handleRedeemVoucher(voucher)}
-                          disabled={isUpdating}
-                          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white text-xs font-bold rounded-lg transition-colors whitespace-nowrap"
-                        >
-                          {isUpdating ? 'Validando...' : 'Validar / Marcar canjeado'}
-                        </button>
-                      )}
+              {/* Embudo de Interés Simple */}
+              <div className="lg:col-span-5 bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 flex flex-col justify-between space-y-6">
+                <div className="pb-4 border-b border-slate-100 flex items-start justify-between gap-4">
+                  <div>
+                    <h2 className="text-lg font-bold text-slate-900">De visita a cliente</h2>
+                    <p className="text-xs text-slate-500 mt-0.5">
+                      Avance real hacia contacto o reserva
+                    </p>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <p className="text-xs text-slate-500">Conversión</p>
+                    <p className="text-xl font-extrabold text-emerald-700 tabular-nums">{conversionRate}%</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-semibold text-slate-700">1. Abrieron tu ficha</span>
+                      <span className="font-extrabold text-slate-900 tabular-nums">{metrics.detail_view}</span>
+                    </div>
+                    <div className="w-full h-8 bg-slate-100 rounded-lg overflow-hidden flex items-center">
+                      <div
+                        className="h-full bg-slate-700 rounded-lg transition-all duration-300"
+                        style={{ width: metrics.detail_view > 0 ? '100%' : '0%' }}
+                      ></div>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          )}
-        </section>
 
-        {/* 6. ÚLTIMA ACTIVIDAD RECIENTE (Feed real desde clicks_log) */}
-        <section className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100">
-            <div>
-              <h2 className="text-lg font-bold text-slate-900">Última actividad reciente</h2>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Interacciones reales más recientes registradas en tu perfil ({periodMeta.label.toLowerCase()})
-              </p>
-            </div>
-            <span className="text-xs font-medium text-slate-500">
-              Mostrando {recentActivities.length} recientes
-            </span>
-          </div>
-
-          {recentActivities.length === 0 ? (
-            <div className="py-10 text-center">
-              <p className="text-sm text-slate-500 font-medium">
-                No hay interacciones registradas en {periodMeta.label.toLowerCase()}.
-              </p>
-            </div>
-          ) : (
-            <ul className="divide-y divide-slate-100">
-              {recentActivities.map((item) => {
-                const channelColor =
-                  item.channelType === 'ai'
-                    ? 'text-indigo-700'
-                    : item.channelType === 'direct'
-                    ? 'text-emerald-700'
-                    : 'text-slate-700';
-
-                return (
-                  <li
-                    key={item.id}
-                    className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-4"
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 min-w-0">
-                      <span className="text-xs font-semibold text-slate-400 tabular-nums shrink-0 w-28">
-                        {item.timeAgo}
-                      </span>
-                      <span className="text-sm text-slate-800 font-medium">{item.description}</span>
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-semibold text-slate-700">2. Vieron promo o hablaron con Arkáiko</span>
+                      <span className="font-extrabold text-indigo-700 tabular-nums">{midFunnelInterested}</span>
                     </div>
-                    <span className={`text-xs font-semibold whitespace-nowrap shrink-0 ${channelColor}`}>
-                      {item.channelLabel}
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </section>
+                    <div className="w-full h-8 bg-slate-100 rounded-lg overflow-hidden flex items-center">
+                      <div
+                        className="h-full bg-indigo-600 rounded-lg transition-all duration-300"
+                        style={{
+                          width: `${
+                            midFunnelInterested === 0
+                              ? 0
+                              : Math.max(
+                                  Math.min(
+                                    Math.round(
+                                      (midFunnelInterested / Math.max(metrics.detail_view, midFunnelInterested, 1)) * 100
+                                    ),
+                                    100
+                                  ),
+                                  8
+                                )
+                          }%`,
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-semibold text-slate-700">3. Pulsaron Reservar / WhatsApp</span>
+                      <span className="font-extrabold text-emerald-700 tabular-nums">{totalReservationIntents}</span>
+                    </div>
+                    <div className="w-full h-8 bg-slate-100 rounded-lg overflow-hidden flex items-center">
+                      <div
+                        className="h-full bg-emerald-600 rounded-lg transition-all duration-300"
+                        style={{
+                          width: `${
+                            totalReservationIntents === 0
+                              ? 0
+                              : Math.max(
+                                  Math.min(
+                                    Math.round(
+                                      (totalReservationIntents /
+                                        Math.max(metrics.detail_view, totalReservationIntents, 1)) *
+                                        100
+                                    ),
+                                    100
+                                  ),
+                                  8
+                                )
+                          }%`,
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-xs text-slate-500 pt-3 border-t border-slate-100">
+                  {metrics.detail_view > 0 ? (
+                    <>
+                      Por cada 100 personas que ven tu perfil,{' '}
+                      <strong className="text-slate-800 font-bold tabular-nums">
+                        {Math.round(Number(conversionRate))}
+                      </strong>{' '}
+                      dan el paso para contactarte o reservar.
+                    </>
+                  ) : (
+                    'Aún no hay suficientes visitas en este periodo para calcular la proporción.'
+                  )}
+                </p>
+              </div>
+            </section>
+
+            {/* 5. VOUCHERS EMITIDOS Y VALIDACIÓN EN CAJA (vouchers_issued) */}
+            <section className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 space-y-6">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900">Vouchers y Cupones en Caja</h2>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Valida el código del cliente cuando lo presente en tu local para marcarlo como canjeado
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-4 text-xs tabular-nums">
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                    <span className="text-slate-500">Emitidos (por canjear): </span>
+                    <strong className="text-amber-700 font-extrabold">{voucherCounts.issued}</strong>
+                  </div>
+                  <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
+                    <span className="text-emerald-800">Canjeados: </span>
+                    <strong className="text-emerald-700 font-extrabold">{voucherCounts.redeemed}</strong>
+                  </div>
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                    <span className="text-slate-500">Total: </span>
+                    <strong className="text-slate-900 font-extrabold">{voucherCounts.total}</strong>
+                  </div>
+                </div>
+              </div>
+
+              {actionBanner && (
+                <div
+                  role="status"
+                  className={`rounded-xl px-4 py-3 text-xs font-semibold border flex items-center justify-between gap-3 ${
+                    actionBanner.type === 'success'
+                      ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                      : 'bg-red-50 border-red-200 text-red-700'
+                  }`}
+                >
+                  <span>{actionBanner.text}</span>
+                  <button
+                    type="button"
+                    onClick={() => setActionBanner(null)}
+                    className="text-current opacity-70 hover:opacity-100"
+                    aria-label="Cerrar aviso"
+                  >
+                    <i className="fas fa-times"></i>
+                  </button>
+                </div>
+              )}
+
+              {/* Barra de búsqueda y filtro */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="relative flex-1 max-w-sm">
+                  <i className="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                  <input
+                    type="text"
+                    value={voucherSearch}
+                    onChange={(e) => setVoucherSearch(e.target.value)}
+                    placeholder="Buscar código de voucher (ej. HX-...)"
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl pl-9 pr-4 py-2 text-sm font-medium text-slate-900 outline-none"
+                  />
+                </div>
+
+                <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl self-start">
+                  {(
+                    [
+                      { key: 'all', label: 'Todos' },
+                      { key: 'issued', label: 'Por canjear' },
+                      { key: 'redeemed', label: 'Canjeados' },
+                    ] as const
+                  ).map((tab) => (
+                    <button
+                      key={tab.key}
+                      type="button"
+                      onClick={() => setVoucherFilter(tab.key)}
+                      className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shrink-0 ${
+                        voucherFilter === tab.key
+                          ? 'bg-white text-slate-900 shadow-sm'
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {filteredVouchers.length === 0 ? (
+                <div className="py-10 text-center bg-slate-50 border border-dashed border-slate-200 rounded-xl">
+                  <p className="text-sm font-semibold text-slate-500">
+                    {vouchers.length === 0
+                      ? 'Aún no se han emitido vouchers para este negocio.'
+                      : 'Ningún voucher coincide con el filtro actual.'}
+                  </p>
+                </div>
+              ) : (
+                <div className="divide-y divide-slate-100 border border-slate-100 rounded-xl overflow-hidden">
+                  {filteredVouchers.map((voucher) => {
+                    const isRedeemed = voucher.status === 'redeemed';
+                    const contactLabel = maskContact(voucher.customer_whatsapp, voucher.customer_email);
+                    const isUpdating = redeemingId === voucher.id;
+
+                    return (
+                      <div
+                        key={voucher.id}
+                        className="p-4 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                      >
+                        <div className="space-y-1 min-w-0">
+                          <div className="flex flex-wrap items-center gap-2.5">
+                            <span className="font-mono text-sm font-extrabold text-slate-900 tracking-wide">
+                              {voucher.voucher_code || 'SIN-CÓDIGO'}
+                            </span>
+                            <span
+                              className={`text-xs font-bold px-2 py-0.5 rounded-md ${
+                                isRedeemed
+                                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                  : 'bg-amber-50 text-amber-800 border border-amber-200'
+                              }`}
+                            >
+                              {isRedeemed ? 'Canjeado' : 'Emitido · Por canjear'}
+                            </span>
+                            <span className="text-xs text-slate-400 tabular-nums">
+                              {formatDateTime(voucher.created_at)}
+                            </span>
+                          </div>
+                          {(voucher.mensaje_enviado || contactLabel) && (
+                            <p className="text-xs text-slate-500 truncate">
+                              {[voucher.mensaje_enviado, contactLabel].filter(Boolean).join(' · ')}
+                            </p>
+                          )}
+                        </div>
+
+                        <div className="shrink-0">
+                          {isRedeemed ? (
+                            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
+                              <i className="fas fa-circle-check" aria-hidden="true"></i>
+                              Validado en caja
+                            </span>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => void handleRedeemVoucher(voucher)}
+                              disabled={isUpdating}
+                              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white text-xs font-bold rounded-lg transition-colors whitespace-nowrap"
+                            >
+                              {isUpdating ? 'Validando...' : 'Validar / Marcar canjeado'}
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
+
+            {/* 6. ÚLTIMA ACTIVIDAD RECIENTE (Feed real desde clicks_log) */}
+            <section className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100">
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900">Última actividad reciente</h2>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Interacciones reales más recientes registradas en tu perfil ({periodMeta.label.toLowerCase()})
+                  </p>
+                </div>
+                <span className="text-xs font-medium text-slate-500">
+                  Mostrando {recentActivities.length} recientes
+                </span>
+              </div>
+
+              {recentActivities.length === 0 ? (
+                <div className="py-10 text-center">
+                  <p className="text-sm text-slate-500 font-medium">
+                    No hay interacciones registradas en {periodMeta.label.toLowerCase()}.
+                  </p>
+                </div>
+              ) : (
+                <ul className="divide-y divide-slate-100">
+                  {recentActivities.map((item) => {
+                    const channelColor =
+                      item.channelType === 'ai'
+                        ? 'text-indigo-700'
+                        : item.channelType === 'direct'
+                        ? 'text-emerald-700'
+                        : 'text-slate-700';
+
+                    return (
+                      <li
+                        key={item.id}
+                        className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-4"
+                      >
+                        <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 min-w-0">
+                          <span className="text-xs font-semibold text-slate-400 tabular-nums shrink-0 w-28">
+                            {item.timeAgo}
+                          </span>
+                          <span className="text-sm text-slate-800 font-medium">{item.description}</span>
+                        </div>
+                        <span className={`text-xs font-semibold whitespace-nowrap shrink-0 ${channelColor}`}>
+                          {item.channelLabel}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </section>
+          </>
+        )}
       </div>
     </div>
   );
