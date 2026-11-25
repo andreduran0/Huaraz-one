@@ -1,12 +1,29 @@
-import BusinessRating from './BusinessRating';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+import { useAppContext } from '../context/AppContext';
 import { useTranslations } from '../hooks/useTranslations';
-import { Business, AdLevel } from '../types';
+import { AdLevel } from '../types';
 import { getSupabase } from '../services/supabase';
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
-interface BusinessCardProps {
-  business: Business;
+import TestimonialsList from '../components/TestimonialsList';
+import TestimonialForm from '../components/TestimonialForm';
+
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+interface ExtraBusinessFields {
+  logo_url?: string | null;
+  imagen_url?: string | null;
+  menu_url?: string | null;
+  catalog_type?: string | null;
+  gallery_urls?: string[] | null;
+  phone?: string | null;
+  whatsapp?: string | null;
+  whatsapp_number?: string | null;
+  default_message?: string | null;
+  location?: string | null;
+  opening_hours?: string | null;
+  cultural_description?: string | null;
 }
 
 const cleanText = (val?: string | null): string => {
@@ -18,174 +35,682 @@ const cleanText = (val?: string | null): string => {
   return trimmed;
 };
 
-const BusinessCard: React.FC<BusinessCardProps> = ({ business }) => {
+const isPdfUrl = (url?: string | null): boolean => {
+  const cleaned = cleanText(url);
+  if (!cleaned) return false;
+  return /\.pdf(\?|$)/i.test(cleaned);
+};
+
+const logClick = async (
+  businessName: string,
+  eventType: 'detail_view' | 'detail_reserve_click' | 'promotion_click' | 'arkaiko_reserve_click' = 'detail_view',
+  businessId?: string | null
+) => {
+  try {
+    const supabase = getSupabase();
+    if (!supabase) return;
+
+    const validBusinessId =
+      businessId && UUID_REGEX.test(businessId) ? businessId : null;
+
+    await supabase.from('clicks_log').insert([
+      {
+        business_name: businessName,
+        business_id: validBusinessId,
+        event_type: eventType,
+      },
+    ]);
+  } catch (err) {
+    console.error("Error silencioso del espía:", err);
+  }
+};
+
+const BusinessDetailPage: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const { businesses } = useAppContext();
   const t = useTranslations();
 
-  const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-  const trackingId = (business as any)?.supabaseId || (business as any)?.id || null;
+  const businessFromContext = businesses.find((b) => b.id === id) || null;
+  const [fetchedBusiness, setFetchedBusiness] = useState<any | null>(null);
+  const [loadingBusiness, setLoadingBusiness] = useState<boolean>(!businessFromContext && Boolean(id));
 
-  const registrarEvento = async (
-    label: string,
-    eventType: 'detail_view' | 'detail_reserve_click' | 'promotion_click' | 'arkaiko_reserve_click'
-  ) => {
-    try {
+  const [extraData, setExtraData] = useState<ExtraBusinessFields>({});
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [lightboxMode, setLightboxMode] = useState<'gallery' | 'menu'>('gallery');
+  const [isBooking, setIsBooking] = useState(false);
+
+  const business = businessFromContext || fetchedBusiness;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    setFetchedBusiness(null);
+    setExtraData({});
+  }, [id]);
+
+  // Si el ID no está en AppContext (por ejemplo, un UUID directo de Supabase), lo busca en public.businesses
+  useEffect(() => {
+    let active = true;
+    const fetchBusinessById = async () => {
+      if (!id) {
+        if (active) setLoadingBusiness(false);
+        return;
+      }
+      if (businessFromContext) {
+        if (active) setLoadingBusiness(false);
+        return;
+      }
+
+      setLoadingBusiness(true);
+      const supabase = getSupabase();
+      if (!supabase) {
+        if (active) setLoadingBusiness(false);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('businesses')
+        .select('*')
+        .eq('id', id)
+        .maybeSingle();
+
+      if (active) {
+        if (!error && data) {
+          const gallery = Array.isArray(data.gallery_urls)
+            ? data.gallery_urls.map((u: string) => cleanText(u)).filter(Boolean)
+            : [];
+          const cover = cleanText(data.imagen_url);
+          const photosFromDb = gallery.length > 0 ? gallery : cover ? [cover] : [];
+
+          setFetchedBusiness({
+            ...data,
+            address: cleanText(data.location) || cleanText(data.address),
+            whatsapp: cleanText(data.whatsapp_number) || cleanText(data.whatsapp),
+            photos: photosFromDb,
+            menuImages: Array.isArray(data.menuImages)
+              ? data.menuImages.map((u: string) => cleanText(u)).filter(Boolean)
+              : [],
+            schedule: data.schedule || {},
+            adLevel: data.adLevel || AdLevel.NONE,
+          });
+        } else {
+          setFetchedBusiness(null);
+        }
+        setLoadingBusiness(false);
+      }
+    };
+
+    void fetchBusinessById();
+    return () => {
+      active = false;
+    };
+  }, [id, businessFromContext]);
+
+  const bAny = (business || {}) as any;
+  const supabaseLookupId = cleanText(bAny.supabaseId) || cleanText(business?.id) || cleanText(id);
+  const trackingId =
+    cleanText(bAny.supabaseId) ||
+    (business?.id && UUID_REGEX.test(business.id) ? business.id : null);
+
+  useEffect(() => {
+    if (business) {
+      void logClick(business.name, 'detail_view', trackingId);
+    }
+  }, [business?.id, trackingId]);
+
+  // Trae los campos editables desde Supabase para asegurar datos frescos sin romper estructura local
+  useEffect(() => {
+    let active = true;
+    const loadExtraProfile = async () => {
+      if (!supabaseLookupId || !UUID_REGEX.test(supabaseLookupId)) return;
       const supabase = getSupabase();
       if (!supabase) return;
 
-      const validBusinessId = trackingId && UUID_REGEX.test(trackingId) ? trackingId : null;
+      const { data, error } = await supabase
+        .from('businesses')
+        .select(
+          'logo_url, imagen_url, menu_url, catalog_type, gallery_urls, phone, whatsapp, whatsapp_number, default_message, location, opening_hours, cultural_description'
+        )
+        .eq('id', supabaseLookupId)
+        .maybeSingle();
 
-      const { error } = await supabase.from('clicks_log').insert([
-        {
-          business_name: label,
-          business_id: validBusinessId,
-          event_type: eventType,
-        },
-      ]);
-
-      if (error) console.error('Error en clicks_log (BusinessCard):', error);
-    } catch (error) {
-      console.error('Error silencioso del espía:', error);
-    }
-  };
-
-  const handleDetailOpen = () => {
-    void registrarEvento(business.name, 'detail_view');
-  };
-
-  const handlePhoneClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    void registrarEvento(`Telefono - ${business.name}`, 'detail_reserve_click');
-  };
-
-  const handleWhatsAppClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    void registrarEvento(`WhatsApp - ${business.name}`, 'detail_reserve_click');
-
-    const whatsappUrl = `https://wa.me/${business.whatsapp}`;
-    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-  };
-
-  const isSponsored = business.adLevel !== AdLevel.NONE;
-  const safeAddress = cleanText(business.address);
-
-  const categoryLabel = (() => {
-    const rawCategory = String(business.category || '').toLowerCase();
-    const bizName = String(business.name || '').toLowerCase();
-
-    if (
-      bizName.includes('chasing') ||
-      rawCategory.includes('tour') ||
-      rawCategory.includes('agency') ||
-      rawCategory.includes('agencia')
-    ) {
-      return 'Agencia de Turismo';
-    }
-
-    const fallbackCategories: Record<string, string> = {
-      restaurant: 'Restaurante',
-      polleria: 'Pollería',
-      cevicheria: 'Cevichería',
-      restobar: 'Restobar',
-      sushi_bar: 'Sushi Bar',
-      panaderia: 'Panadería',
-      emolienteria: 'Emolientería',
-      torteria: 'Tortería',
-      postres: 'Postres',
-      hotel: 'Hotel',
-      tourist_spot: 'Lugar Turístico',
-      tour_agency: 'Agencia de Turismo',
-      agencia_turismo: 'Agencia de Turismo',
-      chocolateria: 'Chocolatería'
+      if (active && !error && data) {
+        setExtraData(data as ExtraBusinessFields);
+      }
     };
 
-    const translated = t(`category.${business.category}` as any);
-    if (!translated || translated.startsWith('category.')) {
-      return fallbackCategories[rawCategory] || business.category;
+    void loadExtraProfile();
+    return () => {
+      active = false;
+    };
+  }, [supabaseLookupId]);
+
+  const rawMenuUrl = cleanText(extraData.menu_url) || cleanText(bAny.menu_url);
+  const menuIsPdf = Boolean(rawMenuUrl) && isPdfUrl(rawMenuUrl);
+  const menuIsImage = Boolean(rawMenuUrl) && !menuIsPdf;
+
+  // TODOS LOS useMemo VAN SIEMPRE ARRIBA DE CUALQUIER RETURN CONDICIONAL
+  const combinedMenuImages = useMemo(() => {
+    const baseMenu = Array.isArray(business?.menuImages)
+      ? business.menuImages.map((u) => cleanText(u)).filter(Boolean)
+      : [];
+    if (menuIsImage && rawMenuUrl && !baseMenu.includes(rawMenuUrl)) {
+      baseMenu.unshift(rawMenuUrl);
     }
-    return translated;
-  })();
+    return baseMenu;
+  }, [business?.menuImages, menuIsImage, rawMenuUrl]);
+
+  const combinedGalleryPhotos = useMemo(() => {
+    const basePhotos = Array.isArray(business?.photos)
+      ? business.photos.map((u) => cleanText(u)).filter(Boolean)
+      : [];
+    const extraGallery = Array.isArray(extraData.gallery_urls)
+      ? extraData.gallery_urls.map((u) => cleanText(u)).filter(Boolean)
+      : [];
+    for (const url of extraGallery) {
+      if (url && !basePhotos.includes(url)) {
+        basePhotos.push(url);
+      }
+    }
+    return basePhotos;
+  }, [business?.photos, extraData.gallery_urls]);
+
+  if (loadingBusiness) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
+        <div className="text-center space-y-4">
+          <p className="font-black text-slate-400 uppercase tracking-widest text-xs">Cargando negocio...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!business) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
+        <div className="text-center space-y-4">
+          <p className="font-black text-slate-400 uppercase tracking-widest text-xs">Negocio no encontrado</p>
+        </div>
+      </div>
+    );
+  }
+
+  const heroImage =
+    cleanText(extraData.imagen_url) ||
+    cleanText(bAny.imagen_url) ||
+    cleanText(business.photos?.[0]) ||
+    '';
+  const displayAddress = cleanText(extraData.location) || cleanText(business.address);
+  const displayPhone = cleanText(extraData.phone) || cleanText(business.phone);
+  const rawWhatsapp =
+    cleanText(extraData.whatsapp_number) ||
+    cleanText(extraData.whatsapp) ||
+    cleanText(business.whatsapp);
+  const cleanWhatsapp = rawWhatsapp.replace(/[^0-9]/g, '');
+  const openingHoursText = cleanText(extraData.opening_hours) || cleanText(bAny.opening_hours);
+  const culturalDescriptionText =
+    cleanText(extraData.cultural_description) || cleanText(bAny.cultural_description);
+  const catalogType = (cleanText(extraData.catalog_type) || cleanText(bAny.catalog_type) || 'carta').toLowerCase();
+  const displayDescription = cleanText(business.description);
+
+  const isSponsored = business.adLevel !== AdLevel.NONE;
+  const hasMenuImages = combinedMenuImages.length > 0;
+  const hasAnyMenu = hasMenuImages || Boolean(rawMenuUrl);
+  const categoryText = String(business.category || '').toLowerCase();
+
+  const getCatalogLabel = () => {
+    if (catalogType === 'catalogo') return 'Ver Catálogo';
+    if (catalogType === 'tarifario') return 'Ver Tarifario';
+    return 'Ver Carta / Menú';
+  };
+
+  const openLightbox = (index: number, mode: 'gallery' | 'menu') => {
+    setCurrentImageIndex(index);
+    setLightboxMode(mode);
+    setIsLightboxOpen(true);
+  };
+
+  const closeLightbox = () => setIsLightboxOpen(false);
+
+  const currentImages = lightboxMode === 'gallery' ? combinedGalleryPhotos : combinedMenuImages;
+
+  const nextImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (currentImages.length === 0) return;
+    setCurrentImageIndex((prev) => (prev + 1) % currentImages.length);
+  };
+
+  const prevImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (currentImages.length === 0) return;
+    setCurrentImageIndex((prev) => (prev - 1 + currentImages.length) % currentImages.length);
+  };
+
+  const mapUrl = business.googleMapsQuery
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.googleMapsQuery)}`
+    : business.lat && business.lng
+    ? `https://www.google.com/maps/search/?api=1&query=${business.lat},${business.lng}`
+    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${business.name} ${displayAddress}`)}`;
+
+  // LÓGICA DE MENSAJES DE WHATSAPP
+  const getWhatsappMessage = () => {
+    const customMsg = cleanText(extraData.default_message);
+    if (customMsg) return customMsg;
+    if (categoryText === 'education') return `Hola, quisiera solicitar una entrevista para el ${business.name}. Lo vi en Huaraz Explorer.`;
+    if (categoryText === 'exchange' || categoryText === 'services') return `Hola, quisiera consultar el tipo de cambio en ${business.name}. Lo vi en Huaraz Explorer.`;
+    if (categoryText === 'health') return `Hola, quisiera agendar una cita en ${business.name}. Lo vi en Huaraz Explorer.`;
+    if (categoryText.includes('tour') || categoryText.includes('agency') || categoryText.includes('tour_agency')) {
+      return `Hola, quisiera consultar sobre los tours y paquetes de ${business.name}. Lo vi en Huaraz Explorer.`;
+    }
+    return `Hola, quisiera hacer una reserva o consulta en ${business.name}. Lo vi en Huaraz Explorer.`;
+  };
+  const whatsappMessage = encodeURIComponent(getWhatsappMessage());
+
+  // LÓGICA DEL TÍTULO DE LA CARTA / HABITACIONES / TOURS
+  const getMenuTitle = () => {
+    const nameLower = String(business.name || '').toLowerCase();
+
+    if (nameLower.includes('chasing') || categoryText.includes('tour') || categoryText.includes('agency') || categoryText.includes('agencia')) {
+      return { prefix: 'NUESTROS ', highlight: 'TOURS Y DESTINOS', subtitle: 'Explora las mejores rutas y expediciones' };
+    }
+    if (catalogType === 'catalogo') {
+      return { prefix: 'NUESTRO ', highlight: 'CATÁLOGO', subtitle: 'Explora nuestros productos disponibles' };
+    }
+    if (catalogType === 'tarifario') {
+      return { prefix: 'NUESTRO ', highlight: 'TARIFARIO', subtitle: 'Consulta nuestras tarifas y paquetes' };
+    }
+    if (categoryText === 'education') return { prefix: 'NUESTRA PROPUESTA ', highlight: 'EDUCATIVA', subtitle: 'Conoce nuestro modelo de enseñanza' };
+    if (categoryText === 'exchange' || categoryText === 'services') return { prefix: 'NUESTROS ', highlight: 'SERVICIOS', subtitle: 'Conoce nuestras opciones' };
+    if (categoryText === 'health') return { prefix: 'NUESTRAS ', highlight: 'ESPECIALIDADES', subtitle: 'Conoce nuestros servicios médicos' };
+    if (categoryText === 'hotel') return { prefix: 'NUESTRAS ', highlight: 'HABITACIONES', subtitle: 'Conoce nuestras opciones de descanso' };
+
+    return { prefix: 'NUESTRA ', highlight: 'CARTA', subtitle: 'Consulta nuestros platos y especialidades' };
+  };
+  const menuTitle = getMenuTitle();
+
+  // LÓGICA INTELIGENTE DE RESERVAS
+  const getReservationData = () => {
+    const nameLower = String(business.name || '').toLowerCase();
+
+    if (nameLower.includes('chasing') || categoryText.includes('tour') || categoryText.includes('agency') || categoryText.includes('agencia')) {
+      return { tag: 'RESERVA DE TOUR', icon: 'fa-compass', prefix: 'PLANEA TU ', highlight: 'AVENTURA', desc: 'Vive expediciones inolvidables por la Cordillera Blanca con guías profesionales.', btn: 'Reservar Tour' };
+    } else if (nameLower.includes('inka frut')) {
+      return { tag: 'RESERVA INMEDIATA', icon: 'fa-leaf', prefix: 'EXPERIENCIA ', highlight: 'NOVOANDINA', desc: 'Fusión de cocina contemporánea con insumos y platos tradicionales de la Región de Áncash con opciones vegetarianas. (S/ 50 - S/ 80)', btn: 'Reservar Mesa' };
+    } else if (categoryText === 'hotel') {
+      return { tag: 'RESERVA INMEDIATA', icon: 'fa-bed', prefix: 'ASEGURA TU ', highlight: 'DESCANSO', desc: 'Vive la mejor experiencia de confort y relajación en Huaraz.', btn: 'Reservar Habitación' };
+    } else if (categoryText === 'restaurant' || categoryText === 'food') {
+      return { tag: 'RESERVA INMEDIATA', icon: 'fa-utensils', prefix: 'ASEGURA TU ', highlight: 'MESA', desc: 'Deleita tu paladar con nuestra gastronomía y atención de primera.', btn: 'Reservar Mesa' };
+    } else if (categoryText === 'education') {
+      return { tag: 'INSCRIPCIÓN', icon: 'fa-user-graduate', prefix: 'FORJA TU ', highlight: 'FUTURO', desc: 'Únete a la institución que forma a los líderes del mañana en la región.', btn: 'Solicitar Entrevista' };
+    } else if (categoryText === 'exchange' || categoryText === 'services') {
+      return { tag: 'ATENCIÓN RÁPIDA', icon: 'fa-money-bill-wave', prefix: 'CAMBIA CON ', highlight: 'SEGURIDAD', desc: 'Cotiza el mejor tipo de cambio de forma rápida y 100% confiable.', btn: 'Cotizar Cambio' };
+    } else if (categoryText === 'health') {
+      return { tag: 'ATENCIÓN MÉDICA', icon: 'fa-stethoscope', prefix: 'CUIDA TU ', highlight: 'SALUD', desc: 'Pon tu bienestar en manos de los mejores especialistas.', btn: 'Agendar Cita' };
+    } else {
+      return { tag: 'RESERVA INMEDIATA', icon: 'fa-calendar-check', prefix: 'ASEGURA TU LUGAR EN ', highlight: 'LA CIMA', desc: 'Vive la mejor experiencia de Huaraz con nuestra atención de primera.', btn: 'Reservar Ahora' };
+    }
+  };
+  const resData = getReservationData();
+
+  const handleReservationClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!business) return;
+    setIsBooking(true);
+
+    try {
+      const uniqueCode = 'HX-' + Math.random().toString(36).substr(2, 4).toUpperCase();
+      const supabase = getSupabase();
+
+      if (supabase) {
+        const { error: trackingError } = await supabase
+          .from('reservations_tracking')
+          .insert([{
+            business_id: trackingId || business.id,
+            business_name: business.name,
+            voucher_code: uniqueCode,
+            status: 'whatsapp_redirected',
+            created_at: new Date().toISOString()
+          }]);
+
+        if (trackingError) console.error("Error en reservations_tracking:", trackingError);
+
+        const { error: voucherError } = await supabase
+          .from('vouchers_issued')
+          .insert([{
+            business_id: trackingId,
+            business_name: business.name,
+            voucher_code: uniqueCode,
+            status: 'issued'
+          }]);
+
+        if (voucherError) console.error("Error en vouchers_issued:", voucherError);
+      }
+
+      const baseMessage = getWhatsappMessage();
+      const finalMessage = `${baseMessage} \n\n🎫 *Mi código de Huaraz Explorer es:* ${uniqueCode}`;
+      const targetWa = cleanWhatsapp || '';
+      const finalWhatsappUrl = `https://wa.me/${targetWa}?text=${encodeURIComponent(finalMessage)}`;
+
+      void logClick(
+        `Detalle - ${business.name} - Voucher: ${uniqueCode}`,
+        'detail_reserve_click',
+        trackingId
+      );
+      window.open(finalWhatsappUrl, '_blank');
+    } catch (err) {
+      console.error("Error inesperado al generar reserva:", err);
+    } finally {
+      setIsBooking(false);
+    }
+  };
+
+  const scheduleEntries = business.schedule
+    ? Object.entries(business.schedule).filter(([, hours]) => Boolean(cleanText(hours as string)))
+    : [];
 
   return (
-    <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden flex flex-col h-full">
+    <div className="bg-slate-50 dark:bg-slate-950 min-h-screen relative font-['Plus_Jakarta_Sans']">
 
-      {/* 📸 FOTO SUPERIOR CLICKEABLE */}
-      <Link to={`/business/${business.id}`} onClick={handleDetailOpen} className="block relative">
-        <div className="h-48 w-full relative">
-          <img src={business.photos[0]} alt={business.name} className="w-full h-full object-cover" />
-
-          {/* ETIQUETA DE PATROCINADO */}
-          {isSponsored && (
-            <div className="absolute top-4 left-4 bg-[#F58220] text-black text-[10px] font-black uppercase px-4 py-1.5 rounded-full shadow-md">
-              {t('business.sponsored')}
-            </div>
-          )}
-        </div>
-      </Link>
-
-      {/* 📄 CONTENIDO INFERIOR */}
-      <div className="p-6 flex flex-col flex-grow">
-
-        {/* TEXTOS CLICKEABLES */}
-        <Link to={`/business/${business.id}`} onClick={handleDetailOpen} className="block flex-grow">
-          <div className="flex justify-between items-start gap-4 mb-2">
-            <h3 className="text-2xl font-black text-[#2A4D69] leading-tight">
-              {business.name}
-            </h3>
-            <BusinessRating businessId={trackingId || business.id} />
+      {/* HERO SECTION CON FONDO DINÁMICO OSCURECIDO */}
+      <div
+        className="w-full h-[60vh] md:h-[70vh] relative overflow-hidden bg-slate-900"
+        style={{ backgroundImage: heroImage ? `url('${heroImage}')` : undefined, backgroundSize: 'cover', backgroundPosition: 'center' }}
+      >
+        <div className="absolute inset-0 bg-slate-950/60"></div>
+        <div className="absolute bottom-16 left-8 right-8 text-white max-w-5xl mx-auto z-10">
+          <div className="flex flex-wrap items-center gap-3 mb-6">
+            <span className="bg-[#2A4D69] text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] px-5 py-2.5 rounded-full border border-white/20 backdrop-blur-md shadow-2xl">
+              {t(`category.${business.category}` as any) || business.category}
+            </span>
+            {isSponsored && (
+              <span className="bg-[#F58220] text-black text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] px-5 py-2.5 rounded-full shadow-[0_10px_30px_rgba(245,130,32,0.3)]">
+                {t('business.sponsored')}
+              </span>
+            )}
           </div>
 
-          {/* CATEGORÍA Y DIRECCIÓN GRIS (SIN "NULL") */}
-          <p className="text-slate-500 font-bold text-sm mb-6">
-            {safeAddress ? `${categoryLabel} • ${safeAddress}` : categoryLabel}
-          </p>
+          <h1 className="text-5xl md:text-9xl font-black italic tracking-tighter uppercase leading-[0.85] drop-shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+            {business.name}
+          </h1>
+        </div>
+      </div>
 
-          {/* LA LÍNEA SEPARADORA FINA */}
-          <div className="w-full h-px bg-slate-100 mb-6"></div>
-        </Link>
+      {/* CONTENIDO PRINCIPAL */}
+      <div className="max-w-5xl mx-auto px-6 -mt-12 relative z-10 space-y-16 pb-48">
 
-        {/* 🔘 BOTONES DE ACCIÓN */}
-        <div className="flex items-center justify-between mt-auto">
-          <div className="flex gap-4">
-
-            {/* BOTÓN TELÉFONO CIRCULAR */}
-            {business.phone && (
+        <div className="bg-white dark:bg-slate-900 rounded-[3.5rem] p-8 md:p-12 shadow-[0_40px_80px_rgba(0,0,0,0.08)] border border-slate-100 dark:border-slate-800 flex flex-col lg:flex-row gap-10 items-center justify-between">
+          <div className="space-y-3 text-center lg:text-left">
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] mb-1">Ubicación Estratégica</p>
+            {displayAddress && (
+              <p className="text-xl md:text-2xl font-extrabold text-slate-800 dark:text-slate-100 leading-tight">
+                {displayAddress}
+              </p>
+            )}
+            {openingHoursText && (
+              <p className="text-xs font-bold text-[#F58220] uppercase tracking-wider flex items-center justify-center lg:justify-start gap-2">
+                <i className="fas fa-clock"></i>
+                <span>{openingHoursText}</span>
+              </p>
+            )}
+          </div>
+          <div className="flex flex-wrap justify-center gap-4">
+            {displayPhone && (
               <a
-                href={`tel:${business.phone}`}
-                onClick={handlePhoneClick}
-                className="w-12 h-12 rounded-full border-2 border-slate-100 flex items-center justify-center text-[#2A4D69] hover:bg-slate-50 transition-colors active:scale-90"
+                href={`tel:${displayPhone}`}
+                onClick={() => void logClick(`Telefono - ${business.name}`, 'detail_reserve_click', trackingId)}
+                className="w-16 h-16 md:w-20 md:h-20 bg-slate-50 dark:bg-slate-800 rounded-[2rem] flex items-center justify-center text-[#2A4D69] border border-slate-100 dark:border-slate-700 active:scale-95 transition-all shadow-sm"
               >
-                <i className="fas fa-phone"></i>
+                <i className="fas fa-phone text-xl md:text-2xl"></i>
               </a>
             )}
-
-            {/* BOTÓN WHATSAPP CIRCULAR VERDE */}
-            {business.whatsapp && (
-              <button
-                type="button"
-                onClick={handleWhatsAppClick}
-                className="w-12 h-12 rounded-full border-2 border-green-100 flex items-center justify-center text-green-500 hover:bg-green-50 transition-colors active:scale-90"
+            {cleanWhatsapp && (
+              <a
+                href={`https://wa.me/${cleanWhatsapp}?text=${whatsappMessage}`}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => void logClick(`WhatsApp - ${business.name}`, 'detail_reserve_click', trackingId)}
+                className="w-16 h-16 md:w-20 md:h-20 bg-green-50 dark:bg-green-900/20 rounded-[2rem] flex items-center justify-center text-green-500 border border-green-100 dark:border-green-900/40 active:scale-95 transition-all shadow-sm"
               >
-                <i className="fab fa-whatsapp text-xl"></i>
-              </button>
+                <i className="fab fa-whatsapp text-3xl md:text-4xl"></i>
+              </a>
             )}
+            <a href={mapUrl} target="_blank" rel="noreferrer" className="bg-[#2A4D69] text-white px-10 md:px-14 py-6 md:py-8 rounded-[2rem] font-black uppercase text-[10px] md:text-xs tracking-[0.3em] shadow-2xl flex items-center gap-4 active:scale-95 transition-all">
+              Ver Mapa <i className="fas fa-location-arrow"></i>
+            </a>
+            <button onClick={() => document.getElementById('review-section')?.scrollIntoView({ behavior: 'smooth' })} className="w-full bg-[#2A4D69] text-white px-10 md:px-14 py-6 md:py-8 rounded-[2rem] font-black uppercase text-[10px] md:text-xs tracking-[0.3em] shadow-2xl flex items-center justify-center gap-4 active:scale-95 transition-all">
+              {t('DEJAR COMENTARIO', 'LEAVE A COMMENT')} <i className="fas fa-comment-dots"></i>
+            </button>
+          </div>
+        </div>
 
+        {/* Reseña Destacada */}
+        {displayDescription && (
+          <div className="bg-white dark:bg-slate-900 rounded-[3.5rem] p-12 md:p-20 shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-3 h-full bg-[#F58220]"></div>
+            <i className="fas fa-quote-left absolute top-10 right-10 text-slate-50 dark:text-slate-800 text-8xl -z-10"></i>
+            <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-bold text-2xl md:text-3xl italic relative z-10">
+              "{displayDescription}"
+            </p>
+          </div>
+        )}
+
+        {/* RELATO CULTURAL (si el negocio lo completó en /socios) */}
+        {culturalDescriptionText && (
+          <div className="bg-white dark:bg-slate-900 rounded-[3.5rem] p-10 md:p-14 shadow-sm border border-slate-100 dark:border-slate-800 space-y-4">
+            <p className="text-[10px] font-black text-[#F58220] uppercase tracking-[0.5em] flex items-center gap-3">
+              <i className="fas fa-mountain-sun text-sm"></i>
+              <span>Memoria y Esencia Cultural</span>
+            </p>
+            <p className="text-slate-700 dark:text-slate-300 leading-relaxed font-semibold text-base md:text-lg">
+              {culturalDescriptionText}
+            </p>
+          </div>
+        )}
+
+        {/* SECCIÓN: LA CARTA / CATÁLOGO / HABITACIONES / TOURS */}
+        {hasAnyMenu && (
+          <div className="space-y-10 animate-fadeIn">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 px-4">
+              <div className="space-y-2">
+                <h3 className="text-4xl md:text-6xl font-black text-[#2A4D69] dark:text-white uppercase italic tracking-tighter">
+                  {menuTitle.prefix}
+                  <span className="text-[#F58220]">{menuTitle.highlight}</span>
+                </h3>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em]">
+                  {menuTitle.subtitle}
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3">
+                {rawMenuUrl && (
+                  <a
+                    href={rawMenuUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => void logClick(`Carta/Catalogo - ${business.name}`, 'promotion_click', trackingId)}
+                    className="bg-[#F58220] hover:bg-[#e07314] text-black px-7 py-3.5 rounded-full font-black uppercase text-[10px] tracking-[0.25em] shadow-lg inline-flex items-center gap-2.5 transition-all active:scale-95"
+                  >
+                    <i className={`fas ${menuIsPdf ? 'fa-file-pdf' : 'fa-book-open'}`}></i>
+                    <span>{getCatalogLabel()}</span>
+                  </a>
+                )}
+
+                {hasMenuImages && (
+                  <div className="bg-slate-100 dark:bg-slate-800 px-8 py-3 rounded-full border border-slate-200 shadow-inner flex items-center gap-3">
+                    <i className="fas fa-book-open text-[#F58220] text-xs"></i>
+                    <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      {categoryText === 'hotel' ? `${combinedMenuImages.length} opciones` : `${combinedMenuImages.length} páginas`}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {hasMenuImages && (
+              <div className="flex gap-8 overflow-x-auto no-scrollbar pb-12 px-4 snap-x">
+                {combinedMenuImages.map((page, idx) => (
+                  <div key={`${page}-${idx}`} onClick={() => openLightbox(idx, 'menu')} className="relative flex-shrink-0 w-72 md:w-96 aspect-[3/4.2] rounded-[3rem] overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.12)] border-2 border-slate-200 dark:border-slate-800 cursor-pointer group hover:scale-[1.03] transition-all duration-700 snap-center">
+                    <img src={page} className="w-full h-full object-cover" alt={`Página de la carta ${idx + 1}`} />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-[#2A4D69]/30 transition-all flex items-center justify-center">
+                      <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center text-[#2A4D69] opacity-0 group-hover:opacity-100 transform translate-y-8 group-hover:translate-y-0 transition-all shadow-2xl">
+                        <i className="fas fa-search-plus text-2xl"></i>
+                      </div>
+                    </div>
+                    <div className="absolute top-8 left-8">
+                      <span className="bg-black/80 backdrop-blur-xl text-white text-[9px] font-black px-5 py-2.5 rounded-full uppercase tracking-widest shadow-2xl border border-white/10">Pág. {idx + 1}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* HORARIOS Y TARJETA DE RESERVA DINÁMICA */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+          <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-12 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-sm space-y-10">
+            <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.5em] flex items-center gap-4">
+              <i className="fas fa-clock text-[#F58220] text-xl"></i> {t('business.schedule')}
+            </h3>
+            {openingHoursText ? (
+              <div className="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-5 border border-slate-100 dark:border-slate-800">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-1.5">
+                  Horario actualizado por el socio
+                </p>
+                <p className="text-sm font-extrabold text-slate-900 dark:text-white">
+                  {openingHoursText}
+                </p>
+              </div>
+            ) : null}
+            {scheduleEntries.length > 0 && (
+              <ul className="space-y-6">
+                {scheduleEntries.map(([day, hours]) => (
+                  <li key={day} className="flex justify-between items-center border-b border-slate-50 dark:border-slate-800 pb-4">
+                    <span className="text-slate-500 dark:text-slate-400 font-extrabold uppercase text-[10px] tracking-[0.2em]">{day}</span>
+                    <span className="text-slate-900 dark:text-white font-black text-xs uppercase tracking-widest">{cleanText(hours as string)}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
-          {/* TEXTO VER DETALLES SUBRAYADO */}
-          <Link
-            to={`/business/${business.id}`}
-            onClick={handleDetailOpen}
-            className="text-[#2A4D69] font-black text-sm underline decoration-2 underline-offset-4 hover:text-[#1a3346]"
-          >
-            Ver Detalles
-          </Link>
+          <div className="lg:col-span-3 bg-[#2A4D69] p-12 md:p-20 rounded-[4rem] shadow-[0_40px_100px_rgba(42,77,105,0.25)] text-white relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 group-hover:scale-150 transition-transform duration-[2s]"></div>
+            <div className="relative z-10 space-y-8">
+              <div className="inline-flex items-center gap-4 bg-white/10 px-6 py-2.5 rounded-full border border-white/10">
+                <i className={`fas ${resData.icon} text-[#F58220]`}></i>
+                <span className="text-[10px] font-black uppercase tracking-[0.4em]">
+                  {resData.tag}
+                </span>
+              </div>
+              <h3 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase leading-[0.9]">
+                {resData.prefix}
+                <span className="text-[#F58220]">{resData.highlight}</span>
+              </h3>
+              <p className="text-lg font-bold text-white/60 leading-relaxed max-w-sm italic">
+                {resData.desc}
+              </p>
+
+              {/* BOTÓN INTELIGENTE CON VOUCHER AUTOMÁTICO */}
+              <button
+                onClick={handleReservationClick}
+                disabled={isBooking}
+                className="inline-flex bg-white text-[#2A4D69] px-12 py-7 rounded-[2rem] font-black uppercase text-xs tracking-[0.4em] items-center gap-5 shadow-2xl hover:bg-slate-50 transition-all active:scale-95 group/btn disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {isBooking ? (
+                  <>
+                    <span className="animate-pulse">Generando...</span>
+                    <i className="fas fa-spinner fa-spin text-2xl"></i>
+                  </>
+                ) : (
+                  <>
+                    {resData.btn}
+                    <i className="fab fa-whatsapp text-2xl group-hover/btn:rotate-12 transition-transform"></i>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* GALERÍA DEL LOCAL */}
+        {combinedGalleryPhotos.length > 0 && (
+          <div className="space-y-12">
+            <div className="flex items-center justify-between px-6">
+              <h3 className="text-4xl font-black text-slate-900 dark:text-white uppercase italic tracking-tighter">Galería <span className="text-slate-300">Ambiental</span></h3>
+              <div className="hidden md:block h-px flex-grow bg-slate-100 mx-10"></div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 px-2">
+              {combinedGalleryPhotos.map((photo, index) => (
+                <div key={`${photo}-${index}`} className="aspect-square rounded-[3rem] overflow-hidden cursor-pointer shadow-xl hover:scale-[1.04] transition-all duration-700 border border-slate-100 dark:border-slate-800 relative group" onClick={() => openLightbox(index, 'gallery')}>
+                  <img src={photo} alt={`${business.name} ${index + 1}`} className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-125" />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-500 flex items-center justify-center">
+                    <i className="fas fa-expand text-white text-2xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all"></i>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* TESTIMONIOS */}
+        <div id="review-section" className="pt-10">
+          <TestimonialsList businessId={business.id} />
+        </div>
+
+        <div className="max-w-3xl mx-auto w-full pt-10">
+          <div className="flex items-center justify-center mb-8">
+            <div className="h-px flex-grow bg-slate-200 dark:bg-slate-800"></div>
+            <span className="px-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] text-center">
+              {t('Comunidad Huaraz Explorer', 'Huaraz Explorer Community')}
+            </span>
+            <div className="h-px flex-grow bg-slate-200 dark:bg-slate-800"></div>
+          </div>
+          <TestimonialForm businessId={business.id} />
         </div>
 
       </div>
+
+      {/* LIGHTBOX MODAL CON ZOOM INTEGRADO */}
+      {isLightboxOpen && currentImages.length > 0 && (
+        <div className="fixed inset-0 z-[200] bg-slate-950/98 flex flex-col animate-fadeIn">
+          <div className="p-8 flex items-center justify-between text-white border-b border-white/5 bg-black/20 backdrop-blur-xl">
+            <div className="flex flex-col">
+              <span className="text-[10px] font-black uppercase tracking-[0.6em] text-white/40">Visor Premium</span>
+              <span className="text-sm font-black uppercase italic tracking-tighter">{lightboxMode === 'menu' ? 'Nuestros Detalles' : 'Galería del Local'}</span>
+            </div>
+            <button onClick={closeLightbox} className="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all active:scale-90 z-[300]">
+              <i className="fas fa-times text-xl"></i>
+            </button>
+          </div>
+
+          <div className="flex-grow relative flex items-center justify-center p-4 md:p-12 overflow-hidden">
+            <button onClick={prevImage} className="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 text-white/30 hover:text-white w-20 h-20 rounded-full hover:bg-white/5 transition-all z-[300] flex items-center justify-center hidden md:flex">
+              <i className="fas fa-chevron-left text-5xl"></i>
+            </button>
+
+            <TransformWrapper initialScale={1} minScale={1} maxScale={10}>
+              <TransformComponent wrapperStyle={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <img src={currentImages[currentImageIndex]} className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-[0_0_150px_rgba(0,0,0,0.8)] border border-white/5 cursor-zoom-in" alt="Vista ampliada con zoom" />
+              </TransformComponent>
+            </TransformWrapper>
+
+            <button onClick={nextImage} className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 text-white/30 hover:text-white w-20 h-20 rounded-full hover:bg-white/5 transition-all z-[300] flex items-center justify-center hidden md:flex">
+              <i className="fas fa-chevron-right text-5xl"></i>
+            </button>
+          </div>
+
+          <div className="p-10 flex flex-col items-center gap-6 bg-black/40 backdrop-blur-md relative z-[300]">
+            <div className="bg-white/5 backdrop-blur-2xl px-12 py-5 rounded-full text-white font-black text-xs uppercase tracking-[0.5em] border border-white/10 shadow-2xl">{currentImageIndex + 1} de {currentImages.length}</div>
+            <div className="flex gap-10 md:hidden">
+              <button onClick={prevImage} className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white active:scale-90"><i className="fas fa-chevron-left"></i></button>
+              <button onClick={nextImage} className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white active:scale-90"><i className="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
-
-export default BusinessCard;
+export default BusinessDetailPage;
