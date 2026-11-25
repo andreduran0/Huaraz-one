@@ -67,7 +67,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
     ? business.gallery_urls.map(cleanUrl).filter(Boolean)
     : [];
 
-  return Array.from(new Set([...basePhotos, ...dbGallery])).slice(0, 6);
+  return Array.from(new Set([...basePhotos, ...dbGallery])).slice(0, 50);
 }, [business.gallery_urls, localCatalogMatch]);
 
   const [description, setDescription] = useState(business.description || localCatalogMatch?.description || '');
