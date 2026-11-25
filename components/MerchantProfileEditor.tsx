@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState } from 'react';
 import { getSupabase } from '../services/supabase';
-import { useAppContext } from '../context/AppContext';
 
 export interface EditableMerchantBusiness {
   id: string;
@@ -31,70 +30,27 @@ interface MerchantProfileEditorProps {
   onSaved: (updated: EditableMerchantBusiness) => void;
 }
 
-const cleanUrl = (val?: string | null): string => {
-  if (!val) return '';
-  const trimmed = String(val).trim();
-  if (!trimmed || trimmed.toLowerCase() === 'null' || trimmed.toLowerCase() === 'undefined') {
-    return '';
-  }
-  return trimmed;
-};
-
 export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
   business,
   accessPin,
   onSaved,
 }) => {
-  const { businesses } = useAppContext();
-
-  // Busca el negocio equivalente en el catálogo local para rescatar sus fotos base si aún no están en Supabase
-  const localCatalogMatch = useMemo(() => {
-    const targetName = (business.name || '').trim().toLowerCase();
-    return (
-      businesses.find((b: any) => b.supabaseId === business.id || b.id === business.id) ||
-      businesses.find((b) => (b.name || '').trim().toLowerCase() === targetName) ||
-      null
-    );
-  }, [businesses, business.id, business.name]);
-
-  // Fusiona las fotos guardadas en Supabase con las fotos base del catálogo local (sin duplicados y máx. 6)
- const initialGallery = useMemo(() => {
-  const basePhotos = Array.isArray(localCatalogMatch?.photos)
-    ? localCatalogMatch.photos.map(cleanUrl).filter(Boolean)
-    : [];
-
-  const dbGallery = Array.isArray(business.gallery_urls)
-    ? business.gallery_urls.map(cleanUrl).filter(Boolean)
-    : [];
-
-  return Array.from(new Set([...basePhotos, ...dbGallery])).slice(0, 50);
-}, [business.gallery_urls, localCatalogMatch]);
-
-  const [description, setDescription] = useState(business.description || localCatalogMatch?.description || '');
+  const [description, setDescription] = useState(business.description || '');
   const [culturalDescription, setCulturalDescription] = useState(business.cultural_description || '');
-  const [location, setLocation] = useState(business.location || localCatalogMatch?.address || '');
-  const [phone, setPhone] = useState(business.phone || localCatalogMatch?.phone || '');
+  const [location, setLocation] = useState(business.location || '');
+  const [phone, setPhone] = useState(business.phone || '');
   const [whatsappNumber, setWhatsappNumber] = useState(
-    business.whatsapp_number || business.whatsapp || localCatalogMatch?.whatsapp || ''
+    business.whatsapp_number || business.whatsapp || ''
   );
   const [defaultMessage, setDefaultMessage] = useState(business.default_message || '');
   const [website, setWebsite] = useState(business.website || '');
   const [openingHours, setOpeningHours] = useState(business.opening_hours || '');
 
   const [logoUrl, setLogoUrl] = useState(business.logo_url || '');
-  const [coverUrl, setCoverUrl] = useState(
-    business.imagen_url || cleanUrl(localCatalogMatch?.photos?.[0]) || ''
-  );
+  const [coverUrl, setCoverUrl] = useState(business.imagen_url || '');
   const [menuUrl, setMenuUrl] = useState(business.menu_url || '');
   const [catalogType, setCatalogType] = useState(business.catalog_type || 'carta');
-  const [galleryUrls, setGalleryUrls] = useState<string[]>(initialGallery);
-
-  // Si AppContext termina de cargar después de montar el componente y aún no había fotos, las precarga
-  useEffect(() => {
-    if (galleryUrls.length === 0 && initialGallery.length > 0) {
-      setGalleryUrls(initialGallery);
-    }
-  }, [initialGallery]);
+  const [galleryUrls, setGalleryUrls] = useState<string[]>(business.gallery_urls || []);
 
   const [uploadingField, setUploadingField] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -173,7 +129,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
     }
 
     if (uploaded.length > 0) {
-      setGalleryUrls((prev) => Array.from(new Set([...prev, ...uploaded])).slice(0, 6));
+      setGalleryUrls((prev) => [...prev, ...uploaded]);
       setBanner({
         type: 'success',
         text: `${uploaded.length} foto(s) agregada(s). Presiona "Guardar cambios" para publicar.`,
@@ -197,7 +153,6 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
     setBanner(null);
 
     const cleanWhatsapp = whatsappNumber.replace(/[^0-9]/g, '');
-    const sanitizedGallery = galleryUrls.map(cleanUrl).filter(Boolean).slice(0, 6);
 
     try {
       const { data, error } = await supabase.rpc('update_business_profile', {
@@ -216,7 +171,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
         p_imagen_url: coverUrl.trim() || null,
         p_menu_url: menuUrl.trim() || null,
         p_catalog_type: catalogType,
-        p_gallery_urls: sanitizedGallery,
+        p_gallery_urls: galleryUrls,
       });
 
       if (error) {
