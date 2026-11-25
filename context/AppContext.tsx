@@ -1,9 +1,9 @@
-
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect, useCallback } from 'react';
 import { businesses as businessData } from '../data/businesses';
 import { coupons as couponData } from '../data/coupons';
 import { blogPosts as initialBlogPosts, BlogPost } from '../data/blogPosts';
 import { Business, Coupon } from '../types';
+import { getSupabase } from '../services/supabase';
 
 type Language = 'es' | 'en';
 
@@ -32,11 +32,11 @@ interface AppContextType {
 }
 
 const DEFAULT_HERO_IMAGES = [
-   "https://i.imgur.com/8geuuEn.jpeg", 
-    "https://i.imgur.com/atYSlat.jpeg",
-  "https://i.imgur.com/Prryi6n.jpeg", 
-  "https://i.imgur.com/7JOqLFT.jpeg", 
-  "https://i.imgur.com/j92MFOS.jpeg", 
+  "https://i.imgur.com/8geuuEn.jpeg",
+  "https://i.imgur.com/atYSlat.jpeg",
+  "https://i.imgur.com/Prryi6n.jpeg",
+  "https://i.imgur.com/7JOqLFT.jpeg",
+  "https://i.imgur.com/j92MFOS.jpeg",
   "https://i.imgur.com/HDLq4qK.jpeg",
   "https://i.imgur.com/8Q4f1qU.jpeg"
 ];
@@ -47,7 +47,6 @@ const DEFAULT_SOCIAL_LINKS: SocialLinks = {
   youtube: 'https://www.youtube.com/'
 };
 
-// Claves estables para evitar pérdida de datos entre versiones
 const STORAGE_KEYS = {
   BUSINESSES: 'hz_explorer_biz_stable',
   BLOG_POSTS: 'hz_explorer_blog_stable',
@@ -56,56 +55,113 @@ const STORAGE_KEYS = {
   SOCIAL_LINKS: 'hz_explorer_social_stable'
 };
 
+const normalizeKey = (value?: string | null): string =>
+  (value || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]/g, '')
+    .trim();
+
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [lastSync, setLastSync] = useState(Date.now());
-  
+
   const [language, setLanguage] = useState<Language>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.LANGUAGE);
     return (saved === 'es' || saved === 'en') ? saved : 'es';
   });
-  
+
   const [businesses, setBusinesses] = useState<Business[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.BUSINESSES);
     if (!saved) return businessData;
-    
+
     try {
       const savedBiz: Business[] = JSON.parse(saved);
-      
-      // Crear un mapa de los negocios guardados (negocios de usuarios)
-      const savedMap = new Map(savedBiz.map(b => [b.id, b]));
-      
-      // Los negocios del código (businessData) SIEMPRE tienen prioridad y deben estar presentes
-      // Identificamos cuáles son del sistema (están en businessData)
       const systemIds = new Set(businessData.map(b => b.id));
-      
-      // Negocios que el usuario pudo haber añadido manualmente (no están en el código)
       const userAddedBiz = savedBiz.filter(b => !systemIds.has(b.id));
-      
-      // El estado final es: Negocios del código + Negocios añadidos por el usuario
       return [...businessData, ...userAddedBiz];
-    } catch (e) {
+    } catch {
       return businessData;
     }
   });
 
+  // Sincronización conservadora: mantiene el orden exacto y la categoría de businessData,
+  // y solo inyecta los archivos/datos editados desde /socios.
+  const syncPartnerUpdates = useCallback(async () => {
+    const supabase = getSupabase();
+    if (!supabase) return;
+
+    try {
+      const { data, error } = await supabase.from('businesses').select('*');
+      if (error || !Array.isArray(data) || data.length === 0) return;
+
+      const dbById = new Map<string, any>();
+      const dbByName = new Map<string, any>();
+
+      for (const row of data) {
+        if (!row) continue;
+        if (row.id) dbById.set(String(row.id), row);
+        const key = normalizeKey(row.name);
+        if (key) dbByName.set(key, row);
+      }
+
+      setBusinesses(prev =>
+        prev.map((biz: any) => {
+          const match =
+            dbById.get(String(biz.id)) ||
+            (biz.supabaseId ? dbById.get(String(biz.supabaseId)) : undefined) ||
+            dbByName.get(normalizeKey(biz.name));
+
+          if (!match) return biz;
+
+          const extraGallery = Array.isArray(match.gallery_urls)
+            ? match.gallery_urls.filter((u: unknown) => typeof u === 'string' && u.trim().length > 0)
+            : [];
+
+          return {
+            ...biz,
+            // Mantiene biz.id, biz.category y su posición exacta en el listado
+            supabaseId: String(match.id),
+            logo_url: match.logo_url || biz.logo_url || null,
+            menu_url: match.menu_url || biz.menu_url || null,
+            catalog_type: match.catalog_type || biz.catalog_type || 'carta',
+            opening_hours: match.opening_hours || biz.opening_hours || '',
+            cultural_description: match.cultural_description || biz.cultural_description || '',
+            default_message: match.default_message || biz.default_message || '',
+            whatsapp: match.whatsapp_number || match.whatsapp || biz.whatsapp,
+            phone: match.phone || biz.phone,
+            address: match.location || biz.address,
+            photos: extraGallery.length > 0 ? extraGallery : biz.photos,
+          };
+        })
+      );
+    } catch (err) {
+      console.error('Error silencioso sincronizando datos de socios:', err);
+    }
+  }, []);
+
+  useEffect(() => {
+    void syncPartnerUpdates();
+  }, [syncPartnerUpdates]);
+
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.BLOG_POSTS);
     if (!saved) return initialBlogPosts;
-    
+
     try {
       const savedPosts: BlogPost[] = JSON.parse(saved);
       const systemIds = new Set(initialBlogPosts.map(p => p.id));
       const userAddedPosts = savedPosts.filter(p => !systemIds.has(p.id));
       return [...initialBlogPosts, ...userAddedPosts];
-    } catch (e) {
+    } catch {
       return initialBlogPosts;
     }
   });
 
   const [coupons] = useState<Coupon[]>(couponData);
-  
+
   const [heroImages, setHeroImagesState] = useState<string[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.HERO_IMAGES);
     return saved ? JSON.parse(saved) : DEFAULT_HERO_IMAGES;
@@ -116,7 +172,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     return saved ? JSON.parse(saved) : DEFAULT_SOCIAL_LINKS;
   });
 
-  // Guardado automático y actualización de timestamp de sincronización
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.BUSINESSES, JSON.stringify(businesses));
     localStorage.setItem(STORAGE_KEYS.BLOG_POSTS, JSON.stringify(blogPosts));
@@ -155,18 +210,18 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   };
 
   return (
-    <AppContext.Provider value={{ 
-      language, 
-      setLanguage, 
-      businesses, 
+    <AppContext.Provider value={{
+      language,
+      setLanguage,
+      businesses,
       addBusiness,
-      updateBusiness, 
+      updateBusiness,
       deleteBusiness,
       blogPosts,
       addBlogPost,
       deleteBlogPost,
-      coupons, 
-      heroImages, 
+      coupons,
+      heroImages,
       setHeroImages,
       socialLinks,
       updateSocialLinks,
