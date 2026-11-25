@@ -137,7 +137,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     ...(Array.isArray(biz.photos) ? biz.photos : []),
     ...(Array.isArray(extraGallery) ? extraGallery : []),
   ])
-).slice(0, 6),
+).slice(0, 50),
           };
         })
       );
