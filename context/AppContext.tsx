@@ -133,7 +133,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
             whatsapp: match.whatsapp_number || match.whatsapp || biz.whatsapp,
             phone: match.phone || biz.phone,
             address: match.location || biz.address,
-            photos: extraGallery.length > 0 ? extraGallery : biz.photos,
+            photos: Array.from(
+  new Set([
+    ...(Array.isArray(biz.photos) ? biz.photos : []),
+    ...(Array.isArray(extraGallery) ? extraGallery : []),
+  ])
+),
           };
         })
       );
