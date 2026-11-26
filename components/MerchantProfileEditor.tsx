@@ -32,6 +32,7 @@ interface MerchantProfileEditorProps {
 }
 
 const MAX_GALLERY_PHOTOS = 80;
+const MAX_MENU_PAGES = 30;
 
 const cleanUrl = (val?: string | null): string => {
   if (!val) return '';
@@ -40,6 +41,35 @@ const cleanUrl = (val?: string | null): string => {
     return '';
   }
   return trimmed;
+};
+
+const parseMenuItems = (rawMenu?: string | null): string[] => {
+  const cleaned = cleanUrl(rawMenu);
+  if (!cleaned) return [];
+
+  if (cleaned.startsWith('[')) {
+    try {
+      const parsed = JSON.parse(cleaned);
+      if (Array.isArray(parsed)) {
+        return parsed.map(cleanUrl).filter(Boolean).slice(0, MAX_MENU_PAGES);
+      }
+    } catch {
+      // Si no es JSON válido, se trata como URL única
+    }
+  }
+
+  return [cleaned];
+};
+
+const serializeMenuItems = (items: string[]): string | null => {
+  const valid = Array.from(new Set(items.map(cleanUrl).filter(Boolean))).slice(0, MAX_MENU_PAGES);
+  if (valid.length === 0) return null;
+  if (valid.length === 1) return valid[0];
+  return JSON.stringify(valid);
+};
+
+const isPdfUrl = (url: string): boolean => {
+  return /\.pdf(\?|#|$)/i.test(url);
 };
 
 export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
@@ -59,7 +89,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
     );
   }, [businesses, business.id, business.name]);
 
-  // Fusiona las fotos guardadas en Supabase con las fotos base del catálogo local (sin duplicados y máx. 30)
+  // Fusiona las fotos guardadas en Supabase con las fotos base del catálogo local (sin duplicados)
   const initialGallery = useMemo(() => {
     const basePhotos = Array.isArray(localCatalogMatch?.photos)
       ? localCatalogMatch.photos.map(cleanUrl).filter(Boolean)
@@ -71,6 +101,8 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
 
     return Array.from(new Set([...basePhotos, ...dbGallery])).slice(0, MAX_GALLERY_PHOTOS);
   }, [business.gallery_urls, localCatalogMatch]);
+
+  const initialMenuPages = useMemo(() => parseMenuItems(business.menu_url), [business.menu_url]);
 
   const [description, setDescription] = useState(business.description || localCatalogMatch?.description || '');
   const [culturalDescription, setCulturalDescription] = useState(business.cultural_description || '');
@@ -87,7 +119,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
   const [coverUrl, setCoverUrl] = useState(
     business.imagen_url || cleanUrl(localCatalogMatch?.photos?.[0]) || ''
   );
-  const [menuUrl, setMenuUrl] = useState(business.menu_url || '');
+  const [menuPages, setMenuPages] = useState<string[]>(initialMenuPages);
   const [catalogType, setCatalogType] = useState(business.catalog_type || 'carta');
   const [galleryUrls, setGalleryUrls] = useState<string[]>(initialGallery);
 
@@ -102,7 +134,10 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
   const [saving, setSaving] = useState(false);
   const [banner, setBanner] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  const uploadAsset = async (file: File, folder: 'logo' | 'cover' | 'menu' | 'gallery'): Promise<string | null> => {
+  const uploadAsset = async (
+    file: File,
+    folder: 'logo' | 'cover' | 'menu' | 'gallery'
+  ): Promise<string | null> => {
     const supabase = getSupabase();
     if (!supabase) {
       setBanner({ type: 'error', text: 'No hay conexión con Supabase Storage.' });
@@ -132,7 +167,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
 
   const handleSingleFileUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    folder: 'logo' | 'cover' | 'menu'
+    folder: 'logo' | 'cover'
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -144,15 +179,94 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
     if (url) {
       if (folder === 'logo') setLogoUrl(url);
       if (folder === 'cover') setCoverUrl(url);
-      if (folder === 'menu') setMenuUrl(url);
       setBanner({
         type: 'success',
-        text: 'Archivo subido correctamente. Presiona "Guardar cambios" al finalizar.',
+        text: 'Archivo subido correctamente. Presiona "Guardar cambios del perfil" al finalizar.',
       });
     }
 
     setUploadingField(null);
     e.target.value = '';
+  };
+
+  const handleMenuUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    const hasPdfExisting = menuPages.some(isPdfUrl);
+    const firstIsPdf = files.length === 1 && files[0].type === 'application/pdf';
+
+    if (firstIsPdf) {
+      setUploadingField('menu');
+      setBanner(null);
+      const url = await uploadAsset(files[0], 'menu');
+      if (url) {
+        setMenuPages([url]);
+        setBanner({
+          type: 'success',
+          text: 'PDF cargado. Presiona "Guardar cambios del perfil" para publicar.',
+        });
+      }
+      setUploadingField(null);
+      e.target.value = '';
+      return;
+    }
+
+    if (hasPdfExisting) {
+      setBanner({
+        type: 'error',
+        text: 'Primero quita el PDF actual o sube un nuevo archivo para reemplazarlo.',
+      });
+      e.target.value = '';
+      return;
+    }
+
+    const imageFiles = files.filter((f) => f.type !== 'application/pdf');
+    const remainingSlots = Math.max(0, MAX_MENU_PAGES - menuPages.length);
+    if (remainingSlots === 0) {
+      setBanner({
+        type: 'error',
+        text: `Ya alcanzaste el máximo de ${MAX_MENU_PAGES} páginas en la carta/catálogo.`,
+      });
+      e.target.value = '';
+      return;
+    }
+
+    setUploadingField('menu');
+    setBanner(null);
+
+    const uploaded: string[] = [];
+    for (const file of imageFiles.slice(0, remainingSlots)) {
+      const url = await uploadAsset(file, 'menu');
+      if (url) uploaded.push(url);
+    }
+
+    if (uploaded.length > 0) {
+      setMenuPages((prev) => Array.from(new Set([...prev, ...uploaded])).slice(0, MAX_MENU_PAGES));
+      setBanner({
+        type: 'success',
+        text: `${uploaded.length} página(s) agregada(s). Presiona "Guardar cambios del perfil" para publicar.`,
+      });
+    }
+
+    setUploadingField(null);
+    e.target.value = '';
+  };
+
+  const handleRemoveMenuPage = (indexToRemove: number) => {
+    setMenuPages((prev) => prev.filter((_, idx) => idx !== indexToRemove));
+    setBanner({
+      type: 'success',
+      text: 'Página quitada del borrador. Presiona "Guardar cambios del perfil" para confirmar.',
+    });
+  };
+
+  const handleClearAllMenu = () => {
+    setMenuPages([]);
+    setBanner({
+      type: 'success',
+      text: 'Carta/catálogo quitado del borrador. Presiona "Guardar cambios del perfil" para confirmar.',
+    });
   };
 
   const handleGalleryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -161,7 +275,11 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
 
     const remainingSlots = Math.max(0, MAX_GALLERY_PHOTOS - galleryUrls.length);
     if (remainingSlots === 0) {
-      setBanner({ type: 'error', text: `Ya alcanzaste el máximo de ${MAX_GALLERY_PHOTOS} fotos en la galería.` });
+      setBanner({
+        type: 'error',
+        text: `Ya alcanzaste el máximo de ${MAX_GALLERY_PHOTOS} fotos en la galería.`,
+      });
+      e.target.value = '';
       return;
     }
 
@@ -178,7 +296,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
       setGalleryUrls((prev) => Array.from(new Set([...prev, ...uploaded])).slice(0, MAX_GALLERY_PHOTOS));
       setBanner({
         type: 'success',
-        text: `${uploaded.length} foto(s) agregada(s). Presiona "Guardar cambios" para publicar.`,
+        text: `${uploaded.length} foto(s) agregada(s). Presiona "Guardar cambios del perfil" para publicar.`,
       });
     }
 
@@ -202,6 +320,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
     const sanitizedGallery = Array.from(
       new Set(galleryUrls.map(cleanUrl).filter(Boolean))
     ).slice(0, MAX_GALLERY_PHOTOS);
+    const serializedMenu = serializeMenuItems(menuPages);
 
     try {
       const { data, error } = await supabase.rpc('update_business_profile', {
@@ -218,7 +337,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
         p_opening_hours: openingHours.trim() || null,
         p_logo_url: logoUrl.trim() || null,
         p_imagen_url: coverUrl.trim() || null,
-        p_menu_url: menuUrl.trim() || null,
+        p_menu_url: serializedMenu,
         p_catalog_type: catalogType,
         p_gallery_urls: sanitizedGallery,
       });
@@ -235,12 +354,18 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
         const savedDbGallery = Array.isArray(updatedRow.gallery_urls)
           ? updatedRow.gallery_urls.map(cleanUrl).filter(Boolean)
           : sanitizedGallery;
+        const savedMenuPages = parseMenuItems(updatedRow.menu_url ?? serializedMenu);
 
         setGalleryUrls(savedDbGallery);
-        onSaved({ ...updatedRow, gallery_urls: savedDbGallery });
+        setMenuPages(savedMenuPages);
+        onSaved({
+          ...updatedRow,
+          gallery_urls: savedDbGallery,
+          menu_url: serializeMenuItems(savedMenuPages),
+        });
         setBanner({
           type: 'success',
-          text: `¡Perfil actualizado! Se guardaron ${savedDbGallery.length} foto(s) en Huaraz Explorer.`,
+          text: `¡Perfil actualizado! Se guardaron ${savedDbGallery.length} foto(s) en galería y ${savedMenuPages.length} archivo(s)/página(s) en carta/catálogo.`,
         });
       }
     } catch {
@@ -249,6 +374,8 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
       setSaving(false);
     }
   };
+
+  const activeIsPdf = menuPages.length === 1 && isPdfUrl(menuPages[0]);
 
   return (
     <form onSubmit={handleSaveProfile} className="space-y-6">
@@ -286,7 +413,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
             1. Imagen de Marca y Carta / Catálogo
           </h3>
           <p className="text-xs text-slate-500 mt-0.5">
-            Sube tu logo, foto principal de portada y tu carta o catálogo en PDF o imagen.
+            Sube tu logo, foto principal de portada y tu carta o catálogo (varias imágenes o un PDF).
           </p>
         </div>
 
@@ -362,15 +489,15 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
           </div>
         </div>
 
-        {/* Carta / Catálogo */}
+        {/* Carta / Catálogo (múltiples páginas en imagen o un PDF) */}
         <div className="border border-slate-200 rounded-xl p-4 space-y-3 bg-slate-50/50">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
               <span className="text-xs font-bold text-slate-800 block">
-                Carta, Catálogo o Tarifario (PDF o Imagen)
+                Carta, Catálogo o Tarifario ({menuPages.length}/{MAX_MENU_PAGES} pág. · Imágenes o PDF)
               </span>
               <span className="text-[11px] text-slate-500">
-                Los visitantes podrán abrirlo directo desde tu ficha.
+                Puedes subir varias páginas en imagen (ej. 10 hojas) o un solo archivo PDF.
               </span>
             </div>
             <select
@@ -389,83 +516,103 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
               <i className="fas fa-file-arrow-up"></i>
               <span>
                 {uploadingField === 'menu'
-                  ? 'Subiendo archivo...'
-                  : menuUrl
-                  ? 'Reemplazar archivo'
-                  : 'Subir PDF o Foto'}
+                  ? 'Subiendo archivo(s)...'
+                  : menuPages.length > 0
+                  ? '+ Agregar más páginas / Reemplazar'
+                  : 'Subir Páginas (Fotos) o PDF'}
               </span>
               <input
                 type="file"
                 accept=".pdf,image/*"
-                onChange={(e) => handleSingleFileUpload(e, 'menu')}
+                multiple
+                onChange={handleMenuUpload}
                 disabled={uploadingField !== null}
                 className="hidden"
               />
             </label>
 
-           {menuUrl && (
-              <>
-                <a
-                  href={menuUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs font-bold text-emerald-700 hover:underline inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 px-3 py-2 rounded-lg"
-                >
-                  <i className="fas fa-arrow-up-right-from-square"></i>
-                  <span>Ver archivo actual</span>
-                </a>
+            {activeIsPdf && (
+              <a
+                href={menuPages[0]}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-bold text-emerald-700 hover:underline inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 px-3 py-2 rounded-lg"
+              >
+                <i className="fas fa-arrow-up-right-from-square"></i>
+                <span>Ver PDF actual</span>
+              </a>
+            )}
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMenuUrl('');
-                    setBanner({
-                      type: 'success',
-                      text: 'Archivo quitado del borrador. Presiona "Guardar cambios del perfil" para confirmar.',
-                    });
-                  }}
-                  disabled={uploadingField !== null || saving}
-                  className="text-xs font-bold text-red-700 hover:bg-red-100 inline-flex items-center gap-1.5 bg-red-50 border border-red-200 px-3 py-2 rounded-lg transition-colors disabled:opacity-50"
-                >
-                  <i className="fas fa-trash-can"></i>
-                  <span>Quitar archivo</span>
-                </button>
-              </>
+            {menuPages.length > 0 && (
+              <button
+                type="button"
+                onClick={handleClearAllMenu}
+                disabled={uploadingField !== null || saving}
+                className="text-xs font-bold text-red-700 hover:bg-red-100 inline-flex items-center gap-1.5 bg-red-50 border border-red-200 px-3 py-2 rounded-lg transition-colors disabled:opacity-50"
+              >
+                <i className="fas fa-trash-can"></i>
+                <span>Quitar todo</span>
+              </button>
             )}
           </div>
+
+          {menuPages.length > 0 && !activeIsPdf && (
+            <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-2.5 pt-1">
+              {menuPages.map((url, idx) => (
+                <div
+                  key={`${url}-${idx}`}
+                  className="relative group aspect-[3/4] rounded-xl overflow-hidden border border-slate-200 bg-white"
+                >
+                  <img src={url} alt={`Página ${idx + 1}`} className="w-full h-full object-cover" />
+                  <span className="absolute bottom-1.5 left-1.5 bg-slate-900/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+                    Pág. {idx + 1}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveMenuPage(idx)}
+                    title={`Quitar página ${idx + 1}`}
+                    className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-red-600 text-white text-xs flex items-center justify-center opacity-90 hover:opacity-100"
+                  >
+                    <i className="fas fa-xmark"></i>
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Galería de fotos */}
         <div className="space-y-3">
-         <div className="flex items-center justify-between">
-  <span className="text-xs font-bold text-slate-800">
-    Galería del local / platos / habitaciones ({galleryUrls.length}/{MAX_GALLERY_PHOTOS})
-  </span>
-  <label
-    className={`border text-xs font-bold px-3 py-1.5 rounded-lg transition-colors ${
-      galleryUrls.length >= MAX_GALLERY_PHOTOS
-        ? 'bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed'
-        : 'cursor-pointer bg-white hover:bg-slate-100 border-slate-300 text-slate-800'
-    }`}
-  >
-    <span>
-      {uploadingField === 'gallery' ? 'Subiendo fotos...' : '+ Agregar fotos'}
-    </span>
-    <input
-      type="file"
-      accept="image/*"
-      multiple
-      onChange={handleGalleryUpload}
-      disabled={uploadingField !== null || galleryUrls.length >= MAX_GALLERY_PHOTOS}
-      className="hidden"
-    />
-  </label>
-</div>
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-800">
+              Galería del local / platos / habitaciones ({galleryUrls.length}/{MAX_GALLERY_PHOTOS})
+            </span>
+            <label
+              className={`border text-xs font-bold px-3 py-1.5 rounded-lg transition-colors ${
+                galleryUrls.length >= MAX_GALLERY_PHOTOS
+                  ? 'bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed'
+                  : 'cursor-pointer bg-white hover:bg-slate-100 border-slate-300 text-slate-800'
+              }`}
+            >
+              <span>{uploadingField === 'gallery' ? 'Subiendo fotos...' : '+ Agregar fotos'}</span>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleGalleryUpload}
+                disabled={uploadingField !== null || galleryUrls.length >= MAX_GALLERY_PHOTOS}
+                className="hidden"
+              />
+            </label>
+          </div>
 
           {galleryUrls.length > 0 ? (
             <div className="grid grid-cols-3 sm:grid-cols-6 gap-2.5">
               {galleryUrls.map((url, idx) => (
-                <div key={`${url}-${idx}`} className="relative group aspect-square rounded-xl overflow-hidden border border-slate-200">
+                <div
+                  key={`${url}-${idx}`}
+                  className="relative group aspect-square rounded-xl overflow-hidden border border-slate-200"
+                >
                   <img src={url} alt={`Galería ${idx + 1}`} className="w-full h-full object-cover" />
                   <button
                     type="button"
