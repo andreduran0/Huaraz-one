@@ -425,10 +425,6 @@ const BusinessDetailPage: React.FC = () => {
       setIsBooking(false);
     }
   };
-
-  const scheduleEntries = business.schedule
-    ? Object.entries(business.schedule).filter(([, hours]) => Boolean(cleanText(hours as string)))
-    : [];
   const scheduleEntries = business.schedule
     ? Object.entries(business.schedule).filter(([, hours]) => Boolean(cleanText(hours as string)))
     : [];
