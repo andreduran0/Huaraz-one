@@ -444,7 +444,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {/* Logo */}
           <div className="border border-slate-200 rounded-xl p-4 space-y-3 bg-slate-50/50">
             <div className="flex items-center justify-between">
@@ -455,7 +455,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3">
               {logoUrl ? (
                 <img
                   src={logoUrl}
@@ -467,16 +467,34 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
                   <i className="fas fa-store text-lg"></i>
                 </div>
               )}
-              <label className="cursor-pointer bg-white hover:bg-slate-100 border border-slate-300 text-slate-800 text-xs font-bold px-3.5 py-2 rounded-lg transition-colors">
-                <span>{logoUrl ? 'Cambiar logo' : 'Subir logo'}</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleSingleFileUpload(e, 'logo')}
-                  disabled={uploadingField !== null}
-                  className="hidden"
-                />
-              </label>
+              <div className="flex flex-wrap items-center gap-2">
+                <label className="cursor-pointer bg-white hover:bg-slate-100 border border-slate-300 text-slate-800 text-xs font-bold px-3.5 py-2 rounded-lg transition-colors">
+                  <span>{logoUrl ? 'Cambiar logo' : 'Subir logo'}</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleSingleFileUpload(e, 'logo')}
+                    disabled={uploadingField !== null}
+                    className="hidden"
+                  />
+                </label>
+                {logoUrl && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setLogoUrl('');
+                      setBanner({
+                        type: 'success',
+                        text: 'Logo quitado del borrador. Presiona "Guardar cambios del perfil" para confirmar.',
+                      });
+                    }}
+                    disabled={uploadingField !== null || saving}
+                    className="text-xs font-bold text-red-700 hover:bg-red-100 bg-red-50 border border-red-200 px-3 py-2 rounded-lg transition-colors disabled:opacity-50"
+                  >
+                    Quitar
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 
@@ -490,7 +508,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3">
               {coverUrl ? (
                 <img
                   src={coverUrl}
@@ -502,16 +520,34 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
                   <i className="fas fa-image text-lg"></i>
                 </div>
               )}
-              <label className="cursor-pointer bg-white hover:bg-slate-100 border border-slate-300 text-slate-800 text-xs font-bold px-3.5 py-2 rounded-lg transition-colors">
-                <span>{coverUrl ? 'Cambiar portada' : 'Subir portada'}</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleSingleFileUpload(e, 'cover')}
-                  disabled={uploadingField !== null}
-                  className="hidden"
-                />
-              </label>
+              <div className="flex flex-wrap items-center gap-2">
+                <label className="cursor-pointer bg-white hover:bg-slate-100 border border-slate-300 text-slate-800 text-xs font-bold px-3.5 py-2 rounded-lg transition-colors">
+                  <span>{coverUrl ? 'Cambiar portada' : 'Subir portada'}</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleSingleFileUpload(e, 'cover')}
+                    disabled={uploadingField !== null}
+                    className="hidden"
+                  />
+                </label>
+                {coverUrl && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCoverUrl('');
+                      setBanner({
+                        type: 'success',
+                        text: 'Portada quitada del borrador. Presiona "Guardar cambios del perfil" para confirmar.',
+                      });
+                    }}
+                    disabled={uploadingField !== null || saving}
+                    className="text-xs font-bold text-red-700 hover:bg-red-100 bg-red-50 border border-red-200 px-3 py-2 rounded-lg transition-colors disabled:opacity-50"
+                  >
+                    Quitar
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
