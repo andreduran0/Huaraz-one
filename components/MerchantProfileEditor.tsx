@@ -491,7 +491,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
           </div>
         </div>
 
-        {/* Carta / Catálogo (múltiples páginas en imagen o un PDF) */}
+       {/* Carta / Catálogo (múltiples páginas en imagen o un PDF) */}
         <div className="border border-slate-200 rounded-xl p-4 space-y-3 bg-slate-50/50">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
@@ -565,15 +565,24 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
                   key={`${url}-${idx}`}
                   className="relative group aspect-[3/4] rounded-xl overflow-hidden border border-slate-200 bg-white"
                 >
-                 <img
-  src={url}
-  alt={`Página ${idx + 1}`}
-  onClick={() => {
-    setPreviewPageIndex(idx);
-    setZoomLevel(1);
-  }}
-  className="w-full h-full object-cover cursor-zoom-in"
-/>
+                  <img
+                    src={url}
+                    alt={`Página ${idx + 1}`}
+                    onClick={() => {
+                      setPreviewPageIndex(idx);
+                      setZoomLevel(1);
+                    }}
+                    className="w-full h-full object-cover cursor-zoom-in"
+                  />
+                  <span className="absolute bottom-1.5 left-1.5 bg-slate-900/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+                    Pág. {idx + 1}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveMenuPage(idx)}
+                    title={`Quitar página ${idx + 1}`}
+                    className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-red-600 text-white text-xs flex items-center justify-center opacity-90 hover:opacity-100"
+                  >
                     <i className="fas fa-xmark"></i>
                   </button>
                 </div>
