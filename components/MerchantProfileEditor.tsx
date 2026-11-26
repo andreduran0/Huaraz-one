@@ -419,26 +419,30 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
 
         {/* Galería de fotos */}
         <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-800">
-              Galería del local / platos / habitaciones ({galleryUrls.length}/{MAX_GALLERY_PHOTOS})
-            </span>
-            {galleryUrls.length < MAX_GALLERY_PHOTOS && (
-              <label className="cursor-pointer bg-white hover:bg-slate-100 border border-slate-300 text-slate-800 text-xs font-bold px-3 py-1.5 rounded-lg transition-colors">
-                <span>
-                  {uploadingField === 'gallery' ? 'Subiendo fotos...' : '+ Agregar fotos'}
-                </span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleGalleryUpload}
-                  disabled={uploadingField !== null}
-                  className="hidden"
-                />
-              </label>
-            )}
-          </div>
+         <div className="flex items-center justify-between">
+  <span className="text-xs font-bold text-slate-800">
+    Galería del local / platos / habitaciones ({galleryUrls.length}/{MAX_GALLERY_PHOTOS})
+  </span>
+  <label
+    className={`border text-xs font-bold px-3 py-1.5 rounded-lg transition-colors ${
+      galleryUrls.length >= MAX_GALLERY_PHOTOS
+        ? 'bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed'
+        : 'cursor-pointer bg-white hover:bg-slate-100 border-slate-300 text-slate-800'
+    }`}
+  >
+    <span>
+      {uploadingField === 'gallery' ? 'Subiendo fotos...' : '+ Agregar fotos'}
+    </span>
+    <input
+      type="file"
+      accept="image/*"
+      multiple
+      onChange={handleGalleryUpload}
+      disabled={uploadingField !== null || galleryUrls.length >= MAX_GALLERY_PHOTOS}
+      className="hidden"
+    />
+  </label>
+</div>
 
           {galleryUrls.length > 0 ? (
             <div className="grid grid-cols-3 sm:grid-cols-6 gap-2.5">
