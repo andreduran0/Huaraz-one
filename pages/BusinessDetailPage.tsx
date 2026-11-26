@@ -472,6 +472,7 @@ const BusinessDetailPage: React.FC = () => {
             </h1>
           </div>
         </div>
+       </div>
       {/* CONTENIDO PRINCIPAL */}
       <div className="max-w-5xl mx-auto px-6 -mt-12 relative z-10 space-y-16 pb-48">
 
