@@ -652,7 +652,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
           )}
         </div>
 
-        {/* Galería de fotos */}
+       {/* Galería de fotos */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-800">
@@ -679,22 +679,43 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
 
           {galleryUrls.length > 0 ? (
             <div className="grid grid-cols-3 sm:grid-cols-6 gap-2.5">
-              {galleryUrls.map((url, idx) => (
-                <div
-                  key={`${url}-${idx}`}
-                  className="relative group aspect-square rounded-xl overflow-hidden border border-slate-200"
-                >
-                  <img src={url} alt={`Galería ${idx + 1}`} className="w-full h-full object-cover" />
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveGalleryPhoto(idx)}
-                    title="Eliminar foto"
-                    className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-red-600 text-white text-xs flex items-center justify-center opacity-90 hover:opacity-100"
+              {galleryUrls.map((url, idx) => {
+                const isCurrentCover = cleanUrl(coverUrl) === cleanUrl(url);
+                return (
+                  <div
+                    key={`${url}-${idx}`}
+                    className={`relative group aspect-square rounded-xl overflow-hidden border ${
+                      isCurrentCover ? 'border-amber-500 ring-2 ring-amber-400/50' : 'border-slate-200'
+                    }`}
                   >
-                    <i className="fas fa-xmark"></i>
-                  </button>
-                </div>
-              ))}
+                    <img src={url} alt={`Galería ${idx + 1}`} className="w-full h-full object-cover" />
+
+                    <button
+                      type="button"
+                      onClick={() => handleUseAsCover(url)}
+                      disabled={uploadingField !== null || saving}
+                      title="Usar esta foto como portada"
+                      className={`absolute bottom-1.5 left-1.5 text-[10px] font-bold px-2 py-0.5 rounded-md inline-flex items-center gap-1 transition-colors disabled:opacity-50 ${
+                        isCurrentCover
+                          ? 'bg-amber-500 text-slate-950'
+                          : 'bg-slate-900/80 hover:bg-slate-950 text-white'
+                      }`}
+                    >
+                      <i className="fas fa-star text-[9px]"></i>
+                      <span>{isCurrentCover ? 'Portada' : 'Usar portada'}</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveGalleryPhoto(idx)}
+                      title="Eliminar foto"
+                      className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-red-600 text-white text-xs flex items-center justify-center opacity-90 hover:opacity-100"
+                    >
+                      <i className="fas fa-xmark"></i>
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           ) : (
             <p className="text-xs text-slate-400 bg-slate-50 border border-dashed border-slate-200 rounded-xl p-4 text-center">
