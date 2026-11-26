@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { getSupabase } from '../services/supabase';
 import { useAppContext } from '../context/AppContext';
 
@@ -51,7 +51,9 @@ const parseMenuItems = (rawMenu?: string | null): string[] => {
     try {
       const parsed = JSON.parse(cleaned);
       if (Array.isArray(parsed)) {
-        return parsed.map(cleanUrl).filter(Boolean).slice(0, MAX_MENU_PAGES);
+        return Array.from(
+          new Set(parsed.map((item) => cleanUrl(String(item ?? ''))).filter(Boolean))
+        ).slice(0, MAX_MENU_PAGES);
       }
     } catch {
       // Si no es JSON válido, se trata como URL única
@@ -102,7 +104,16 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
     return Array.from(new Set([...basePhotos, ...dbGallery])).slice(0, MAX_GALLERY_PHOTOS);
   }, [business.gallery_urls, localCatalogMatch]);
 
-  const initialMenuPages = useMemo(() => parseMenuItems(business.menu_url), [business.menu_url]);
+  const initialMenuPages = useMemo(() => {
+    const fromDb = parseMenuItems(business.menu_url);
+    if (fromDb.length > 0) return fromDb;
+
+    const fromLocal = Array.isArray((localCatalogMatch as any)?.menuImages)
+      ? (localCatalogMatch as any).menuImages.map(cleanUrl).filter(Boolean)
+      : [];
+
+    return Array.from(new Set(fromLocal)).slice(0, MAX_MENU_PAGES);
+  }, [business.menu_url, localCatalogMatch]);
 
   const [description, setDescription] = useState(business.description || localCatalogMatch?.description || '');
   const [culturalDescription, setCulturalDescription] = useState(business.cultural_description || '');
@@ -123,12 +134,26 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
   const [catalogType, setCatalogType] = useState(business.catalog_type || 'carta');
   const [galleryUrls, setGalleryUrls] = useState<string[]>(initialGallery);
 
-  // Si AppContext termina de cargar después de montar el componente y aún no había fotos, las precarga
+  const lastBusinessIdRef = useRef<string>(business.id);
+
+  // Sincroniza al cambiar de negocio o si llegan páginas/fotos iniciales cuando el arreglo local aún está vacío
   useEffect(() => {
+    const changedBusiness = lastBusinessIdRef.current !== business.id;
+    if (changedBusiness) {
+      lastBusinessIdRef.current = business.id;
+      setMenuPages(initialMenuPages);
+      setGalleryUrls(initialGallery);
+      setCatalogType(business.catalog_type || 'carta');
+      return;
+    }
+
+    if (menuPages.length === 0 && initialMenuPages.length > 0) {
+      setMenuPages(initialMenuPages);
+    }
     if (galleryUrls.length === 0 && initialGallery.length > 0) {
       setGalleryUrls(initialGallery);
     }
-  }, [initialGallery, galleryUrls.length]);
+  }, [business.id, business.catalog_type, initialMenuPages, initialGallery, menuPages.length, galleryUrls.length]);
 
   const [uploadingField, setUploadingField] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
