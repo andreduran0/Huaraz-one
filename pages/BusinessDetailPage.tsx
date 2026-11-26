@@ -447,7 +447,7 @@ const BusinessDetailPage: React.FC = () => {
         className="w-full h-[60vh] md:h-[70vh] relative overflow-hidden bg-slate-900"
         style={{ backgroundImage: heroImage ? `url('${heroImage}')` : undefined, backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
-  <div className="absolute inset-0 bg-slate-950/60"></div>
+        <div className="absolute inset-0 bg-slate-950/60"></div>
         <div className="absolute bottom-16 left-8 right-8 text-white max-w-5xl mx-auto z-10">
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <span className="bg-[#2A4D69] text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] px-5 py-2.5 rounded-full border border-white/20 backdrop-blur-md shadow-2xl">
