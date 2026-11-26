@@ -133,6 +133,8 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
   const [uploadingField, setUploadingField] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [banner, setBanner] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [previewPageIndex, setPreviewPageIndex] = useState<number | null>(null);
+  const [zoomLevel, setZoomLevel] = useState<number>(1);
 
   const uploadAsset = async (
     file: File,
