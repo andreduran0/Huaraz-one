@@ -403,16 +403,34 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
               />
             </label>
 
-            {menuUrl && (
-              <a
-                href={menuUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs font-bold text-emerald-700 hover:underline inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 px-3 py-2 rounded-lg"
-              >
-                <i className="fas fa-arrow-up-right-from-square"></i>
-                <span>Ver archivo actual</span>
-              </a>
+           {menuUrl && (
+              <>
+                <a
+                  href={menuUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-bold text-emerald-700 hover:underline inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 px-3 py-2 rounded-lg"
+                >
+                  <i className="fas fa-arrow-up-right-from-square"></i>
+                  <span>Ver archivo actual</span>
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMenuUrl('');
+                    setBanner({
+                      type: 'success',
+                      text: 'Archivo quitado del borrador. Presiona "Guardar cambios del perfil" para confirmar.',
+                    });
+                  }}
+                  disabled={uploadingField !== null || saving}
+                  className="text-xs font-bold text-red-700 hover:bg-red-100 inline-flex items-center gap-1.5 bg-red-50 border border-red-200 px-3 py-2 rounded-lg transition-colors disabled:opacity-50"
+                >
+                  <i className="fas fa-trash-can"></i>
+                  <span>Quitar archivo</span>
+                </button>
+              </>
             )}
           </div>
         </div>
