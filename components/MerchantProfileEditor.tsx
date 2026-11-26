@@ -414,7 +414,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
             <span className="text-xs font-bold text-slate-800">
               Galería del local / platos / habitaciones ({galleryUrls.length}/6)
             </span>
-            {galleryUrls.length < 6 && (
+         galleryUrls.length < 30
               <label className="cursor-pointer bg-white hover:bg-slate-100 border border-slate-300 text-slate-800 text-xs font-bold px-3 py-1.5 rounded-lg transition-colors">
                 <span>
                   {uploadingField === 'gallery' ? 'Subiendo fotos...' : '+ Agregar fotos'}
