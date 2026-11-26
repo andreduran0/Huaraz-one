@@ -412,7 +412,7 @@ const maxPhotos = 30; const remainingSlots = Math.max(0, maxPhotos - galleryUrls
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-800">
-              Galería del local / platos / habitaciones ({galleryUrls.length}/6)
+              Galería del local / platos / habitaciones ({galleryUrls.length}/30)
             </span>
          galleryUrls.length < 30
               <label className="cursor-pointer bg-white hover:bg-slate-100 border border-slate-300 text-slate-800 text-xs font-bold px-3 py-1.5 rounded-lg transition-colors">
