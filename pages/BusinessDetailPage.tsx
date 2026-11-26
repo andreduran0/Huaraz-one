@@ -456,18 +456,22 @@ const BusinessDetailPage: React.FC = () => {
             )}
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-7">
+         <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
             {displayLogo && (
-              <div className="w-20 h-20 md:w-28 md:h-28 rounded-[1.75rem] bg-white p-2 shadow-2xl border-2 border-white/30 flex-shrink-0 overflow-hidden">
+              <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-white p-1.5 shadow-2xl border-2 border-white/30 flex-shrink-0 overflow-hidden">
                 <img
                   src={displayLogo}
                   alt={`Logo de ${business.name}`}
-                  className="w-full h-full object-contain rounded-[1.25rem]"
+                  className="w-full h-full object-cover rounded-xl"
                 />
               </div>
             )}
 
-            <h1 className="text-5xl md:text-9xl font-black italic tracking-tighter uppercase leading-[0.85] drop-shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+            <h1
+              className={`${
+                displayLogo ? 'text-4xl sm:text-5xl md:text-7xl' : 'text-5xl md:text-9xl'
+              } font-black italic tracking-tighter uppercase leading-[0.92] drop-shadow-[0_10px_40px_rgba(0,0,0,0.5)]`}
+            >
               {business.name}
             </h1>
           </div>
