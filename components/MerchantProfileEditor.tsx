@@ -31,6 +31,8 @@ interface MerchantProfileEditorProps {
   onSaved: (updated: EditableMerchantBusiness) => void;
 }
 
+const MAX_GALLERY_PHOTOS = 30;
+
 const cleanUrl = (val?: string | null): string => {
   if (!val) return '';
   const trimmed = String(val).trim();
@@ -57,18 +59,18 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
     );
   }, [businesses, business.id, business.name]);
 
-  // Fusiona las fotos guardadas en Supabase con las fotos base del catálogo local (sin duplicados y máx. 6)
+  // Fusiona las fotos guardadas en Supabase con las fotos base del catálogo local (sin duplicados y máx. 30)
   const initialGallery = useMemo(() => {
-  const basePhotos = Array.isArray(localCatalogMatch?.photos)
-    ? localCatalogMatch.photos.map(cleanUrl).filter(Boolean)
-    : [];
+    const basePhotos = Array.isArray(localCatalogMatch?.photos)
+      ? localCatalogMatch.photos.map(cleanUrl).filter(Boolean)
+      : [];
 
-  const dbGallery = Array.isArray(business.gallery_urls)
-    ? business.gallery_urls.map(cleanUrl).filter(Boolean)
-    : [];
+    const dbGallery = Array.isArray(business.gallery_urls)
+      ? business.gallery_urls.map(cleanUrl).filter(Boolean)
+      : [];
 
-  return Array.from(new Set([...basePhotos, ...dbGallery]));
-}, [business.gallery_urls, localCatalogMatch]);
+    return Array.from(new Set([...basePhotos, ...dbGallery])).slice(0, MAX_GALLERY_PHOTOS);
+  }, [business.gallery_urls, localCatalogMatch]);
 
   const [description, setDescription] = useState(business.description || localCatalogMatch?.description || '');
   const [culturalDescription, setCulturalDescription] = useState(business.cultural_description || '');
@@ -94,7 +96,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
     if (galleryUrls.length === 0 && initialGallery.length > 0) {
       setGalleryUrls(initialGallery);
     }
-  }, [initialGallery]);
+  }, [initialGallery, galleryUrls.length]);
 
   const [uploadingField, setUploadingField] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -113,7 +115,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
     }
 
     const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg';
-    const filePath = `${business.id}/${folder}_${Date.now()}.${ext}`;
+    const filePath = `${business.id}/${folder}_${Date.now()}_${Math.random().toString(36).slice(2, 6)}.${ext}`;
 
     const { error } = await supabase.storage
       .from('business-assets')
@@ -157,9 +159,9 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
-const maxPhotos = 30; const remainingSlots = Math.max(0, maxPhotos - galleryUrls.length);
+    const remainingSlots = Math.max(0, MAX_GALLERY_PHOTOS - galleryUrls.length);
     if (remainingSlots === 0) {
-      setBanner({ type: 'error', text: 'Ya alcanzaste el máximo de 6 fotos en la galería.' });
+      setBanner({ type: 'error', text: `Ya alcanzaste el máximo de ${MAX_GALLERY_PHOTOS} fotos en la galería.` });
       return;
     }
 
@@ -173,7 +175,7 @@ const maxPhotos = 30; const remainingSlots = Math.max(0, maxPhotos - galleryUrls
     }
 
     if (uploaded.length > 0) {
-      setGalleryUrls((prev) => Array.from(new Set([...prev, ...uploaded])).slice(0, 6));
+      setGalleryUrls((prev) => Array.from(new Set([...prev, ...uploaded])).slice(0, MAX_GALLERY_PHOTOS));
       setBanner({
         type: 'success',
         text: `${uploaded.length} foto(s) agregada(s). Presiona "Guardar cambios" para publicar.`,
@@ -197,10 +199,9 @@ const maxPhotos = 30; const remainingSlots = Math.max(0, maxPhotos - galleryUrls
     setBanner(null);
 
     const cleanWhatsapp = whatsappNumber.replace(/[^0-9]/g, '');
-    const maxPhotos = 30;
-const sanitizedGallery = Array.from(
-  new Set(galleryUrls.map(cleanUrl).filter(Boolean))
-).slice(0, maxPhotos);
+    const sanitizedGallery = Array.from(
+      new Set(galleryUrls.map(cleanUrl).filter(Boolean))
+    ).slice(0, MAX_GALLERY_PHOTOS);
 
     try {
       const { data, error } = await supabase.rpc('update_business_profile', {
@@ -231,10 +232,15 @@ const sanitizedGallery = Array.from(
         });
       } else {
         const updatedRow = data[0] as EditableMerchantBusiness;
-        onSaved(updatedRow);
+        const savedDbGallery = Array.isArray(updatedRow.gallery_urls)
+          ? updatedRow.gallery_urls.map(cleanUrl).filter(Boolean)
+          : sanitizedGallery;
+
+        setGalleryUrls(savedDbGallery);
+        onSaved({ ...updatedRow, gallery_urls: savedDbGallery });
         setBanner({
           type: 'success',
-          text: '¡Perfil actualizado! Los cambios ya están guardados en Huaraz Explorer.',
+          text: `¡Perfil actualizado! Se guardaron ${savedDbGallery.length} foto(s) en Huaraz Explorer.`,
         });
       }
     } catch {
@@ -415,10 +421,10 @@ const sanitizedGallery = Array.from(
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-800">
-  Galería del local / platos / habitaciones ({galleryUrls.length}/30)
-</span>
-{galleryUrls.length < 30 && (
-  <label className="cursor-pointer bg-white hover:bg-slate-100 border border-slate-300 text-slate-800 text-xs font-bold px-3 py-1.5 rounded-lg transition-colors">
+              Galería del local / platos / habitaciones ({galleryUrls.length}/{MAX_GALLERY_PHOTOS})
+            </span>
+            {galleryUrls.length < MAX_GALLERY_PHOTOS && (
+              <label className="cursor-pointer bg-white hover:bg-slate-100 border border-slate-300 text-slate-800 text-xs font-bold px-3 py-1.5 rounded-lg transition-colors">
                 <span>
                   {uploadingField === 'gallery' ? 'Subiendo fotos...' : '+ Agregar fotos'}
                 </span>
