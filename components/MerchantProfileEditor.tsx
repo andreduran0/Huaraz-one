@@ -565,16 +565,15 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
                   key={`${url}-${idx}`}
                   className="relative group aspect-[3/4] rounded-xl overflow-hidden border border-slate-200 bg-white"
                 >
-                  <img src={url} alt={`Página ${idx + 1}`} className="w-full h-full object-cover" />
-                  <span className="absolute bottom-1.5 left-1.5 bg-slate-900/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
-                    Pág. {idx + 1}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveMenuPage(idx)}
-                    title={`Quitar página ${idx + 1}`}
-                    className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-red-600 text-white text-xs flex items-center justify-center opacity-90 hover:opacity-100"
-                  >
+                 <img
+  src={url}
+  alt={`Página ${idx + 1}`}
+  onClick={() => {
+    setPreviewPageIndex(idx);
+    setZoomLevel(1);
+  }}
+  className="w-full h-full object-cover cursor-zoom-in"
+/>
                     <i className="fas fa-xmark"></i>
                   </button>
                 </div>
@@ -760,8 +759,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
           />
         </div>
       </div>
-
-      <div className="flex justify-end">
+<div className="flex justify-end">
         <button
           type="submit"
           disabled={saving || uploadingField !== null}
@@ -780,6 +778,96 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
           )}
         </button>
       </div>
+
+      {previewPageIndex !== null && menuPages[previewPageIndex] && (
+        <div
+          onClick={() => setPreviewPageIndex(null)}
+          className="fixed inset-0 z-50 bg-slate-950/90 flex flex-col items-center justify-between p-4"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-4xl flex flex-wrap items-center justify-between gap-2 bg-slate-900/90 border border-slate-700 text-white px-4 py-2.5 rounded-2xl"
+          >
+            <span className="text-xs sm:text-sm font-bold">
+              Página {previewPageIndex + 1} de {menuPages.length}
+            </span>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setZoomLevel((z) => Math.max(1, Number((z - 0.25).toFixed(2))))}
+                className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold"
+              >
+                -
+              </button>
+              <button
+                type="button"
+                onClick={() => setZoomLevel(1)}
+                className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold"
+              >
+                {Math.round(zoomLevel * 100)}%
+              </button>
+              <button
+                type="button"
+                onClick={() => setZoomLevel((z) => Math.min(3, Number((z + 0.25).toFixed(2))))}
+                className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold"
+              >
+                +
+              </button>
+              <button
+                type="button"
+                onClick={() => setPreviewPageIndex(null)}
+                className="ml-1 px-3 py-1 rounded-lg bg-red-600 hover:bg-red-700 text-xs font-bold"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="flex-1 w-full max-w-4xl overflow-auto flex items-center justify-center my-3"
+          >
+            <img
+              src={menuPages[previewPageIndex]}
+              alt={`Vista ampliada página ${previewPageIndex + 1}`}
+              style={{
+                transform: `scale(${zoomLevel})`,
+                transformOrigin: 'center center',
+              }}
+              className="max-h-full max-w-full object-contain transition-transform duration-150 rounded-lg"
+            />
+          </div>
+
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center gap-3"
+          >
+            <button
+              type="button"
+              disabled={previewPageIndex <= 0}
+              onClick={() => {
+                setPreviewPageIndex((i) => (i !== null && i > 0 ? i - 1 : i));
+                setZoomLevel(1);
+              }}
+              className="px-4 py-2 rounded-xl bg-white text-slate-900 disabled:opacity-40 text-xs font-bold"
+            >
+              ← Anterior
+            </button>
+            <button
+              type="button"
+              disabled={previewPageIndex >= menuPages.length - 1}
+              onClick={() => {
+                setPreviewPageIndex((i) => (i !== null && i < menuPages.length - 1 ? i + 1 : i));
+                setZoomLevel(1);
+              }}
+              className="px-4 py-2 rounded-xl bg-white text-slate-900 disabled:opacity-40 text-xs font-bold"
+            >
+              Siguiente →
+            </button>
+          </div>
+        </div>
+      )}
     </form>
   );
 };
