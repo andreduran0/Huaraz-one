@@ -429,6 +429,15 @@ const BusinessDetailPage: React.FC = () => {
   const scheduleEntries = business.schedule
     ? Object.entries(business.schedule).filter(([, hours]) => Boolean(cleanText(hours as string)))
     : [];
+  const scheduleEntries = business.schedule
+    ? Object.entries(business.schedule).filter(([, hours]) => Boolean(cleanText(hours as string)))
+    : [];
+
+  const displayLogo =
+    cleanText(extraData.logo_url) ||
+    cleanText(bAny.logo_url) ||
+    cleanText((business as any).logo) ||
+    '';
 
   return (
     <div className="bg-slate-50 dark:bg-slate-950 min-h-screen relative font-['Plus_Jakarta_Sans']">
@@ -438,7 +447,7 @@ const BusinessDetailPage: React.FC = () => {
         className="w-full h-[60vh] md:h-[70vh] relative overflow-hidden bg-slate-900"
         style={{ backgroundImage: heroImage ? `url('${heroImage}')` : undefined, backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
-        <div className="absolute inset-0 bg-slate-950/60"></div>
+  <div className="absolute inset-0 bg-slate-950/60"></div>
         <div className="absolute bottom-16 left-8 right-8 text-white max-w-5xl mx-auto z-10">
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <span className="bg-[#2A4D69] text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] px-5 py-2.5 rounded-full border border-white/20 backdrop-blur-md shadow-2xl">
@@ -451,12 +460,22 @@ const BusinessDetailPage: React.FC = () => {
             )}
           </div>
 
-          <h1 className="text-5xl md:text-9xl font-black italic tracking-tighter uppercase leading-[0.85] drop-shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
-            {business.name}
-          </h1>
-        </div>
-      </div>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-7">
+            {displayLogo && (
+              <div className="w-20 h-20 md:w-28 md:h-28 rounded-[1.75rem] bg-white p-2 shadow-2xl border-2 border-white/30 flex-shrink-0 overflow-hidden">
+                <img
+                  src={displayLogo}
+                  alt={`Logo de ${business.name}`}
+                  className="w-full h-full object-contain rounded-[1.25rem]"
+                />
+              </div>
+            )}
 
+            <h1 className="text-5xl md:text-9xl font-black italic tracking-tighter uppercase leading-[0.85] drop-shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+              {business.name}
+            </h1>
+          </div>
+        </div>
       {/* CONTENIDO PRINCIPAL */}
       <div className="max-w-5xl mx-auto px-6 -mt-12 relative z-10 space-y-16 pb-48">
 
