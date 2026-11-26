@@ -157,7 +157,7 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
-    const remainingSlots = Math.max(0, 6 - galleryUrls.length);
+const maxPhotos = 30; const remainingSlots = Math.max(0, maxPhotos - galleryUrls.length);
     if (remainingSlots === 0) {
       setBanner({ type: 'error', text: 'Ya alcanzaste el máximo de 6 fotos en la galería.' });
       return;
