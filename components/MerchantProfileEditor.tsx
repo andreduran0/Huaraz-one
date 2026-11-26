@@ -59,20 +59,16 @@ export const MerchantProfileEditor: React.FC<MerchantProfileEditorProps> = ({
 
   // Fusiona las fotos guardadas en Supabase con las fotos base del catálogo local (sin duplicados y máx. 6)
   const initialGallery = useMemo(() => {
-    const dbGallery = Array.isArray(business.gallery_urls)
-      ? business.gallery_urls.map(cleanUrl).filter(Boolean)
-      : [];
+  const basePhotos = Array.isArray(localCatalogMatch?.photos)
+    ? localCatalogMatch.photos.map(cleanUrl).filter(Boolean)
+    : [];
 
-    if (dbGallery.length > 0) {
-      return dbGallery.slice(0, 6);
-    }
+  const dbGallery = Array.isArray(business.gallery_urls)
+    ? business.gallery_urls.map(cleanUrl).filter(Boolean)
+    : [];
 
-    const basePhotos = Array.isArray(localCatalogMatch?.photos)
-      ? localCatalogMatch.photos.map(cleanUrl).filter(Boolean)
-      : [];
-
-    return Array.from(new Set(basePhotos)).slice(0, 6);
-  }, [business.gallery_urls, localCatalogMatch]);
+  return Array.from(new Set([...basePhotos, ...dbGallery]));
+}, [business.gallery_urls, localCatalogMatch]);
 
   const [description, setDescription] = useState(business.description || localCatalogMatch?.description || '');
   const [culturalDescription, setCulturalDescription] = useState(business.cultural_description || '');
