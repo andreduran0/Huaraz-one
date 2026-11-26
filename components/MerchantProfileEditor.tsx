@@ -31,7 +31,7 @@ interface MerchantProfileEditorProps {
   onSaved: (updated: EditableMerchantBusiness) => void;
 }
 
-const MAX_GALLERY_PHOTOS = 30;
+const MAX_GALLERY_PHOTOS = 80;
 
 const cleanUrl = (val?: string | null): string => {
   if (!val) return '';
