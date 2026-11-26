@@ -38,7 +38,27 @@ const cleanText = (val?: string | null): string => {
 const isPdfUrl = (url?: string | null): boolean => {
   const cleaned = cleanText(url);
   if (!cleaned) return false;
-  return /\.pdf(\?|$)/i.test(cleaned);
+  return /\.pdf(\?|#|$)/i.test(cleaned);
+};
+
+const parseMenuUrls = (raw?: string | null): string[] => {
+  const cleaned = cleanText(raw);
+  if (!cleaned) return [];
+
+  if (cleaned.startsWith('[')) {
+    try {
+      const parsed = JSON.parse(cleaned);
+      if (Array.isArray(parsed)) {
+        return Array.from(
+          new Set(parsed.map((item) => cleanText(String(item ?? ''))).filter(Boolean))
+        );
+      }
+    } catch {
+      // Si no es JSON válido, se trata como URL única
+    }
+  }
+
+  return [cleaned];
 };
 
 const logClick = async (
@@ -121,15 +141,16 @@ const BusinessDetailPage: React.FC = () => {
             : [];
           const cover = cleanText(data.imagen_url);
           const photosFromDb = gallery.length > 0 ? gallery : cover ? [cover] : [];
+          const parsedMenuFromRow = parseMenuUrls(data.menu_url).filter((u) => !isPdfUrl(u));
 
           setFetchedBusiness({
             ...data,
             address: cleanText(data.location) || cleanText(data.address),
             whatsapp: cleanText(data.whatsapp_number) || cleanText(data.whatsapp),
             photos: photosFromDb,
-            menuImages: Array.isArray(data.menuImages)
-              ? data.menuImages.map((u: string) => cleanText(u)).filter(Boolean)
-              : [],
+            menuImages: Array.isArray(data.menuImages) && data.menuImages.length > 0
+              ? Array.from(new Set([...parsedMenuFromRow, ...data.menuImages.map((u: string) => cleanText(u)).filter(Boolean)]))
+              : parsedMenuFromRow,
             schedule: data.schedule || {},
             adLevel: data.adLevel || AdLevel.NONE,
           });
@@ -185,20 +206,21 @@ const BusinessDetailPage: React.FC = () => {
     };
   }, [supabaseLookupId]);
 
-  const rawMenuUrl = cleanText(extraData.menu_url) || cleanText(bAny.menu_url);
-  const menuIsPdf = Boolean(rawMenuUrl) && isPdfUrl(rawMenuUrl);
-  const menuIsImage = Boolean(rawMenuUrl) && !menuIsPdf;
+  const combinedRawMenu = cleanText(extraData.menu_url) || cleanText(bAny.menu_url);
+  const parsedMenuFromDb = useMemo(() => parseMenuUrls(combinedRawMenu), [combinedRawMenu]);
+
+  const rawMenuUrl = parsedMenuFromDb[0] || '';
+  const menuIsPdf = parsedMenuFromDb.length === 1 && isPdfUrl(parsedMenuFromDb[0]);
 
   // TODOS LOS useMemo VAN SIEMPRE ARRIBA DE CUALQUIER RETURN CONDICIONAL
   const combinedMenuImages = useMemo(() => {
     const baseMenu = Array.isArray(business?.menuImages)
       ? business.menuImages.map((u) => cleanText(u)).filter(Boolean)
       : [];
-    if (menuIsImage && rawMenuUrl && !baseMenu.includes(rawMenuUrl)) {
-      baseMenu.unshift(rawMenuUrl);
-    }
-    return baseMenu;
-  }, [business?.menuImages, menuIsImage, rawMenuUrl]);
+
+    const dbImagePages = parsedMenuFromDb.filter((u) => !isPdfUrl(u));
+    return Array.from(new Set([...dbImagePages, ...baseMenu]));
+  }, [business?.menuImages, parsedMenuFromDb]);
 
   const combinedGalleryPhotos = useMemo(() => {
     const basePhotos = Array.isArray(business?.photos)
@@ -483,7 +505,7 @@ const BusinessDetailPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Reseña Destacada */}
+    {/* Reseña Destacada */}
         {displayDescription && (
           <div className="bg-white dark:bg-slate-900 rounded-[3.5rem] p-12 md:p-20 shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-3 h-full bg-[#F58220]"></div>
@@ -548,19 +570,39 @@ const BusinessDetailPage: React.FC = () => {
 
             {hasMenuImages && (
               <div className="flex gap-8 overflow-x-auto no-scrollbar pb-12 px-4 snap-x">
-                {combinedMenuImages.map((page, idx) => (
-                  <div key={`${page}-${idx}`} onClick={() => openLightbox(idx, 'menu')} className="relative flex-shrink-0 w-72 md:w-96 aspect-[3/4.2] rounded-[3rem] overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.12)] border-2 border-slate-200 dark:border-slate-800 cursor-pointer group hover:scale-[1.03] transition-all duration-700 snap-center">
-                    <img src={page} className="w-full h-full object-cover" alt={`Página de la carta ${idx + 1}`} />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-[#2A4D69]/30 transition-all flex items-center justify-center">
-                      <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center text-[#2A4D69] opacity-0 group-hover:opacity-100 transform translate-y-8 group-hover:translate-y-0 transition-all shadow-2xl">
-                        <i className="fas fa-search-plus text-2xl"></i>
+                {combinedMenuImages
+                  .map((page) => cleanText(page))
+                  .filter(Boolean)
+                  .map((page, idx) => (
+                    <div
+                      key={`${page}-${idx}`}
+                      onClick={() => openLightbox(idx, 'menu')}
+                      className="relative flex-shrink-0 w-72 md:w-96 aspect-[3/4.2] rounded-[3rem] overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.12)] border-2 border-slate-200 dark:border-slate-800 cursor-pointer group hover:scale-[1.03] transition-all duration-700 snap-center bg-white"
+                    >
+                      <img
+                        src={page}
+                        className="w-full h-full object-cover"
+                        alt={`Página de la carta ${idx + 1}`}
+                        loading="lazy"
+                        onError={(e) => {
+                          const cardEl = e.currentTarget.closest('div.relative');
+                          if (cardEl instanceof HTMLElement) {
+                            cardEl.style.display = 'none';
+                          }
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-[#2A4D69]/30 transition-all flex items-center justify-center">
+                        <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center text-[#2A4D69] opacity-0 group-hover:opacity-100 transform translate-y-8 group-hover:translate-y-0 transition-all shadow-2xl">
+                          <i className="fas fa-search-plus text-2xl"></i>
+                        </div>
+                      </div>
+                      <div className="absolute top-8 left-8">
+                        <span className="bg-black/80 backdrop-blur-xl text-white text-[9px] font-black px-5 py-2.5 rounded-full uppercase tracking-widest shadow-2xl border border-white/10">
+                          Pág. {idx + 1}
+                        </span>
                       </div>
                     </div>
-                    <div className="absolute top-8 left-8">
-                      <span className="bg-black/80 backdrop-blur-xl text-white text-[9px] font-black px-5 py-2.5 rounded-full uppercase tracking-widest shadow-2xl border border-white/10">Pág. {idx + 1}</span>
-                    </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             )}
           </div>
@@ -692,7 +734,11 @@ const BusinessDetailPage: React.FC = () => {
 
             <TransformWrapper initialScale={1} minScale={1} maxScale={10}>
               <TransformComponent wrapperStyle={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <img src={currentImages[currentImageIndex]} className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-[0_0_150px_rgba(0,0,0,0.8)] border border-white/5 cursor-zoom-in" alt="Vista ampliada con zoom" />
+                <img
+                  src={currentImages[Math.min(currentImageIndex, currentImages.length - 1)]}
+                  className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-[0_0_150px_rgba(0,0,0,0.8)] border border-white/5 cursor-zoom-in"
+                  alt="Vista ampliada con zoom"
+                />
               </TransformComponent>
             </TransformWrapper>
 
@@ -702,7 +748,9 @@ const BusinessDetailPage: React.FC = () => {
           </div>
 
           <div className="p-10 flex flex-col items-center gap-6 bg-black/40 backdrop-blur-md relative z-[300]">
-            <div className="bg-white/5 backdrop-blur-2xl px-12 py-5 rounded-full text-white font-black text-xs uppercase tracking-[0.5em] border border-white/10 shadow-2xl">{currentImageIndex + 1} de {currentImages.length}</div>
+            <div className="bg-white/5 backdrop-blur-2xl px-12 py-5 rounded-full text-white font-black text-xs uppercase tracking-[0.5em] border border-white/10 shadow-2xl">
+              {Math.min(currentImageIndex + 1, currentImages.length)} de {currentImages.length}
+            </div>
             <div className="flex gap-10 md:hidden">
               <button onClick={prevImage} className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white active:scale-90"><i className="fas fa-chevron-left"></i></button>
               <button onClick={nextImage} className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white active:scale-90"><i className="fas fa-chevron-right"></i></button>
