@@ -197,7 +197,10 @@ const maxPhotos = 30; const remainingSlots = Math.max(0, maxPhotos - galleryUrls
     setBanner(null);
 
     const cleanWhatsapp = whatsappNumber.replace(/[^0-9]/g, '');
-    const sanitizedGallery = galleryUrls.map(cleanUrl).filter(Boolean).slice(0, 6);
+    const maxPhotos = 30;
+const sanitizedGallery = Array.from(
+  new Set(galleryUrls.map(cleanUrl).filter(Boolean))
+).slice(0, maxPhotos);
 
     try {
       const { data, error } = await supabase.rpc('update_business_profile', {
