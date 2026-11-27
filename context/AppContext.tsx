@@ -88,7 +88,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   });
 
   // Sincronización conservadora: mantiene el orden exacto y la categoría de businessData,
-  // y solo inyecta los archivos/datos editados desde /socios.
+  // y prioriza gallery_urls desde Supabase cuando existe en el registro.
   const syncPartnerUpdates = useCallback(async () => {
     const supabase = getSupabase();
     if (!supabase) return;
@@ -116,9 +116,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
           if (!match) return biz;
 
-          const extraGallery = Array.isArray(match.gallery_urls)
+          const hasDbGallery = Array.isArray(match.gallery_urls);
+          const extraGallery = hasDbGallery
             ? match.gallery_urls.filter((u: unknown) => typeof u === 'string' && u.trim().length > 0)
             : [];
+
+          const resolvedPhotos = hasDbGallery
+            ? extraGallery
+            : (Array.isArray(biz.photos) ? biz.photos : []);
 
           return {
             ...biz,
@@ -133,12 +138,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
             whatsapp: match.whatsapp_number || match.whatsapp || biz.whatsapp,
             phone: match.phone || biz.phone,
             address: match.location || biz.address,
-            photos: Array.from(
-  new Set([
-    ...(Array.isArray(biz.photos) ? biz.photos : []),
-    ...(Array.isArray(extraGallery) ? extraGallery : []),
-  ])
-),
+            photos: Array.from(new Set(resolvedPhotos)),
           };
         })
       );
