@@ -23,6 +23,7 @@ interface ExtraBusinessFields {
   default_message?: string | null;
   location?: string | null;
   opening_hours?: string | null;
+  description?: string | null;
   cultural_description?: string | null;
 }
 
@@ -179,7 +180,7 @@ const BusinessDetailPage: React.FC = () => {
     }
   }, [business?.id, trackingId]);
 
-  // Trae los campos editables desde Supabase para asegurar datos frescos sin romper estructura local
+// Trae los campos editables desde Supabase para asegurar datos frescos sin romper estructura local
   useEffect(() => {
     let active = true;
     const loadExtraProfile = async () => {
@@ -190,7 +191,7 @@ const BusinessDetailPage: React.FC = () => {
       const { data, error } = await supabase
         .from('businesses')
         .select(
-          'logo_url, imagen_url, menu_url, catalog_type, gallery_urls, phone, whatsapp, whatsapp_number, default_message, location, opening_hours, cultural_description'
+          'logo_url, imagen_url, menu_url, catalog_type, gallery_urls, phone, whatsapp, whatsapp_number, default_message, location, opening_hours, description, cultural_description'
         )
         .eq('id', supabaseLookupId)
         .maybeSingle();
@@ -273,7 +274,7 @@ const BusinessDetailPage: React.FC = () => {
   const culturalDescriptionText =
     cleanText(extraData.cultural_description) || cleanText(bAny.cultural_description);
   const catalogType = (cleanText(extraData.catalog_type) || cleanText(bAny.catalog_type) || 'carta').toLowerCase();
-  const displayDescription = cleanText(business.description);
+const displayDescription = cleanText(extraData.description) || cleanText(business.description);
 
   const isSponsored = business.adLevel !== AdLevel.NONE;
   const hasMenuImages = combinedMenuImages.length > 0;
