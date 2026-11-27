@@ -88,7 +88,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   });
 
   // Sincronización conservadora: mantiene el orden exacto y la categoría de businessData,
-  // y prioriza gallery_urls desde Supabase cuando existe en el registro.
+  // usa gallery_urls de Supabase cuando tiene fotos válidas y conserva biz.photos si está vacío.
   const syncPartnerUpdates = useCallback(async () => {
     const supabase = getSupabase();
     if (!supabase) return;
@@ -116,12 +116,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
           if (!match) return biz;
 
-          const hasDbGallery = Array.isArray(match.gallery_urls);
-          const extraGallery = hasDbGallery
+          const extraGallery = Array.isArray(match.gallery_urls)
             ? match.gallery_urls.filter((u: unknown) => typeof u === 'string' && u.trim().length > 0)
             : [];
 
-          const resolvedPhotos = hasDbGallery
+          const resolvedPhotos = extraGallery.length > 0
             ? extraGallery
             : (Array.isArray(biz.photos) ? biz.photos : []);
 
