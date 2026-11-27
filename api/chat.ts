@@ -86,18 +86,7 @@ if (categoriaFiltro) {
     }
     const { data: businesses } = await businessQuery;
 
- if (businesses && businesses.length > 0) {
-      const businessText = businesses.map(b =>
-        `- ${b.name} (${b.category}): ${b.description}. WhatsApp: ${b.whatsapp_number}. Mensaje: ${b.default_message}. Web: ${b.website || 'No tiene'}. Imagen: ${b.imagen_url || 'No tiene'}`
-      ).join('\n');
-      contextParts.push('NEGOCIOS DISPONIBLES EN LA PLATAFORMA PARA RECOMENDAR:\n' + businessText);
-    }
-  } catch (error) {
-    console.error('Error buscando contexto:', error);
-  }
-
-  return contextParts.join('\n\n');
-}
+ 
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
