@@ -630,22 +630,21 @@ const displayDescription = cleanText(extraData.description) || cleanText(busines
         )}
 
         {/* HORARIOS Y TARJETA DE RESERVA DINÁMICA */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-12 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-sm space-y-10">
+       <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-12 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-sm space-y-10">
             <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.5em] flex items-center gap-4">
               <i className="fas fa-clock text-[#F58220] text-xl"></i> {t('business.schedule')}
             </h3>
+
             {openingHoursText ? (
-              <div className="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-5 border border-slate-100 dark:border-slate-800">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-1.5">
+              <div className="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-6 border border-slate-100 dark:border-slate-800">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-2">
                   Horario actualizado por el socio
                 </p>
-                <p className="text-sm font-extrabold text-slate-900 dark:text-white">
+                <p className="text-sm font-extrabold text-slate-900 dark:text-white leading-relaxed">
                   {openingHoursText}
                 </p>
               </div>
-            ) : null}
-            {scheduleEntries.length > 0 && (
+            ) : scheduleEntries.length > 0 ? (
               <ul className="space-y-6">
                 {scheduleEntries.map(([day, hours]) => (
                   <li key={day} className="flex justify-between items-center border-b border-slate-50 dark:border-slate-800 pb-4">
@@ -654,25 +653,8 @@ const displayDescription = cleanText(extraData.description) || cleanText(busines
                   </li>
                 ))}
               </ul>
-            )}
+            ) : null}
           </div>
-
-          <div className="lg:col-span-3 bg-[#2A4D69] p-12 md:p-20 rounded-[4rem] shadow-[0_40px_100px_rgba(42,77,105,0.25)] text-white relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 group-hover:scale-150 transition-transform duration-[2s]"></div>
-            <div className="relative z-10 space-y-8">
-              <div className="inline-flex items-center gap-4 bg-white/10 px-6 py-2.5 rounded-full border border-white/10">
-                <i className={`fas ${resData.icon} text-[#F58220]`}></i>
-                <span className="text-[10px] font-black uppercase tracking-[0.4em]">
-                  {resData.tag}
-                </span>
-              </div>
-              <h3 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase leading-[0.9]">
-                {resData.prefix}
-                <span className="text-[#F58220]">{resData.highlight}</span>
-              </h3>
-              <p className="text-lg font-bold text-white/60 leading-relaxed max-w-sm italic">
-                {resData.desc}
-              </p>
 
               {/* BOTÓN INTELIGENTE CON VOUCHER AUTOMÁTICO */}
               <button
