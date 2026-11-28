@@ -52,14 +52,15 @@ async function getContext(userMessage: string, ciudadId: string): Promise<string
       .limit(3);
 
     if (knowledge && knowledge.length > 0) {
-      const knowledgeText = knowledge.map(k => `[${k.categoria?.toUpperCase()}] ${k.contenido}`).join('\n');
+      const knowledgeText = knowledge
+        .map(k => `[${k.categoria?.toUpperCase()}] ${k.contenido}`)
+        .join('\n');
       contextParts.push('CONOCIMIENTO GENERAL:\n' + knowledgeText);
     }
 
-   const msgLower = userMessage.toLowerCase();
-    let categoriaFiltro = null;
-    
-    // Filtros ampliados para capturar la intención del turista
+    const msgLower = userMessage.toLowerCase();
+    let categoriaFiltro: string | null = null;
+
     if (msgLower.includes('hotel') || msgLower.includes('dormir') || msgLower.includes('hospedaje')) {
       categoriaFiltro = 'hotel';
     } else if (msgLower.includes('comer') || msgLower.includes('restaurante') || msgLower.includes('almuerzo')) {
@@ -67,29 +68,32 @@ async function getContext(userMessage: string, ciudadId: string): Promise<string
     } else if (msgLower.includes('tour') || msgLower.includes('trekking') || msgLower.includes('laguna') || msgLower.includes('caminar')) {
       categoriaFiltro = 'tour';
     } else if (msgLower.includes('emoliente') || msgLower.includes('bebida') || msgLower.includes('calentar') || msgLower.includes('infusión')) {
-      // 👇 AQUÍ ATRAPAMOS A VERMIEL 👇
-      categoriaFiltro = 'emolienteria'; 
+      categoriaFiltro = 'emolienteria';
     }
-let businessQuery = supabase
-      .from('businesses')
-      .select('name, description, category, whatsapp_number, default_message, website, imagen_url,rating, review_count') // 👈 AQUÍ AGREGAMOS LAS 2 COLUMNAS
-      .eq('ciudad_id', ciudadId)
-      .eq('activo', true)
 
-if (categoriaFiltro) {
-      // Si el turista busca "hotel", "comer", etc., le mandamos solo 4 para no saturar
+    let businessQuery = supabase
+      .from('businesses')
+      .select('name, description, cultural_description, category, whatsapp_number, default_message, website, imagen_url, rating, review_count')
+      .eq('ciudad_id', ciudadId)
+      .eq('activo', true);
+
+    if (categoriaFiltro) {
       businessQuery = businessQuery.ilike('category', `%${categoriaFiltro}%`).limit(4);
     } else {
-      // Si el turista busca un nombre propio como "chilli heaven", le mandamos 50
-      // para que Arkáiko lea todo el catálogo y lo encuentre al instante.
       businessQuery = businessQuery.limit(50);
     }
+
     const { data: businesses } = await businessQuery;
 
- if (businesses && businesses.length > 0) {
-      const businessText = businesses.map(b =>
-        `- ${b.name} (${b.category}): ${b.description}. WhatsApp: ${b.whatsapp_number}. Mensaje: ${b.default_message}. Web: ${b.website || 'No tiene'}. Imagen: ${b.imagen_url || 'No tiene'}`
-      ).join('\n');
+    if (businesses && businesses.length > 0) {
+      const businessText = businesses
+        .map(b => {
+          const historiaCultural = b.cultural_description
+            ? ` | Historia y esencia cultural: ${b.cultural_description}`
+            : '';
+          return `- ${b.name} (${b.category}): ${b.description}${historiaCultural}. WhatsApp: ${b.whatsapp_number}. Mensaje: ${b.default_message}. Web: ${b.website || 'No tiene'}. Imagen: ${b.imagen_url || 'No tiene'}`;
+        })
+        .join('\n');
       contextParts.push('NEGOCIOS DISPONIBLES EN LA PLATAFORMA PARA RECOMENDAR:\n' + businessText);
     }
   } catch (error) {
@@ -106,13 +110,10 @@ export default async function handler(req: any, res: any) {
   if (!message) return res.status(400).json({ error: 'Mensaje requerido' });
 
   try {
-    // Mandamos SOLO el mensaje actual a Supabase para no arrastrar filtros del pasado.
-    // Gemini recordará el contexto general gracias a su propio historial.
     const context = await getContext(message, ciudadId);
-    
+
     const model = geminiClient.getGenerativeModel({
       model: 'gemini-3.6-flash',
-// ... (el resto del código sigue exactamente igual)
       systemInstruction: ARKAIKO_SYSTEM_PROMPT + '\n\nCONTEXTO:\n' + context,
     });
 
@@ -141,7 +142,6 @@ export default async function handler(req: any, res: any) {
     });
 
     return res.status(200).json({ reply });
-
   } catch (error: any) {
     console.error('Error en el chat:', error);
     return res.status(500).json({ reply: 'Los Apus están en silencio momentáneamente. Intenta de nuevo 🏔️' });
