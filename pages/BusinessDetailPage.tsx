@@ -656,6 +656,22 @@ const displayDescription = cleanText(extraData.description) || cleanText(busines
               </ul>
             ) : null}
           </div>
+          <div className="lg:col-span-3 bg-[#2A4D69] p-12 md:p-20 rounded-[4rem] shadow-[0_40px_100px_rgba(42,77,105,0.25)] text-white relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 group-hover:scale-150 transition-transform duration-[2s]"></div>
+            <div className="relative z-10 space-y-8">
+              <div className="inline-flex items-center gap-4 bg-white/10 px-6 py-2.5 rounded-full border border-white/10">
+                <i className={`fas ${resData.icon} text-[#F58220]`}></i>
+                <span className="text-[10px] font-black uppercase tracking-[0.4em]">
+                  {resData.tag}
+                </span>
+              </div>
+              <h3 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase leading-[0.9]">
+                {resData.prefix}
+                <span className="text-[#F58220]">{resData.highlight}</span>
+              </h3>
+              <p className="text-lg font-bold text-white/60 leading-relaxed max-w-sm italic">
+                {resData.desc}
+              </p>
 
               {/* BOTÓN INTELIGENTE CON VOUCHER AUTOMÁTICO */}
               <button
