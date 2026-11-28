@@ -630,7 +630,8 @@ const displayDescription = cleanText(extraData.description) || cleanText(busines
         )}
 
         {/* HORARIOS Y TARJETA DE RESERVA DINÁMICA */}
-       <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-12 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-sm space-y-10">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+          <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-12 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-sm space-y-10">
             <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.5em] flex items-center gap-4">
               <i className="fas fa-clock text-[#F58220] text-xl"></i> {t('business.schedule')}
             </h3>
